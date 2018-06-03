@@ -28,5 +28,8 @@ build_script:
 
     call tests\build-and-test.bat %PLATFORM% %CONFIGURATION%
 
+    echo call build-by-cmake.bat
+         call build-by-cmake.bat
+
 artifacts:
 - path: 'sakura-*$(platform)-$(configuration)*.zip'
