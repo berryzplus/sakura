@@ -23,26 +23,28 @@ RC= $(RCPREFIX)windres
 RM= cmd /c $(CURDIR)/../sakura/mingw32-del.bat
 
 DEFINES= \
- -DWIN32 \
- -DWINVER=0x500 \
- -D_WIN32_WINNT=0x500 \
- -D_WIN32_IE=0x501 \
- -DNOMINMAX \
+ -D_DEBUG \
  -D_UNICODE \
  -DUNICODE \
- -DNDEBUG
-CFLAGS= -O2 \
+ -D_WIN32 \
+ -DWIN32 \
+ -D_WIN32_WINNT=0x500 \
+ -DNOMINMAX \
+ -DMINGW_HAS_SECURE_API=1
+CFLAGS= -g -O0 \
  -finput-charset=utf-8 -fexec-charset=cp932 \
  -I. \
  $(DEFINES) $(MYCFLAGS)
 CXXFLAGS= $(CFLAGS) $(MYCXXFLAGS)
+LDFLAGS= \
+ -mwindows \
+ -municode \
+ -static-libstdc++ \
+ -static-libgcc
 LIBS= \
- -lkernel32 -luser32 -lgdi32 \
- -lwinspool -lcomdlg32 -ladvapi32 \
- -lshell32 -lole32 -loleaut32 \
- -luuid -lcomctl32 -limm32 \
- -lmpr -limagehlp \
- -static-libgcc -static-libstdc++ -mwindows -s
+ -shared \
+ -dll \
+ -s
 
 exe= sakura_lang_en_US.dll
 
@@ -53,7 +55,7 @@ sakura_lang_rc.o \
 all: $(exe)
 
 $(exe): sakura_lang.h $(OBJS)
-	$(CXX) -shared -o $@ $(OBJS) $(LIBS)
+	gcc $(LDFLAGS) $(OBJS) $(LIBS) -o $@
 
 sakura_rc:
 	$(MAKE) -C ../sakura_core sakura_rc.o

@@ -23,27 +23,28 @@ RC= $(RCPREFIX)windres
 RM= cmd /c $(CURDIR)/../sakura/mingw32-del.bat
 
 DEFINES= \
- -DWIN32 \
- -DWINVER=0x500 \
- -D_WIN32_WINNT=0x500 \
- -D_WIN32_IE=0x501 \
- -DMINGW_HAS_SECURE_API=1 \
- -DNOMINMAX \
+ -D_DEBUG \
  -D_UNICODE \
  -DUNICODE \
- -DNDEBUG
-CFLAGS= -O2 \
+ -D_WIN32 \
+ -DWIN32 \
+ -D_WIN32_WINNT=0x500 \
+ -DNOMINMAX \
+ -DMINGW_HAS_SECURE_API=1
+CFLAGS= -g -O0 \
  -finput-charset=utf-8 -fexec-charset=cp932 \
  -I. \
  $(DEFINES) $(MYCFLAGS)
 CXXFLAGS= $(CFLAGS) $(MYCXXFLAGS)
 LIBS= \
- -lkernel32 -luser32 -lgdi32 \
- -lwinspool -lcomdlg32 -ladvapi32 \
- -lshell32 -lole32 -loleaut32 \
- -luuid -lcomctl32 -limm32 \
+ -lcomctl32 -lwinspool \
+ -lole32 -loleaut32 -luuid \
  -lmpr -limagehlp -lshlwapi \
- -static-libgcc -static-libstdc++ -mwindows -s
+ -limm32 \
+ -lwinmm \
+ -static-libgcc -static-libstdc++ \
+ -mwindows \
+ -s
 
 exe= sakura.exe
 
@@ -455,7 +456,7 @@ clean:
 	$(RM) $(exe) $(OBJS) $(HEADERMAKE) StdAfx.h.gch $(GENERATED_FILES)
 
 depend: githash
-	$(CXX) -E -MM -w $(DEFINES) $(CXXFLAGS) *.cpp */*.cpp */*/*.cpp > depend.mak
+	$(CXX) -E -MM -w $(DEFINES) $(CXXFLAGS) *.cpp > depend.mak
 
 .SUFFIXES: .cpp .o .rc
 .PHONY: all clean depend
