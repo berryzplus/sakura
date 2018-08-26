@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6.4)
+cmake_minimum_required(VERSION 3.11)
 
 # define a variable of project name
 set( project_name HeaderMake)
@@ -11,3 +11,5 @@ file(GLOB SOURCE_FILES *.cpp *.h)
 
 # define sources files of an executable
 add_executable(${project_name} ${SOURCE_FILES})
+
+target_compile_definitions(${project_name} PUBLIC _CONSOLE UNICODE _UNICODE)
