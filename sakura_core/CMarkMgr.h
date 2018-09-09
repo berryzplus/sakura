@@ -12,8 +12,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -22,7 +22,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -60,7 +60,7 @@ public:
 	class CMark {
 	public:
 		//	constructor
-		CMark( const CLogicPoint& pt ) : m_ptLogic(pt) { }
+		CMark(const CLogicPoint& pt) : m_ptLogic(pt) { }
 
 		CLogicPoint GetPosition() const { return m_ptLogic; }
 		void SetPosition(const CLogicPoint& pt) { m_ptLogic = pt; }
@@ -82,7 +82,7 @@ public:
 
 	//	Interface
 	//	constructor
-	CMarkMgr() : m_nCurpos(0), m_nMaxitem(10){}
+	CMarkMgr() : m_nCurpos(0), m_nMaxitem(10) {}
 	// CMarkMgr(const CDocLineMgr *p) : doc(p) {}
 
 	int Count(void) const { return (int)m_cMarkChain.size(); }	//!<	項目数を返す
@@ -132,7 +132,7 @@ private:
 
 	CMarkMgr を継承し、動作が規定されていない部分を実装する。
 */
-class CAutoMarkMgr : public CMarkMgr{
+class CAutoMarkMgr : public CMarkMgr {
 public:
 	virtual void Add(const CMark& m);	//!<	要素の追加
 	virtual void Expire(void);	//!<	要素数の調整

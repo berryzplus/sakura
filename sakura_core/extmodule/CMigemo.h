@@ -40,8 +40,8 @@ Migemo はローマ字のまま日本語をインクリメンタル検索する�
 #define MIGEMO_OPINDEX_NEWLINE		5
 
 /* see: rxgen.h */
-typedef int (__cdecl *MIGEMO_PROC_CHAR2INT)(const unsigned char*, unsigned int*);
-typedef int (__cdecl *MIGEMO_PROC_INT2CHAR)(unsigned int, unsigned char*);
+typedef int(__cdecl *MIGEMO_PROC_CHAR2INT)(const unsigned char*, unsigned int*);
+typedef int(__cdecl *MIGEMO_PROC_INT2CHAR)(unsigned int, unsigned char*);
 
 /**
  * Migemoオブジェクト。migemo_open()で作成され、migemo_closeで破棄される。
@@ -54,7 +54,7 @@ typedef struct _migemo migemo;
 
 class CMigemo : public TSingleton<CMigemo>, public CDllImp {
 	friend class TSingleton<CMigemo>;
-	CMigemo(){}
+	CMigemo() {}
 
 public:
 	virtual ~CMigemo();
@@ -64,37 +64,37 @@ protected:
 	//	Aug. 20, 2005 Aroka : 最適化オプションでデフォルトを__fastcallに変更しても
 	//	影響を受けないようにする．
 	typedef migemo*        (__cdecl *Proc_migemo_open)            (char* dict);
-	typedef void           (__cdecl *Proc_migemo_close)           (migemo* object);
+	typedef void(__cdecl *Proc_migemo_close)           (migemo* object);
 	typedef unsigned char* (__cdecl *Proc_migemo_query)           (migemo* object, unsigned char* query);
-	typedef void           (__cdecl *Proc_migemo_release)         (migemo* object, unsigned char* str);
-	typedef int            (__cdecl *Proc_migemo_set_operator)    (migemo* object, int index, unsigned char* op);
+	typedef void(__cdecl *Proc_migemo_release)         (migemo* object, unsigned char* str);
+	typedef int(__cdecl *Proc_migemo_set_operator)    (migemo* object, int index, unsigned char* op);
 	typedef const uchar_t* (__cdecl *Proc_migemo_get_operator)    (migemo* object, int index);
-	typedef void           (__cdecl *Proc_migemo_setproc_char2int)(migemo* object, MIGEMO_PROC_CHAR2INT proc);
-	typedef void           (__cdecl *Proc_migemo_setproc_int2char)(migemo* object, MIGEMO_PROC_INT2CHAR proc);
-	typedef int            (__cdecl *Proc_migemo_load)            (migemo* obj, int dict_id, const char* dict_file);
-	typedef int            (__cdecl *Proc_migemo_is_enable)       (migemo* obj);
-	
-	Proc_migemo_open                  m_migemo_open                ;
-	Proc_migemo_close                 m_migemo_close               ;
-	Proc_migemo_query                 m_migemo_query               ;
-	Proc_migemo_release               m_migemo_release             ;
-	Proc_migemo_set_operator          m_migemo_set_operator        ;
-	Proc_migemo_get_operator          m_migemo_get_operator        ;
-	Proc_migemo_setproc_char2int      m_migemo_setproc_char2int    ;
-	Proc_migemo_setproc_int2char      m_migemo_setproc_int2char    ;
-	Proc_migemo_load                  m_migemo_load                ;
-	Proc_migemo_is_enable             m_migemo_is_enable           ;
+	typedef void(__cdecl *Proc_migemo_setproc_char2int)(migemo* object, MIGEMO_PROC_CHAR2INT proc);
+	typedef void(__cdecl *Proc_migemo_setproc_int2char)(migemo* object, MIGEMO_PROC_INT2CHAR proc);
+	typedef int(__cdecl *Proc_migemo_load)            (migemo* obj, int dict_id, const char* dict_file);
+	typedef int(__cdecl *Proc_migemo_is_enable)       (migemo* obj);
+
+	Proc_migemo_open                  m_migemo_open;
+	Proc_migemo_close                 m_migemo_close;
+	Proc_migemo_query                 m_migemo_query;
+	Proc_migemo_release               m_migemo_release;
+	Proc_migemo_set_operator          m_migemo_set_operator;
+	Proc_migemo_get_operator          m_migemo_get_operator;
+	Proc_migemo_setproc_char2int      m_migemo_setproc_char2int;
+	Proc_migemo_setproc_int2char      m_migemo_setproc_int2char;
+	Proc_migemo_load                  m_migemo_load;
+	Proc_migemo_is_enable             m_migemo_is_enable;
 
 	typedef migemo*        (__stdcall *Proc_migemo_open_s)            (char* dict);
-	typedef void           (__stdcall *Proc_migemo_close_s)           (migemo* object);
+	typedef void(__stdcall *Proc_migemo_close_s)           (migemo* object);
 	typedef unsigned char* (__stdcall *Proc_migemo_query_s)           (migemo* object, unsigned char* query);
-	typedef void           (__stdcall *Proc_migemo_release_s)         (migemo* object, unsigned char* str);
-	typedef int            (__stdcall *Proc_migemo_set_operator_s)    (migemo* object, int index, unsigned char* op);
+	typedef void(__stdcall *Proc_migemo_release_s)         (migemo* object, unsigned char* str);
+	typedef int(__stdcall *Proc_migemo_set_operator_s)    (migemo* object, int index, unsigned char* op);
 	typedef const uchar_t* (__stdcall *Proc_migemo_get_operator_s)    (migemo* object, int index);
-	typedef void           (__stdcall *Proc_migemo_setproc_char2int_s)(migemo* object, MIGEMO_PROC_CHAR2INT proc);
-	typedef void           (__stdcall *Proc_migemo_setproc_int2char_s)(migemo* object, MIGEMO_PROC_INT2CHAR proc);
-	typedef int            (__stdcall *Proc_migemo_load_s)            (migemo* obj, int dict_id, const char* dict_file);
-	typedef int            (__stdcall *Proc_migemo_is_enable_s)       (migemo* obj);
+	typedef void(__stdcall *Proc_migemo_setproc_char2int_s)(migemo* object, MIGEMO_PROC_CHAR2INT proc);
+	typedef void(__stdcall *Proc_migemo_setproc_int2char_s)(migemo* object, MIGEMO_PROC_INT2CHAR proc);
+	typedef int(__stdcall *Proc_migemo_load_s)            (migemo* obj, int dict_id, const char* dict_file);
+	typedef int(__stdcall *Proc_migemo_is_enable_s)       (migemo* obj);
 
 	Proc_migemo_open_s                m_migemo_open_s;
 	Proc_migemo_close_s               m_migemo_close_s;
@@ -125,7 +125,7 @@ public:
 	void migemo_close();
 	unsigned char* migemo_query(unsigned char* query);
 	std::wstring migemo_query_w(const wchar_t* query);
-	void migemo_release( unsigned char* str);
+	void migemo_release(unsigned char* str);
 	int migemo_set_operator(int index, unsigned char* op);
 	const unsigned char* migemo_get_operator(int index);
 	void migemo_setproc_char2int(MIGEMO_PROC_CHAR2INT proc);
@@ -133,9 +133,9 @@ public:
 	int migemo_load_a(int dict_id, const char* dict_file);
 	int migemo_load_w(int dict_id, const wchar_t* dict_file);
 #ifdef _UNICODE
-	#define migemo_load_t migemo_load_w
+#define migemo_load_t migemo_load_w
 #else
-	#define migemo_load_t migemo_load_a
+#define migemo_load_t migemo_load_a
 #endif
 	int migemo_is_enable();
 	int migemo_load_all();

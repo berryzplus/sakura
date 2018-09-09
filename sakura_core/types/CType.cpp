@@ -40,9 +40,9 @@ void CType::InitTypeConfig(int nIdx, STypeConfig& type)
 	//規定値をコピー
 	static STypeConfig sDefault;
 	static bool bLoadedDefault = false;
-	if(!bLoadedDefault){
+	if (!bLoadedDefault) {
 		_DefaultConfig(&sDefault);
-		bLoadedDefault=true;
+		bLoadedDefault = true;
 	}
 	type = sDefault;
 
@@ -65,7 +65,7 @@ void CType::InitTypeConfig(int nIdx, STypeConfig& type)
 
 	@date 2005.01.30 genta CShareData::Init()から分離．
 */
-void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData, std::vector<STypeConfig*>& types )
+void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData, std::vector<STypeConfig*>& types)
 {
 	CType* table[] = {
 		new CType_Basis(),	//基本
@@ -87,8 +87,8 @@ void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData, std::vector<STypeConf
 		new CType_Ini(),	//設定ファイル
 	};
 	types.clear();
-	assert( _countof(table) <= MAX_TYPES );
-	for(int i = 0; i < _countof(table) && i < MAX_TYPES; i++){
+	assert(_countof(table) <= MAX_TYPES);
+	for (int i = 0; i < _countof(table) && i < MAX_TYPES; i++) {
 		STypeConfig* type = new STypeConfig;
 		types.push_back(type);
 		table[i]->InitTypeConfig(i, *type);
@@ -121,24 +121,24 @@ void CShareData::InitKeyword(DLLSHAREDATA* pShareData)
 	extern int g_nKeywords##aryname; \
 	pShareData->m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.AddKeyWordSet( (name), (case_sensitive) );	\
 	pShareData->m_Common.m_sSpecialKeyword.m_CKeyWordSetMgr.SetKeyWordArr( ++nSetCount, g_nKeywords##aryname, g_ppszKeywords##aryname );
-	
-	PopulateKeyword( L"C/C++",			true,	CPP );			/* セット 0の追加 */
-	PopulateKeyword( L"HTML",			false,	HTML );			/* セット 1の追加 */
-	PopulateKeyword( L"PL/SQL",			false,	PLSQL );		/* セット 2の追加 */
-	PopulateKeyword( L"COBOL",			true,	COBOL );		/* セット 3の追加 */
-	PopulateKeyword( L"Java",			true,	JAVA );			/* セット 4の追加 */
-	PopulateKeyword( L"CORBA IDL",		true,	CORBA_IDL );	/* セット 5の追加 */
-	PopulateKeyword( L"AWK",			true,	AWK );			/* セット 6の追加 */
-	PopulateKeyword( L"MS-DOS batch",	false,	BAT );			/* セット 7の追加 */	//Oct. 31, 2000 JEPRO 'バッチファイル'→'batch' に短縮
-	PopulateKeyword( L"Pascal",			false,	PASCAL );		/* セット 8の追加 */	//Nov. 5, 2000 JEPRO 大・小文字の区別を'しない'に変更
-	PopulateKeyword( L"TeX",			true,	TEX );			/* セット 9の追加 */	//Sept. 2, 2000 jepro Tex →TeX に修正 Bool値は大・小文字の区別
-	PopulateKeyword( L"TeX2",			true,	TEX2 );			/* セット10の追加 */	//Jan. 19, 2001 JEPRO 追加
-	PopulateKeyword( L"Perl",			true,	PERL );			/* セット11の追加 */
-	PopulateKeyword( L"Perl2",			true,	PERL2 );		/* セット12の追加 */	//Jul. 10, 2001 JEPRO Perlから変数を分離・独立
-	PopulateKeyword( L"Visual Basic",	false,	VB );			/* セット13の追加 */	//Jul. 10, 2001 JEPRO
-	PopulateKeyword( L"Visual Basic2",	false,	VB2 );			/* セット14の追加 */	//Jul. 10, 2001 JEPRO
-	PopulateKeyword( L"Rich Text",		true,	RTF );			/* セット15の追加 */	//Jul. 10, 2001 JEPRO
-	PopulateKeyword( L"Python",			true,	Python);		/* セット16の追加 */
+
+	PopulateKeyword(L"C/C++", true, CPP);			/* セット 0の追加 */
+	PopulateKeyword(L"HTML", false, HTML);			/* セット 1の追加 */
+	PopulateKeyword(L"PL/SQL", false, PLSQL);		/* セット 2の追加 */
+	PopulateKeyword(L"COBOL", true, COBOL);		/* セット 3の追加 */
+	PopulateKeyword(L"Java", true, JAVA);			/* セット 4の追加 */
+	PopulateKeyword(L"CORBA IDL", true, CORBA_IDL);	/* セット 5の追加 */
+	PopulateKeyword(L"AWK", true, AWK);			/* セット 6の追加 */
+	PopulateKeyword(L"MS-DOS batch", false, BAT);			/* セット 7の追加 */	//Oct. 31, 2000 JEPRO 'バッチファイル'→'batch' に短縮
+	PopulateKeyword(L"Pascal", false, PASCAL);		/* セット 8の追加 */	//Nov. 5, 2000 JEPRO 大・小文字の区別を'しない'に変更
+	PopulateKeyword(L"TeX", true, TEX);			/* セット 9の追加 */	//Sept. 2, 2000 jepro Tex →TeX に修正 Bool値は大・小文字の区別
+	PopulateKeyword(L"TeX2", true, TEX2);			/* セット10の追加 */	//Jan. 19, 2001 JEPRO 追加
+	PopulateKeyword(L"Perl", true, PERL);			/* セット11の追加 */
+	PopulateKeyword(L"Perl2", true, PERL2);		/* セット12の追加 */	//Jul. 10, 2001 JEPRO Perlから変数を分離・独立
+	PopulateKeyword(L"Visual Basic", false, VB);			/* セット13の追加 */	//Jul. 10, 2001 JEPRO
+	PopulateKeyword(L"Visual Basic2", false, VB2);			/* セット14の追加 */	//Jul. 10, 2001 JEPRO
+	PopulateKeyword(L"Rich Text", true, RTF);			/* セット15の追加 */	//Jul. 10, 2001 JEPRO
+	PopulateKeyword(L"Python", true, Python);		/* セット16の追加 */
 
 #undef PopulateKeyword
 }
@@ -150,10 +150,10 @@ void CShareData::InitKeyword(DLLSHAREDATA* pShareData)
 
 void _DefaultConfig(STypeConfig* pType)
 {
-//キーワード：デフォルトカラー設定
-/************************/
-/* タイプ別設定の規定値 */
-/************************/
+	//キーワード：デフォルトカラー設定
+	/************************/
+	/* タイプ別設定の規定値 */
+	/************************/
 
 	pType->m_nTextWrapMethod = WRAP_NO_TEXT_WRAP;	// テキストの折り返し方法		// 2008.05.30 nasukoji
 	pType->m_nMaxLineKetas = CKetaXInt(MAXLINEKETAS);	/* 折り返し桁数 */
@@ -161,13 +161,13 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_nLineSpace = 1;					/* 行間のすきま */
 	pType->m_nTabSpace = CKetaXInt(4);					/* TABの文字数 */
 	pType->m_nTsvMode = 0;						/* TSVモード */
-	for( int i = 0; i < MAX_KEYWORDSET_PER_TYPE; i++ ){
+	for (int i = 0; i < MAX_KEYWORDSET_PER_TYPE; i++) {
 		pType->m_nKeyWordSetIdx[i] = -1;
 	}
-	wcscpy( pType->m_szTabViewString, _EDITL("^       ") );	/* TAB表示文字列 */
+	wcscpy(pType->m_szTabViewString, _EDITL("^       "));	/* TAB表示文字列 */
 	pType->m_bTabArrow = TABARROW_STRING;	/* タブ矢印表示 */	// 2001.12.03 hor	// default on 2013/4/11 Uchi
 	pType->m_bInsSpace = false;				/* スペースの挿入 */	// 2001.12.03 hor
-	
+
 	//@@@ 2002.09.22 YAZAKI 以下、m_cLineCommentとm_cBlockCommentsを使うように修正
 	pType->m_cLineComment.CopyTo(0, L"", -1);	/* 行コメントデリミタ */
 	pType->m_cLineComment.CopyTo(1, L"", -1);	/* 行コメントデリミタ2 */
@@ -177,7 +177,7 @@ void _DefaultConfig(STypeConfig* pType)
 
 	pType->m_nStringType = STRING_LITERAL_CPP;					/* 文字列区切り記号エスケープ方法 0=[\"][\'] 1=[""][''] */
 	pType->m_bStringLineOnly = false;
-	pType->m_bStringEndLine  = false;
+	pType->m_bStringEndLine = false;
 	pType->m_nHeredocType = HEREDOC_PHP;
 	pType->m_szIndentChars[0] = L'\0';		/* その他のインデント対象文字 */
 
@@ -214,9 +214,9 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_nIndentLayout = 0;	/* 折り返しは2行目以降を字下げ表示 */
 
 
-	assert( COLORIDX_LAST <= _countof(pType->m_ColorInfoArr) );
-	for( int i = 0; i < COLORIDX_LAST; ++i ){
-		GetDefaultColorInfo(&pType->m_ColorInfoArr[i],i);
+	assert(COLORIDX_LAST <= _countof(pType->m_ColorInfoArr));
+	for (int i = 0; i < COLORIDX_LAST; ++i) {
+		GetDefaultColorInfo(&pType->m_ColorInfoArr[i], i);
 	}
 	pType->m_szBackImgPath[0] = '\0';
 	pType->m_backImgPos = BGIMAGE_TOP_LEFT;
@@ -225,7 +225,7 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_backImgScrollX = true;
 	pType->m_backImgScrollY = true;
 	{
-		POINT pt ={0,0};
+		POINT pt = { 0,0 };
 		pType->m_backImgPosOffset = pt;
 	}
 	pType->m_bLineNumIsCRLF = true;					// 行番号の表示 false=折り返し単位／true=改行単位
@@ -243,7 +243,7 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_nOutlineSortCol = 0;					/* アウトライン解析ソート列番号 */
 	pType->m_bOutlineSortDesc = false;				// アウトライン解析ソート降順
 	pType->m_nOutlineSortType = 0;					/* アウトライン解析ソート基準 */
-	CShareData::InitFileTree( &pType->m_sFileTree );
+	CShareData::InitFileTree(&pType->m_sFileTree);
 	pType->m_eSmartIndent = SMARTINDENT_NONE;		/* スマートインデント種別 */
 	pType->m_bIndentCppStringIgnore = true;
 	pType->m_bIndentCppCommentIgnore = true;
@@ -253,26 +253,26 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_szOutlineRuleFilename[0] = L'\0';		//Dec. 4, 2000 MIK
 	pType->m_bKinsokuHead = false;					// 行頭禁則				//@@@ 2002.04.08 MIK
 	pType->m_bKinsokuTail = false;					// 行末禁則				//@@@ 2002.04.08 MIK
-	pType->m_bKinsokuRet  = false;					// 改行文字をぶら下げる	//@@@ 2002.04.13 MIK
+	pType->m_bKinsokuRet = false;					// 改行文字をぶら下げる	//@@@ 2002.04.13 MIK
 	pType->m_bKinsokuKuto = false;					// 句読点をぶら下げる	//@@@ 2002.04.17 MIK
 	pType->m_szKinsokuHead[0] = L'\0';				// 行頭禁則				//@@@ 2002.04.08 MIK
 	pType->m_szKinsokuTail[0] = L'\0';				// 行末禁則				//@@@ 2002.04.08 MIK
-	wcscpy( pType->m_szKinsokuKuto, L"、。，．､｡,." );	// 句読点ぶら下げ文字	// 2009.08.07 ryoji
+	wcscpy(pType->m_szKinsokuKuto, L"、。，．､｡,.");	// 句読点ぶら下げ文字	// 2009.08.07 ryoji
 
 	pType->m_bUseDocumentIcon = false;				// 文書に関連づけられたアイコンを使う
 
 //@@@ 2001.11.17 add start MIK
-	for(int i = 0; i < _countof(pType->m_RegexKeywordArr); i++)
+	for (int i = 0; i < _countof(pType->m_RegexKeywordArr); i++)
 	{
 		pType->m_RegexKeywordArr[i].m_nColorIndex = COLORIDX_REGEX1;
 	}
 	pType->m_RegexKeywordList[0] = L'\0';
 	pType->m_bUseRegexKeyword = false;
-//@@@ 2001.11.17 add end MIK
+	//@@@ 2001.11.17 add end MIK
 	pType->m_nRegexKeyMagicNumber = 0;
 
-//@@@ 2006.04.10 fon ADD-start
-	for(int i = 0; i < MAX_KEYHELP_FILE; i++){
+	//@@@ 2006.04.10 fon ADD-start
+	for (int i = 0; i < MAX_KEYHELP_FILE; i++) {
 		pType->m_KeyHelpArr[i].m_bUse = false;
 		pType->m_KeyHelpArr[i].m_szAbout[0] = _T('\0');
 		pType->m_KeyHelpArr[i].m_szPath[0] = _T('\0');
@@ -283,10 +283,10 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_bUseKeyHelpKeyDisp = false;	// 1行目にキーワードも表示する(&W)
 	pType->m_bUseKeyHelpPrefix = false;		// 選択範囲で前方一致検索(&P)
 	pType->m_eKeyHelpRMenuShowType = KEYHELP_RMENU_TOP;
-//@@@ 2006.04.10 fon ADD-end
+	//@@@ 2006.04.10 fon ADD-end
 
-	// 2005.11.08 Moca 指定位置縦線の設定
-	for(int i = 0; i < MAX_VERTLINES; i++ ){
+		// 2005.11.08 Moca 指定位置縦線の設定
+	for (int i = 0; i < MAX_VERTLINES; i++) {
 		pType->m_nVertLineIdx[i] = CKetaXInt(0);
 	}
 	pType->m_nNoteLineOffset = 0;

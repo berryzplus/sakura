@@ -27,7 +27,7 @@
 class CEol;
 
 //!サクラエディタ用クリップボードクラス。後々はこの中で全てのクリップボードAPIを呼ばせたい。
-class CClipboard{
+class CClipboard {
 public:
 	//コンストラクタ・デストラクタ
 	CClipboard(HWND hwnd); //!< コンストラクタ内でクリップボードが開かれる
@@ -45,7 +45,7 @@ public:
 
 
 	//演算子
-	operator bool() const{ return m_bOpenResult!=FALSE; } //!< クリップボードを開けたならtrue
+	operator bool() const { return m_bOpenResult != FALSE; } //!< クリップボードを開けたならtrue
 
 private:
 	HWND m_hwnd;

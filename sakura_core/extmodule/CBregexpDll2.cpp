@@ -39,7 +39,7 @@ CBregexpDll2::~CBregexpDll2()
 		@li 指定有りの場合はそれのみを返す
 		@li 指定無し(NULLまたは空文字列)の場合はBREGONIG, BREGEXPの順で試みる
 */
-LPCTSTR CBregexpDll2::GetDllNameImp( int index )
+LPCTSTR CBregexpDll2::GetDllNameImp(int index)
 {
 	return _T("bregonig.dll");
 }
@@ -67,10 +67,10 @@ bool CBregexpDll2::InitDllImp()
 		{ &m_BSubstEx,			"BSubstExW" },
 		{ NULL, 0 }
 	};
-	
-	if( ! RegisterEntries( table )){
+
+	if (!RegisterEntries(table)) {
 		return false;
 	}
-	
+
 	return true;
 }

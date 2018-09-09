@@ -28,8 +28,8 @@
 using namespace std;
 
 //CommonValue管理
-struct CommonValueInfo{
-	enum EType{
+struct CommonValueInfo {
+	enum EType {
 		TYPE_UNKNOWN,
 		TYPE_ASTR,    //char文字列 (終端NULL)
 		TYPE_WSTR,    //wchar_t文字列 (終端NULL)
@@ -40,24 +40,24 @@ struct CommonValueInfo{
 	char  m_szEntryKey[32];
 	EType m_eType;
 
-	CommonValueInfo(void* pValue, int nValueSize, const char* szEntryKey, EType eType=TYPE_UNKNOWN)
-	: m_pValue(pValue), m_nValueSize(nValueSize), m_eType(eType)
+	CommonValueInfo(void* pValue, int nValueSize, const char* szEntryKey, EType eType = TYPE_UNKNOWN)
+		: m_pValue(pValue), m_nValueSize(nValueSize), m_eType(eType)
 	{
-		strcpy_s(m_szEntryKey,_countof(m_szEntryKey),szEntryKey);
+		strcpy_s(m_szEntryKey, _countof(m_szEntryKey), szEntryKey);
 	}
 
 	void Save()
 	{
-		printf("%hs=",m_szEntryKey);
+		printf("%hs=", m_szEntryKey);
 
 		//intと同じサイズならintとして出力
-		if(m_nValueSize==sizeof(int)){
-			printf("%d\n",*((int*)m_pValue));
+		if (m_nValueSize == sizeof(int)) {
+			printf("%d\n", *((int*)m_pValue));
 		}
 		//それ以外ならバイナリ出力
-		else{
-			for(int i=0;i<m_nValueSize;i++){
-				printf("%%%02X",((BYTE*)m_pValue)[i]);
+		else {
+			for (int i = 0; i < m_nValueSize; i++) {
+				printf("%%%02X", ((BYTE*)m_pValue)[i]);
 			}
 		}
 	}
@@ -66,14 +66,14 @@ vector<CommonValueInfo> g_commonvalues;
 void CommonValue_AllSave()
 {
 	int nSize = (int)g_commonvalues.size();
-	for(int i=0;i<nSize;i++){
+	for (int i = 0; i < nSize; i++) {
 		g_commonvalues[i].Save();
 	}
 }
 
 //CommonValue ※virtual使うの禁止
 template <class T>
-class CommonValue{
+class CommonValue {
 private:
 	typedef CommonValue<T> Me;
 public:
@@ -83,11 +83,11 @@ public:
 	void Regist(const char* szEntryKey)
 	{
 		//CommonValueリストに自分を追加
-		g_commonvalues.push_back(CommonValueInfo(&m_value,sizeof(m_value),szEntryKey));
+		g_commonvalues.push_back(CommonValueInfo(&m_value, sizeof(m_value), szEntryKey));
 	}
-	Me& operator = (const T& rhs){ m_value=rhs; return *this; }
+	Me& operator = (const T& rhs) { m_value = rhs; return *this; }
 	operator T& () { return m_value; }
-	operator const T& () const{ return m_value; }
+	operator const T& () const { return m_value; }
 private:
 	T m_value;
 };
@@ -103,8 +103,8 @@ void sample()
 	intvalue.Regist("intvalue");
 	strvalue.Regist("strvalue");
 
-	intvalue=3;
-	strcpy(strvalue,"hage");
+	intvalue = 3;
+	strcpy(strvalue, "hage");
 
 	CommonValue_AllSave();
 }

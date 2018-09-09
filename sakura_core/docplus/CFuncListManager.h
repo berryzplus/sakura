@@ -29,7 +29,7 @@ class CDocLine;
 class CDocLineMgr;
 
 //! 行に付加するModified情報
-class CLineFuncList{
+class CLineFuncList {
 public:
 	CLineFuncList() : m_bFuncList(false) { }
 	bool GetFuncListMark() const { return m_bFuncList; }
@@ -43,13 +43,13 @@ private:
 };
 
 //! 行全体のFuncList情報アクセサ
-class CFuncListManager{
+class CFuncListManager {
 public:
 	//状態
 	bool IsLineFuncList(const CDocLine* pcDocLine, bool bFlag) const;
 	bool GetLineFuncList(const CDocLine* pcDocLine) const;
 	void SetLineFuncList(CDocLine* pcDocLine, bool bFlag);
-	bool SearchFuncListMark(const CDocLineMgr*, CLogicInt, ESearchDirection, CLogicInt* ) const;					//!< 関数リストマーク検索
+	bool SearchFuncListMark(const CDocLineMgr*, CLogicInt, ESearchDirection, CLogicInt*) const;					//!< 関数リストマーク検索
 
 	//一括操作
 	void ResetAllFucListMark(CDocLineMgr* pcDocLineMgr, bool bFlag);	// 関数リストマークをすべてリセット

@@ -39,29 +39,29 @@
 */
 
 template <class T>
-inline T t_min(T t1,T t2)
+inline T t_min(T t1, T t2)
 {
-	return t1<t2?t1:t2;
+	return t1 < t2 ? t1 : t2;
 }
 
 template <class T>
-inline T t_max(T t1,T t2)
+inline T t_max(T t1, T t2)
 {
-	return t1>t2?t1:t2;
+	return t1 > t2 ? t1 : t2;
 }
 
 template <class T>
 T t_abs(T t)
 {
-	return t>=T(0)?t:T(-t);
+	return t >= T(0) ? t : T(-t);
 }
 
 template <class T>
 T t_unit(T t)
 {
 	return
-		t>T(0)?1:
-		t<T(0)?-1:
+		t > T(0) ? 1 :
+		t < T(0) ? -1 :
 		0;
 }
 

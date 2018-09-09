@@ -49,35 +49,35 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 
 	// 文字コード種別
 	const STypeConfigMini* type;
-	CDocTypeManager().GetTypeConfigMini( sLoadInfo.nType, &type );
+	CDocTypeManager().GetTypeConfigMini(sLoadInfo.nType, &type);
 	ECodeType	eCharCode = sLoadInfo.eCharCode;
 	if (CODE_AUTODETECT == eCharCode) {
-		CCodeMediator cmediator( type->m_encoding );
-		eCharCode = cmediator.CheckKanjiCodeOfFile( pszPath );
+		CCodeMediator cmediator(type->m_encoding);
+		eCharCode = cmediator.CheckKanjiCodeOfFile(pszPath);
 	}
-	if (!IsValidCodeOrCPType( eCharCode )) {
+	if (!IsValidCodeOrCPType(eCharCode)) {
 		eCharCode = type->m_encoding.m_eDefaultCodetype;	// 2011.01.24 ryoji デフォルト文字コード
 	}
 	bool	bBom;
 	if (eCharCode == type->m_encoding.m_eDefaultCodetype) {
 		bBom = type->m_encoding.m_bDefaultBom;	// 2011.01.24 ryoji デフォルトBOM
 	}
-	else{
-		bBom = CCodeTypeName( eCharCode ).IsBomDefOn();
+	else {
+		bBom = CCodeTypeName(eCharCode).IsBomDefOn();
 	}
-	pFileInfo->SetCodeSet( eCharCode, bBom );
+	pFileInfo->SetCodeSet(eCharCode, bBom);
 
 	/* 既存データのクリア */
 	pcDocLineMgr->DeleteAllLine();
 
 	/* 処理中のユーザー操作を可能にする */
-	if( !::BlockingHook( NULL ) ){
+	if (!::BlockingHook(NULL)) {
 		return RESULT_FAILURE; //######INTERRUPT
 	}
 
 	EConvertResult eRet = RESULT_COMPLETE;
 
-	try{
+	try {
 		CFileLoad cfl(type->m_encoding);
 
 		bool bBigFile;
@@ -89,13 +89,13 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 		// ファイルを開く
 		// ファイルを閉じるにはFileCloseメンバ又はデストラクタのどちらかで処理できます
 		//	Jul. 28, 2003 ryoji BOMパラメータ追加
-		cfl.FileOpen( pszPath, bBigFile, eCharCode, GetDllShareData().m_Common.m_sFile.GetAutoMIMEdecode(), &bBom );
-		pFileInfo->SetBomExist( bBom );
+		cfl.FileOpen(pszPath, bBigFile, eCharCode, GetDllShareData().m_Common.m_sFile.GetAutoMIMEdecode(), &bBom);
+		pFileInfo->SetBomExist(bBom);
 
 		/* ファイル時刻の取得 */
 		FILETIME	FileTime;
-		if( cfl.GetFileTime( NULL, NULL, &FileTime ) ){
-			pFileInfo->SetFileTime( FileTime );
+		if (cfl.GetFileTime(NULL, NULL, &FileTime)) {
+			pFileInfo->SetFileTime(FileTime);
 		}
 
 		// ReadLineはファイルから 文字コード変換された1行を読み出します
@@ -104,19 +104,19 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 		CEol			cEol;
 		CNativeW		cUnicodeBuffer;
 		EConvertResult	eRead;
-		while( RESULT_FAILURE != (eRead = cfl.ReadLine( &cUnicodeBuffer, &cEol )) ){
-			if(eRead==RESULT_LOSESOME){
+		while (RESULT_FAILURE != (eRead = cfl.ReadLine(&cUnicodeBuffer, &cEol))) {
+			if (eRead == RESULT_LOSESOME) {
 				eRet = RESULT_LOSESOME;
 			}
 			const wchar_t*	pLine = cUnicodeBuffer.GetStringPtr();
 			int		nLineLen = cUnicodeBuffer.GetStringLength();
 			++nLineNum;
-			CDocEditAgent(pcDocLineMgr).AddLineStrX( pLine, nLineLen );
+			CDocEditAgent(pcDocLineMgr).AddLineStrX(pLine, nLineLen);
 			//経過通知
-			if(nLineNum%512==0){
+			if (nLineNum % 512 == 0) {
 				NotifyProgress(cfl.GetPercent());
 				// 処理中のユーザー操作を可能にする
-				if( !::BlockingHook( NULL ) ){
+				if (!::BlockingHook(NULL)) {
 					throw CAppExitException(); //中断検出
 				}
 			}
@@ -125,11 +125,11 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 		// ファイルをクローズする
 		cfl.FileClose();
 	}
-	catch(CAppExitException){
+	catch (CAppExitException) {
 		//WM_QUITが発生した
 		return RESULT_FAILURE;
 	}
-	catch( const CError_FileOpen& ex ){
+	catch (const CError_FileOpen& ex) {
 		eRet = RESULT_FAILURE;
 		if (ex.Reason() == CError_FileOpen::TOO_BIG) {
 			// ファイルサイズが大きすぎる (32bit 版の場合は 2GB あたりが上限)
@@ -139,7 +139,7 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 				pszPath
 			);
 		}
-		else if( !fexist( pszPath )){
+		else if (!fexist(pszPath)) {
 			// ファイルがない
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
@@ -147,36 +147,36 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 				pszPath
 			);
 		}
-		else if( -1 == _taccess( pszPath, 4 )){
+		else if (-1 == _taccess(pszPath, 4)) {
 			// 読み込みアクセス権がない
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
 				LS(STR_ERR_DLGDOCLM2),
 				pszPath
-			 );
+			);
 		}
-		else{
+		else {
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
 				LS(STR_ERR_DLGDOCLM3),
 				pszPath
-			 );
+			);
 		}
 	}
-	catch( CError_FileRead ){
+	catch (CError_FileRead) {
 		eRet = RESULT_FAILURE;
 		ErrorMessage(
 			CEditWnd::getInstance()->GetHwnd(),
 			LS(STR_ERR_DLGDOCLM4),
 			pszPath
-		 );
+		);
 		/* 既存データのクリア */
 		pcDocLineMgr->DeleteAllLine();
 	} // 例外処理終わり
 
 	NotifyProgress(0);
 	/* 処理中のユーザー操作を可能にする */
-	if( !::BlockingHook( NULL ) ){
+	if (!::BlockingHook(NULL)) {
 		return RESULT_FAILURE; //####INTERRUPT
 	}
 

@@ -44,34 +44,34 @@ CMRUFile::~CMRUFile()
 
 /*!
 	ファイル履歴メニューの作成
-	
+
 	@param pCMenuDrawer [in] (out?) メニュー作成で用いるMenuDrawer
-	
+
 	@author Norio Nakantani
 	@return 生成したメニューのハンドル
 
 	2010/5/21 Uchi 組み直し
 */
-HMENU CMRUFile::CreateMenu( CMenuDrawer* pCMenuDrawer ) const
+HMENU CMRUFile::CreateMenu(CMenuDrawer* pCMenuDrawer) const
 {
 	HMENU	hMenuPopUp;
 
 	//	空メニューを作る
 	hMenuPopUp = ::CreatePopupMenu();	// Jan. 29, 2002 genta
-	return CreateMenu( hMenuPopUp, pCMenuDrawer );
+	return CreateMenu(hMenuPopUp, pCMenuDrawer);
 }
 /*!
 	ファイル履歴メニューの作成
-	
+
 	@param 追加するメニューのハンドル
 	@param pCMenuDrawer [in] (out?) メニュー作成で用いるMenuDrawer
-	
+
 	@author Norio Nakantani
 	@return 生成したメニューのハンドル
 
 	2010/5/21 Uchi 組み直し
 */
-HMENU CMRUFile::CreateMenu( HMENU	hMenuPopUp, CMenuDrawer* pCMenuDrawer ) const
+HMENU CMRUFile::CreateMenu(HMENU	hMenuPopUp, CMenuDrawer* pCMenuDrawer) const
 {
 	TCHAR	szMenu[_MAX_PATH * 2 + 10];				//	メニューキャプション
 	int		i;
@@ -79,39 +79,39 @@ HMENU CMRUFile::CreateMenu( HMENU	hMenuPopUp, CMenuDrawer* pCMenuDrawer ) const
 	const BOOL bMenuIcon = m_pShareData->m_Common.m_sWindow.m_bMenuIcon;
 
 	CFileNameManager::getInstance()->TransformFileName_MakeCache();
-	
+
 	NONCLIENTMETRICS met;
 	met.cbSize = CCSIZEOF_STRUCT(NONCLIENTMETRICS, lfMessageFont);
 	::SystemParametersInfo(SPI_GETNONCLIENTMETRICS, met.cbSize, &met, 0);
 	CDCFont dcFont(met.lfMenuFont);
 
-	for( i = 0; i < m_cRecentFile.GetItemCount(); ++i )
+	for (i = 0; i < m_cRecentFile.GetItemCount(); ++i)
 	{
 		//	「共通設定」→「全般」→「ファイルの履歴MAX」を反映
-		if ( i >= m_cRecentFile.GetViewCount() ) break;
-		
+		if (i >= m_cRecentFile.GetViewCount()) break;
+
 		/* MRUリストの中にある開かれていないファイル */
 
-		const EditInfo	*p = m_cRecentFile.GetItem( i );
-		bFavorite = m_cRecentFile.IsFavorite( i );
+		const EditInfo	*p = m_cRecentFile.GetItem(i);
+		bFavorite = m_cRecentFile.IsFavorite(i);
 		bool bFavoriteLabel = bFavorite && !bMenuIcon;
-		CFileNameManager::getInstance()->GetMenuFullLabel_MRU( szMenu, _countof(szMenu), p, -1, bFavoriteLabel, i, dcFont.GetHDC() );
+		CFileNameManager::getInstance()->GetMenuFullLabel_MRU(szMenu, _countof(szMenu), p, -1, bFavoriteLabel, i, dcFont.GetHDC());
 
 		//	メニューに追加。
-		pCMenuDrawer->MyAppendMenu( hMenuPopUp, MF_BYPOSITION | MF_STRING, IDM_SELMRU + i, szMenu, _T(""), TRUE,
-			bFavorite ? F_FAVORITE : -1 );
+		pCMenuDrawer->MyAppendMenu(hMenuPopUp, MF_BYPOSITION | MF_STRING, IDM_SELMRU + i, szMenu, _T(""), TRUE,
+			bFavorite ? F_FAVORITE : -1);
 	}
 	return hMenuPopUp;
 }
 
-BOOL CMRUFile::DestroyMenu( HMENU hMenuPopUp ) const
+BOOL CMRUFile::DestroyMenu(HMENU hMenuPopUp) const
 {
-	return ::DestroyMenu( hMenuPopUp );
+	return ::DestroyMenu(hMenuPopUp);
 }
 
 /*!
 	ファイル履歴の一覧を返す
-	
+
 	@param ppszMRU [out] 文字列へのポインタリストを格納する．
 	最後の要素の次にはNULLが入る．
 	予め呼び出す側で最大値+1の領域を確保しておくこと．
@@ -119,9 +119,9 @@ BOOL CMRUFile::DestroyMenu( HMENU hMenuPopUp ) const
 std::vector<LPCTSTR> CMRUFile::GetPathList() const
 {
 	std::vector<LPCTSTR> ret;
-	for( int i = 0; i < m_cRecentFile.GetItemCount(); ++i ){
+	for (int i = 0; i < m_cRecentFile.GetItemCount(); ++i) {
 		//	「共通設定」→「全般」→「ファイルの履歴MAX」を反映
-		if ( i >= m_cRecentFile.GetViewCount() ) break;
+		if (i >= m_cRecentFile.GetViewCount()) break;
 		ret.push_back(m_cRecentFile.GetItemText(i));
 	}
 	return ret;
@@ -143,17 +143,17 @@ void CMRUFile::ClearAll(void)
 
 /*!
 	ファイル情報の取得
-	
+
 	@param num [in] 履歴番号(0~)
 	@param pfi [out] 構造体へのポインタ格納先
-	
+
 	@retval TRUE データが格納された
 	@retval FALSE 正しくない番号が指定された．データは格納されなかった．
 */
-bool CMRUFile::GetEditInfo( int num, EditInfo* pfi ) const
+bool CMRUFile::GetEditInfo(int num, EditInfo* pfi) const
 {
-	const EditInfo*	p = m_cRecentFile.GetItem( num );
-	if( NULL == p ) return false;
+	const EditInfo*	p = m_cRecentFile.GetItem(num);
+	if (NULL == p) return false;
 
 	*pfi = *p;
 
@@ -171,10 +171,10 @@ bool CMRUFile::GetEditInfo( int num, EditInfo* pfi ) const
 
 	@date 2001.12.26 CShareData::IsExistInMRUListから移動した。（YAZAKI）
 */
-bool CMRUFile::GetEditInfo( const TCHAR* pszPath, EditInfo* pfi ) const
+bool CMRUFile::GetEditInfo(const TCHAR* pszPath, EditInfo* pfi) const
 {
-	const EditInfo*	p = m_cRecentFile.GetItem( m_cRecentFile.FindItemByPath( pszPath ) );
-	if( NULL == p ) return false;
+	const EditInfo*	p = m_cRecentFile.GetItem(m_cRecentFile.FindItemByPath(pszPath));
+	if (NULL == p) return false;
 
 	*pfi = *p;
 
@@ -190,20 +190,20 @@ bool CMRUFile::GetEditInfo( const TCHAR* pszPath, EditInfo* pfi ) const
 	@date 2001.03.29 MIK リムーバブルディスク上のファイルを登録しないようにした。
 	@date 2001.12.26 YAZAKI CShareData::AddMRUListから移動
 */
-void CMRUFile::Add( EditInfo* pEditInfo )
+void CMRUFile::Add(EditInfo* pEditInfo)
 {
 	//	ファイル名が無ければ無視
-	if( NULL == pEditInfo || pEditInfo->m_szPath[0] == L'\0' ){
+	if (NULL == pEditInfo || pEditInfo->m_szPath[0] == L'\0') {
 		return;
 	}
-	
+
 	// すでに登録されている場合は、除外指定を無視する
-	if( -1 == m_cRecentFile.FindItemByPath( pEditInfo->m_szPath ) ){
+	if (-1 == m_cRecentFile.FindItemByPath(pEditInfo->m_szPath)) {
 		int nSize = m_pShareData->m_sHistory.m_aExceptMRU.size();
-		for( int i = 0 ; i < nSize; i++ ){
+		for (int i = 0; i < nSize; i++) {
 			TCHAR szExceptMRU[_MAX_PATH];
-			CFileNameManager::ExpandMetaToFolder( m_pShareData->m_sHistory.m_aExceptMRU[i], szExceptMRU, _countof(szExceptMRU) );
-			if( NULL != _tcsistr( pEditInfo->m_szPath,  szExceptMRU) ){
+			CFileNameManager::ExpandMetaToFolder(m_pShareData->m_sHistory.m_aExceptMRU[i], szExceptMRU, _countof(szExceptMRU));
+			if (NULL != _tcsistr(pEditInfo->m_szPath, szExceptMRU)) {
 				return;
 			}
 		}
@@ -215,7 +215,7 @@ void CMRUFile::Add( EditInfo* pEditInfo )
 	TCHAR	szDir[_MAX_DIR];
 	TCHAR	szFolder[_MAX_PATH + 1];	//	ドライブ＋フォルダ
 
-	_tsplitpath( pEditInfo->m_szPath, szDrive, szDir, NULL, NULL );	//	ドライブとフォルダを取り出す。
+	_tsplitpath(pEditInfo->m_szPath, szDrive, szDir, NULL, NULL);	//	ドライブとフォルダを取り出す。
 
 	//	Jan.  10, 2006 genta USBメモリはRemovable mediaと認識されるようなので，
 	//	一応無効化する．
@@ -225,16 +225,16 @@ void CMRUFile::Add( EditInfo* pEditInfo )
 	//}
 
 	//	szFolder作成
-	_tcscpy( szFolder, szDrive );
-	_tcscat( szFolder, szDir );
+	_tcscpy(szFolder, szDrive);
+	_tcscat(szFolder, szDir);
 
 	//	Folderを、CMRUFolderに登録
 	CMRUFolder cMRUFolder;
 	cMRUFolder.Add(szFolder);
 
-	m_cRecentFile.AppendItem( &tmpEditInfo );
-	
-	::SHAddToRecentDocs( SHARD_PATH, to_wchar(pEditInfo->m_szPath) );
+	m_cRecentFile.AppendItem(&tmpEditInfo);
+
+	::SHAddToRecentDocs(SHARD_PATH, to_wchar(pEditInfo->m_szPath));
 }
 
 /*EOF*/

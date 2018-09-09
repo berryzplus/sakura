@@ -41,7 +41,7 @@ enum ETabArrow {
 };
 
 //! アウトライン解析の種類
-enum EOutlineType{
+enum EOutlineType {
 	OUTLINE_C,
 	OUTLINE_C_CPP,		// C/C++自動認識
 	OUTLINE_PLSQL,
@@ -64,8 +64,8 @@ enum EOutlineType{
 	OUTLINE_BOOKMARK,	//	2001.12.03 hor
 	OUTLINE_PLUGIN,		//	2009.10.29 syat プラグインによるアウトライン解析
 	OUTLINE_FILETREE,	//	2012.06.20 Moca ファイルツリー
-	OUTLINE_DEFAULT =-1,//	2001.12.03 hor
-	OUTLINE_UNKNOWN	= 99,
+	OUTLINE_DEFAULT = -1,//	2001.12.03 hor
+	OUTLINE_UNKNOWN = 99,
 	OUTLINE_TREE = 100,		// 汎用ツリー 2010.03.28 syat
 	OUTLINE_TREE_TAGJUMP = 101,	// 汎用ツリー(タグジャンプ付き) 2013.05.01 Moca
 	OUTLINE_CLSTREE = 200,	// 汎用ツリー(クラス) 2010.03.28 syat
@@ -79,7 +79,7 @@ enum ESmartIndentType {
 };
 
 //! ヒアドキュメント種別
-enum EHereDocType{
+enum EHereDocType {
 	HEREDOC_PHP,			//!< PHP
 	HEREDOC_RUBY,			//!< Ruby
 	HEREDOC_PERL			//!< Perl
@@ -99,7 +99,7 @@ enum EBackgroundImagePos {
 };
 
 //! エンコードオプション
-struct SEncodingConfig{
+struct SEncodingConfig {
 	bool				m_bPriorCesu8;					//!< 自動判別時に CESU-8 を優先するかどうか
 	ECodeType			m_eDefaultCodetype;				//!< デフォルト文字コード
 	EEolType			m_eDefaultEoltype;				//!< デフォルト改行コード	// 2011.01.24 ryoji
@@ -107,7 +107,7 @@ struct SEncodingConfig{
 };
 
 //! 文字列区切り記号エスケープ方法
-enum EStringLiteralType{
+enum EStringLiteralType {
 	STRING_LITERAL_CPP,		//!< C/C++言語風
 	STRING_LITERAL_PLSQL,	//!< PL/SQL風
 	STRING_LITERAL_HTML,	//!< HTML/XML風
@@ -116,7 +116,7 @@ enum EStringLiteralType{
 };
 
 //! 右クリックメニュー表示
-enum EKeyHelpRMenuType{
+enum EKeyHelpRMenuType {
 	KEYHELP_RMENU_NONE,		//!< 非表示
 	KEYHELP_RMENU_TOP,		//!< メニュー先頭
 	KEYHELP_RMENU_BOTTOM,	//!< メニュー末尾
@@ -127,7 +127,7 @@ enum EKeyHelpRMenuType{
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! タイプ別設定
-struct STypeConfig{
+struct STypeConfig {
 	//2007.09.07 変数名変更: m_nMaxLineSize→m_nMaxLineKetas
 	int					m_nIdx;
 	int					m_id;
@@ -139,7 +139,7 @@ struct STypeConfig{
 	int					m_nLineSpace;					//!< 行間のすきま
 	CKetaXInt			m_nTabSpace;					//!< TABの文字数
 	ETabArrow			m_bTabArrow;					//!< タブ矢印表示		//@@@ 2003.03.26 MIK
-	EDIT_CHAR			m_szTabViewString[8+1];			//!< TAB表示文字列	// 2003.1.26 aroka サイズ拡張	// 2009.02.11 ryoji サイズ戻し(17->8+1)
+	EDIT_CHAR			m_szTabViewString[8 + 1];			//!< TAB表示文字列	// 2003.1.26 aroka サイズ拡張	// 2009.02.11 ryoji サイズ戻し(17->8+1)
 	bool				m_bInsSpace;					//!< スペースの挿入	// 2001.12.03 hor
 	int					m_nTsvMode;						//!< TSVモード	// 2015.05.02 syat
 	// 2005.01.13 MIK 配列化
@@ -209,7 +209,7 @@ struct STypeConfig{
 	//	2003.06.23 Moca ファイル内からの入力補完機能
 	bool				m_bUseHokanByFile;				//!< 入力補完 開いているファイル内から候補を探す
 	bool				m_bUseHokanByKeyword;			//!< 強調キーワードから入力補完
-	
+
 	//	2001/06/19 asa-o
 	bool				m_bHokanLoHiCase;				//!< 入力補完機能：英大文字小文字を同一視する
 
@@ -253,7 +253,7 @@ struct STypeConfig{
 	INT					m_nPointSize;					//!< フォントサイズ（1/10ポイント単位）
 
 	STypeConfig()
-	: m_nMaxLineKetas(10) //	画面折り返し幅がTAB幅以下にならないことを初期値でも保証する	//	2004.04.03 Moca
+		: m_nMaxLineKetas(10) //	画面折り返し幅がTAB幅以下にならないことを初期値でも保証する	//	2004.04.03 Moca
 	{
 	}
 
@@ -275,7 +275,7 @@ struct STypeConfigMini
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //!ドキュメント種類。共有データ内 STypeConfig へのアクセサも兼ねる。
 //2007.12.13 kobake 作成
-class CTypeConfig{
+class CTypeConfig {
 public:
 	CTypeConfig()
 	{
@@ -291,8 +291,8 @@ public:
 	{
 		m_nType = n;
 	}
-	bool IsValidType() const{ return m_nType>=0 && m_nType<MAX_TYPES; }
-	int GetIndex() const{ /*assert(IsValid());*/ return m_nType; }
+	bool IsValidType() const { return m_nType >= 0 && m_nType < MAX_TYPES; }
+	int GetIndex() const { /*assert(IsValid());*/ return m_nType; }
 
 	//共有データへの簡易アクセサ
 //	STypeConfig* operator->(){ return GetTypeConfig(); }
@@ -307,9 +307,9 @@ private:
 //                        タイプ設定                           //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-class CType{
+class CType {
 public:
-	virtual ~CType(){ }
+	virtual ~CType() { }
 	void InitTypeConfig(int nIdx, STypeConfig&);
 protected:
 	virtual void InitTypeConfigImp(STypeConfig* pType) = 0;
@@ -349,13 +349,13 @@ GEN_CTYPE(CType_Other)
 /*!
 	スペースの判定
 */
-inline bool C_IsSpace( wchar_t c, bool bExtEol )
+inline bool C_IsSpace(wchar_t c, bool bExtEol)
 {
 	return (
 		L'\t' == c ||
 		L' ' == c ||
 		WCODE::IsLineDelimiter(c, bExtEol)
-	);
+		);
 }
 
 #endif /* SAKURA_CTYPE_BF915633_AE38_4C73_8E5B_0411063A1AD89_H_ */

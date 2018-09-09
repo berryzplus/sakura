@@ -13,8 +13,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -23,7 +23,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -34,13 +34,13 @@
 #include "dlg/CDlgFileUpdateQuery.h"
 #include "sakura_rc.h"
 
-BOOL CDlgFileUpdateQuery::OnInitDialog( HWND hWnd, WPARAM wParam, LPARAM lParam )
+BOOL CDlgFileUpdateQuery::OnInitDialog(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
-	::DlgItem_SetText( hWnd, IDC_UPDATEDFILENAME, m_pFilename );
-	::DlgItem_SetText( hWnd, IDC_QUERYRELOADMSG, m_bModified ?
-		LS(STR_ERR_DLGUPQRY1):LS(STR_ERR_DLGUPQRY2) );
+	::DlgItem_SetText(hWnd, IDC_UPDATEDFILENAME, m_pFilename);
+	::DlgItem_SetText(hWnd, IDC_QUERYRELOADMSG, m_bModified ?
+		LS(STR_ERR_DLGUPQRY1) : LS(STR_ERR_DLGUPQRY2));
 
-	return CDialog::OnInitDialog( hWnd, wParam, lParam );
+	return CDialog::OnInitDialog(hWnd, wParam, lParam);
 }
 
 /*!
@@ -50,7 +50,7 @@ BOOL CDlgFileUpdateQuery::OnBnClicked(int id)
 {
 	EFileUpdateQuery result;
 
-	switch( id ){
+	switch (id) {
 	case IDC_BTN_RELOAD: // 再読込
 		result = EFUQ_RELOAD;
 		break;
@@ -70,7 +70,7 @@ BOOL CDlgFileUpdateQuery::OnBnClicked(int id)
 		result = EFUQ_CLOSE;
 		break;
 	}
-	CloseDialog( (INT_PTR)result );
+	CloseDialog((INT_PTR)result);
 
 	return 0;
 }

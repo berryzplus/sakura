@@ -72,7 +72,7 @@ CDocLineMgr::~CDocLineMgr()
 CDocLine* CDocLineMgr::InsertNewLine(CDocLine* pPos)
 {
 	CDocLine* pcDocLineNew = new CDocLine;
-	_InsertBeforePos(pcDocLineNew,pPos);
+	_InsertBeforePos(pcDocLineNew, pPos);
 	return pcDocLineNew;
 }
 
@@ -88,7 +88,7 @@ CDocLine* CDocLineMgr::AddNewLine()
 void CDocLineMgr::DeleteAllLine()
 {
 	CDocLine* pDocLine = m_pDocLineTop;
-	while( pDocLine ){
+	while (pDocLine) {
 		CDocLine* pDocLineNext = pDocLine->GetNextLine();
 		delete pDocLine;
 		pDocLine = pDocLineNext;
@@ -98,26 +98,26 @@ void CDocLineMgr::DeleteAllLine()
 
 
 //! 行の削除
-void CDocLineMgr::DeleteLine( CDocLine* pcDocLineDel )
+void CDocLineMgr::DeleteLine(CDocLine* pcDocLineDel)
 {
 	//Prev切り離し
-	if( pcDocLineDel->GetPrevLine() ){
+	if (pcDocLineDel->GetPrevLine()) {
 		pcDocLineDel->GetPrevLine()->m_pNext = pcDocLineDel->GetNextLine();
 	}
-	else{
+	else {
 		m_pDocLineTop = pcDocLineDel->GetNextLine();
 	}
 
 	//Next切り離し
-	if( pcDocLineDel->GetNextLine() ){
+	if (pcDocLineDel->GetNextLine()) {
 		pcDocLineDel->m_pNext->m_pPrev = pcDocLineDel->GetPrevLine();
 	}
-	else{
+	else {
 		m_pDocLineBot = pcDocLineDel->GetPrevLine();
 	}
-	
+
 	//参照切り離し
-	if( m_pCodePrevRefer == pcDocLineDel ){
+	if (m_pCodePrevRefer == pcDocLineDel) {
 		m_pCodePrevRefer = pcDocLineDel->GetNextLine();
 	}
 
@@ -126,7 +126,7 @@ void CDocLineMgr::DeleteLine( CDocLine* pcDocLineDel )
 
 	//行数減算
 	m_nLines--;
-	if( CLogicInt(0) == m_nLines ){
+	if (CLogicInt(0) == m_nLines) {
 		// データがなくなった
 		_Init();
 	}
@@ -143,32 +143,32 @@ void CDocLineMgr::DeleteLine( CDocLine* pcDocLineDel )
 	@param nLine [in] 行番号
 	@return 行オブジェクトへのポインタ。該当行がない場合はNULL。
 */
-const CDocLine* CDocLineMgr::GetLine( CLogicInt nLine ) const
+const CDocLine* CDocLineMgr::GetLine(CLogicInt nLine) const
 {
 	CLogicInt nCounter;
 	CDocLine* pDocLine;
-	if( CLogicInt(0) == m_nLines ){
+	if (CLogicInt(0) == m_nLines) {
 		return NULL;
 	}
 	// 2004.03.28 Moca nLineが負の場合のチェックを追加
-	if( CLogicInt(0) > nLine || nLine >= m_nLines ){
+	if (CLogicInt(0) > nLine || nLine >= m_nLines) {
 		return NULL;
 	}
 	// 2004.03.28 Moca m_pCodePrevReferより、Top,Botのほうが近い場合は、そちらを利用する
-	CLogicInt nPrevToLineNumDiff = t_abs( m_nPrevReferLine - nLine );
-	if( m_pCodePrevRefer == NULL
-	  || nLine < nPrevToLineNumDiff
-	  || m_nLines - nLine < nPrevToLineNumDiff
-	){
-		if( m_pCodePrevRefer == NULL ){
-			MY_RUNNINGTIMER( cRunningTimer, "CDocLineMgr::GetLine() 	m_pCodePrevRefer == NULL" );
+	CLogicInt nPrevToLineNumDiff = t_abs(m_nPrevReferLine - nLine);
+	if (m_pCodePrevRefer == NULL
+		|| nLine < nPrevToLineNumDiff
+		|| m_nLines - nLine < nPrevToLineNumDiff
+		) {
+		if (m_pCodePrevRefer == NULL) {
+			MY_RUNNINGTIMER(cRunningTimer, "CDocLineMgr::GetLine() 	m_pCodePrevRefer == NULL");
 		}
 
-		if( nLine < (m_nLines / 2) ){
+		if (nLine < (m_nLines / 2)) {
 			nCounter = CLogicInt(0);
 			pDocLine = m_pDocLineTop;
-			while( pDocLine ){
-				if( nLine == nCounter ){
+			while (pDocLine) {
+				if (nLine == nCounter) {
 					m_nPrevReferLine = nLine;
 					m_pCodePrevRefer = pDocLine;
 					m_pDocLineCurrent = pDocLine->GetNextLine();
@@ -178,11 +178,11 @@ const CDocLine* CDocLineMgr::GetLine( CLogicInt nLine ) const
 				nCounter++;
 			}
 		}
-		else{
+		else {
 			nCounter = m_nLines - CLogicInt(1);
 			pDocLine = m_pDocLineBot;
-			while( NULL != pDocLine ){
-				if( nLine == nCounter ){
+			while (NULL != pDocLine) {
+				if (nLine == nCounter) {
 					m_nPrevReferLine = nLine;
 					m_pCodePrevRefer = pDocLine;
 					m_pDocLineCurrent = pDocLine->GetNextLine();
@@ -194,17 +194,17 @@ const CDocLine* CDocLineMgr::GetLine( CLogicInt nLine ) const
 		}
 
 	}
-	else{
-		if( nLine == m_nPrevReferLine ){
+	else {
+		if (nLine == m_nPrevReferLine) {
 			m_nPrevReferLine = nLine;
 			m_pDocLineCurrent = m_pCodePrevRefer->GetNextLine();
 			return m_pCodePrevRefer;
 		}
-		else if( nLine > m_nPrevReferLine ){
+		else if (nLine > m_nPrevReferLine) {
 			nCounter = m_nPrevReferLine + CLogicInt(1);
 			pDocLine = m_pCodePrevRefer->GetNextLine();
-			while( NULL != pDocLine ){
-				if( nLine == nCounter ){
+			while (NULL != pDocLine) {
+				if (nLine == nCounter) {
 					m_nPrevReferLine = nLine;
 					m_pCodePrevRefer = pDocLine;
 					m_pDocLineCurrent = pDocLine->GetNextLine();
@@ -214,11 +214,11 @@ const CDocLine* CDocLineMgr::GetLine( CLogicInt nLine ) const
 				++nCounter;
 			}
 		}
-		else{
+		else {
 			nCounter = m_nPrevReferLine - CLogicInt(1);
 			pDocLine = m_pCodePrevRefer->GetPrevLine();
-			while( NULL != pDocLine ){
-				if( nLine == nCounter ){
+			while (NULL != pDocLine) {
+				if (nLine == nCounter) {
 					m_nPrevReferLine = nLine;
 					m_pCodePrevRefer = pDocLine;
 					m_pDocLineCurrent = pDocLine->GetNextLine();
@@ -258,12 +258,12 @@ void CDocLineMgr::_Init()
 //!最下部に挿入
 void CDocLineMgr::_PushBottom(CDocLine* pDocLineNew)
 {
-	if( !m_pDocLineTop ){
+	if (!m_pDocLineTop) {
 		m_pDocLineTop = pDocLineNew;
 	}
 	pDocLineNew->m_pPrev = m_pDocLineBot;
 
-	if( m_pDocLineBot ){
+	if (m_pDocLineBot) {
 		m_pDocLineBot->m_pNext = pDocLineNew;
 	}
 	m_pDocLineBot = pDocLineNew;
@@ -279,20 +279,20 @@ void CDocLineMgr::_InsertBeforePos(CDocLine* pDocLineNew, CDocLine* pPos)
 	pDocLineNew->m_pNext = pPos;
 
 	//New.Prev, Other.Prevを設定
-	if(pPos){
+	if (pPos) {
 		pDocLineNew->m_pPrev = pPos->GetPrevLine();
 		pPos->m_pPrev = pDocLineNew;
 	}
-	else{
+	else {
 		pDocLineNew->m_pPrev = m_pDocLineBot;
 		m_pDocLineBot = pDocLineNew;
 	}
 
 	//Other.Nextを設定
-	if( pDocLineNew->GetPrevLine() ){
+	if (pDocLineNew->GetPrevLine()) {
 		pDocLineNew->GetPrevLine()->m_pNext = pDocLineNew;
 	}
-	else{
+	else {
 		m_pDocLineTop = pDocLineNew;
 	}
 
@@ -307,20 +307,20 @@ void CDocLineMgr::_InsertAfterPos(CDocLine* pDocLineNew, CDocLine* pPos)
 	pDocLineNew->m_pPrev = pPos;
 
 	//New.Next, Other.Nextを設定
-	if( pPos ){
+	if (pPos) {
 		pDocLineNew->m_pNext = pPos->GetNextLine();
 		pPos->m_pNext = pDocLineNew;
 	}
-	else{
+	else {
 		pDocLineNew->m_pNext = m_pDocLineTop;
 		m_pDocLineTop = pDocLineNew;
 	}
 
 	//Other.Prevを設定
-	if( pDocLineNew->GetNextLine() ){
+	if (pDocLineNew->GetNextLine()) {
 		pDocLineNew->m_pNext->m_pPrev = pDocLineNew;
 	}
-	else{
+	else {
 		m_pDocLineBot = pDocLineNew;
 	}
 
@@ -343,7 +343,7 @@ void CDocLineMgr::_InsertAfterPos(CDocLine* pDocLineNew, CDocLine* pPos)
 void CDocLineMgr::DUMP()
 {
 #ifdef _DEBUG
-	MYTRACE( _T("------------------------\n") );
+	MYTRACE(_T("------------------------\n"));
 
 	CDocLine* pDocLine;
 	CDocLine* pDocLineNext;
@@ -354,73 +354,74 @@ void CDocLineMgr::DUMP()
 	bool bIncludeCurrent = false;
 	bool bIncludePrevRefer = false;
 	CLogicInt nNum = CLogicInt(0);
-	if( m_pDocLineTop->m_pPrev != NULL ){
-		MYTRACE( _T("error: m_pDocLineTop->m_pPrev != NULL\n"));
+	if (m_pDocLineTop->m_pPrev != NULL) {
+		MYTRACE(_T("error: m_pDocLineTop->m_pPrev != NULL\n"));
 	}
-	if( m_pDocLineBot->m_pNext != NULL ){
-		MYTRACE( _T("error: m_pDocLineBot->m_pNext != NULL\n") );
+	if (m_pDocLineBot->m_pNext != NULL) {
+		MYTRACE(_T("error: m_pDocLineBot->m_pNext != NULL\n"));
 	}
-	while( NULL != pDocLine ){
-		if( m_pDocLineCurrent == pDocLine ){
+	while (NULL != pDocLine) {
+		if (m_pDocLineCurrent == pDocLine) {
 			bIncludeCurrent = true;
 		}
-		if( m_pCodePrevRefer == pDocLine ){
+		if (m_pCodePrevRefer == pDocLine) {
 			bIncludePrevRefer = true;
 		}
-		if( NULL != pDocLine->GetNextLine() ){
-			if( pDocLine->m_pNext == pDocLine ){
-				MYTRACE( _T("error: pDocLine->m_pPrev Invalid value.\n") );
+		if (NULL != pDocLine->GetNextLine()) {
+			if (pDocLine->m_pNext == pDocLine) {
+				MYTRACE(_T("error: pDocLine->m_pPrev Invalid value.\n"));
 				break;
 			}
-			if( pDocLine->m_pNext->m_pPrev != pDocLine ){
-				MYTRACE( _T("error: pDocLine->m_pNext->m_pPrev != pDocLine.\n") );
+			if (pDocLine->m_pNext->m_pPrev != pDocLine) {
+				MYTRACE(_T("error: pDocLine->m_pNext->m_pPrev != pDocLine.\n"));
 				break;
 			}
-		}else{
+		}
+		else {
 			pDocLineEnd = pDocLine;
 		}
 		pDocLine = pDocLine->GetNextLine();
 		nNum++;
 	}
-	
-	if( pDocLineEnd != m_pDocLineBot ){
-		MYTRACE( _T("error: pDocLineEnd != m_pDocLineBot") );
+
+	if (pDocLineEnd != m_pDocLineBot) {
+		MYTRACE(_T("error: pDocLineEnd != m_pDocLineBot"));
 	}
-	
-	if( nNum != m_nLines ){
-		MYTRACE( _T("error: nNum(%d) != m_nLines(%d)\n"), nNum, m_nLines );
+
+	if (nNum != m_nLines) {
+		MYTRACE(_T("error: nNum(%d) != m_nLines(%d)\n"), nNum, m_nLines);
 	}
-	if( false == bIncludeCurrent && m_pDocLineCurrent != NULL ){
-		MYTRACE( _T("error: m_pDocLineCurrent=%08lxh Invalid value.\n"), m_pDocLineCurrent );
+	if (false == bIncludeCurrent && m_pDocLineCurrent != NULL) {
+		MYTRACE(_T("error: m_pDocLineCurrent=%08lxh Invalid value.\n"), m_pDocLineCurrent);
 	}
-	if( false == bIncludePrevRefer && m_pCodePrevRefer != NULL ){
-		MYTRACE( _T("error: m_pCodePrevRefer =%08lxh Invalid value.\n"), m_pCodePrevRefer );
+	if (false == bIncludePrevRefer && m_pCodePrevRefer != NULL) {
+		MYTRACE(_T("error: m_pCodePrevRefer =%08lxh Invalid value.\n"), m_pCodePrevRefer);
 	}
 
 	// DUMP
-	MYTRACE( _T("m_nLines=%d\n"), m_nLines );
-	MYTRACE( _T("m_pDocLineTop=%08lxh\n"), m_pDocLineTop );
-	MYTRACE( _T("m_pDocLineBot=%08lxh\n"), m_pDocLineBot );
+	MYTRACE(_T("m_nLines=%d\n"), m_nLines);
+	MYTRACE(_T("m_pDocLineTop=%08lxh\n"), m_pDocLineTop);
+	MYTRACE(_T("m_pDocLineBot=%08lxh\n"), m_pDocLineBot);
 	pDocLine = m_pDocLineTop;
-	while( NULL != pDocLine ){
+	while (NULL != pDocLine) {
 		pDocLineNext = pDocLine->GetNextLine();
-		MYTRACE( _T("\t-------\n") );
-		MYTRACE( _T("\tthis=%08lxh\n"), pDocLine );
-		MYTRACE( _T("\tpPrev; =%08lxh\n"), pDocLine->GetPrevLine() );
-		MYTRACE( _T("\tpNext; =%08lxh\n"), pDocLine->GetNextLine() );
+		MYTRACE(_T("\t-------\n"));
+		MYTRACE(_T("\tthis=%08lxh\n"), pDocLine);
+		MYTRACE(_T("\tpPrev; =%08lxh\n"), pDocLine->GetPrevLine());
+		MYTRACE(_T("\tpNext; =%08lxh\n"), pDocLine->GetNextLine());
 
-		MYTRACE( _T("\tm_enumEOLType =%ls\n"), pDocLine->GetEol().GetName() );
-		MYTRACE( _T("\tm_nEOLLen =%d\n"), pDocLine->GetEol().GetLen() );
+		MYTRACE(_T("\tm_enumEOLType =%ls\n"), pDocLine->GetEol().GetName());
+		MYTRACE(_T("\tm_nEOLLen =%d\n"), pDocLine->GetEol().GetLen());
 
 
-//		MYTRACE( _T("\t[%ls]\n"), *(pDocLine->m_pLine) );
-		MYTRACE( _T("\tpDocLine->m_cLine.GetLength()=[%d]\n"), pDocLine->GetLengthWithEOL() );
-		MYTRACE( _T("\t[%ls]\n"), pDocLine->GetPtr() );
+		//		MYTRACE( _T("\t[%ls]\n"), *(pDocLine->m_pLine) );
+		MYTRACE(_T("\tpDocLine->m_cLine.GetLength()=[%d]\n"), pDocLine->GetLengthWithEOL());
+		MYTRACE(_T("\t[%ls]\n"), pDocLine->GetPtr());
 
 
 		pDocLine = pDocLineNext;
 	}
-	MYTRACE( _T("------------------------\n") );
+	MYTRACE(_T("------------------------\n"));
 #endif // _DEBUG
 	return;
 }

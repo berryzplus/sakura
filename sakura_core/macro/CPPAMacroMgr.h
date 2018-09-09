@@ -24,7 +24,7 @@
 クラスの宣言
 -----------------------------------------------------------------------*/
 //! PPAマクロ
-class CPPAMacroMgr: public CMacroManagerBase
+class CPPAMacroMgr : public CMacroManagerBase
 {
 public:
 	/*
@@ -36,9 +36,9 @@ public:
 	/*
 	||	PPA.DLLに委譲する部分
 	*/
-	virtual bool ExecKeyMacro( class CEditView* pcEditView, int flags ) const;	/* PPAマクロの実行 */
-	virtual BOOL LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath);		/* キーボードマクロをファイルから読み込み、CMacroの列に変換 */
-	virtual BOOL LoadKeyMacroStr( HINSTANCE hInstance, const TCHAR* pszCode);	/* キーボードマクロを文字列から読み込み、CMacroの列に変換 */
+	virtual bool ExecKeyMacro(class CEditView* pcEditView, int flags) const;	/* PPAマクロの実行 */
+	virtual BOOL LoadKeyMacro(HINSTANCE hInstance, const TCHAR* pszPath);		/* キーボードマクロをファイルから読み込み、CMacroの列に変換 */
+	virtual BOOL LoadKeyMacroStr(HINSTANCE hInstance, const TCHAR* pszCode);	/* キーボードマクロを文字列から読み込み、CMacroの列に変換 */
 
 	static class CPPA m_cPPA;
 
@@ -57,4 +57,4 @@ protected:
 
 
 
-	
+

@@ -45,23 +45,23 @@
 
 //! デバッグ判別、定数サフィックス 2007.09.20 kobake
 #ifdef _DEBUG
-	#define _DEBUG_SUFFIX_ "_DEBUG"
+#define _DEBUG_SUFFIX_ "_DEBUG"
 #else
-	#define _DEBUG_SUFFIX_ ""
+#define _DEBUG_SUFFIX_ ""
 #endif
 
 //! ビルドコード判別、定数サフィックス 2007.09.20 kobake
 #ifdef _UNICODE
-	#define _CODE_SUFFIX_ "WP"
+#define _CODE_SUFFIX_ "WP"
 #else
-	#define _CODE_SUFFIX_ "AP"
+#define _CODE_SUFFIX_ "AP"
 #endif
 
 //! ターゲットマシン判別 2010.08.21 Moca 追加
 #ifdef _WIN64
-	#define CON_SKR_MACHINE_SUFFIX_ "M64"
+#define CON_SKR_MACHINE_SUFFIX_ "M64"
 #else
-	#define CON_SKR_MACHINE_SUFFIX_ ""
+#define CON_SKR_MACHINE_SUFFIX_ ""
 #endif
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -81,17 +81,17 @@
 
 	Version 1～24:
 	いろいろ
-	
+
 	Version 25:
 	m_bStopsBothEndsWhenSearchWord追加
-	
+
 	Version 26:
 	MacroRecに、m_bReloadWhenExecuteを追加 2002/03/11 YAZAKI
 	EditInfoに、m_szDocType追加 Mar. 7, 2002 genta
-	
+
 	Version 27:
-	STypeConfigに、m_szOutlineRuleFilenameを追加 2002.04.01 YAZAKI 
-	
+	STypeConfigに、m_szOutlineRuleFilenameを追加 2002.04.01 YAZAKI
+
 	Version 28:
 	PRINTSETTINGに、m_bPrintKinsokuHead、m_bPrintKinsokuTailを追加 2002.04.09 MIK
 	STypeConfigに、m_bKinsokuHead、m_bKinsokuTail、m_szKinsokuHead、m_szKinsokuTailを追加 2002.04.09 MIK
@@ -117,7 +117,7 @@
 
 	Version 34:
 	STypeConfigにm_bUseDocumentIcon 追加． 2002.09.10 genta
-	
+
 	Version 35:
 	Commonにm_nLineNumRightSpace 追加．2002.09.18 genta
 
@@ -165,7 +165,7 @@
 
 	Version 49:
 	ファイル情報にIsDebug追加 (タブ表示用) 2003.10.13 MIK
-	
+
 	Version 50:
 	ウィンドウ位置固定・継承を追加 2004.05.13 Moca
 
@@ -186,16 +186,16 @@
 
 	Version 56:
 	インクリメンタルサーチ(Migemo path用) 2004/10/13 isearch
-	
+
 	Version 57:
 	強調キーワード指定拡大 2005/01/13 MIK
-	
+
 	Version 58:
 	強調キーワードセット可変長割り当て 2005/01/25 Moca
 
 	Version 59:
 	マクロ数を増やした 2005/01/30 genta
-	
+
 	Version 60:
 	キーワード指定タグジャンプ履歴保存 2005/04/03 MIK
 
@@ -351,10 +351,10 @@
 
 	Version 110:
 	改行コードを変換して貼り付ける 2011.11.22 salarm, Moca
-	
+
 	Version 111:
 	タブバーフォント指定 2011.12.04 Moca
-	
+
 	Version 112:
 	入力補完プラグイン 2011.06.24 Moca
 
@@ -613,7 +613,7 @@
 //                      パフォーマンス                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //バッファサイズ
-const int LINEREADBUFSIZE	= 10240;	//!< ファイルから1行分データを読み込むときのバッファサイズ
+const int LINEREADBUFSIZE = 10240;	//!< ファイルから1行分データを読み込むときのバッファサイズ
 
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -643,12 +643,12 @@ const int LINEREADBUFSIZE	= 10240;	//!< ファイルから1行分データを読
 #define MYWM_CHANGESETTING  (WM_APP+1520)
 //! MYWM_CHANGESETTINGメッセージのlParam
 enum e_PM_CHANGESETTING_SELECT {
-	PM_CHANGESETTING_ALL		= 0, //!< 全部
-	PM_CHANGESETTING_FONT		= 1, //!< フォント変更
-	PM_CHANGESETTING_FONTSIZE	= 2, //!< フォントサイズ変更(WPARAM タイプ別番号。-1で共通設定変更)
-	PM_CHANGESETTING_TYPE		= 3, //!< タイプ別設定
-	PM_CHANGESETTING_TYPE2		= 4, //!< タイプ別設定(再読み込みなし)
-	PM_PRINTSETTING				= 5, //!< プリント設定
+	PM_CHANGESETTING_ALL = 0, //!< 全部
+	PM_CHANGESETTING_FONT = 1, //!< フォント変更
+	PM_CHANGESETTING_FONTSIZE = 2, //!< フォントサイズ変更(WPARAM タイプ別番号。-1で共通設定変更)
+	PM_CHANGESETTING_TYPE = 3, //!< タイプ別設定
+	PM_CHANGESETTING_TYPE2 = 4, //!< タイプ別設定(再読み込みなし)
+	PM_PRINTSETTING = 5, //!< プリント設定
 };
 //!座標位置情報の保存
 #define MYWM_SAVEEDITSTATE  (WM_APP+1521)
@@ -661,8 +661,8 @@ enum e_PM_CHANGESETTING_SELECT {
 /*! トレイからエディタへの終了要求 */
 #define	MYWM_CLOSE			(WM_APP+200)
 enum e_PM_CLOSE_WPARAM {
-	PM_CLOSE_EXIT				= 1, //!< 全終了
-	PM_CLOSE_GREPNOCONFIRM		= 2, //!< Grepで終了確認しない
+	PM_CLOSE_EXIT = 1, //!< 全終了
+	PM_CLOSE_GREPNOCONFIRM = 2, //!< Grepで終了確認しない
 };
 #define	MYWM_ALLOWACTIVATE	(WM_APP+201)
 
@@ -673,9 +673,9 @@ enum e_PM_CLOSE_WPARAM {
 #define	MYWM_SETCARETPOS	(WM_APP+204)
 //! MYWM_SETCARETPOSメッセージのlParam
 enum e_PM_SETCARETPOS_SELECTSTATE {
-	PM_SETCARETPOS_NOSELECT		= 0, //!< 選択解除
-	PM_SETCARETPOS_SELECT		= 1, //!< 選択開始・変更
-	PM_SETCARETPOS_KEEPSELECT	= 2, //!< 現在の選択状態を保って移動
+	PM_SETCARETPOS_NOSELECT = 0, //!< 選択解除
+	PM_SETCARETPOS_SELECT = 1, //!< 選択開始・変更
+	PM_SETCARETPOS_KEEPSELECT = 2, //!< 現在の選択状態を保って移動
 };
 
 /*! カーソル位置取得要求 */

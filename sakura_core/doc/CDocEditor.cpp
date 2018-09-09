@@ -34,14 +34,14 @@
 #include "debug/CRunningTimer.h"
 
 CDocEditor::CDocEditor(CEditDoc* pcDoc)
-: m_pcDocRef(pcDoc)
-, m_cNewLineCode( EOL_CRLF )		//	New Line Type
-, m_pcOpeBlk( NULL )
-, m_bInsMode( true )	// Oct. 2, 2005 genta
-, m_bIsDocModified( false )	/* 変更フラグ */ // Jan. 22, 2002 genta 型変更
+	: m_pcDocRef(pcDoc)
+	, m_cNewLineCode(EOL_CRLF)		//	New Line Type
+	, m_pcOpeBlk(NULL)
+	, m_bInsMode(true)	// Oct. 2, 2005 genta
+	, m_bIsDocModified(false)	/* 変更フラグ */ // Jan. 22, 2002 genta 型変更
 {
 	//	Oct. 2, 2005 genta 挿入モード
-	this->SetInsMode( GetDllShareData().m_Common.m_sGeneral.m_bIsINSMode );
+	this->SetInsMode(GetDllShareData().m_Common.m_sGeneral.m_bIsINSMode);
 }
 
 
@@ -49,17 +49,17 @@ CDocEditor::CDocEditor(CEditDoc* pcDoc)
 
 	@param flag [in] 設定する値．true: 変更有り / false: 変更無し
 	@param redraw [in] true: タイトルの再描画を行う / false: 行わない
-	
+
 	@author genta
 	@date 2002.01.22 新規作成
 */
-void CDocEditor::SetModified( bool flag, bool redraw)
+void CDocEditor::SetModified(bool flag, bool redraw)
 {
-	if( m_bIsDocModified == flag )	//	変更がなければ何もしない
+	if (m_bIsDocModified == flag)	//	変更がなければ何もしない
 		return;
 
 	m_bIsDocModified = flag;
-	if( redraw )
+	if (redraw)
 		m_pcDocRef->m_pcEditWnd->UpdateCaption();
 }
 
@@ -77,27 +77,27 @@ void CDocEditor::OnAfterLoad(const SLoadInfo& sLoadInfo)
 	//	編集用改行コードの設定
 	{
 		const STypeConfig& type = pcDoc->m_cDocType.GetDocumentAttribute();
-		if ( pcDoc->m_cDocFile.GetCodeSet() == type.m_encoding.m_eDefaultCodetype ){
-			SetNewLineCode( type.m_encoding.m_eDefaultEoltype );	// 2011.01.24 ryoji デフォルトEOL
+		if (pcDoc->m_cDocFile.GetCodeSet() == type.m_encoding.m_eDefaultCodetype) {
+			SetNewLineCode(type.m_encoding.m_eDefaultEoltype);	// 2011.01.24 ryoji デフォルトEOL
 		}
-		else{
-			SetNewLineCode( EOL_CRLF );
+		else {
+			SetNewLineCode(EOL_CRLF);
 		}
-		CDocLine*	pFirstlineinfo = pcDoc->m_cDocLineMgr.GetLine( CLogicInt(0) );
-		if( pFirstlineinfo != NULL ){
+		CDocLine*	pFirstlineinfo = pcDoc->m_cDocLineMgr.GetLine(CLogicInt(0));
+		if (pFirstlineinfo != NULL) {
 			EEolType t = pFirstlineinfo->GetEol();
-			if( t != EOL_NONE && t != EOL_UNKNOWN ){
-				SetNewLineCode( t );
+			if (t != EOL_NONE && t != EOL_UNKNOWN) {
+				SetNewLineCode(t);
 			}
 		}
 	}
 
 	//	Nov. 20, 2000 genta
 	//	IME状態の設定
-	this->SetImeMode( pcDoc->m_cDocType.GetDocumentAttribute().m_nImeState );
+	this->SetImeMode(pcDoc->m_cDocType.GetDocumentAttribute().m_nImeState);
 
 	// カレントディレクトリの変更
-	::SetCurrentDirectory( pcDoc->m_cDocFile.GetFilePathClass().GetDirPath().c_str() );
+	::SetCurrentDirectory(pcDoc->m_cDocFile.GetFilePathClass().GetDirPath().c_str());
 
 	CAppMode::getInstance()->SetViewMode(sLoadInfo.bViewMode);		// ビューモード	##ここも、アリかな
 }
@@ -106,47 +106,47 @@ void CDocEditor::OnAfterSave(const SSaveInfo& sSaveInfo)
 {
 	CEditDoc* pcDoc = GetListeningDoc();
 
-	this->SetModified(false,false);	//	Jan. 22, 2002 genta 関数化 更新フラグのクリア
+	this->SetModified(false, false);	//	Jan. 22, 2002 genta 関数化 更新フラグのクリア
 
 	/* 現在位置で無変更な状態になったことを通知 */
 	this->m_cOpeBuf.SetNoModified();
 
 	// カレントディレクトリの変更
-	::SetCurrentDirectory( pcDoc->m_cDocFile.GetFilePathClass().GetDirPath().c_str() );
+	::SetCurrentDirectory(pcDoc->m_cDocFile.GetFilePathClass().GetDirPath().c_str());
 }
 
 
 
 //	From Here Nov. 20, 2000 genta
 /*!	IME状態の設定
-	
+
 	@param mode [in] IMEのモード
-	
+
 	@date Nov 20, 2000 genta
 */
-void CDocEditor::SetImeMode( int mode )
+void CDocEditor::SetImeMode(int mode)
 {
 	DWORD	conv, sent;
 	HIMC	hIme;
 	HWND	hwnd = m_pcDocRef->m_pcEditWnd->GetActiveView().GetHwnd();
 
-	hIme = ImmGetContext( hwnd ); //######大丈夫？ // 2013.06.04 EditWndからViewに変更
+	hIme = ImmGetContext(hwnd); //######大丈夫？ // 2013.06.04 EditWndからViewに変更
 
 	//	最下位ビットはIME自身のOn/Off制御
-	if( ( mode & 3 ) == 2 ){
-		ImmSetOpenStatus( hIme, FALSE );
+	if ((mode & 3) == 2) {
+		ImmSetOpenStatus(hIme, FALSE);
 	}
-	if( ( mode >> 2 ) > 0 ){
-		ImmGetConversionStatus( hIme, &conv, &sent );
+	if ((mode >> 2) > 0) {
+		ImmGetConversionStatus(hIme, &conv, &sent);
 
-		switch( mode >> 2 ){
+		switch (mode >> 2) {
 		case 1:	//	FullShape
 			conv |= IME_CMODE_FULLSHAPE;
 			conv &= ~IME_CMODE_NOCONVERSION;
 			break;
 		case 2:	//	FullShape & Hiragana
 			conv |= IME_CMODE_FULLSHAPE | IME_CMODE_NATIVE;
-			conv &= ~( IME_CMODE_KATAKANA | IME_CMODE_NOCONVERSION );
+			conv &= ~(IME_CMODE_KATAKANA | IME_CMODE_NOCONVERSION);
 			break;
 		case 3:	//	FullShape & Katakana
 			conv |= IME_CMODE_FULLSHAPE | IME_CMODE_NATIVE | IME_CMODE_KATAKANA;
@@ -156,12 +156,12 @@ void CDocEditor::SetImeMode( int mode )
 			conv |= IME_CMODE_NOCONVERSION;
 			break;
 		}
-		ImmSetConversionStatus( hIme, conv, sent );
+		ImmSetConversionStatus(hIme, conv, sent);
 	}
-	if( ( mode & 3 ) == 1 ){
-		ImmSetOpenStatus( hIme, TRUE );
+	if ((mode & 3) == 1) {
+		ImmSetOpenStatus(hIme, TRUE);
 	}
-	ImmReleaseContext( hwnd, hIme ); //######大丈夫？
+	ImmReleaseContext(hwnd, hIme); //######大丈夫？
 }
 //	To Here Nov. 20, 2000 genta
 
@@ -184,7 +184,7 @@ void CDocEditor::SetImeMode( int mode )
 	@param cEol     [in] 行末コード
 
 */
-void CDocEditAgent::AddLineStrX( const wchar_t* pData, int nDataLen )
+void CDocEditAgent::AddLineStrX(const wchar_t* pData, int nDataLen)
 {
 	//チェーン適用
 	CDocLine* pDocLine = m_pcDocLineMgr->AddNewLine();

@@ -55,15 +55,15 @@ public:
 		HWND						hwndParent,
 		const TCHAR*				pszUserWildCard,
 		const TCHAR*				pszDefaultPath,
-		const std::vector<LPCTSTR>& vMRU			= std::vector<LPCTSTR>(),
-		const std::vector<LPCTSTR>& vOPENFOLDER		= std::vector<LPCTSTR>()
+		const std::vector<LPCTSTR>& vMRU = std::vector<LPCTSTR>(),
+		const std::vector<LPCTSTR>& vOPENFOLDER = std::vector<LPCTSTR>()
 	);
 
 	//操作
-	bool DoModal_GetOpenFileName( TCHAR*, EFilter eAddFileter = EFITER_TEXT );	/* 開くダイアログ モーダルダイアログの表示 */	//2002/08/21 moca	引数追加
-	bool DoModal_GetSaveFileName( TCHAR* );	/* 保存ダイアログ モーダルダイアログの表示 */	//2002/08/21 30,2002 moca	引数追加
-	bool DoModalOpenDlg( SLoadInfo* pLoadInfo, std::vector<std::tstring>*, bool bOptions = true );	/* 開くダイアグ モーダルダイアログの表示 */
-	bool DoModalSaveDlg( SSaveInfo*	pSaveInfo, bool bSimpleMode );	/* 保存ダイアログ モーダルダイアログの表示 */
+	bool DoModal_GetOpenFileName(TCHAR*, EFilter eAddFileter = EFITER_TEXT);	/* 開くダイアログ モーダルダイアログの表示 */	//2002/08/21 moca	引数追加
+	bool DoModal_GetSaveFileName(TCHAR*);	/* 保存ダイアログ モーダルダイアログの表示 */	//2002/08/21 30,2002 moca	引数追加
+	bool DoModalOpenDlg(SLoadInfo* pLoadInfo, std::vector<std::tstring>*, bool bOptions = true);	/* 開くダイアグ モーダルダイアログの表示 */
+	bool DoModalSaveDlg(SSaveInfo*	pSaveInfo, bool bSimpleMode);	/* 保存ダイアログ モーダルダイアログの表示 */
 
 protected:
 	CDlgOpenFileMem*	m_mem;
@@ -76,18 +76,18 @@ protected:
 	void	DlgOpenFail(void);
 
 	// 2005.11.02 ryoji OS バージョン対応の OPENFILENAME 初期化用関数
-	void InitOfn( OPENFILENAMEZ* );
+	void InitOfn(OPENFILENAMEZ*);
 
 	// 2005.11.02 ryoji 初期レイアウト設定処理
-	static void InitLayout( HWND hwndOpenDlg, HWND hwndDlg, HWND hwndBaseCtrl );
+	static void InitLayout(HWND hwndOpenDlg, HWND hwndDlg, HWND hwndBaseCtrl);
 
 	// 2006.09.03 Moca ファイルダイアログのエラー回避
 	//! リトライ機能付き GetOpenFileName
-	bool _GetOpenFileNameRecover( OPENFILENAMEZ* ofn );
+	bool _GetOpenFileNameRecover(OPENFILENAMEZ* ofn);
 	//! リトライ機能付き GetOpenFileName
-	bool GetSaveFileNameRecover( OPENFILENAMEZ* ofn );
+	bool GetSaveFileNameRecover(OPENFILENAMEZ* ofn);
 
-	friend UINT_PTR CALLBACK OFNHookProc( HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM lParam );
+	friend UINT_PTR CALLBACK OFNHookProc(HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM lParam);
 
 public:
 	// 設定フォルダ相対ファイル選択(共有データ,ini位置依存)

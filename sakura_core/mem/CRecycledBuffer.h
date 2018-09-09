@@ -28,20 +28,20 @@
 #ifndef SAKURA_CRECYCLEDBUFFER_865628A4_D60A_4F2E_8021_EA83D0D438819_H_
 #define SAKURA_CRECYCLEDBUFFER_865628A4_D60A_4F2E_8021_EA83D0D438819_H_
 
-class CRecycledBuffer{
-//コンフィグ
+class CRecycledBuffer {
+	//コンフィグ
 private:
-	static const int BLOCK_SIZE  = 1024; //ブロックサイズ。バイト単位。
+	static const int BLOCK_SIZE = 1024; //ブロックサイズ。バイト単位。
 	static const int CHAIN_COUNT = 64;   //再利用可能なブロック数。
 
 //コンストラクタ・デストラクタ
 public:
 	CRecycledBuffer()
 	{
-		m_current=0;
+		m_current = 0;
 	}
 
-//インターフェース
+	//インターフェース
 public:
 	//!一時的に確保されたメモリブロックを取得。このメモリブロックを解放してはいけない。
 	template <class T>
@@ -49,8 +49,8 @@ public:
 		size_t* nCount //!< [out] 領域の要素数を受け取る。T単位。
 	)
 	{
-		if(nCount)*nCount=BLOCK_SIZE/sizeof(T);
-		m_current = (m_current+1) % CHAIN_COUNT;
+		if (nCount)*nCount = BLOCK_SIZE / sizeof(T);
+		m_current = (m_current + 1) % CHAIN_COUNT;
 		return reinterpret_cast<T*>(m_buf[m_current]);
 	}
 
@@ -58,11 +58,11 @@ public:
 	template <class T>
 	size_t GetMaxCount() const
 	{
-		return BLOCK_SIZE/sizeof(T);
+		return BLOCK_SIZE / sizeof(T);
 	}
 
 
-//メンバ変数
+	//メンバ変数
 private:
 	BYTE m_buf[CHAIN_COUNT][BLOCK_SIZE];
 	int  m_current;
@@ -70,8 +70,8 @@ private:
 
 
 
-class CRecycledBufferDynamic{
-//コンフィグ
+class CRecycledBufferDynamic {
+	//コンフィグ
 private:
 	static const int CHAIN_COUNT = 64;   //再利用可能なブロック数。
 
@@ -79,19 +79,19 @@ private:
 public:
 	CRecycledBufferDynamic()
 	{
-		m_current=0;
-		for(int i=0;i<_countof(m_buf);i++){
-			m_buf[i]=NULL;
+		m_current = 0;
+		for (int i = 0; i < _countof(m_buf); i++) {
+			m_buf[i] = NULL;
 		}
 	}
 	~CRecycledBufferDynamic()
 	{
-		for(int i=0;i<_countof(m_buf);i++){
-			if(m_buf[i])delete[] m_buf[i];
+		for (int i = 0; i < _countof(m_buf); i++) {
+			if (m_buf[i])delete[] m_buf[i];
 		}
 	}
 
-//インターフェース
+	//インターフェース
 public:
 	//!一時的に確保されたメモリブロックを取得。このメモリブロックを解放してはいけない。
 	template <class T>
@@ -99,16 +99,16 @@ public:
 		size_t nCount //!< [in] 確保する要素数。T単位。
 	)
 	{
-		m_current = (m_current+1) % CHAIN_COUNT;
+		m_current = (m_current + 1) % CHAIN_COUNT;
 
 		//メモリ確保
-		if(m_buf[m_current])delete[] m_buf[m_current];
-		m_buf[m_current]=new BYTE[nCount*sizeof(T)];
+		if (m_buf[m_current])delete[] m_buf[m_current];
+		m_buf[m_current] = new BYTE[nCount * sizeof(T)];
 
 		return reinterpret_cast<T*>(m_buf[m_current]);
 	}
 
-//メンバ変数
+	//メンバ変数
 private:
 	BYTE* m_buf[CHAIN_COUNT];
 	int   m_current;

@@ -33,7 +33,7 @@
 
 //! オリジナル値保存クラス
 template <class T>
-class TOriginalHolder{
+class TOriginalHolder {
 public:
 	TOriginalHolder<T>()
 	{
@@ -47,7 +47,7 @@ public:
 	}
 	void AssignOnce(const T& t)
 	{
-		if(!m_hold){
+		if (!m_hold) {
 			m_data = t;
 			m_hold = true;
 		}
@@ -74,14 +74,14 @@ struct SFONT {
 
 //! 描画管理
 //最新実装：ブラシ
-class CGraphics{
+class CGraphics {
 public:
-	CGraphics(const CGraphics& rhs){ Init(rhs.m_hdc); }
-	CGraphics(HDC hdc = NULL){ Init(hdc); }
+	CGraphics(const CGraphics& rhs) { Init(rhs.m_hdc); }
+	CGraphics(HDC hdc = NULL) { Init(hdc); }
 	~CGraphics();
 	void Init(HDC hdc);
 
-	operator HDC() const{ return m_hdc; }
+	operator HDC() const { return m_hdc; }
 
 	//クリッピング
 private:
@@ -132,7 +132,7 @@ public:
 public:
 	void SetTextBackTransparent(bool b)
 	{
-		m_nTextModeOrg.AssignOnce( ::SetBkMode(m_hdc,b?TRANSPARENT:OPAQUE) );
+		m_nTextModeOrg.AssignOnce(::SetBkMode(m_hdc, b ? TRANSPARENT : OPAQUE));
 	}
 
 	//テキスト
@@ -178,7 +178,7 @@ public:
 	void SetPen(COLORREF color)
 	{
 		ClearPen();
-		PushPen(color,1);
+		PushPen(color, 1);
 	}
 	void ClearPen();
 	COLORREF GetPenColor() const;
@@ -197,23 +197,23 @@ public:
 		ClearBrush();
 		PushBrushColor(color);
 	}
-	HBRUSH GetCurrentBrush() const{ return m_vBrushes.size()?m_vBrushes.back():NULL; }
+	HBRUSH GetCurrentBrush() const { return m_vBrushes.size() ? m_vBrushes.back() : NULL; }
 
 	//描画
 public:
 	//! 直線
 	void DrawLine(int x1, int y1, int x2, int y2)
 	{
-		::MoveToEx(m_hdc,x1,y1,NULL);
-		::LineTo(m_hdc,x2,y2);
+		::MoveToEx(m_hdc, x1, y1, NULL);
+		::LineTo(m_hdc, x2, y2);
 	}
 	void DrawDotLine(int x1, int y1, int x2, int y2);	//点線
 	//! 矩形塗り潰し
 	void FillMyRect(const RECT& rc)
 	{
-		::FillRect(m_hdc,&rc,GetCurrentBrush());
+		::FillRect(m_hdc, &rc, GetCurrentBrush());
 #ifdef _DEBUG
-		::SetPixel(m_hdc,-1,-1,0); //###########実験
+		::SetPixel(m_hdc, -1, -1, 0); //###########実験
 #endif
 	}
 	//! 矩形塗り潰し
@@ -226,12 +226,12 @@ public:
 	//! 矩形塗り潰し
 	void FillMyRectTextBackColor(const RECT& rc)
 	{
-		::ExtTextOut(m_hdc, rc.left, rc.top, ETO_OPAQUE|ETO_CLIPPED, &rc, _T(""), 0, NULL);
+		::ExtTextOut(m_hdc, rc.left, rc.top, ETO_OPAQUE | ETO_CLIPPED, &rc, _T(""), 0, NULL);
 	}
 
 	static void DrawDropRect(LPCRECT lpRectNew, SIZE sizeNew, LPCRECT lpRectLast, SIZE sizeLast);	// ドロップ先の矩形を描画する
 	void DrawRect(int x1, int y1, int x2, int y2);
-	void DrawRect(const RECT& rc){ DrawRect(rc.left, rc.top, rc.right, rc.bottom); }
+	void DrawRect(const RECT& rc) { DrawRect(rc.left, rc.top, rc.right, rc.bottom); }
 
 private:
 	//型

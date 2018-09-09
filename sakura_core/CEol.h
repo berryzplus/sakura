@@ -12,8 +12,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -22,7 +22,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -62,34 +62,34 @@ extern const EEolType gm_pnEolTypeArr[EOL_TYPE_NUM];
 	オブジェクトに対するメソッドで行えるだけだが、グローバル変数への参照を
 	クラス内部に閉じこめることができるのでそれなりに意味はあると思う。
 */
-class CEol{
+class CEol {
 public:
 	//コンストラクタ・デストラクタ
-	CEol(){ m_eEolType = EOL_NONE; }
-	CEol( EEolType t ){ SetType(t); }
+	CEol() { m_eEolType = EOL_NONE; }
+	CEol(EEolType t) { SetType(t); }
 
 	//比較
-	bool operator==( EEolType t ) const { return GetType() == t; }
-	bool operator!=( EEolType t ) const { return GetType() != t; }
+	bool operator==(EEolType t) const { return GetType() == t; }
+	bool operator!=(EEolType t) const { return GetType() != t; }
 
 	//代入
-	const CEol& operator=( const CEol& t ){ m_eEolType = t.m_eEolType; return *this; }
+	const CEol& operator=(const CEol& t) { m_eEolType = t.m_eEolType; return *this; }
 
 	//型変換
 	operator EEolType() const { return GetType(); }
 
 	//設定
-	bool SetType( EEolType t);	//	Typeの設定
-	void SetTypeByString( const wchar_t* pszData, int nDataLen );
-	void SetTypeByString( const char* pszData, int nDataLen );
+	bool SetType(EEolType t);	//	Typeの設定
+	void SetTypeByString(const wchar_t* pszData, int nDataLen);
+	void SetTypeByString(const char* pszData, int nDataLen);
 
 	//設定（ファイル読み込み時に使用）
-	void SetTypeByStringForFile( const char* pszData, int nDataLen ){ SetTypeByString( pszData, nDataLen ); }
-	void SetTypeByStringForFile_uni( const char* pszData, int nDataLen );
-	void SetTypeByStringForFile_unibe( const char* pszData, int nDataLen );
+	void SetTypeByStringForFile(const char* pszData, int nDataLen) { SetTypeByString(pszData, nDataLen); }
+	void SetTypeByStringForFile_uni(const char* pszData, int nDataLen);
+	void SetTypeByStringForFile_unibe(const char* pszData, int nDataLen);
 
 	//取得
-	EEolType		GetType()	const{ return m_eEolType; }		//!< 現在のTypeを取得
+	EEolType		GetType()	const { return m_eEolType; }		//!< 現在のTypeを取得
 	CLogicInt		GetLen()	const;	//!< 現在のEOL長を取得。文字単位。
 	const TCHAR*	GetName()	const;	//!< 現在のEOLの名称取得
 	const wchar_t*	GetValue2()	const;	//!< 現在のEOL文字列先頭へのポインタを取得
@@ -97,7 +97,7 @@ public:
 
 	bool IsValid() const
 	{
-		return m_eEolType>=EOL_CRLF && m_eEolType<EOL_CODEMAX;
+		return m_eEolType >= EOL_CRLF && m_eEolType < EOL_CODEMAX;
 	}
 
 

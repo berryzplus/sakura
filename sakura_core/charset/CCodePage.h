@@ -1,6 +1,6 @@
 ﻿/*!	@file
 	@brief コードページ
-	
+
 	@author Sakura-Editor collaborators
 */
 /*
@@ -51,13 +51,13 @@ enum EEncodingTrait
 /*
 	システムコードページによる文字コード変換
 */
-class CCodePage : public CCodeBase{
+class CCodePage : public CCodeBase {
 public:
 	CCodePage(int codepageEx) : m_nCodePageEx(codepageEx) { }
-	
+
 	//CCodeBaseインターフェース
-	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){ return CPToUnicode(cSrc, pDst, m_nCodePageEx); }	//!< 特定コード → UNICODE    変換
-	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){ return UnicodeToCP(cSrc, pDst, m_nCodePageEx); }	//!< UNICODE    → 特定コード 変換
+	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst) { return CPToUnicode(cSrc, pDst, m_nCodePageEx); }	//!< 特定コード → UNICODE    変換
+	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst) { return UnicodeToCP(cSrc, pDst, m_nCodePageEx); }	//!< UNICODE    → 特定コード 変換
 	void GetEol(CMemory* pcmemEol, EEolType eEolType);	//!< 改行データ取得
 	void GetBom(CMemory* pcmemBom);	//!< BOMデータ取得
 	EConvertResult UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* pDst, const CommonSetting_Statusbar* psStatusbar);			//!< UNICODE → Hex 変換
@@ -68,7 +68,7 @@ public:
 	static EConvertResult UnicodeToCP(const CNativeW& cSrc, CMemory* pDst, int codepageEx);		// Unicode   → CodePageコード変換
 
 	typedef std::vector<std::pair<int, std::wstring> > CodePageList;
-	
+
 	//GUI用補助関数
 	static CCodePage::CodePageList& GetCodePageList();
 	static int GetNameNormal(LPTSTR outName, int charcodeEx);
@@ -76,25 +76,25 @@ public:
 	static int GetNameLong(LPTSTR outName, int charcodeEx);
 	static int GetNameBracket(LPTSTR outName, int charcodeEx);
 	static int AddComboCodePages(HWND hwnd, HWND combo, int nSelCode);
-	
+
 	//CP補助情報
 	static EEncodingTrait GetEncodingTrait(int charcodeEx);
-	
+
 protected:
 	// 実装
-	static EConvertResult CPToUni( const char*, const int, wchar_t*, int, int&, UINT );
-	static EConvertResult UniToCP( const wchar_t*, const int, char*, int, int&, UINT );
-	
+	static EConvertResult CPToUni(const char*, const int, wchar_t*, int, int&, UINT);
+	static EConvertResult UniToCP(const wchar_t*, const int, char*, int, int&, UINT);
+
 	int m_nCodePageEx;
-	
-	static BOOL CALLBACK CallBackEnumCodePages( LPCTSTR );
+
+	static BOOL CALLBACK CallBackEnumCodePages(LPCTSTR);
 
 	static int MultiByteToWideChar2(UINT, int, const char*, int, wchar_t*, int);
 	static int WideCharToMultiByte2(UINT, int, const wchar_t*, int, char*, int);
-	static int S_UTF32LEToUnicode( const char*, int, wchar_t*, int );
-	static int S_UTF32BEToUnicode( const char*, int, wchar_t*, int );
-	static int S_UnicodeToUTF32LE( const wchar_t*, int, char*, int );
-	static int S_UnicodeToUTF32BE( const wchar_t*, int, char*, int );
+	static int S_UTF32LEToUnicode(const char*, int, wchar_t*, int);
+	static int S_UTF32BEToUnicode(const char*, int, wchar_t*, int);
+	static int S_UnicodeToUTF32LE(const wchar_t*, int, char*, int);
+	static int S_UnicodeToUTF32BE(const wchar_t*, int, char*, int);
 };
 
 #endif // SAKURA_CCODEPAGE_H_

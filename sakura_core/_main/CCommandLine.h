@@ -57,7 +57,7 @@ struct GrepInfo {
 /*!
 	@brief コマンドラインパーサ クラス
 */
-class CCommandLine  : public TSingleton<CCommandLine> {
+class CCommandLine : public TSingleton<CCommandLine> {
 	friend class TSingleton<CCommandLine>;
 	CCommandLine();
 
@@ -71,27 +71,27 @@ class CCommandLine  : public TSingleton<CCommandLine> {
 		引用符で囲まれている数値を認識するようにする
 		@date 2002.12.05 genta
 	*/
-	static int AtoiOptionInt(const TCHAR* arg){
-		return ( arg[0] == _T('"') || arg[0] == _T('\'') ) ?
-			_ttoi( arg + 1 ) : _ttoi( arg );
+	static int AtoiOptionInt(const TCHAR* arg) {
+		return (arg[0] == _T('"') || arg[0] == _T('\'')) ?
+			_ttoi(arg + 1) : _ttoi(arg);
 	}
 
-// member accessor method
+	// member accessor method
 public:
-	bool IsNoWindow() const {return m_bNoWindow;}
-	bool IsWriteQuit() const {return m_bWriteQuit;}	// 2007.05.19 ryoji sakuext用に追加
-	bool IsGrepMode() const {return m_bGrepMode;}
-	bool IsGrepDlg() const {return m_bGrepDlg;}
-	bool IsDebugMode() const {return m_bDebugMode;}
-	bool IsViewMode() const {return m_bViewMode;}
+	bool IsNoWindow() const { return m_bNoWindow; }
+	bool IsWriteQuit() const { return m_bWriteQuit; }	// 2007.05.19 ryoji sakuext用に追加
+	bool IsGrepMode() const { return m_bGrepMode; }
+	bool IsGrepDlg() const { return m_bGrepDlg; }
+	bool IsDebugMode() const { return m_bDebugMode; }
+	bool IsViewMode() const { return m_bViewMode; }
 	bool GetEditInfo(EditInfo* fi) const { *fi = m_fi; return true; }
 	bool GetGrepInfo(GrepInfo* gi) const { *gi = m_gi; return true; }
-	int GetGroupId() const {return m_nGroup;}	// 2007.06.26 ryoji
-	LPCWSTR GetMacro() const{ return m_cmMacro.GetStringPtr(); }
-	LPCWSTR GetMacroType() const{ return m_cmMacroType.GetStringPtr(); }
-	LPCWSTR GetProfileName() const{ return m_cmProfile.GetStringPtr(); }
-	bool IsSetProfile() const{ return m_bSetProfile; }
-	void SetProfileName(LPCWSTR s){
+	int GetGroupId() const { return m_nGroup; }	// 2007.06.26 ryoji
+	LPCWSTR GetMacro() const { return m_cmMacro.GetStringPtr(); }
+	LPCWSTR GetMacroType() const { return m_cmMacroType.GetStringPtr(); }
+	LPCWSTR GetProfileName() const { return m_cmProfile.GetStringPtr(); }
+	bool IsSetProfile() const { return m_bSetProfile; }
+	void SetProfileName(LPCWSTR s) {
 		m_bSetProfile = true;
 		m_cmProfile.SetString(s);
 	}
@@ -99,13 +99,13 @@ public:
 	int GetFileNum(void) { return m_vFiles.size(); }
 	const TCHAR* GetFileName(int i) { return i < GetFileNum() ? m_vFiles[i].c_str() : NULL; }
 	void ClearFile(void) { m_vFiles.clear(); }
-	void ParseCommandLine( LPCTSTR pszCmdLineSrc, bool bResponse = true );
+	void ParseCommandLine(LPCTSTR pszCmdLineSrc, bool bResponse = true);
 
-// member valiables
+	// member valiables
 private:
 	bool		m_bGrepMode;		//! [out] TRUE: Grep Mode
 	bool		m_bGrepDlg;			//  Grepダイアログ
-	bool		m_bDebugMode;		
+	bool		m_bDebugMode;
 	bool		m_bNoWindow;		//! [out] TRUE: 編集Windowを開かない
 	bool		m_bWriteQuit;		//! [out] TRUE: 設定を保存して終了	// 2007.05.19 ryoji sakuext用に追加
 	bool		m_bProfileMgr;

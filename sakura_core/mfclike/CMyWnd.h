@@ -30,14 +30,14 @@
 	2008.01.26 kobake 作成
 */
 
-class CMyWnd{
+class CMyWnd {
 public:
 	CMyWnd() : m_hWnd(NULL) { }
 
-	void SetHwnd(HWND hwnd){ m_hWnd = hwnd; }
-	HWND GetHwnd() const{ return m_hWnd; }
-	HWND GetSafeHwnd() const{ return this?m_hWnd:NULL; }
-	void InvalidateRect(LPCRECT lpRect, BOOL bErase = TRUE){ ::InvalidateRect(m_hWnd, lpRect, bErase); }
+	void SetHwnd(HWND hwnd) { m_hWnd = hwnd; }
+	HWND GetHwnd() const { return m_hWnd; }
+	HWND GetSafeHwnd() const { return this ? m_hWnd : NULL; }
+	void InvalidateRect(LPCRECT lpRect, BOOL bErase = TRUE) { ::InvalidateRect(m_hWnd, lpRect, bErase); }
 	int ScrollWindowEx(int dx, int dy, const RECT* prcScroll, const RECT* prcClip, HRGN hrgnUpdate, RECT* prcUpdate, UINT uFlags)
 	{
 		return ::ScrollWindowEx(m_hWnd, dx, dy, prcScroll, prcClip, hrgnUpdate, prcUpdate, uFlags);
@@ -48,11 +48,11 @@ public:
 	}
 	int ReleaseDC(HDC hdc) const
 	{
-		return ::ReleaseDC(m_hWnd,hdc);
+		return ::ReleaseDC(m_hWnd, hdc);
 	}
 	HWND GetAncestor(UINT gaFlags) const
 	{
-		return ::GetAncestor(m_hWnd,gaFlags);
+		return ::GetAncestor(m_hWnd, gaFlags);
 	}
 	BOOL CreateCaret(HBITMAP hBitmap, int nWidth, int nHeight)
 	{

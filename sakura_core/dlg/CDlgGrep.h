@@ -33,8 +33,8 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	BOOL OnCbnDropDown( HWND hwndCtl, int wID );
-	int DoModal( HINSTANCE, HWND, const TCHAR* );	/* モーダルダイアログの表示 */
+	BOOL OnCbnDropDown(HWND hwndCtl, int wID);
+	int DoModal(HINSTANCE, HWND, const TCHAR*);	/* モーダルダイアログの表示 */
 //	HWND DoModeless( HINSTANCE, HWND, const char* );	/* モードレスダイアログの表示 */
 
 
@@ -68,14 +68,14 @@ protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
+	BOOL OnInitDialog(HWND, WPARAM, LPARAM);
 	BOOL OnDestroy();
-	BOOL OnBnClicked( int );
+	BOOL OnBnClicked(int);
 	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 
-	void SetData( void );	/* ダイアログデータの設定 */
-	int GetData( void );	/* ダイアログデータの取得 */
-	void SetDataFromThisText( bool );	/* 現在編集中ファイルから検索チェックでの設定 */
+	void SetData(void);	/* ダイアログデータの設定 */
+	int GetData(void);	/* ダイアログデータの取得 */
+	void SetDataFromThisText(bool);	/* 現在編集中ファイルから検索チェックでの設定 */
 };
 
 

@@ -41,25 +41,25 @@ class CGrepAgent;
 enum EFunctionCode;
 
 //!エディタ部分アプリケーションクラス。CNormalProcess1個につき、1個存在。
-class CEditApp : public TSingleton<CEditApp>{
+class CEditApp : public TSingleton<CEditApp> {
 	friend class TSingleton<CEditApp>;
-	CEditApp(){}
+	CEditApp() {}
 	virtual ~CEditApp();
 
 public:
 	void Create(HINSTANCE hInst, int);
 
 	//モジュール情報
-	HINSTANCE GetAppInstance() const{ return m_hInst; }	//!< インスタンスハンドル取得
+	HINSTANCE GetAppInstance() const { return m_hInst; }	//!< インスタンスハンドル取得
 
 	//ウィンドウ情報
-	CEditWnd* GetEditWindow(){ return m_pcEditWnd; }		//!< ウィンドウ取得
+	CEditWnd* GetEditWindow() { return m_pcEditWnd; }		//!< ウィンドウ取得
 
-	CEditDoc*		GetDocument(){ return m_pcEditDoc; }
-	CImageListMgr&	GetIcons(){ return m_cIcons; }
+	CEditDoc*		GetDocument() { return m_pcEditDoc; }
+	CImageListMgr&	GetIcons() { return m_cIcons; }
 
-	bool OpenPropertySheet( int nPageNum );
-	bool OpenPropertySheetTypes( int nPageNum, CTypeConfig nSettingType );
+	bool OpenPropertySheet(int nPageNum);
+	bool OpenPropertySheetTypes(int nPageNum, CTypeConfig nSettingType);
 
 public:
 	HINSTANCE			m_hInst;
@@ -90,9 +90,9 @@ public:
 
 
 //WM_QUIT検出例外
-class CAppExitException : public std::exception{
+class CAppExitException : public std::exception {
 public:
-	const char* what() const throw(){ return "CAppExitException"; }
+	const char* what() const throw() { return "CAppExitException"; }
 };
 
 

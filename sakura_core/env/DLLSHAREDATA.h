@@ -44,7 +44,7 @@ inline DLLSHAREDATA& GetDllShareData(bool bNullCheck)
 {
 	extern DLLSHAREDATA* g_theDLLSHAREDATA;
 
-	if( bNullCheck ){
+	if (bNullCheck) {
 		assert(g_theDLLSHAREDATA);
 	}
 	return *g_theDLLSHAREDATA;
@@ -83,7 +83,7 @@ inline void SetDllShareData(DLLSHAREDATA* pShareData)
 
 
 //! 共有フラグ
-struct SShare_Flags{
+struct SShare_Flags {
 	BOOL				m_bEditWndChanging;				// 編集ウィンドウ切替中	// 2007.04.03 ryoji
 	/*	@@@ 2002.1.24 YAZAKI
 		キーボードマクロは、記録終了した時点でファイル「m_szKeyMacroFileName」に書き出すことにする。
@@ -94,17 +94,17 @@ struct SShare_Flags{
 };
 
 //! 共有ワークバッファ
-struct SShare_WorkBuffer{
+struct SShare_WorkBuffer {
 	//2007.09.16 kobake char型だと、常に文字列であるという誤解を招くので、BYTE型に変更。変数名も変更。
 	//           UNICODE版では、余分に領域を使うことが予想されるため、ANSI版の2倍確保。
 private:
-	BYTE				m_pWork[32000*sizeof(TCHAR)];
+	BYTE				m_pWork[32000 * sizeof(TCHAR)];
 public:
 	template <class T>
-	T* GetWorkBuffer(){ return reinterpret_cast<T*>(m_pWork); }
+	T* GetWorkBuffer() { return reinterpret_cast<T*>(m_pWork); }
 
 	template <class T>
-	size_t GetWorkBufferCount(){ return sizeof(m_pWork)/sizeof(T); }
+	size_t GetWorkBufferCount() { return sizeof(m_pWork) / sizeof(T); }
 
 public:
 	EditInfo			m_EditInfo_MYWM_GETFILEINFO;	//MYWM_GETFILEINFOデータ受け渡し用	####美しくない
@@ -113,14 +113,14 @@ public:
 };
 
 //! 共有ハンドル
-struct SShare_Handles{
+struct SShare_Handles {
 	HWND				m_hwndTray;
 	HWND				m_hwndDebug;
 	HACCEL				m_hAccel;
 };
 
 //! EXE情報
-struct SShare_Version{
+struct SShare_Version {
 	DWORD				m_dwProductVersionMS;
 	DWORD				m_dwProductVersionLS;
 };
@@ -130,7 +130,7 @@ struct SShare_Version{
 //                   共有メモリ構造体本体                      //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-struct DLLSHAREDATA{
+struct DLLSHAREDATA {
 	// -- -- バージョン -- -- //
 	/*!
 		データ構造 Version	//	Oct. 27, 2000 genta
@@ -162,7 +162,7 @@ struct DLLSHAREDATA{
 	STypeConfigMini				m_TypeMini[MAX_TYPES];					// タイプ別設定(mini)
 	PRINTSETTING				m_PrintSettingArr[MAX_PRINTSETTINGARR];	// 印刷ページ設定
 	int							m_nLockCount;	//!< ロックカウント
-	
+
 	//その他
 	SShare_SearchKeywords		m_sSearchKeywords;
 	SShare_TagJump				m_sTagJump;
@@ -183,13 +183,13 @@ struct DLLSHAREDATA{
 	bool						m_bLineNumIsCRLF_ForJump;			/* 指定行へジャンプの「改行単位の行番号」か「折り返し単位の行番号」か */
 };
 
-class CShareDataLockCounter{
+class CShareDataLockCounter {
 public:
 	CShareDataLockCounter();
 	~CShareDataLockCounter();
 
 	static int GetLockCounter();
-	static void WaitLock( HWND, CShareDataLockCounter** = NULL );
+	static void WaitLock(HWND, CShareDataLockCounter** = NULL);
 private:
 };
 #endif /* SAKURA_DLLSHAREDATA_3A6DD7E0_90DC_4219_8570_F5C1B8B6A306_H_ */

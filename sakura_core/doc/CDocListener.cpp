@@ -37,11 +37,11 @@
 
 bool SLoadInfo::IsSamePath(LPCTSTR pszPath) const
 {
-	return _tcsicmp(this->cFilePath,pszPath)==0;
+	return _tcsicmp(this->cFilePath, pszPath) == 0;
 }
 bool SSaveInfo::IsSamePath(LPCTSTR pszPath) const
 {
-	return _tcsicmp(this->cFilePath,pszPath)==0;
+	return _tcsicmp(this->cFilePath, pszPath) == 0;
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -104,20 +104,20 @@ CDocSubject::~CDocSubject()
 	return eRet; \
 }
 
-DEF_NOTIFY2(CheckLoad,SLoadInfo*)
-VOID_NOTIFY2(BeforeLoad,SLoadInfo*)
-CORE_NOTIFY2(Load,const SLoadInfo&)
-VOID_NOTIFY2(Loading,int)
-VOID_NOTIFY2(AfterLoad,const SLoadInfo&)
-VOID_NOTIFY2(FinalLoad,ELoadResult)
+DEF_NOTIFY2(CheckLoad, SLoadInfo*)
+VOID_NOTIFY2(BeforeLoad, SLoadInfo*)
+CORE_NOTIFY2(Load, const SLoadInfo&)
+VOID_NOTIFY2(Loading, int)
+VOID_NOTIFY2(AfterLoad, const SLoadInfo&)
+VOID_NOTIFY2(FinalLoad, ELoadResult)
 
-DEF_NOTIFY2(CheckSave,SSaveInfo*)
-DEF_NOTIFY2(PreBeforeSave,SSaveInfo*)
-VOID_NOTIFY2(BeforeSave,const SSaveInfo&)
-VOID_NOTIFY2(Save,const SSaveInfo&)
-VOID_NOTIFY2(Saving,int)
-VOID_NOTIFY2(AfterSave,const SSaveInfo&)
-VOID_NOTIFY2(FinalSave,ESaveResult)
+DEF_NOTIFY2(CheckSave, SSaveInfo*)
+DEF_NOTIFY2(PreBeforeSave, SSaveInfo*)
+VOID_NOTIFY2(BeforeSave, const SSaveInfo&)
+VOID_NOTIFY2(Save, const SSaveInfo&)
+VOID_NOTIFY2(Saving, int)
+VOID_NOTIFY2(AfterSave, const SSaveInfo&)
+VOID_NOTIFY2(FinalSave, ESaveResult)
 
 DEF_NOTIFY(BeforeClose)
 
@@ -129,8 +129,8 @@ DEF_NOTIFY(BeforeClose)
 
 CDocListener::CDocListener(CDocSubject* pcDoc)
 {
-	if(pcDoc==NULL)pcDoc = CEditDoc::GetInstance(0); //$$ インチキ
-	assert( pcDoc );
+	if (pcDoc == NULL)pcDoc = CEditDoc::GetInstance(0); //$$ インチキ
+	assert(pcDoc);
 	Listen(pcDoc);
 }
 
@@ -157,7 +157,7 @@ CEditDoc* CDocListenerEx::GetListeningDoc() const
 void CProgressSubject::NotifyProgress(int nPer)
 {
 	int n = GetListenerCount();
-	for(int i=0;i<n;i++){
+	for (int i = 0; i < n; i++) {
 		GetListener(i)->OnProgress(nPer);
 	}
 }

@@ -32,15 +32,15 @@ class CSubject;
 class CListener;
 
 //! 複数のCListenerからウォッチされる
-class CSubject{
+class CSubject {
 public:
 	//コンストラクタ・デストラクタ
 	CSubject();
 	virtual ~CSubject();
 
 	//公開インターフェース
-	int GetListenerCount() const{ return (int)m_vListenersRef.size(); }
-	CListener* GetListener(int nIndex) const{ return m_vListenersRef[nIndex]; }
+	int GetListenerCount() const { return (int)m_vListenersRef.size(); }
+	CListener* GetListener(int nIndex) const { return m_vListenersRef[nIndex]; }
 
 public:
 	//管理用
@@ -52,14 +52,14 @@ private:
 };
 
 //! 1つのCSubjectをウォッチする
-class CListener{
+class CListener {
 public:
 	CListener();
 	virtual ~CListener();
 
 	//公開インターフェース
 	CSubject* Listen(CSubject* pcSubject); //!< 直前にウォッチしていたサブジェクトを返す
-	CSubject* GetListeningSubject() const{ return m_pcSubjectRef; }
+	CSubject* GetListeningSubject() const { return m_pcSubjectRef; }
 
 private:
 	CSubject* m_pcSubjectRef;
@@ -68,7 +68,7 @@ private:
 
 
 
-template <class LISTENER> class CSubjectT : public CSubject{
+template <class LISTENER> class CSubjectT : public CSubject {
 public:
 	LISTENER* GetListener(int nIndex) const
 	{
@@ -76,7 +76,7 @@ public:
 	}
 };
 
-template <class SUBJECT> class CListenerT : public CListener{
+template <class SUBJECT> class CListenerT : public CListener {
 public:
 	SUBJECT* Listen(SUBJECT* pcSubject)
 	{

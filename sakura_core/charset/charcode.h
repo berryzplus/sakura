@@ -49,13 +49,13 @@
 #define CRLF_				"\015\012"
 
 //ANSI定数
-namespace ACODE{
+namespace ACODE {
 	//文字
-	static const char TAB   = TAB_;
+	static const char TAB = TAB_;
 	static const char SPACE = SPACE_;
-	static const char CR	= CR_;
-	static const char LF	= LF_;
-	static const char ESC	= ESC_;
+	static const char CR = CR_;
+	static const char LF = LF_;
+	static const char ESC = ESC_;
 
 	//文字列
 	static const char CRLF[] = CRLF_;
@@ -65,13 +65,13 @@ namespace ACODE{
 }
 
 //UNICODE定数
-namespace WCODE{
+namespace WCODE {
 	//文字
-	static const wchar_t TAB   = LCHAR(TAB_);
+	static const wchar_t TAB = LCHAR(TAB_);
 	static const wchar_t SPACE = LCHAR(SPACE_);
-	static const wchar_t CR    = LCHAR(CR_);
-	static const wchar_t LF    = LCHAR(LF_);
-	static const wchar_t ESC   = LCHAR(ESC_);
+	static const wchar_t CR = LCHAR(CR_);
+	static const wchar_t LF = LCHAR(LF_);
+	static const wchar_t ESC = LCHAR(ESC_);
 
 	//文字列
 	static const wchar_t CRLF[] = LTEXT(CRLF_);
@@ -97,7 +97,7 @@ extern const unsigned char gm_keyword_char[128];
 //Nov. 27, 2010 syat   速度改善のためテーブルに変更
 inline bool IS_KEYWORD_CHAR(wchar_t wc)
 {
-	if(0 <= wc && wc < _countof(gm_keyword_char) && (gm_keyword_char[wc] == CK_CSYM||gm_keyword_char[wc] == CK_UDEF) )
+	if (0 <= wc && wc < _countof(gm_keyword_char) && (gm_keyword_char[wc] == CK_CSYM || gm_keyword_char[wc] == CK_UDEF))
 		return true;
 	else
 		return false;
@@ -109,15 +109,15 @@ namespace WCODE
 {
 	inline bool IsAZ(wchar_t wc)
 	{
-		return (wc>=L'A' && wc<=L'Z') || (wc>=L'a' && wc<=L'z');
+		return (wc >= L'A' && wc <= L'Z') || (wc >= L'a' && wc <= L'z');
 	}
 	inline bool Is09(wchar_t wc)
 	{
-		return (wc>=L'0' && wc<=L'9');
+		return (wc >= L'0' && wc <= L'9');
 	}
 	inline bool IsInRange(wchar_t c, wchar_t front, wchar_t back)
 	{
-		return c>=front && c<=back;
+		return c >= front && c <= back;
 	}
 
 	//!半角文字(縦長長方形)かどうか判定
@@ -146,35 +146,35 @@ namespace WCODE
 	//!改行文字であるかどうか
 	inline bool IsLineDelimiter(wchar_t wc, bool ext)
 	{
-		return wc==CR || wc==LF || (ext && (wc==0x85 || wc==0x2028 || wc==0x2029));
+		return wc == CR || wc == LF || (ext && (wc == 0x85 || wc == 0x2028 || wc == 0x2029));
 	}
 	inline bool IsLineDelimiterBasic(wchar_t wc)
 	{
-		return wc==CR || wc==LF;
+		return wc == CR || wc == LF;
 	}
 	inline bool IsLineDelimiterExt(wchar_t wc)
 	{
-		return wc==CR || wc==LF || wc==0x85 || wc==0x2028 || wc==0x2029;
+		return wc == CR || wc == LF || wc == 0x85 || wc == 0x2028 || wc == 0x2029;
 	}
 
 	//!単語の区切り文字であるかどうか
 	inline bool IsWordDelimiter(wchar_t wc)
 	{
-		return wc==SPACE || wc==TAB || IsZenkakuSpace(wc);
+		return wc == SPACE || wc == TAB || IsZenkakuSpace(wc);
 	}
 
 	//!インデント構成要素であるかどうか。bAcceptZenSpace: 全角スペースを含めるかどうか
-	inline bool IsIndentChar(wchar_t wc,bool bAcceptZenSpace)
+	inline bool IsIndentChar(wchar_t wc, bool bAcceptZenSpace)
 	{
-		if(wc==TAB || wc==SPACE)return true;
-		if(bAcceptZenSpace && IsZenkakuSpace(wc))return true;
+		if (wc == TAB || wc == SPACE)return true;
+		if (bAcceptZenSpace && IsZenkakuSpace(wc))return true;
 		return false;
 	}
 
 	//!空白かどうか
 	inline bool IsBlank(wchar_t wc)
 	{
-		return wc==TAB || wc==SPACE || IsZenkakuSpace(wc);
+		return wc == TAB || wc == SPACE || IsZenkakuSpace(wc);
 	}
 
 	//!ファイル名に使える文字であるかどうか
@@ -182,7 +182,7 @@ namespace WCODE
 	{
 		static const wchar_t* table = L"<>?\"|*";
 
-		if(wcschr(table,wc)!=NULL)return false; //table内の文字が含まれていたら、ダメ。
+		if (wcschr(table, wc) != NULL)return false; //table内の文字が含まれていたら、ダメ。
 		else return true;
 	}
 
@@ -190,10 +190,10 @@ namespace WCODE
 	inline bool IsTabAvailableCode(wchar_t wc)
 	{
 		//$$要検証
-		if(wc==L'\0')return false;
-		if(wc==L'\r')return false;
-		if(wc==L'\n')return false;
-		if(wc==L'\t')return false;
+		if (wc == L'\0')return false;
+		if (wc == L'\r')return false;
+		if (wc == L'\n')return false;
+		if (wc == L'\t')return false;
 		return true;
 	}
 
@@ -201,7 +201,7 @@ namespace WCODE
 	inline bool IsHankakuKatakana(wchar_t c)
 	{
 		//参考: http://ash.jp/code/unitbl1.htm
-		return c>=0xFF61 && c<=0xFF9F;
+		return c >= 0xFF61 && c <= 0xFF9F;
 	}
 
 	//! 全角記号かどうか
@@ -210,42 +210,42 @@ namespace WCODE
 		//$ 他にも全角記号はあると思うけど、とりあえずANSI版時代の判定を踏襲。パフォーマンス悪し。
 		// 2009.06.26 syat 「ゝゞ（ひらがな）」「ヽヾ（カタカナ）」「゛゜（全角濁点）」「仝々〇（漢字）」「ー（長音）」を除外
 		// 2009.10.10 syat ANSI版の修正にあわせて「〆」を記号→漢字にする
-		static const wchar_t* table=L"　、。，．・：；？！´｀¨＾￣＿〃―‐／＼～∥｜…‥‘’“”（）〔〕［］｛｝〈〉《》「」『』【】＋－±×÷＝≠＜＞≦≧∞∴♂♀°′″℃￥＄￠￡％＃＆＊＠§☆★○●◎◇◆□■△▲▽▼※〒→←↑↓〓∈∋⊆⊇⊂⊃∪∩∧∨￢⇒⇔∀∃∠⊥⌒∂∇≡≒≪≫√∽∝∵∫∬Å‰♯♭♪†‡¶◯";
-		return wcschr(table,c)!=NULL;
+		static const wchar_t* table = L"　、。，．・：；？！´｀¨＾￣＿〃―‐／＼～∥｜…‥‘’“”（）〔〕［］｛｝〈〉《》「」『』【】＋－±×÷＝≠＜＞≦≧∞∴♂♀°′″℃￥＄￠￡％＃＆＊＠§☆★○●◎◇◆□■△▲▽▼※〒→←↑↓〓∈∋⊆⊇⊂⊃∪∩∧∨￢⇒⇔∀∃∠⊥⌒∂∇≡≒≪≫√∽∝∵∫∬Å‰♯♭♪†‡¶◯";
+		return wcschr(table, c) != NULL;
 	}
 
 	//! ひらがなかどうか
 	inline bool IsHiragana(wchar_t c)
 	{
 		// 2009.06.26 syat 「ゝゞ」を追加
-		return (c>=0x3041 && c<=0x3096) || (c>=0x309D && c<=0x309E);
+		return (c >= 0x3041 && c <= 0x3096) || (c >= 0x309D && c <= 0x309E);
 	}
 
 	//! カタカナかどうか
 	inline bool IsZenkakuKatakana(wchar_t c)
 	{
 		// 2009.06.26 syat 「ヽヾ」を追加
-		return (c>=0x30A1 && c<=0x30FA) || (c>=0x30FD && c<=0x30FE);
+		return (c >= 0x30A1 && c <= 0x30FA) || (c >= 0x30FD && c <= 0x30FE);
 	}
 
 	//! ギリシャ文字かどうか
 	inline bool IsGreek(wchar_t c)
 	{
-		return c>=0x0391 && c<=0x03C9;
+		return c >= 0x0391 && c <= 0x03C9;
 	}
 
 	//! キリル文字かどうか
 	inline bool IsCyrillic(wchar_t c)
 	{
-		return (c>=0x0400 && c<=0x052F)  // Cyrillic, Cyrillic Supplement
-			|| (c>=0x2DE0 && c<=0x2DFF)  // Cyrillic Extended-A
-			|| (c>=0xA640 && c<=0xA69F); // Cyrillic Extended-B
+		return (c >= 0x0400 && c <= 0x052F)  // Cyrillic, Cyrillic Supplement
+			|| (c >= 0x2DE0 && c <= 0x2DFF)  // Cyrillic Extended-A
+			|| (c >= 0xA640 && c <= 0xA69F); // Cyrillic Extended-B
 	}
 
 	//! BOX DRAWING 文字 かどうか
 	inline bool IsBoxDrawing(wchar_t c)
 	{
-		return c>=0x2500 && c<=0x257F;
+		return c >= 0x2500 && c <= 0x257F;
 	}
 
 	//!文字が半角かどうかを取得(DLLSHARE/フォント依存)
@@ -277,28 +277,28 @@ namespace ACODE
 {
 	inline bool IsAZ(char c)
 	{
-		return (c>='A' && c<='Z') || (c>='a' && c<='z');
+		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
 
 	//!制御文字であるかどうか
 	inline bool IsControlCode(char c)
 	{
-		unsigned char n=(unsigned char)c;
-		if(c==TAB)return false;
-		if(c==CR )return false;
-		if(c==LF )return false;
-		if(n<=0x1F)return true;
-		if(n>=0x7F && n<=0x9F)return true;
-		if(n>=0xE0)return true;
+		unsigned char n = (unsigned char)c;
+		if (c == TAB)return false;
+		if (c == CR)return false;
+		if (c == LF)return false;
+		if (n <= 0x1F)return true;
+		if (n >= 0x7F && n <= 0x9F)return true;
+		if (n >= 0xE0)return true;
 		return false;
 	}
 
 	//!タブ表示に使える文字かどうか
 	inline bool IsTabAvailableCode(char c)
 	{
-		if(c=='\0')return false;
-		if(c<=0x1f)return false;
-		if(c>=0x7f)return false;
+		if (c == '\0')return false;
+		if (c <= 0x1f)return false;
+		if (c >= 0x7f)return false;
 		return true;
 	}
 
@@ -308,7 +308,7 @@ namespace ACODE
 		static const char* table = "<>?\"|*";
 
 		//table内の文字が含まれていて
-		if(strchr(table,c)!=NULL){
+		if (strchr(table, c) != NULL) {
 			// 2013.06.01 判定間違いを削除
 			return false;
 		}
@@ -320,11 +320,11 @@ namespace ACODE
 //TCHAR判定関数群
 namespace TCODE
 {
-	#ifdef _UNICODE
-		using namespace WCODE;
-	#else
-		using namespace ACODE;
-	#endif
+#ifdef _UNICODE
+	using namespace WCODE;
+#else
+	using namespace ACODE;
+#endif
 }
 
 // 文字幅の動的計算用キャッシュ関連
@@ -349,9 +349,9 @@ enum ECharWidthCacheMode {
 };
 
 // キャッシュの初期化関数群
-void SelectCharWidthCache( ECharWidthFontMode fMode, ECharWidthCacheMode cMode );  //!< モードを変更したいとき
-void InitCharWidthCache( const LOGFONT &lf, ECharWidthFontMode fMode=CWM_FONT_EDIT ); //!< フォントを変更したとき
-void InitCharWidthCacheFromDC(const LOGFONT* lfs, ECharWidthFontMode fMode, HDC hdcOrg );
+void SelectCharWidthCache(ECharWidthFontMode fMode, ECharWidthCacheMode cMode);  //!< モードを変更したいとき
+void InitCharWidthCache(const LOGFONT &lf, ECharWidthFontMode fMode = CWM_FONT_EDIT); //!< フォントを変更したとき
+void InitCharWidthCacheFromDC(const LOGFONT* lfs, ECharWidthFontMode fMode, HDC hdcOrg);
 
 #endif /* SAKURA_CHARCODE_5A887F7C_8E08_4940_AF65_BD6850C3A7B5_H_ */
 /*[EOF]*/

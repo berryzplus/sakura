@@ -12,8 +12,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -22,7 +22,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -51,37 +51,37 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	int DoModal( HINSTANCE, HWND, LPARAM );	/* モーダルダイアログの表示 */
+	int DoModal(HINSTANCE, HWND, LPARAM);	/* モーダルダイアログの表示 */
 
 protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	BOOL	OnInitDialog( HWND, WPARAM wParam, LPARAM lParam );
-	BOOL	OnBnClicked( int );
-	BOOL	OnNotify( WPARAM wParam, LPARAM lParam );
-	BOOL	OnActivate( WPARAM wParam, LPARAM lParam );
-	LPVOID	GetHelpIdTable( void );
-	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 標準以外のメッセージを捕捉する
-	BOOL	OnSize( WPARAM wParam, LPARAM lParam );
-	BOOL	OnMove( WPARAM wParam, LPARAM lParam );
-	BOOL	OnMinMaxInfo( LPARAM lParam );
+	BOOL	OnInitDialog(HWND, WPARAM wParam, LPARAM lParam);
+	BOOL	OnBnClicked(int);
+	BOOL	OnNotify(WPARAM wParam, LPARAM lParam);
+	BOOL	OnActivate(WPARAM wParam, LPARAM lParam);
+	LPVOID	GetHelpIdTable(void);
+	INT_PTR DispatchEvent(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);	// 標準以外のメッセージを捕捉する
+	BOOL	OnSize(WPARAM wParam, LPARAM lParam);
+	BOOL	OnMove(WPARAM wParam, LPARAM lParam);
+	BOOL	OnMinMaxInfo(LPARAM lParam);
 
-	void	SetData( void );	/* ダイアログデータの設定 */
-	int		GetData( void );	/* ダイアログデータの取得 */
+	void	SetData(void);	/* ダイアログデータの設定 */
+	int		GetData(void);	/* ダイアログデータの取得 */
 
-	void	TabSelectChange( bool );
-	bool	RefreshList( void );
-	void	SetDataOne( int nIndex, int nLvItemIndex );	/* ダイアログデータの設定 */
-	bool	RefreshListOne( int nIndex );
+	void	TabSelectChange(bool);
+	bool	RefreshList(void);
+	void	SetDataOne(int nIndex, int nLvItemIndex);	/* ダイアログデータの設定 */
+	bool	RefreshListOne(int nIndex);
 	//void	ChangeSlider( int nIndex );
 	void	UpdateUIState();
-	
-	void    GetFavorite( int nIndex );
+
+	void    GetFavorite(int nIndex);
 	int     DeleteSelected();
 	void	AddItem();
 	void	EditItem();
-	void	RightMenu( POINT& );
+	void	RightMenu(POINT&);
 
 private:
 	CRecentFile			m_cRecentFile;
@@ -110,16 +110,16 @@ private:
 		bool		m_bEditable;		//編集可能
 		bool		m_bAddExcept;		//除外へ追加
 		int			m_nViewCount;		//カレントの表示数
-		FavoriteInfo():
+		FavoriteInfo() :
 			m_pRecent(NULL)
-			,m_pszCaption(NULL)
-			,m_nId(0)
-			,m_bHaveFavorite(false)
-			,m_bHaveView(false)
-			,m_bFilePath(false)
-			,m_bEditable(false)
-			,m_bAddExcept(false)
-			,m_nViewCount(0)
+			, m_pszCaption(NULL)
+			, m_nId(0)
+			, m_bHaveFavorite(false)
+			, m_bHaveView(false)
+			, m_bFilePath(false)
+			, m_bEditable(false)
+			, m_bAddExcept(false)
+			, m_nViewCount(0)
 		{};
 	};
 	struct ListViewSortInfo {
@@ -138,7 +138,7 @@ private:
 	int		m_nExceptTab;
 	TCHAR	m_szMsg[1024];
 
-	static void  ListViewSort(ListViewSortInfo&, const CRecent* , int, bool);
+	static void  ListViewSort(ListViewSortInfo&, const CRecent*, int, bool);
 };
 
 #endif	//SAKURA_CDLGFAVORITE_H_

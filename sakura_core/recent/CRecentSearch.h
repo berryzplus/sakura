@@ -30,18 +30,18 @@
 typedef StaticString<WCHAR, _MAX_PATH> CSearchString;
 
 //! 検索の履歴を管理 (RECENT_FOR_SEARCH)
-class CRecentSearch : public CRecentImp<CSearchString, LPCWSTR>{
+class CRecentSearch : public CRecentImp<CSearchString, LPCWSTR> {
 public:
 	//生成
 	CRecentSearch();
 
 	//オーバーライド
-	int				CompareItem( const CSearchString* p1, LPCWSTR p2 ) const;
-	void			CopyItem( CSearchString* dst, LPCWSTR src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
-	bool			DataToReceiveType( LPCWSTR* dst, const CSearchString* src ) const;
-	bool			TextToDataType( CSearchString* dst, LPCTSTR pszText ) const;
-	bool			ValidateReceiveType( LPCWSTR p ) const;
+	int				CompareItem(const CSearchString* p1, LPCWSTR p2) const;
+	void			CopyItem(CSearchString* dst, LPCWSTR src) const;
+	const TCHAR*	GetItemText(int nIndex) const;
+	bool			DataToReceiveType(LPCWSTR* dst, const CSearchString* src) const;
+	bool			TextToDataType(CSearchString* dst, LPCTSTR pszText) const;
+	bool			ValidateReceiveType(LPCWSTR p) const;
 	size_t			GetTextMaxLength() const;
 };
 

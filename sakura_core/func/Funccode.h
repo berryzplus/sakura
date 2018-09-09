@@ -170,7 +170,7 @@ typedef UINT16 uint16_t;
 #endif
 
 // 機能一覧に関するデータ宣言
-namespace nsFuncCode{
+namespace nsFuncCode {
 	extern const uint16_t		ppszFuncKind[];
 	extern const int			nFuncKindNum;
 	extern const int			pnFuncListNumArr[];
@@ -184,13 +184,13 @@ namespace nsFuncCode{
 
 
 /*機能番号に対応したヘルプトピックIDを返す*/
-int FuncID_To_HelpContextID( EFunctionCode nFuncID );	//Stonee, 2001/02/23
+int FuncID_To_HelpContextID(EFunctionCode nFuncID);	//Stonee, 2001/02/23
 
 class CEditDoc;
 struct DLLSHAREDATA;
 
 //2007.10.30 kobake 機能チェックをCEditWndからここへ移動
-bool IsFuncEnable( const CEditDoc*, const DLLSHAREDATA*, EFunctionCode );	/* 機能が利用可能か調べる */
-bool IsFuncChecked( const CEditDoc*, const DLLSHAREDATA*, EFunctionCode );	/* 機能がチェック状態か調べる */
+bool IsFuncEnable(const CEditDoc*, const DLLSHAREDATA*, EFunctionCode);	/* 機能が利用可能か調べる */
+bool IsFuncChecked(const CEditDoc*, const DLLSHAREDATA*, EFunctionCode);	/* 機能がチェック状態か調べる */
 
 #endif // _FUNCCODE_H_

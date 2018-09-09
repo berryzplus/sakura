@@ -38,8 +38,8 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	HWND DoModeless( HINSTANCE, HWND, LPARAM, BOOL );	/* モーダルダイアログの表示 */
-	void ChangeView( LPARAM );	/* モードレス時：置換・検索対象となるビューの変更 */
+	HWND DoModeless(HINSTANCE, HWND, LPARAM, BOOL);	/* モーダルダイアログの表示 */
+	void ChangeView(LPARAM);	/* モードレス時：置換・検索対象となるビューの変更 */
 
 	SSearchOption	m_sSearchOption;	// 検索オプション
 	int				m_bConsecutiveAll;	/* 「すべて置換」は置換の繰返し */	// 2007.01.16 ryoji
@@ -67,16 +67,16 @@ protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	BOOL OnCbnDropDown( HWND hwndCtl, int wID );
-	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
+	BOOL OnCbnDropDown(HWND hwndCtl, int wID);
+	BOOL OnInitDialog(HWND, WPARAM, LPARAM);
 	BOOL OnDestroy();
-	BOOL OnBnClicked( int );
-	BOOL OnActivate( WPARAM wParam, LPARAM lParam );	// 2009.11.29 ryoji
+	BOOL OnBnClicked(int);
+	BOOL OnActivate(WPARAM wParam, LPARAM lParam);	// 2009.11.29 ryoji
 	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
 
-	void SetData( void );		/* ダイアログデータの設定 */
-	void SetCombosList( void );	/* 検索文字列/置換後文字列リストの設定 */
-	int GetData( void );		/* ダイアログデータの取得 */
+	void SetData(void);		/* ダイアログデータの設定 */
+	void SetCombosList(void);	/* 検索文字列/置換後文字列リストの設定 */
+	int GetData(void);		/* ダイアログデータの取得 */
 };
 
 

@@ -77,9 +77,9 @@ static const DWORD p_helpids[] = {	//10600
 	@param lParam パラメータ2
 */
 INT_PTR CALLBACK CPropHelper::DlgProc_page(
-	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
+	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	return DlgProc( reinterpret_cast<pDispatchPage>(&CPropHelper::DispatchEvent), hwndDlg, uMsg, wParam, lParam );
+	return DlgProc(reinterpret_cast<pDispatchPage>(&CPropHelper::DispatchEvent), hwndDlg, uMsg, wParam, lParam);
 }
 //	To Here Jun. 2, 2001 genta
 
@@ -95,141 +95,142 @@ INT_PTR CPropHelper::DispatchEvent(
 	WORD		wID;
 	NMHDR*		pNMHDR;
 
-	switch( uMsg ){
+	switch (uMsg) {
 	case WM_INITDIALOG:
 		/* ダイアログデータの設定 Helper */
-		SetData( hwndDlg );
+		SetData(hwndDlg);
 		// Modified by KEITA for WIN64 2003.9.6
-		::SetWindowLongPtr( hwndDlg, DWLP_USER, lParam );
+		::SetWindowLongPtr(hwndDlg, DWLP_USER, lParam);
 
 		/* ユーザーがエディット コントロールに入力できるテキストの長さを制限する */
 		/* 外部ヘルプ１ */
-		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_EXTHELP1 ), _MAX_PATH - 1 );
+		EditCtl_LimitText(::GetDlgItem(hwndDlg, IDC_EDIT_EXTHELP1), _MAX_PATH - 1);
 		/* 外部HTMLヘルプ */
-		EditCtl_LimitText( ::GetDlgItem( hwndDlg, IDC_EDIT_EXTHTMLHELP ), _MAX_PATH - 1 );
+		EditCtl_LimitText(::GetDlgItem(hwndDlg, IDC_EDIT_EXTHTMLHELP), _MAX_PATH - 1);
 
 		return TRUE;
 	case WM_COMMAND:
 		wNotifyCode = HIWORD(wParam);	/* 通知コード */
-		wID			= LOWORD(wParam);	/* 項目ID､ コントロールID､ またはアクセラレータID */
-		switch( wNotifyCode ){
-		/* ボタン／チェックボックスがクリックされた */
+		wID = LOWORD(wParam);	/* 項目ID､ コントロールID､ またはアクセラレータID */
+		switch (wNotifyCode) {
+			/* ボタン／チェックボックスがクリックされた */
 		case BN_CLICKED:
 			/* ダイアログデータの取得 Helper */
-			GetData( hwndDlg );
-			switch( wID ){
+			GetData(hwndDlg);
+			switch (wID) {
 			case IDC_BUTTON_OPENHELP1:	/* 外部ヘルプ１の「参照...」ボタン */
-				{
-					// 2003.06.23 Moca 相対パスは実行ファイルからのパス
-					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
-					CDlgOpenFile::SelectFile(hwndDlg, GetDlgItem(hwndDlg, IDC_EDIT_EXTHELP1), _T("*.hlp;*.chm;*.col"), true, EFITER_NONE);
-				}
-				return TRUE;
+			{
+				// 2003.06.23 Moca 相対パスは実行ファイルからのパス
+				// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
+				CDlgOpenFile::SelectFile(hwndDlg, GetDlgItem(hwndDlg, IDC_EDIT_EXTHELP1), _T("*.hlp;*.chm;*.col"), true, EFITER_NONE);
+			}
+			return TRUE;
 			case IDC_BUTTON_OPENEXTHTMLHELP:	/* 外部HTMLヘルプの「参照...」ボタン */
-				{
-					// 2003.06.23 Moca 相対パスは実行ファイルからのパス
-					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
-					CDlgOpenFile::SelectFile(hwndDlg, GetDlgItem(hwndDlg, IDC_EDIT_EXTHTMLHELP), _T("*.chm;*.col"), true, EFITER_NONE);
-				}
-				return TRUE;
+			{
+				// 2003.06.23 Moca 相対パスは実行ファイルからのパス
+				// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
+				CDlgOpenFile::SelectFile(hwndDlg, GetDlgItem(hwndDlg, IDC_EDIT_EXTHTMLHELP), _T("*.chm;*.col"), true, EFITER_NONE);
+			}
+			return TRUE;
 			// ai 02/05/21 Add S
 			case IDC_BUTTON_KEYWORDHELPFONT:	/* キーワードヘルプの「フォント」ボタン */
-				{
-					LOGFONT   lf = m_Common.m_sHelper.m_lf;
-					INT nPointSize = m_Common.m_sHelper.m_nPointSize;
+			{
+				LOGFONT   lf = m_Common.m_sHelper.m_lf;
+				INT nPointSize = m_Common.m_sHelper.m_nPointSize;
 
-					if( MySelectFont( &lf, &nPointSize, hwndDlg, false) ){
-						m_Common.m_sHelper.m_lf = lf;
-						m_Common.m_sHelper.m_nPointSize = nPointSize;	// 2009.10.01 ryoji
-						// キーワードヘルプ フォント表示	// 2013/4/24 Uchi
-						HFONT hFont = SetFontLabel( hwndDlg, IDC_STATIC_KEYWORDHELPFONT, m_Common.m_sHelper.m_lf, m_Common.m_sHelper.m_nPointSize);
-						if(m_hKeywordHelpFont != NULL){
-							::DeleteObject( m_hKeywordHelpFont );
-						}
-						m_hKeywordHelpFont = hFont;
+				if (MySelectFont(&lf, &nPointSize, hwndDlg, false)) {
+					m_Common.m_sHelper.m_lf = lf;
+					m_Common.m_sHelper.m_nPointSize = nPointSize;	// 2009.10.01 ryoji
+					// キーワードヘルプ フォント表示	// 2013/4/24 Uchi
+					HFONT hFont = SetFontLabel(hwndDlg, IDC_STATIC_KEYWORDHELPFONT, m_Common.m_sHelper.m_lf, m_Common.m_sHelper.m_nPointSize);
+					if (m_hKeywordHelpFont != NULL) {
+						::DeleteObject(m_hKeywordHelpFont);
 					}
+					m_hKeywordHelpFont = hFont;
 				}
-				return TRUE;
+			}
+			return TRUE;
 			// ai 02/05/21 Add E
 			case IDC_BUTTON_OPENMDLL:	/* MIGEMODLL場所指定「参照...」ボタン */
-				{
-					// 2003.06.23 Moca 相対パスは実行ファイルからのパス
-					// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
-					CDlgOpenFile::SelectFile(hwndDlg, GetDlgItem(hwndDlg, IDC_EDIT_MIGEMO_DLL), _T("*.dll"), true, EFITER_NONE);
-				}
-				return TRUE;
+			{
+				// 2003.06.23 Moca 相対パスは実行ファイルからのパス
+				// 2007.05.21 ryoji 相対パスは設定ファイルからのパスを優先
+				CDlgOpenFile::SelectFile(hwndDlg, GetDlgItem(hwndDlg, IDC_EDIT_MIGEMO_DLL), _T("*.dll"), true, EFITER_NONE);
+			}
+			return TRUE;
 			case IDC_BUTTON_OPENMDICT:	/* MigemoDict場所指定「参照...」ボタン */
-				{
-					TCHAR	szPath[_MAX_PATH];
-					/* 検索フォルダ */
-					// 2007.05.27 ryoji 相対パスは設定ファイルからのパスを優先
-					if( _IS_REL_PATH( m_Common.m_sHelper.m_szMigemoDict ) ){
-						GetInidirOrExedir( szPath, m_Common.m_sHelper.m_szMigemoDict, TRUE );
-					}else{
-						_tcscpy( szPath, m_Common.m_sHelper.m_szMigemoDict );
-					}
-					if( SelectDir( hwndDlg, LS(STR_PROPCOMHELP_MIGEMODIR), szPath, szPath ) ){
-						_tcscpy( m_Common.m_sHelper.m_szMigemoDict, GetRelPath(szPath) ); // 2015.03.03 可能なら相対パスにする
-						::DlgItem_SetText( hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict );
-					}
+			{
+				TCHAR	szPath[_MAX_PATH];
+				/* 検索フォルダ */
+				// 2007.05.27 ryoji 相対パスは設定ファイルからのパスを優先
+				if (_IS_REL_PATH(m_Common.m_sHelper.m_szMigemoDict)) {
+					GetInidirOrExedir(szPath, m_Common.m_sHelper.m_szMigemoDict, TRUE);
 				}
-				return TRUE;
+				else {
+					_tcscpy(szPath, m_Common.m_sHelper.m_szMigemoDict);
+				}
+				if (SelectDir(hwndDlg, LS(STR_PROPCOMHELP_MIGEMODIR), szPath, szPath)) {
+					_tcscpy(m_Common.m_sHelper.m_szMigemoDict, GetRelPath(szPath)); // 2015.03.03 可能なら相対パスにする
+					::DlgItem_SetText(hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict);
+				}
+			}
+			return TRUE;
 			}
 			break;	/* BN_CLICKED */
 		}
 		break;	/* WM_COMMAND */
 	case WM_NOTIFY:
 		pNMHDR = (NMHDR*)lParam;
-//		switch( idCtrl ){
-//		case ???????:
-//			return 0L;
-//		default:
-			switch( pNMHDR->code ){
-			case PSN_HELP:
-				OnHelp( hwndDlg, IDD_PROP_HELPER );
-				return TRUE;
-			case PSN_KILLACTIVE:
-//				MYTRACE( _T("Helper PSN_KILLACTIVE\n") );
-				/* ダイアログデータの取得 Helper */
-				GetData( hwndDlg );
-				return TRUE;
-//@@@ 2002.01.03 YAZAKI 最後に表示していたシートを正しく覚えていないバグ修正
-			case PSN_SETACTIVE:
-				m_nPageNum = ID_PROPCOM_PAGENUM_HELPER;
-				return TRUE;
-			}
-//			break;	/* default */
-//		}
+		//		switch( idCtrl ){
+		//		case ???????:
+		//			return 0L;
+		//		default:
+		switch (pNMHDR->code) {
+		case PSN_HELP:
+			OnHelp(hwndDlg, IDD_PROP_HELPER);
+			return TRUE;
+		case PSN_KILLACTIVE:
+			//				MYTRACE( _T("Helper PSN_KILLACTIVE\n") );
+							/* ダイアログデータの取得 Helper */
+			GetData(hwndDlg);
+			return TRUE;
+			//@@@ 2002.01.03 YAZAKI 最後に表示していたシートを正しく覚えていないバグ修正
+		case PSN_SETACTIVE:
+			m_nPageNum = ID_PROPCOM_PAGENUM_HELPER;
+			return TRUE;
+		}
+		//			break;	/* default */
+		//		}
 
-//		MYTRACE( _T("pNMHDR->hwndFrom=%xh\n"), pNMHDR->hwndFrom );
-//		MYTRACE( _T("pNMHDR->idFrom  =%xh\n"), pNMHDR->idFrom );
-//		MYTRACE( _T("pNMHDR->code    =%xh\n"), pNMHDR->code );
-//		MYTRACE( _T("pMNUD->iPos    =%d\n"), pMNUD->iPos );
-//		MYTRACE( _T("pMNUD->iDelta  =%d\n"), pMNUD->iDelta );
+		//		MYTRACE( _T("pNMHDR->hwndFrom=%xh\n"), pNMHDR->hwndFrom );
+		//		MYTRACE( _T("pNMHDR->idFrom  =%xh\n"), pNMHDR->idFrom );
+		//		MYTRACE( _T("pNMHDR->code    =%xh\n"), pNMHDR->code );
+		//		MYTRACE( _T("pMNUD->iPos    =%d\n"), pMNUD->iPos );
+		//		MYTRACE( _T("pMNUD->iDelta  =%d\n"), pMNUD->iDelta );
 		break;	/* WM_NOTIFY */
 
 //@@@ 2001.02.04 Start by MIK: Popup Help
 	case WM_HELP:
-		{
-			HELPINFO *p = (HELPINFO *)lParam;
-			MyWinHelp( (HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
-		}
-		return TRUE;
-		/*NOTREACHED*/
-		//break;
+	{
+		HELPINFO *p = (HELPINFO *)lParam;
+		MyWinHelp((HWND)p->hItemHandle, HELP_WM_HELP, (ULONG_PTR)(LPVOID)p_helpids);	// 2006.10.10 ryoji MyWinHelpに変更に変更
+	}
+	return TRUE;
+	/*NOTREACHED*/
+	//break;
 //@@@ 2001.02.04 End
 
 //@@@ 2001.12.22 Start by MIK: Context Menu Help
 	//Context Menu
 	case WM_CONTEXTMENU:
-		MyWinHelp( hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids );	// 2006.10.10 ryoji MyWinHelpに変更に変更
+		MyWinHelp(hwndDlg, HELP_CONTEXTMENU, (ULONG_PTR)(LPVOID)p_helpids);	// 2006.10.10 ryoji MyWinHelpに変更に変更
 		return TRUE;
-//@@@ 2001.12.22 End
+		//@@@ 2001.12.22 End
 
 	case WM_DESTROY:
 		// キーワードヘルプ フォント破棄	// 2013/4/24 Uchi
 		if (m_hKeywordHelpFont != NULL) {
-			::DeleteObject( m_hKeywordHelpFont );
+			::DeleteObject(m_hKeywordHelpFont);
 			m_hKeywordHelpFont = NULL;
 		}
 		return TRUE;
@@ -238,51 +239,51 @@ INT_PTR CPropHelper::DispatchEvent(
 }
 
 /* ダイアログデータの設定 Helper */
-void CPropHelper::SetData( HWND hwndDlg )
+void CPropHelper::SetData(HWND hwndDlg)
 {
 	/* 補完候補決定キー */
-	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_RETURN, m_Common.m_sHelper.m_bHokanKey_RETURN );	//VK_RETURN 補完決定キーが有効/無効
-	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_TAB, m_Common.m_sHelper.m_bHokanKey_TAB );		//VK_TAB    補完決定キーが有効/無効
-	::CheckDlgButton( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT, m_Common.m_sHelper.m_bHokanKey_RIGHT );	//VK_RIGHT  補完決定キーが有効/無効
+	::CheckDlgButton(hwndDlg, IDC_CHECK_m_bHokanKey_RETURN, m_Common.m_sHelper.m_bHokanKey_RETURN);	//VK_RETURN 補完決定キーが有効/無効
+	::CheckDlgButton(hwndDlg, IDC_CHECK_m_bHokanKey_TAB, m_Common.m_sHelper.m_bHokanKey_TAB);		//VK_TAB    補完決定キーが有効/無効
+	::CheckDlgButton(hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT, m_Common.m_sHelper.m_bHokanKey_RIGHT);	//VK_RIGHT  補完決定キーが有効/無効
 
 	/* 外部ヘルプ１ */
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_EXTHELP1, m_Common.m_sHelper.m_szExtHelp );
+	::DlgItem_SetText(hwndDlg, IDC_EDIT_EXTHELP1, m_Common.m_sHelper.m_szExtHelp);
 
 	/* 外部HTMLヘルプ */
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_EXTHTMLHELP, m_Common.m_sHelper.m_szExtHtmlHelp );
+	::DlgItem_SetText(hwndDlg, IDC_EDIT_EXTHTMLHELP, m_Common.m_sHelper.m_szExtHtmlHelp);
 
 	/* HtmlHelpビューアはひとつ */
-	::CheckDlgButton( hwndDlg, IDC_CHECK_HTMLHELPISSINGLE, m_Common.m_sHelper.m_bHtmlHelpIsSingle ? BST_CHECKED : BST_UNCHECKED );
+	::CheckDlgButton(hwndDlg, IDC_CHECK_HTMLHELPISSINGLE, m_Common.m_sHelper.m_bHtmlHelpIsSingle ? BST_CHECKED : BST_UNCHECKED);
 
 	// キーワードヘルプ フォント	// 2013/4/24 Uchi
-	m_hKeywordHelpFont = SetFontLabel( hwndDlg, IDC_STATIC_KEYWORDHELPFONT, m_Common.m_sHelper.m_lf, m_Common.m_sHelper.m_nPointSize);
+	m_hKeywordHelpFont = SetFontLabel(hwndDlg, IDC_STATIC_KEYWORDHELPFONT, m_Common.m_sHelper.m_lf, m_Common.m_sHelper.m_nPointSize);
 
 	//migemo dict
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_MIGEMO_DLL, m_Common.m_sHelper.m_szMigemoDll);
-	::DlgItem_SetText( hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict);
+	::DlgItem_SetText(hwndDlg, IDC_EDIT_MIGEMO_DLL, m_Common.m_sHelper.m_szMigemoDll);
+	::DlgItem_SetText(hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict);
 }
 
 
 /* ダイアログデータの取得 Helper */
-int CPropHelper::GetData( HWND hwndDlg )
+int CPropHelper::GetData(HWND hwndDlg)
 {
 	/* 補完候補決定キー */
-	m_Common.m_sHelper.m_bHokanKey_RETURN = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RETURN );//VK_RETURN 補完決定キーが有効/無効
-	m_Common.m_sHelper.m_bHokanKey_TAB = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_TAB );		//VK_TAB    補完決定キーが有効/無効
-	m_Common.m_sHelper.m_bHokanKey_RIGHT = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT );	//VK_RIGHT  補完決定キーが有効/無効
+	m_Common.m_sHelper.m_bHokanKey_RETURN = ::IsDlgButtonChecked(hwndDlg, IDC_CHECK_m_bHokanKey_RETURN);//VK_RETURN 補完決定キーが有効/無効
+	m_Common.m_sHelper.m_bHokanKey_TAB = ::IsDlgButtonChecked(hwndDlg, IDC_CHECK_m_bHokanKey_TAB);		//VK_TAB    補完決定キーが有効/無効
+	m_Common.m_sHelper.m_bHokanKey_RIGHT = ::IsDlgButtonChecked(hwndDlg, IDC_CHECK_m_bHokanKey_RIGHT);	//VK_RIGHT  補完決定キーが有効/無効
 
 	/* 外部ヘルプ１ */
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_EXTHELP1, m_Common.m_sHelper.m_szExtHelp, _countof( m_Common.m_sHelper.m_szExtHelp ));
+	::DlgItem_GetText(hwndDlg, IDC_EDIT_EXTHELP1, m_Common.m_sHelper.m_szExtHelp, _countof(m_Common.m_sHelper.m_szExtHelp));
 
 	/* 外部HTMLヘルプ */
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_EXTHTMLHELP, m_Common.m_sHelper.m_szExtHtmlHelp, _countof( m_Common.m_sHelper.m_szExtHtmlHelp ));
+	::DlgItem_GetText(hwndDlg, IDC_EDIT_EXTHTMLHELP, m_Common.m_sHelper.m_szExtHtmlHelp, _countof(m_Common.m_sHelper.m_szExtHtmlHelp));
 
 	/* HtmlHelpビューアはひとつ */
-	m_Common.m_sHelper.m_bHtmlHelpIsSingle = ::IsDlgButtonChecked( hwndDlg, IDC_CHECK_HTMLHELPISSINGLE ) != 0;
+	m_Common.m_sHelper.m_bHtmlHelpIsSingle = ::IsDlgButtonChecked(hwndDlg, IDC_CHECK_HTMLHELPISSINGLE) != 0;
 
 	//migemo dict
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_MIGEMO_DLL, m_Common.m_sHelper.m_szMigemoDll, _countof( m_Common.m_sHelper.m_szMigemoDll ));
-	::DlgItem_GetText( hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict, _countof( m_Common.m_sHelper.m_szMigemoDict ));
+	::DlgItem_GetText(hwndDlg, IDC_EDIT_MIGEMO_DLL, m_Common.m_sHelper.m_szMigemoDll, _countof(m_Common.m_sHelper.m_szMigemoDll));
+	::DlgItem_GetText(hwndDlg, IDC_EDIT_MIGEMO_DICT, m_Common.m_sHelper.m_szMigemoDict, _countof(m_Common.m_sHelper.m_szMigemoDict));
 
 	return TRUE;
 }

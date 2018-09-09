@@ -30,7 +30,7 @@ class CEditDoc;
 class CTextMetrics;
 class CGraphics;
 
-class CRuler{
+class CRuler {
 public:
 	CRuler(const CEditView* pEditView, const CEditDoc* pEditDoc);
 	virtual ~CRuler();
@@ -40,19 +40,19 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 	//! ルーラー描画 (背景とキャレット)
-	void DispRuler( HDC );
+	void DispRuler(HDC);
 
 	//! ルーラーの背景のみ描画 2007.08.29 kobake 追加
 	void DrawRulerBg(CGraphics& gr);
 
-	void SetRedrawFlag(){ m_bRedrawRuler = true; }
-	bool GetRedrawFlag(){ return m_bRedrawRuler; }
+	void SetRedrawFlag() { m_bRedrawRuler = true; }
+	bool GetRedrawFlag() { return m_bRedrawRuler; }
 
 private:
 	//! ルーラーのキャレットのみ描画 2002.02.25 Add By KK
-	void DrawRulerCaret( CGraphics& gr );
+	void DrawRulerCaret(CGraphics& gr);
 
-	void _DrawRulerCaret( CGraphics& gr, int nCaretDrawX, int nCaretWidth );
+	void _DrawRulerCaret(CGraphics& gr, int nCaretDrawX, int nCaretWidth);
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                       メンバ変数群                          //

@@ -54,24 +54,25 @@ bool CFuncListManager::SearchFuncListMark(
 {
 	CLogicInt	nLinePos = nLineNum;
 
-	if( bPrevOrNext == SEARCH_BACKWARD ){
+	if (bPrevOrNext == SEARCH_BACKWARD) {
 		//後方検索(↑)
 		nLinePos--;
-		const CDocLine*	pDocLine = pcDocLineMgr->GetLine( nLinePos );
-		while( pDocLine ){
-			if( GetLineFuncList(pDocLine) ){
+		const CDocLine*	pDocLine = pcDocLineMgr->GetLine(nLinePos);
+		while (pDocLine) {
+			if (GetLineFuncList(pDocLine)) {
 				*pnLineNum = nLinePos;				/* マッチ行 */
 				return true;
 			}
 			nLinePos--;
 			pDocLine = pDocLine->GetPrevLine();
 		}
-	}else{
+	}
+	else {
 		//前方検索(↓)
 		nLinePos++;
-		const CDocLine*	pDocLine = pcDocLineMgr->GetLine( nLinePos );
-		while( pDocLine ){
-			if( GetLineFuncList(pDocLine) ){
+		const CDocLine*	pDocLine = pcDocLineMgr->GetLine(nLinePos);
+		while (pDocLine) {
+			if (GetLineFuncList(pDocLine)) {
 				*pnLineNum = nLinePos;				/* マッチ行 */
 				return true;
 			}
@@ -86,7 +87,7 @@ bool CFuncListManager::SearchFuncListMark(
 void CFuncListManager::ResetAllFucListMark(CDocLineMgr* pcDocLineMgr, bool bFlag)
 {
 	CDocLine* pDocLine = pcDocLineMgr->GetDocLineTop();
-	while( pDocLine ){
+	while (pDocLine) {
 		CDocLine* pDocLineNext = pDocLine->GetNextLine();
 		SetLineFuncList(pDocLine, bFlag);
 		pDocLine = pDocLineNext;

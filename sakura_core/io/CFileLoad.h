@@ -12,8 +12,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -22,7 +22,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -39,7 +39,7 @@
 
 // VC6添付のヘッダで定義されてません
 #ifndef INVALID_SET_FILE_POINTER
- #define INVALID_SET_FILE_POINTER 0xFFFFFFFF
+#define INVALID_SET_FILE_POINTER 0xFFFFFFFF
 #endif // INVALID_SET_FILE_POINTER
 
 struct SEncodingConfig;
@@ -58,12 +58,12 @@ public:
 	static std::wstring GetSizeStringForHuman(ULONGLONG size); //!< 人にとって見やすいサイズ文字列を作る (例: "2 GB", "10 GB", "400 MB", "32 KB")
 
 public:
-	CFileLoad( const SEncodingConfig& encode );
-	~CFileLoad( void );
+	CFileLoad(const SEncodingConfig& encode);
+	~CFileLoad(void);
 
 	//	Jul. 26, 2003 ryoji BOM引数追加
-	ECodeType FileOpen( LPCTSTR, bool bBigFile, ECodeType, int, bool* pbBomExist = NULL );		// 指定文字コードでファイルをオープンする
-	void FileClose( void );					// 明示的にファイルをクローズする
+	ECodeType FileOpen(LPCTSTR, bool bBigFile, ECodeType, int, bool* pbBomExist = NULL);		// 指定文字コードでファイルをオープンする
+	void FileClose(void);					// 明示的にファイルをクローズする
 
 	//! 1行データをロードする 順アクセス用
 	EConvertResult ReadLine(
@@ -71,23 +71,23 @@ public:
 		CEol*		pcEol			//!< [i/o]
 	);
 
-//	未実装関数郡
-//	cosnt char* ReadAtLine( int, int*, CEol* ); // 指定行目をロードする
-//	cosnt wchar_t* ReadAtLineW( int, int*, CEol* ); // 指定行目をロードする(Unicode版)
-//	bool ReadIgnoreLine( void ); // 1行読み飛ばす
+	//	未実装関数郡
+	//	cosnt char* ReadAtLine( int, int*, CEol* ); // 指定行目をロードする
+	//	cosnt wchar_t* ReadAtLineW( int, int*, CEol* ); // 指定行目をロードする(Unicode版)
+	//	bool ReadIgnoreLine( void ); // 1行読み飛ばす
 
-	//! ファイルの日時を取得する
-	BOOL GetFileTime( FILETIME*, FILETIME*, FILETIME* ); // inline
+		//! ファイルの日時を取得する
+	BOOL GetFileTime(FILETIME*, FILETIME*, FILETIME*); // inline
 
 	//	Jun. 08, 2003 Moca
 	//! 開いたファイルにはBOMがあるか？
-	bool IsBomExist( void ){ return m_bBomExist; }
+	bool IsBomExist(void) { return m_bBomExist; }
 
 	//! 現在の進行率を取得する(0% - 100%) 若干誤差が出る
-	int GetPercent( void );
+	int GetPercent(void);
 
 	//! ファイルサイズを取得する
-	inline LONGLONG GetFileSize( void ){ return m_nFileSize; }
+	inline LONGLONG GetFileSize(void) { return m_nFileSize; }
 
 	static const int gm_nBufSizeDef; // ロード用バッファサイズの初期値
 //	static const int gm_nBufSizeMin; // ロード用バッファサイズの設定可能な最低値
@@ -95,20 +95,20 @@ public:
 protected:
 	// Oct. 19, 2002 genta スペルミス修正
 //	void SeekBegin( void );		// ファイルの先頭位置に移動する(BOMを考慮する)
-	void Buffering( void );		// バッファにデータをロードする
-	void ReadBufEmpty( void );	// バッファを空にする
+	void Buffering(void);		// バッファにデータをロードする
+	void ReadBufEmpty(void);	// バッファを空にする
 
 	// GetLextLine の 文字コード考慮版
-	const char* GetNextLineCharCode( const char*, int, int*, int*, CEol*, int*, int* );
-	EConvertResult ReadLine_core( CNativeW*, CEol* );
+	const char* GetNextLineCharCode(const char*, int, int*, int*, CEol*, int*, int*);
+	EConvertResult ReadLine_core(CNativeW*, CEol*);
 
-	int Read( void*, size_t ); // inline
-	DWORD FilePointer( DWORD, DWORD ); // inline
+	int Read(void*, size_t); // inline
+	DWORD FilePointer(DWORD, DWORD); // inline
 
 	/* メンバオブジェクト */
 	const SEncodingConfig* m_pEencoding;
 
-//	LPTSTR	m_pszFileName;	// ファイル名
+	//	LPTSTR	m_pszFileName;	// ファイル名
 	HANDLE	m_hFile;		// ファイルハンドル
 	LONGLONG	m_nFileSize;	// ファイルサイズ(64bit)
 	LONGLONG	m_nFileDataLen;	// ファイルデータ長からBOM長を引いたバイト数
@@ -124,7 +124,7 @@ protected:
 	int		m_nFlag;		// 文字コードの変換オプション
 	//	Jun. 13, 2003 Moca
 	//	状態をenumとしてわかりやすく．
-	enum enumFileLoadMode{
+	enum enumFileLoadMode {
 		FLMODE_CLOSE = 0, //!< 初期状態
 		FLMODE_OPEN, //!< ファイルオープンのみ
 		FLMODE_READY, //!< 順アクセスOK
@@ -150,24 +150,24 @@ private:
 // インライン関数郡
 
 // public
-inline BOOL CFileLoad::GetFileTime( FILETIME* pftCreate, FILETIME* pftLastAccess, FILETIME* pftLastWrite ){
-	return ::GetFileTime( m_hFile, pftCreate, pftLastAccess, pftLastWrite );
+inline BOOL CFileLoad::GetFileTime(FILETIME* pftCreate, FILETIME* pftLastAccess, FILETIME* pftLastWrite) {
+	return ::GetFileTime(m_hFile, pftCreate, pftLastAccess, pftLastWrite);
 }
 
 // protected
-inline int CFileLoad::Read( void* pBuf, size_t nSize )
+inline int CFileLoad::Read(void* pBuf, size_t nSize)
 {
 	DWORD ReadSize;
-	if( !::ReadFile( m_hFile, pBuf, nSize, &ReadSize, NULL ) )
+	if (!::ReadFile(m_hFile, pBuf, nSize, &ReadSize, NULL))
 		throw CError_FileRead();
 	return (int)ReadSize;
 }
 
 // protected
-inline DWORD CFileLoad::FilePointer( DWORD offset, DWORD origin )
+inline DWORD CFileLoad::FilePointer(DWORD offset, DWORD origin)
 {
 	DWORD fp;
-	if( INVALID_SET_FILE_POINTER == ( fp = ::SetFilePointer( m_hFile, offset, NULL, FILE_BEGIN ) ) )
+	if (INVALID_SET_FILE_POINTER == (fp = ::SetFilePointer(m_hFile, offset, NULL, FILE_BEGIN)))
 		throw CError_FileRead();
 	return fp;
 }

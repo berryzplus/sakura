@@ -11,8 +11,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -21,7 +21,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -43,12 +43,12 @@ public:
 	CSortedTagJumpList(int max);
 	~CSortedTagJumpList();
 
-	int AddBaseDir( const TCHAR* baseDir );
-	BOOL AddParamA( const ACHAR* keyword, const ACHAR* filename, int no, ACHAR type, const ACHAR* note, int depth, const int baseDirId );
-	BOOL GetParam( int index, TCHAR* keyword, TCHAR* filename, int* no, TCHAR* type, TCHAR* note, int* depth, TCHAR* baseDir );
-	int GetCount( void ){ return m_nCount; }
-	void Empty( void );
-	bool IsOverflow( void ){ return m_bOverflow; }
+	int AddBaseDir(const TCHAR* baseDir);
+	BOOL AddParamA(const ACHAR* keyword, const ACHAR* filename, int no, ACHAR type, const ACHAR* note, int depth, const int baseDirId);
+	BOOL GetParam(int index, TCHAR* keyword, TCHAR* filename, int* no, TCHAR* type, TCHAR* note, int* depth, TCHAR* baseDir);
+	int GetCount(void) { return m_nCount; }
+	void Empty(void);
+	bool IsOverflow(void) { return m_bOverflow; }
 
 	typedef struct tagjump_info_t {
 		struct tagjump_info_t*	next;	//!< 次のリスト
@@ -61,7 +61,7 @@ public:
 		int		baseDirId;	//!< ファイル名のベースディレクトリ
 	} TagJumpInfo;
 
-	TagJumpInfo* GetPtr( int index );
+	TagJumpInfo* GetPtr(int index);
 
 	/*!	@brief 管理数の最大値を取得する
 
@@ -74,11 +74,11 @@ private:
 	std::vector<std::tstring> m_baseDirArr;	//!< ベースディレクトリ情報
 	int				m_nCount;	//!< 個数
 	bool			m_bOverflow;	//!< オーバーフロー
-	
+
 	//	2005.04.22 genta 最大値を可変に
 	const int		m_MAX_TAGJUMPLIST;	//!< 管理する情報の最大数
 
-	void Free( TagJumpInfo* item );
+	void Free(TagJumpInfo* item);
 
 private:
 	DISALLOW_COPY_AND_ASSIGN(CSortedTagJumpList);

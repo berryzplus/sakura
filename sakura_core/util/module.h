@@ -24,16 +24,16 @@
 #ifndef SAKURA_MODULE_4F382EF5_EF52_47E1_A774_5CDFB545AB25_H_
 #define SAKURA_MODULE_4F382EF5_EF52_47E1_A774_5CDFB545AB25_H_
 
-void GetAppVersionInfo( HINSTANCE, int, DWORD*, DWORD* );	/* リソースから製品バージョンの取得 */
+void GetAppVersionInfo(HINSTANCE, int, DWORD*, DWORD*);	/* リソースから製品バージョンの取得 */
 
-HICON GetAppIcon( HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSmall = false);
+HICON GetAppIcon(HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSmall = false);
 
-DWORD GetDllVersion( LPCTSTR lpszDllName );	// シェルやコモンコントロール DLL のバージョン番号を取得	// 2006.06.17 ryoji
+DWORD GetDllVersion(LPCTSTR lpszDllName);	// シェルやコモンコントロール DLL のバージョン番号を取得	// 2006.06.17 ryoji
 
 void ChangeCurrentDirectoryToExeDir();
 
 //! カレントディレクトリ移動機能付LoadLibrary
-HMODULE LoadLibraryExedir( LPCTSTR pszDll);
+HMODULE LoadLibraryExedir(LPCTSTR pszDll);
 
 #endif /* SAKURA_MODULE_4F382EF5_EF52_47E1_A774_5CDFB545AB25_H_ */
 /*[EOF]*/

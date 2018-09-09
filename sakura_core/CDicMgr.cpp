@@ -55,7 +55,7 @@ BOOL CDicMgr::Search(
 )
 {
 #ifdef _DEBUG
-	CRunningTimer cRunningTimer( "CDicMgr::Search" );
+	CRunningTimer cRunningTimer("CDicMgr::Search");
 #endif
 	long	i;
 	const wchar_t*	pszDelimit = L" /// ";
@@ -66,53 +66,53 @@ BOOL CDicMgr::Search(
 
 
 	/* 辞書ファイル */
-	if( pszKeyWordHelpFile[0] == _T('\0') ){
+	if (pszKeyWordHelpFile[0] == _T('\0')) {
 		return FALSE;
 	}
 	// 2003.06.23 Moca 相対パスは実行ファイルからのパスとして開く
 	// 2007.05.19 ryoji 相対パスは設定ファイルからのパスを優先
 	CTextInputStream_AbsIni in(pszKeyWordHelpFile);
-	if(!in){
+	if (!in) {
 		return FALSE;
 	}
 
 	wchar_t	szLine[LINEREADBUFSIZE];
-	for(int line=1 ; in; line++ ){	// 2006.04.10 fon
+	for (int line = 1; in; line++) {	// 2006.04.10 fon
 		//1行読み込み
 		{
 			wstring tmp = in.ReadLineW(); //NULL != fgetws( szLine, _countof(szLine), pFile );
-			wcsncpy_s(szLine,_countof(szLine),tmp.c_str(), _TRUNCATE);
+			wcsncpy_s(szLine, _countof(szLine), tmp.c_str(), _TRUNCATE);
 			// auto_strlcpy(szLine,tmp.c_str(), _countof(szLine));
 		}
 
-		pszWork = wcsstr( szLine, pszDelimit );
-		if( NULL != pszWork && szLine[0] != L';' ){
+		pszWork = wcsstr(szLine, pszDelimit);
+		if (NULL != pszWork && szLine[0] != L';') {
 			*pszWork = L'\0';
-			pszWork += wcslen( pszDelimit );
+			pszWork += wcslen(pszDelimit);
 
 			/* 最初のトークンを取得します。 */
-			pszToken = wcstok( szLine, pszKeySeps );
-			while( NULL != pszToken ){
-				nRes = _wcsnicmp( pszKey, pszToken, nCmpLen );	// 2006.04.10 fon
-				if( 0 == nRes ){
+			pszToken = wcstok(szLine, pszKeySeps);
+			while (NULL != pszToken) {
+				nRes = _wcsnicmp(pszKey, pszToken, nCmpLen);	// 2006.04.10 fon
+				if (0 == nRes) {
 					int nLen = (int)wcslen(pszWork);
-					for( i = 0; i < nLen; ++i ){
-						if( WCODE::IsLineDelimiterBasic(pszWork[i]) ){
+					for (i = 0; i < nLen; ++i) {
+						if (WCODE::IsLineDelimiterBasic(pszWork[i])) {
 							pszWork[i] = L'\0';
 							break;
 						}
 					}
 					//キーワードのセット
 					*ppcmemKey = new CNativeW;	// 2006.04.10 fon
-					(*ppcmemKey)->SetString( pszToken );
+					(*ppcmemKey)->SetString(pszToken);
 					//意味のセット
 					*ppcmemMean = new CNativeW;
-					(*ppcmemMean)->SetString( pszWork );
+					(*ppcmemMean)->SetString(pszWork);
 
 					*pLine = line;	// 2006.04.10 fon
 					return TRUE;
 				}
-				pszToken = wcstok( NULL, pszKeySeps );
+				pszToken = wcstok(NULL, pszKeySeps);
 			}
 		}
 	}
@@ -140,36 +140,37 @@ int CDicMgr::HokanSearch(
 {
 	int		nKeyLen;
 	int		nRet;
-	if( pszKeyWordFile[0] == _T('\0') ){
+	if (pszKeyWordFile[0] == _T('\0')) {
 		return 0;
 	}
 
 	CTextInputStream_AbsIni in(pszKeyWordFile);
-	if(!in){
+	if (!in) {
 		return 0;
 	}
-	nKeyLen = wcslen( pszKey );
+	nKeyLen = wcslen(pszKey);
 	wstring szLine;
-	while( in ){
+	while (in) {
 		szLine = in.ReadLineW();
-		if( nKeyLen > (int)szLine.length() ){
+		if (nKeyLen > (int)szLine.length()) {
 			continue;
 		}
 
 		//コメント無視
-		if( szLine[0] == L';' )continue;
+		if (szLine[0] == L';')continue;
 
 		//空行無視
-		if( szLine.length() == 0 )continue;
+		if (szLine.length() == 0)continue;
 
-		if( bHokanLoHiCase ){	/* 英大文字小文字を同一視する */
-			nRet = auto_memicmp( pszKey, szLine.c_str(), nKeyLen );
-		}else{
-			nRet = auto_memcmp( pszKey, szLine.c_str(), nKeyLen );
+		if (bHokanLoHiCase) {	/* 英大文字小文字を同一視する */
+			nRet = auto_memicmp(pszKey, szLine.c_str(), nKeyLen);
 		}
-		if( 0 == nRet ){
-			vKouho.push_back( szLine );
-			if( 0 != nMaxKouho && nMaxKouho <= (int)vKouho.size() ){
+		else {
+			nRet = auto_memcmp(pszKey, szLine.c_str(), nKeyLen);
+		}
+		if (0 == nRet) {
+			vKouho.push_back(szLine);
+			if (0 != nMaxKouho && nMaxKouho <= (int)vKouho.size()) {
 				break;
 			}
 		}

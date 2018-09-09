@@ -41,49 +41,50 @@
 class CTextOutputStream;
 class CEditView;
 
-enum EMacroParamType{
+enum EMacroParamType {
 	EMacroParamTypeNull,
 	EMacroParamTypeInt,
 	EMacroParamTypeStr,
 };
-struct CMacroParam{
+struct CMacroParam {
 	WCHAR*			m_pData;
 	CMacroParam*	m_pNext;
 	int				m_nDataLen;
 	EMacroParamType m_eType;
 
-	CMacroParam():m_pData(NULL), m_pNext(NULL), m_nDataLen(0), m_eType(EMacroParamTypeNull){}
-	CMacroParam( const CMacroParam& obj ){
-		if( obj.m_pData ){
+	CMacroParam() :m_pData(NULL), m_pNext(NULL), m_nDataLen(0), m_eType(EMacroParamTypeNull) {}
+	CMacroParam(const CMacroParam& obj) {
+		if (obj.m_pData) {
 			m_pData = new WCHAR[obj.m_nDataLen + 1];
-		}else{
+		}
+		else {
 			m_pData = NULL;
 		}
 		m_pNext = NULL;
 		m_nDataLen = obj.m_nDataLen;
 		m_eType = obj.m_eType;
 	}
-	~CMacroParam(){
+	~CMacroParam() {
 		Clear();
 	}
-	void Clear(){
+	void Clear() {
 		delete[] m_pData;
 		m_pData = NULL;
 		m_nDataLen = 0;
 		m_eType = EMacroParamTypeNull;
 	}
-	void SetStringParam( const WCHAR* szParam, int nLength = -1 );
-	void SetStringParam( const ACHAR* lParam ){ SetStringParam(to_wchar(lParam)); }
-	void SetIntParam( const int nParam );
+	void SetStringParam(const WCHAR* szParam, int nLength = -1);
+	void SetStringParam(const ACHAR* lParam) { SetStringParam(to_wchar(lParam)); }
+	void SetIntParam(const int nParam);
 };
 
 /*! @brief キーボードマクロの1コマンド
 
 	引数をリスト構造にして、いくつでも持てるようにしてみました。
 	スタックにするのが通例なのかもしれません（よくわかりません）。
-	
+
 	今後、制御構造が入っても困らないようにしようと思ったのですが、挫折しました。
-	
+
 	さて、このクラスは次のような前提で動作している。
 
 	@li 引数のリストを、m_pParamTopからのリスト構造で保持。
@@ -98,32 +99,32 @@ public:
 	/*
 	||  Constructors
 	*/
-	CMacro( EFunctionCode nFuncID );	//	機能IDを指定して初期化
+	CMacro(EFunctionCode nFuncID);	//	機能IDを指定して初期化
 	~CMacro();
 	void ClearMacroParam();
 
-	void SetNext(CMacro* pNext){ m_pNext = pNext; }
-	CMacro* GetNext(){ return m_pNext; }
+	void SetNext(CMacro* pNext) { m_pNext = pNext; }
+	CMacro* GetNext() { return m_pNext; }
 	// 2007.07.20 genta : flags追加
-	bool Exec( CEditView* pcEditView, int flags ) const; //2007.09.30 kobake const追加
-	void Save( HINSTANCE hInstance, CTextOutputStream& out ) const; //2007.09.30 kobake const追加
-	
-	void AddLParam( const LPARAM* lParam, const CEditView* pcEditView  );	//@@@ 2002.2.2 YAZAKI pcEditViewも渡す
-	void AddStringParam( const WCHAR* szParam, int nLength = -1 );
-	void AddStringParam( const ACHAR* lParam ){ return AddStringParam(to_wchar(lParam)); }
-	void AddIntParam( const int nParam );
+	bool Exec(CEditView* pcEditView, int flags) const; //2007.09.30 kobake const追加
+	void Save(HINSTANCE hInstance, CTextOutputStream& out) const; //2007.09.30 kobake const追加
+
+	void AddLParam(const LPARAM* lParam, const CEditView* pcEditView);	//@@@ 2002.2.2 YAZAKI pcEditViewも渡す
+	void AddStringParam(const WCHAR* szParam, int nLength = -1);
+	void AddStringParam(const ACHAR* lParam) { return AddStringParam(to_wchar(lParam)); }
+	void AddIntParam(const int nParam);
 	int GetParamCount() const;
 
-	static bool HandleCommand( CEditView *View, EFunctionCode ID, const WCHAR* Argument[], const int ArgLengths[], const int ArgSize );
-	static bool HandleFunction( CEditView *View, EFunctionCode ID, const VARIANT *Arguments, const int ArgSize, VARIANT &Result);
+	static bool HandleCommand(CEditView *View, EFunctionCode ID, const WCHAR* Argument[], const int ArgLengths[], const int ArgSize);
+	static bool HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Arguments, const int ArgSize, VARIANT &Result);
 	//2009.10.29 syat HandleCommandとHandleFunctionの引数を少しそろえた
 #if 0
 	/*
 	||  Attributes & Operations
 	*/
-	static char* GetFuncInfoByID( HINSTANCE , int , char* , char* );	/* 機能ID→関数名，機能名日本語 */
-	static int GetFuncInfoByName( HINSTANCE , const char* , char* );	/* 関数名→機能ID，機能名日本語 */
-	static BOOL CanFuncIsKeyMacro( int );	/* キーマクロに記録可能な機能かどうかを調べる */
+	static char* GetFuncInfoByID(HINSTANCE, int, char*, char*);	/* 機能ID→関数名，機能名日本語 */
+	static int GetFuncInfoByName(HINSTANCE, const char*, char*);	/* 関数名→機能ID，機能名日本語 */
+	static BOOL CanFuncIsKeyMacro(int);	/* キーマクロに記録可能な機能かどうかを調べる */
 #endif
 
 protected:

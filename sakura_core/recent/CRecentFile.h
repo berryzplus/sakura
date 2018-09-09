@@ -28,18 +28,18 @@
 #include "EditInfo.h" //EditInfo
 
 //! EditInfoの履歴を管理 (RECENT_FOR_FILE)
-class CRecentFile : public CRecentImp<EditInfo>{
+class CRecentFile : public CRecentImp<EditInfo> {
 public:
 	//生成
 	CRecentFile();
 
 	//オーバーライド
-	int				CompareItem( const EditInfo* p1, const EditInfo* p2 ) const;
-	void			CopyItem( EditInfo* dst, const EditInfo* src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
-	bool			DataToReceiveType( const EditInfo** dst, const EditInfo* src ) const;
-	bool			TextToDataType( EditInfo* dst, LPCTSTR pszText ) const;
-	bool			ValidateReceiveType( const EditInfo* ) const;
+	int				CompareItem(const EditInfo* p1, const EditInfo* p2) const;
+	void			CopyItem(EditInfo* dst, const EditInfo* src) const;
+	const TCHAR*	GetItemText(int nIndex) const;
+	bool			DataToReceiveType(const EditInfo** dst, const EditInfo* src) const;
+	bool			TextToDataType(EditInfo* dst, LPCTSTR pszText) const;
+	bool			ValidateReceiveType(const EditInfo*) const;
 	size_t			GetTextMaxLength() const;
 	//固有インターフェース
 	int FindItemByPath(const TCHAR* pszPath) const;

@@ -61,25 +61,25 @@
 //using namespace nsFuncCode;
 
 const uint16_t nsFuncCode::ppszFuncKind[] = {
-//	"--未定義--",	//Oct. 14, 2000 JEPRO 「--未定義--」を表示させないように変更
-//	Oct. 16, 2000 JEPRO 表示の順番をメニューバーのそれに合わせるように少し入れ替えた(下の個別のものも全部)
-	STR_ERR_DLGFUNCLKUP04,	//_T("ファイル操作系"),
-	STR_ERR_DLGFUNCLKUP05,	//_T("編集系"),
-	STR_ERR_DLGFUNCLKUP06,	//_T("カーソル移動系"),
-	STR_ERR_DLGFUNCLKUP07,	//_T("選択系"),		//Oct. 15, 2000 JEPRO 「カーソル移動系」が多くなったので「選択系」として独立化(サブメニュー化は構造上できないので)
-	STR_ERR_DLGFUNCLKUP08,	//_T("矩形選択系"),	//Oct. 17, 2000 JEPRO 「選択系」に一緒にすると多くなりすぎるので「矩形選択系」も独立させた
-	STR_ERR_DLGFUNCLKUP09,	//_T("クリップボード系"),
-	STR_ERR_DLGFUNCLKUP10,	//_T("挿入系"),
-	STR_ERR_DLGFUNCLKUP11,	//_T("変換系"),
-	STR_ERR_DLGFUNCLKUP12,	//_T("検索系"),
-	STR_ERR_DLGFUNCLKUP13,	//_T("モード切り替え系"),
-	STR_ERR_DLGFUNCLKUP14,	//_T("設定系"),
-	STR_ERR_DLGFUNCLKUP15,	//("マクロ系"),
-	//	Oct. 15, 2001 genta カスタムメニューの文字列をは動的に変更可能にするためここからは外す．
-//	_T("カスタムメニュー"),	//Oct. 21, 2000 JEPRO 「その他」から独立分離化
-	STR_ERR_DLGFUNCLKUP16,	//_T("ウィンドウ系"),
-	STR_ERR_DLGFUNCLKUP17,	//_T("支援"),
-	STR_ERR_DLGFUNCLKUP18	//_T("その他")
+	//	"--未定義--",	//Oct. 14, 2000 JEPRO 「--未定義--」を表示させないように変更
+	//	Oct. 16, 2000 JEPRO 表示の順番をメニューバーのそれに合わせるように少し入れ替えた(下の個別のものも全部)
+		STR_ERR_DLGFUNCLKUP04,	//_T("ファイル操作系"),
+		STR_ERR_DLGFUNCLKUP05,	//_T("編集系"),
+		STR_ERR_DLGFUNCLKUP06,	//_T("カーソル移動系"),
+		STR_ERR_DLGFUNCLKUP07,	//_T("選択系"),		//Oct. 15, 2000 JEPRO 「カーソル移動系」が多くなったので「選択系」として独立化(サブメニュー化は構造上できないので)
+		STR_ERR_DLGFUNCLKUP08,	//_T("矩形選択系"),	//Oct. 17, 2000 JEPRO 「選択系」に一緒にすると多くなりすぎるので「矩形選択系」も独立させた
+		STR_ERR_DLGFUNCLKUP09,	//_T("クリップボード系"),
+		STR_ERR_DLGFUNCLKUP10,	//_T("挿入系"),
+		STR_ERR_DLGFUNCLKUP11,	//_T("変換系"),
+		STR_ERR_DLGFUNCLKUP12,	//_T("検索系"),
+		STR_ERR_DLGFUNCLKUP13,	//_T("モード切り替え系"),
+		STR_ERR_DLGFUNCLKUP14,	//_T("設定系"),
+		STR_ERR_DLGFUNCLKUP15,	//("マクロ系"),
+		//	Oct. 15, 2001 genta カスタムメニューの文字列をは動的に変更可能にするためここからは外す．
+	//	_T("カスタムメニュー"),	//Oct. 21, 2000 JEPRO 「その他」から独立分離化
+		STR_ERR_DLGFUNCLKUP16,	//_T("ウィンドウ系"),
+		STR_ERR_DLGFUNCLKUP17,	//_T("支援"),
+		STR_ERR_DLGFUNCLKUP18	//_T("その他")
 };
 const int nsFuncCode::nFuncKindNum = _countof(nsFuncCode::ppszFuncKind);
 
@@ -122,7 +122,7 @@ const EFunctionCode pnFuncList_File[] = {	//Oct. 16, 2000 JEPRO 変数名変更(
 	F_EXITALLEDITORS	,	//編集の全終了	// 2007.02.13 ryoji F_WIN_CLOSEALL→F_EXITALLEDITORS
 	F_EXITALL				//サクラエディタの全終了	//Dec. 27, 2000 JEPRO 追加
 };
-const int nFincList_File_Num = _countof( pnFuncList_File );	//Oct. 16, 2000 JEPRO 配列名変更(FuncList5→FuncList_File)
+const int nFincList_File_Num = _countof(pnFuncList_File);	//Oct. 16, 2000 JEPRO 配列名変更(FuncList5→FuncList_File)
 
 
 /* 編集系 */
@@ -154,7 +154,7 @@ const EFunctionCode pnFuncList_Edit[] = {	//Oct. 16, 2000 JEPRO 変数名変更(
 	F_RECONVERT				//再変換 				2002.04.09 minfu
 //		F_WORDSREFERENCE		//単語リファレンス
 };
-const int nFincList_Edit_Num = _countof( pnFuncList_Edit );	//Oct. 16, 2000 JEPRO 変数名変更(List3→List_Edit)
+const int nFincList_Edit_Num = _countof(pnFuncList_Edit);	//Oct. 16, 2000 JEPRO 変数名変更(List3→List_Edit)
 
 
 /* カーソル移動系 */
@@ -199,7 +199,7 @@ const EFunctionCode pnFuncList_Move[] = {	//Oct. 16, 2000 JEPRO 変数名変更(
 	F_MODIFYLINE_NEXT	,	//次の変更行へ移動
 	F_MODIFYLINE_PREV	,	//前の変更行へ移動
 };
-const int nFincList_Move_Num = _countof( pnFuncList_Move );	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
+const int nFincList_Move_Num = _countof(pnFuncList_Move);	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
 
 
 /* 選択系 */	//Oct. 15, 2000 JEPRO 「カーソル移動系」から(選択)を移動
@@ -231,32 +231,32 @@ const EFunctionCode pnFuncList_Select[] = {
 	F_MODIFYLINE_NEXT_SEL	,	//(範囲選択)次の変更行へ移動
 	F_MODIFYLINE_PREV_SEL	,	//(範囲選択)前の変更行へ移動
 };
-const int nFincList_Select_Num = _countof( pnFuncList_Select );
+const int nFincList_Select_Num = _countof(pnFuncList_Select);
 
 
 /* 矩形選択系 */	//Oct. 17, 2000 JEPRO (矩形選択)が新設され次第ここにおく
 const EFunctionCode pnFuncList_Box[] = {
-//	F_BOXSELALL			,	//矩形ですべて選択
-	F_BEGIN_BOX			,	//矩形範囲選択開始
-	F_UP_BOX			,	//(矩形選択)カーソル上移動
-	F_DOWN_BOX			,	//(矩形選択)カーソル下移動
-	F_LEFT_BOX			,	//(矩形選択)カーソル左移動
-	F_RIGHT_BOX			,	//(矩形選択)カーソル右移動
-	F_UP2_BOX			,	//(矩形選択)カーソル上移動(２行ごと)
-	F_DOWN2_BOX			,	//(矩形選択)カーソル下移動(２行ごと)
-	F_WORDLEFT_BOX		,	//(矩形選択)単語の左端に移動
-	F_WORDRIGHT_BOX		,	//(矩形選択)単語の右端に移動
-	F_GOLOGICALLINETOP_BOX	,	//(矩形選択)行頭に移動(改行単位)
-	F_GOLINETOP_BOX		,	//(矩形選択)行頭に移動(折り返し単位)
-	F_GOLINEEND_BOX		,	//(矩形選択)行末に移動(折り返し単位)
-	F_HalfPageUp_BOX	,	//(矩形選択)半ページアップ
-	F_HalfPageDown_BOX	,	//(矩形選択)半ページダウン
-	F_1PageUp_BOX		,	//(矩形選択)１ページアップ
-	F_1PageDown_BOX		,	//(矩形選択)１ページダウン
-	F_GOFILETOP_BOX		,	//(矩形選択)ファイルの先頭に移動
-	F_GOFILEEND_BOX			//(矩形選択)ファイルの最後に移動
+	//	F_BOXSELALL			,	//矩形ですべて選択
+		F_BEGIN_BOX			,	//矩形範囲選択開始
+		F_UP_BOX			,	//(矩形選択)カーソル上移動
+		F_DOWN_BOX			,	//(矩形選択)カーソル下移動
+		F_LEFT_BOX			,	//(矩形選択)カーソル左移動
+		F_RIGHT_BOX			,	//(矩形選択)カーソル右移動
+		F_UP2_BOX			,	//(矩形選択)カーソル上移動(２行ごと)
+		F_DOWN2_BOX			,	//(矩形選択)カーソル下移動(２行ごと)
+		F_WORDLEFT_BOX		,	//(矩形選択)単語の左端に移動
+		F_WORDRIGHT_BOX		,	//(矩形選択)単語の右端に移動
+		F_GOLOGICALLINETOP_BOX	,	//(矩形選択)行頭に移動(改行単位)
+		F_GOLINETOP_BOX		,	//(矩形選択)行頭に移動(折り返し単位)
+		F_GOLINEEND_BOX		,	//(矩形選択)行末に移動(折り返し単位)
+		F_HalfPageUp_BOX	,	//(矩形選択)半ページアップ
+		F_HalfPageDown_BOX	,	//(矩形選択)半ページダウン
+		F_1PageUp_BOX		,	//(矩形選択)１ページアップ
+		F_1PageDown_BOX		,	//(矩形選択)１ページダウン
+		F_GOFILETOP_BOX		,	//(矩形選択)ファイルの先頭に移動
+		F_GOFILEEND_BOX			//(矩形選択)ファイルの最後に移動
 };
-const int nFincList_Box_Num = _countof( pnFuncList_Box );
+const int nFincList_Box_Num = _countof(pnFuncList_Box);
 
 
 /* クリップボード系 */
@@ -279,7 +279,7 @@ const EFunctionCode pnFuncList_Clip[] = {	//Oct. 16, 2000 JEPRO 変数名変更(
 	F_COPYTAG					,	//このファイルのパス名とカーソル位置をコピー	//Sept. 14, 2000 JEPRO メニューに合わせて下に移動
 	F_CREATEKEYBINDLIST				//キー割り当て一覧をコピー	//Sept. 15, 2000 JEPRO IDM_TESTのままではうまくいかないのでFに変えて登録	//Dec. 25, 2000 復活
 };
-const int nFincList_Clip_Num = _countof( pnFuncList_Clip );	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
+const int nFincList_Clip_Num = _countof(pnFuncList_Clip);	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
 
 
 /* 挿入系 */
@@ -288,7 +288,7 @@ const EFunctionCode pnFuncList_Insert[] = {
 	F_INS_TIME				,	// 時刻挿入
 	F_CTRL_CODE_DIALOG			//コントロールコードの入力
 };
-const int nFincList_Insert_Num = _countof( pnFuncList_Insert );
+const int nFincList_Insert_Num = _countof(pnFuncList_Insert);
 
 
 /* 変換系 */
@@ -323,7 +323,7 @@ const EFunctionCode pnFuncList_Convert[] = {	//Oct. 16, 2000 JEPRO 変数名変�
 	//Sept. 30, 2000JEPRO コメントアウトされてあったのを復活させた(動作しないのかも？)
 	//Oct. 17, 2000 jepro 説明を「選択部分をUUENCODEデコード」から変更
 };
-const int nFincList_Convert_Num = _countof( pnFuncList_Convert );	//Oct. 16, 2000 JEPRO 変数名変更(List6→List_Convert)
+const int nFincList_Convert_Num = _countof(pnFuncList_Convert);	//Oct. 16, 2000 JEPRO 変数名変更(List6→List_Convert)
 
 
 /* 検索系 */
@@ -367,7 +367,7 @@ const EFunctionCode pnFuncList_Search[] = {	//Oct. 16, 2000 JEPRO 変数名変�
 	F_FUNCLIST_NEXT		,	//次の関数リストマーク
 	F_FUNCLIST_PREV		,	//前の関数リストマーク
 };
-const int nFincList_Search_Num = _countof( pnFuncList_Search );	//Oct. 16, 2000 JEPRO 変数名変更(List4→List_Search)
+const int nFincList_Search_Num = _countof(pnFuncList_Search);	//Oct. 16, 2000 JEPRO 変数名変更(List4→List_Search)
 
 
 /* モード切り替え系 */	//Oct. 16, 2000 JEPRO 変数名変更(List8→List_Mode)
@@ -379,7 +379,7 @@ const EFunctionCode pnFuncList_Mode[] = {
 	F_CHGMOD_EOL_CR		,	//入力改行コード指定(CR)	2003.06.23 Moca
 	F_CANCEL_MODE			//各種モードの取り消し
 };
-const int nFincList_Mode_Num = _countof( pnFuncList_Mode );	//Oct. 16, 2000 JEPRO 変数名変更(List8→List_Mode)
+const int nFincList_Mode_Num = _countof(pnFuncList_Mode);	//Oct. 16, 2000 JEPRO 変数名変更(List8→List_Mode)
 
 
 /* 設定系 */
@@ -403,7 +403,7 @@ const EFunctionCode pnFuncList_Set[] = {	//Oct. 16, 2000 JEPRO 変数名変更(L
 	F_TMPWRAPWINDOW		,	//右端で折り返す（一時設定）		// 2008.05.30 nasukoji
 	F_SELECT_COUNT_MODE		//文字カウント設定	// 2009.07.06 syat
 };
-int		nFincList_Set_Num = _countof( pnFuncList_Set );	//Oct. 16, 2000 JEPRO 変数名変更(List9→List_Set)
+int		nFincList_Set_Num = _countof(pnFuncList_Set);	//Oct. 16, 2000 JEPRO 変数名変更(List9→List_Set)
 
 
 /* マクロ系 */
@@ -419,7 +419,7 @@ const EFunctionCode pnFuncList_Macro[] = {	//Oct. 16, 2000 JEPRO 変数名変更
 //	To Here Sept. 20, 2000
 
 };
-const int nFincList_Macro_Num = _countof( pnFuncList_Macro);	//Oct. 16, 2000 JEPRO 変数名変更(List10→List_Macro)
+const int nFincList_Macro_Num = _countof(pnFuncList_Macro);	//Oct. 16, 2000 JEPRO 変数名変更(List10→List_Macro)
 
 
 /* カスタムメニュー */	//Oct. 21, 2000 JEPRO 「その他」から分離独立化
@@ -453,7 +453,7 @@ const EFunctionCode pnFuncList_Menu[] = {
 	F_CUSTMENU_23				,	/* カスタムメニュー23 */
 	F_CUSTMENU_24				 	/* カスタムメニュー24 */
 };
-const int nFincList_Menu_Num = _countof( pnFuncList_Menu );	//Oct. 21, 2000 JEPRO 「その他」から分離独立化
+const int nFincList_Menu_Num = _countof(pnFuncList_Menu);	//Oct. 21, 2000 JEPRO 「その他」から分離独立化
 #endif
 
 /* ウィンドウ系 */
@@ -466,7 +466,7 @@ const EFunctionCode pnFuncList_Win[] = {	//Oct. 16, 2000 JEPRO 変数名変更(L
 	F_TAB_CLOSEOTHER	,	//このタブ以外を閉じる	// 2008.11.22 syat
 	F_NEXTWINDOW		,	//次のウィンドウ
 	F_PREVWINDOW		,	//前のウィンドウ
- 	F_WINLIST			,	//開いているウィンドウ一覧ポップアップ表示	// 2006.03.23 fon
+	F_WINLIST			,	//開いているウィンドウ一覧ポップアップ表示	// 2006.03.23 fon
 	F_DLGWINLIST		,	//ウィンドウ一覧表示
 	F_CASCADE			,	//重ねて表示
 	F_TILE_V			,	//上下に並べて表示
@@ -489,7 +489,7 @@ const EFunctionCode pnFuncList_Win[] = {	//Oct. 16, 2000 JEPRO 変数名変更(L
 	F_REDRAW			,	//再描画
 	F_WIN_OUTPUT		,	//アウトプットウィンドウ表示
 };
-const int nFincList_Win_Num = _countof( pnFuncList_Win );	//Oct. 16, 2000 JEPRO 変数名変更(List7→List_Win)
+const int nFincList_Win_Num = _countof(pnFuncList_Win);	//Oct. 16, 2000 JEPRO 変数名変更(List7→List_Win)
 
 
 /* 支援 */
@@ -504,14 +504,14 @@ const EFunctionCode pnFuncList_Support[] = {	//Oct. 16, 2000 JEPRO 変数名変�
 	F_EXTHTMLHELP				,	/* 外部HTMLヘルプ */
 	F_ABOUT							/* バージョン情報 */	//Dec. 24, 2000 JEPRO 追加
 };
-const int nFincList_Support_Num = _countof( pnFuncList_Support );	//Oct. 16, 2000 JEPRO 変数名変更(List11→List_Support)
+const int nFincList_Support_Num = _countof(pnFuncList_Support);	//Oct. 16, 2000 JEPRO 変数名変更(List11→List_Support)
 
 
 /* その他 */	//Oct. 16, 2000 JEPRO 変数名変更(List12→List_Others)
 const EFunctionCode pnFuncList_Others[] = {
 	F_DISABLE				//Oct. 21, 2000 JEPRO 何もないとエラーになってしまうのでダミーで[未定義]を入れておく
 };
-const int nFincList_Others_Num = _countof( pnFuncList_Others );	//Oct. 16, 2000 JEPRO 変数名変更(List12→List_Others)
+const int nFincList_Others_Num = _countof(pnFuncList_Others);	//Oct. 16, 2000 JEPRO 変数名変更(List12→List_Others)
 
 // 特殊機能
 const EFunctionCode nsFuncCode::pnFuncList_Special[] = {
@@ -528,46 +528,46 @@ const int nsFuncCode::nFuncList_Special_Num = (int)_countof(nsFuncCode::pnFuncLi
 
 
 const int nsFuncCode::pnFuncListNumArr[] = {
-//	nFincList_Undef_Num,	//Oct. 14, 2000 JEPRO 「--未定義--」を表示させないように変更	//Oct. 16, 2000 JEPRO 変数名変更(List0→List_Undef)
-	nFincList_File_Num,		/* ファイル操作系 */	//Oct. 16, 2000 JEPRO 変数名変更(List5→List_File)
-	nFincList_Edit_Num,		/* 編集系 */			//Oct. 16, 2000 JEPRO 変数名変更(List3→List_Edit)
-	nFincList_Move_Num,		/* カーソル移動系 */	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
-	nFincList_Select_Num,	/* 選択系 */			//Oct. 15, 2000 JEPRO 「カーソル移動系」から(選択)を移動
-	nFincList_Box_Num,		/* 矩形選択系 */		//Oct. 17, 2000 JEPRO (矩形選択)が新設され次第ここにおく
-	nFincList_Clip_Num,		/* クリップボード系 */	//Oct. 16, 2000 JEPRO 変数名変更(List2→List_Clip)
-	nFincList_Insert_Num,	/* 挿入系 */
-	nFincList_Convert_Num,	/* 変換系 */			//Oct. 16, 2000 JEPRO 変数名変更(List6→List_Convert)
-	nFincList_Search_Num,	/* 検索系 */			//Oct. 16, 2000 JEPRO 変数名変更(List4→List_Search)
-	nFincList_Mode_Num,		/* モード切り替え系 */	//Oct. 16, 2000 JEPRO 変数名変更(List8→List_Mode)
-	nFincList_Set_Num,		/* 設定系 */			//Oct. 16, 2000 JEPRO 変数名変更(List9→List_Set)
-	nFincList_Macro_Num,	/* マクロ系 */			//Oct. 16, 2000 JEPRO 変数名変更(List10→List_Macro)
-//	カスタムメニューの文字列を動的に変更可能にするためこれは削除
-//	nFincList_Menu_Num,		/* カスタムメニュー */	//Oct. 21, 2000 JEPRO 「その他」から分離独立化
-	nFincList_Win_Num,		/* ウィンドウ系 */		//Oct. 16, 2000 JEPRO 変数名変更(List7→List_Win)
-	nFincList_Support_Num,	/* 支援 */				//Oct. 16, 2000 JEPRO 変数名変更(List11→List_Support)
-	nFincList_Others_Num	/* その他 */			//Oct. 16, 2000 JEPRO 変数名変更(List12→List_Others)
+	//	nFincList_Undef_Num,	//Oct. 14, 2000 JEPRO 「--未定義--」を表示させないように変更	//Oct. 16, 2000 JEPRO 変数名変更(List0→List_Undef)
+		nFincList_File_Num,		/* ファイル操作系 */	//Oct. 16, 2000 JEPRO 変数名変更(List5→List_File)
+		nFincList_Edit_Num,		/* 編集系 */			//Oct. 16, 2000 JEPRO 変数名変更(List3→List_Edit)
+		nFincList_Move_Num,		/* カーソル移動系 */	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
+		nFincList_Select_Num,	/* 選択系 */			//Oct. 15, 2000 JEPRO 「カーソル移動系」から(選択)を移動
+		nFincList_Box_Num,		/* 矩形選択系 */		//Oct. 17, 2000 JEPRO (矩形選択)が新設され次第ここにおく
+		nFincList_Clip_Num,		/* クリップボード系 */	//Oct. 16, 2000 JEPRO 変数名変更(List2→List_Clip)
+		nFincList_Insert_Num,	/* 挿入系 */
+		nFincList_Convert_Num,	/* 変換系 */			//Oct. 16, 2000 JEPRO 変数名変更(List6→List_Convert)
+		nFincList_Search_Num,	/* 検索系 */			//Oct. 16, 2000 JEPRO 変数名変更(List4→List_Search)
+		nFincList_Mode_Num,		/* モード切り替え系 */	//Oct. 16, 2000 JEPRO 変数名変更(List8→List_Mode)
+		nFincList_Set_Num,		/* 設定系 */			//Oct. 16, 2000 JEPRO 変数名変更(List9→List_Set)
+		nFincList_Macro_Num,	/* マクロ系 */			//Oct. 16, 2000 JEPRO 変数名変更(List10→List_Macro)
+	//	カスタムメニューの文字列を動的に変更可能にするためこれは削除
+	//	nFincList_Menu_Num,		/* カスタムメニュー */	//Oct. 21, 2000 JEPRO 「その他」から分離独立化
+		nFincList_Win_Num,		/* ウィンドウ系 */		//Oct. 16, 2000 JEPRO 変数名変更(List7→List_Win)
+		nFincList_Support_Num,	/* 支援 */				//Oct. 16, 2000 JEPRO 変数名変更(List11→List_Support)
+		nFincList_Others_Num	/* その他 */			//Oct. 16, 2000 JEPRO 変数名変更(List12→List_Others)
 };
 const EFunctionCode* nsFuncCode::ppnFuncListArr[] = {
-//	pnFuncList_Undef,	//Oct. 14, 2000 JEPRO 「--未定義--」を表示させないように変更	//Oct. 16, 2000 JEPRO 変数名変更(List0→List_Undef)
-	pnFuncList_File,	/* ファイル操作系 */	//Oct. 16, 2000 JEPRO 変数名変更(List5→List_File)
-	pnFuncList_Edit,	/* 編集系 */			//Oct. 16, 2000 JEPRO 変数名変更(List3→List_Edit)
-	pnFuncList_Move,	/* カーソル移動系 */	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
-	pnFuncList_Select,/* 選択系 */			//Oct. 15, 2000 JEPRO 「カーソル移動系」から(選択)を移動  (矩形選択)は新設され次第ここにおく
-	pnFuncList_Box,	/* 矩形選択系 */		//Oct. 17, 2000 JEPRO (矩形選択)が新設され次第ここにおく
-	pnFuncList_Clip,	/* クリップボード系 */	//Oct. 16, 2000 JEPRO 変数名変更(List2→List_Clip)
-	pnFuncList_Insert,/* 挿入系 */
-	pnFuncList_Convert,/* 変換系 */			//Oct. 16, 2000 JEPRO 変数名変更(List6→List_Convert)
-	pnFuncList_Search,/* 検索系 */			//Oct. 16, 2000 JEPRO 変数名変更(List4→List_Search)
-	pnFuncList_Mode,	/* モード切り替え系 */	//Oct. 16, 2000 JEPRO 変数名変更(List8→List_Mode)
-	pnFuncList_Set,	/* 設定系 */			//Oct. 16, 2000 JEPRO 変数名変更(List9→List_Set)
-	pnFuncList_Macro,	/* マクロ系 */			//Oct. 16, 2000 JEPRO 変数名変更(List10→List_Macro)
-//	カスタムメニューの文字列を動的に変更可能にするためこれは削除
-//	pnFuncList_Menu,	/* カスタムメニュー */	//Oct. 21, 2000 JEPRO「その他」から分離独立化
-	pnFuncList_Win,	/* ウィンドウ系 */		//Oct. 16, 2000 JEPRO 変数名変更(List7→List_Win)
-	pnFuncList_Support,/* 支援 */				//Oct. 16, 2000 JEPRO 変数名変更(List11→List_Support)
-	pnFuncList_Others	/* その他 */			//Oct. 16, 2000 JEPRO 変数名変更(List12→List_Others)
+	//	pnFuncList_Undef,	//Oct. 14, 2000 JEPRO 「--未定義--」を表示させないように変更	//Oct. 16, 2000 JEPRO 変数名変更(List0→List_Undef)
+		pnFuncList_File,	/* ファイル操作系 */	//Oct. 16, 2000 JEPRO 変数名変更(List5→List_File)
+		pnFuncList_Edit,	/* 編集系 */			//Oct. 16, 2000 JEPRO 変数名変更(List3→List_Edit)
+		pnFuncList_Move,	/* カーソル移動系 */	//Oct. 16, 2000 JEPRO 変数名変更(List1→List_Move)
+		pnFuncList_Select,/* 選択系 */			//Oct. 15, 2000 JEPRO 「カーソル移動系」から(選択)を移動  (矩形選択)は新設され次第ここにおく
+		pnFuncList_Box,	/* 矩形選択系 */		//Oct. 17, 2000 JEPRO (矩形選択)が新設され次第ここにおく
+		pnFuncList_Clip,	/* クリップボード系 */	//Oct. 16, 2000 JEPRO 変数名変更(List2→List_Clip)
+		pnFuncList_Insert,/* 挿入系 */
+		pnFuncList_Convert,/* 変換系 */			//Oct. 16, 2000 JEPRO 変数名変更(List6→List_Convert)
+		pnFuncList_Search,/* 検索系 */			//Oct. 16, 2000 JEPRO 変数名変更(List4→List_Search)
+		pnFuncList_Mode,	/* モード切り替え系 */	//Oct. 16, 2000 JEPRO 変数名変更(List8→List_Mode)
+		pnFuncList_Set,	/* 設定系 */			//Oct. 16, 2000 JEPRO 変数名変更(List9→List_Set)
+		pnFuncList_Macro,	/* マクロ系 */			//Oct. 16, 2000 JEPRO 変数名変更(List10→List_Macro)
+	//	カスタムメニューの文字列を動的に変更可能にするためこれは削除
+	//	pnFuncList_Menu,	/* カスタムメニュー */	//Oct. 21, 2000 JEPRO「その他」から分離独立化
+		pnFuncList_Win,	/* ウィンドウ系 */		//Oct. 16, 2000 JEPRO 変数名変更(List7→List_Win)
+		pnFuncList_Support,/* 支援 */				//Oct. 16, 2000 JEPRO 変数名変更(List11→List_Support)
+		pnFuncList_Others	/* その他 */			//Oct. 16, 2000 JEPRO 変数名変更(List12→List_Others)
 };
-const int nsFuncCode::nFincListNumArrNum = _countof( nsFuncCode::pnFuncListNumArr );
+const int nsFuncCode::nFincListNumArrNum = _countof(nsFuncCode::pnFuncListNumArr);
 
 
 
@@ -584,11 +584,11 @@ const int nsFuncCode::nFincListNumArrNum = _countof( nsFuncCode::pnFuncListNumAr
 	@par history
 	2001.12.22 YAZAKI sakura.hhを参照するように変更
 */
-int FuncID_To_HelpContextID( EFunctionCode nFuncID )
+int FuncID_To_HelpContextID(EFunctionCode nFuncID)
 {
-	switch( nFuncID ){
+	switch (nFuncID) {
 
-	/* ファイル操作系 */
+		/* ファイル操作系 */
 	case F_FILENEW:				return HLP000025;			//新規作成
 	case F_FILENEW_NEWWINDOW:	return HLP000339;			//新規ウインドウで開く
 	case F_FILEOPEN:			return HLP000015;			//開く
@@ -980,13 +980,16 @@ int FuncID_To_HelpContextID( EFunctionCode nFuncID )
 
 	default:
 		// From Here 2003.09.23 Moca
-		if( IDM_SELMRU <= nFuncID && nFuncID < IDM_SELMRU + MAX_MRU ){
+		if (IDM_SELMRU <= nFuncID && nFuncID < IDM_SELMRU + MAX_MRU) {
 			return HLP000029;	//最近使ったファイル
-		}else if( IDM_SELOPENFOLDER <= nFuncID && nFuncID < IDM_SELOPENFOLDER + MAX_OPENFOLDER ){
+		}
+		else if (IDM_SELOPENFOLDER <= nFuncID && nFuncID < IDM_SELOPENFOLDER + MAX_OPENFOLDER) {
 			return HLP000023;	//最近使ったフォルダ
-		}else if( IDM_SELWINDOW <= nFuncID && nFuncID < IDM_SELWINDOW + MAX_EDITWINDOWS ){
+		}
+		else if (IDM_SELWINDOW <= nFuncID && nFuncID < IDM_SELWINDOW + MAX_EDITWINDOWS) {
 			return HLP000097;	//ウィンドウリスト
-		}else if( F_USERMACRO_0 <= nFuncID && nFuncID < F_USERMACRO_0 + MAX_CUSTMACRO ){
+		}
+		else if (F_USERMACRO_0 <= nFuncID && nFuncID < F_USERMACRO_0 + MAX_CUSTMACRO) {
 			return HLP000202;	//登録済みマクロ	// 2006.10.08 ryoji
 		}
 		// To Here 2003.09.23 Moca
@@ -999,59 +1002,68 @@ int FuncID_To_HelpContextID( EFunctionCode nFuncID )
 
 
 /* 機能が利用可能か調べる */
-bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EFunctionCode nId )
+bool IsFuncEnable(const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EFunctionCode nId)
 {
 	/* 書き換え禁止のときを一括チェック */
-	if( pcEditDoc->IsModificationForbidden( nId ) )
+	if (pcEditDoc->IsModificationForbidden(nId))
 		return false;
 
-	switch( nId ){
+	switch (nId) {
 	case F_RECKEYMACRO:	/* キーマクロの記録開始／終了 */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+		if (pShareData->m_sFlags.m_bRecordingKeyMacro) {	/* キーボードマクロの記録中 */
+			if (pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd()) {	/* キーボードマクロを記録中のウィンドウ */
 				return true;
-			}else{
+			}
+			else {
 				return false;
 			}
-		}else{
+		}
+		else {
 			return true;
 		}
 	case F_SAVEKEYMACRO:	/* キーマクロの保存 */
 		//	Jun. 16, 2002 genta
 		//	キーマクロエンジン以外のマクロを読み込んでいるときは
 		//	実行はできるが保存はできない．
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+		if (pShareData->m_sFlags.m_bRecordingKeyMacro) {	/* キーボードマクロの記録中 */
+			if (pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd()) {	/* キーボードマクロを記録中のウィンドウ */
 				return true;
-			}else{
+			}
+			else {
 				return false;
 			}
-		}else{
+		}
+		else {
 			return CEditApp::getInstance()->m_pcSMacroMgr->IsSaveOk();
 		}
 	case F_EXECKEYMACRO:	/* キーマクロの実行 */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+		if (pShareData->m_sFlags.m_bRecordingKeyMacro) {	/* キーボードマクロの記録中 */
+			if (pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd()) {	/* キーボードマクロを記録中のウィンドウ */
 				return true;
-			}else{
+			}
+			else {
 				return false;
 			}
-		}else{
+		}
+		else {
 			//@@@ 2002.1.24 YAZAKI m_szKeyMacroFileNameにファイル名がコピーされているかどうか。
-			if (pShareData->m_Common.m_sMacro.m_szKeyMacroFileName[0] ) {
+			if (pShareData->m_Common.m_sMacro.m_szKeyMacroFileName[0]) {
 				return true;
-			}else{
+			}
+			else {
 				return false;
 			}
 		}
 	case F_LOADKEYMACRO:	/* キーマクロの読み込み */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+		if (pShareData->m_sFlags.m_bRecordingKeyMacro) {	/* キーボードマクロの記録中 */
+			if (pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd()) {	/* キーボードマクロを記録中のウィンドウ */
 				return true;
-			}else{
+			}
+			else {
 				return false;
 			}
-		}else{
+		}
+		else {
 			return true;
 		}
 	case F_EXECEXTMACRO:	/* 名前を指定してマクロ実行 */
@@ -1060,26 +1072,28 @@ bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EF
 	case F_SEARCH_CLEARMARK:	//検索マークのクリア
 		return true;
 
-	// 02/06/26 ai Start
+		// 02/06/26 ai Start
 	case F_JUMP_SRCHSTARTPOS:	// 検索開始位置へ戻る
-		if( pcEditDoc->m_pcEditWnd->GetActiveView().m_ptSrchStartPos_PHY.BothNatural() ){
+		if (pcEditDoc->m_pcEditWnd->GetActiveView().m_ptSrchStartPos_PHY.BothNatural()) {
 			return true;
-		}else{
+		}
+		else {
 			return false;
 		}
-	// 02/06/26 ai End
+		// 02/06/26 ai End
 
 	case F_COMPARE:	/* ファイル内容比較 */
-		if( 2 <= pShareData->m_sNodes.m_nEditArrNum ){
+		if (2 <= pShareData->m_sNodes.m_nEditArrNum) {
 			return true;
-		}else{
+		}
+		else {
 			return false;
 		}
 
 	case F_DIFF_NEXT:	/* 次の差分へ */	//@@@ 2002.05.25 MIK
 	case F_DIFF_PREV:	/* 前の差分へ */	//@@@ 2002.05.25 MIK
 	case F_DIFF_RESET:	/* 差分の全解除 */	//@@@ 2002.05.25 MIK
-		if( !CDiffManager::getInstance()->IsDiffUse() ) return false;
+		if (!CDiffManager::getInstance()->IsDiffUse()) return false;
 		return true;
 	case F_DIFF_DIALOG:	/* DIFF差分表示 */	//@@@ 2002.05.25 MIK
 		//if( pcEditDoc->IsModified() ) return false;
@@ -1104,23 +1118,26 @@ bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EF
 	case F_1PageDown_BOX:
 	case F_GOFILETOP_BOX:
 	case F_GOFILEEND_BOX:
-		if( pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH ){	/* 現在のフォントは固定幅フォントである */
+		if (pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH) {	/* 現在のフォントは固定幅フォントである */
 			return true;
-		}else{
+		}
+		else {
 			return false;
 		}
 	case F_PASTEBOX:
 		/* クリップボードから貼り付け可能か？ */
-		if( pcEditDoc->m_cDocEditor.IsEnablePaste() && pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH ){
+		if (pcEditDoc->m_cDocEditor.IsEnablePaste() && pShareData->m_Common.m_sView.m_bFontIs_FIXED_PITCH) {
 			return true;
-		}else{
+		}
+		else {
 			return false;
 		}
 	case F_PASTE:
 		/* クリップボードから貼り付け可能か？ */
-		if( pcEditDoc->m_cDocEditor.IsEnablePaste() ){
+		if (pcEditDoc->m_cDocEditor.IsEnablePaste()) {
 			return true;
-		}else{
+		}
+		else {
 			return false;
 		}
 
@@ -1128,15 +1145,16 @@ bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EF
 	case F_GREP_DIALOG:	/* Grep */
 	case F_GREP_REPLACE_DLG:
 		/* 編集ウィンドウの上限チェック */
-		if( pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS ){	//最大値修正	//@@@ 2003.05.31 MIK
+		if (pShareData->m_sNodes.m_nEditArrNum >= MAX_EDITWINDOWS) {	//最大値修正	//@@@ 2003.05.31 MIK
 			return false;
-		}else{
+		}
+		else {
 			return true;
 		}
 
 	case F_FILESAVE:	/* 上書き保存 */
-		if( !CAppMode::getInstance()->IsViewMode() ){	/* ビューモード */
-			if( pcEditDoc->m_cDocEditor.IsModified() ){	/* 変更フラグ */
+		if (!CAppMode::getInstance()->IsViewMode()) {	/* ビューモード */
+			if (pcEditDoc->m_cDocEditor.IsModified()) {	/* 変更フラグ */
 				return true;
 			}
 			else if (pcEditDoc->m_cDocFile.IsChgCodeSet()) {	// 文字コードの変更
@@ -1144,13 +1162,15 @@ bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EF
 			}
 			else {
 				/* 無変更でも上書きするか */
-				if( !pShareData->m_Common.m_sFile.m_bEnableUnmodifiedOverwrite ){
+				if (!pShareData->m_Common.m_sFile.m_bEnableUnmodifiedOverwrite) {
 					return false;
-				}else{
+				}
+				else {
 					return true;
 				}
 			}
-		}else{
+		}
+		else {
 			return false;
 		}
 	case F_COPYLINES:				//選択範囲内全行コピー
@@ -1210,30 +1230,31 @@ bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EF
 		return pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath();	// 現在編集中のファイルのパス名をクリップボードにコピーできるか
 
 	case F_JUMPHIST_PREV:	//	移動履歴: 前へ
-		if( pcEditDoc->m_pcEditWnd->GetActiveView().m_cHistory->CheckPrev() )
+		if (pcEditDoc->m_pcEditWnd->GetActiveView().m_cHistory->CheckPrev())
 			return true;
 		else
 			return false;
 	case F_JUMPHIST_NEXT:	//	移動履歴: 次へ
-		if( pcEditDoc->m_pcEditWnd->GetActiveView().m_cHistory->CheckNext() )
+		if (pcEditDoc->m_pcEditWnd->GetActiveView().m_cHistory->CheckNext())
 			return true;
 		else
 			return false;
 	case F_JUMPHIST_SET:	//	現在位置を移動履歴に登録
 		return true;
-	// 20100402 Moca (無題)もダイレクトタグジャンプできるように
+		// 20100402 Moca (無題)もダイレクトタグジャンプできるように
 	case F_DIRECT_TAGJUMP:	//ダイレクトタグジャンプ	//@@@ 2003.04.15 MIK
 	case F_TAGJUMP_KEYWORD:	//キーワードを指定してダイレクトタグジャンプ	//@@@ 2005.03.31 MIK
 	//	2003.05.12 MIK タグファイル作成先を選べるようにしたので、常に作成可能とする
 //	case F_TAGS_MAKE:	//タグファイルの作成	//@@@ 2003.04.13 MIK
-		if( false == CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode
-			&& pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath() ){
+		if (false == CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode
+			&& pcEditDoc->m_cDocFile.GetFilePathClass().IsValidPath()) {
 			return true;
-		}else{
+		}
+		else {
 			return false;
 		}
-	
-	//タブモード時はウインドウ並べ替え禁止です。	@@@ 2003.06.12 MIK
+
+		//タブモード時はウインドウ並べ替え禁止です。	@@@ 2003.06.12 MIK
 	case F_TILE_H:
 	case F_TILE_V:
 	case F_CASCADE:
@@ -1250,12 +1271,12 @@ bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EF
 	case F_GROUPCLOSE:		// 2007.06.20 ryoji 追加
 	case F_NEXTGROUP:		// 2007.06.20 ryoji 追加
 	case F_PREVGROUP:		// 2007.06.20 ryoji 追加
-		return ( pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin );
+		return (pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin);
 	case F_TAB_SEPARATE:	// 2007.06.20 ryoji 追加
 	case F_TAB_JOINTNEXT:	// 2007.06.20 ryoji 追加
 	case F_TAB_JOINTPREV:	// 2007.06.20 ryoji 追加
 	case F_FILENEW_NEWWINDOW:	// 2011.11.15 syat 追加
-		return ( pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin );
+		return (pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin);
 	}
 	return true;
 }
@@ -1263,14 +1284,14 @@ bool IsFuncEnable( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EF
 
 
 /* 機能がチェック状態か調べる */
-bool IsFuncChecked( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EFunctionCode nId )
+bool IsFuncChecked(const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, EFunctionCode nId)
 {
 	CEditWnd* pCEditWnd;
 	// Modified by KEITA for WIN64 2003.9.6
-	pCEditWnd = ( CEditWnd* )::GetWindowLongPtr( CEditWnd::getInstance()->GetHwnd(), GWLP_USERDATA );
-//@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことにより、プレビュー判定削除
+	pCEditWnd = (CEditWnd*)::GetWindowLongPtr(CEditWnd::getInstance()->GetHwnd(), GWLP_USERDATA);
+	//@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたことにより、プレビュー判定削除
 	ECodeType eDocCode = pcEditDoc->GetDocumentEncoding();
-	switch( nId ){
+	switch (nId) {
 	case F_FILE_REOPEN_SJIS:		return CODE_SJIS == eDocCode;
 	case F_FILE_REOPEN_JIS:			return CODE_JIS == eDocCode;
 	case F_FILE_REOPEN_EUC:			return CODE_EUC == eDocCode;
@@ -1281,13 +1302,15 @@ bool IsFuncChecked( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, E
 	case F_FILE_REOPEN_CESU8:		return CODE_CESU8 == eDocCode;
 	case F_FILE_REOPEN_UTF7:		return CODE_UTF7 == eDocCode;
 	case F_RECKEYMACRO:	/* キーマクロの記録開始／終了 */
-		if( pShareData->m_sFlags.m_bRecordingKeyMacro ){	/* キーボードマクロの記録中 */
-			if( pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd() ){	/* キーボードマクロを記録中のウィンドウ */
+		if (pShareData->m_sFlags.m_bRecordingKeyMacro) {	/* キーボードマクロの記録中 */
+			if (pShareData->m_sFlags.m_hwndRecordingKeyMacro == CEditWnd::getInstance()->GetHwnd()) {	/* キーボードマクロを記録中のウィンドウ */
 				return true;
-			}else{
+			}
+			else {
 				return false;
 			}
-		}else{
+		}
+		else {
 			return false;
 		}
 	case F_SHOWTOOLBAR:			return pCEditWnd->m_cToolbar.GetToolbarHwnd() != NULL;
@@ -1295,26 +1318,26 @@ bool IsFuncChecked( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, E
 	case F_SHOWTAB:				return pCEditWnd->m_cTabWnd.GetHwnd() != NULL;	//@@@ 2003.06.10 MIK
 	case F_SHOWSTATUSBAR:		return pCEditWnd->m_cStatusBar.GetStatusHwnd() != NULL;
 	case F_SHOWMINIMAP:			return pCEditWnd->GetMiniMap().GetHwnd() != NULL;
-	// 2008.05.30 nasukoji	テキストの折り返し方法
-	case F_TMPWRAPNOWRAP:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_NO_TEXT_WRAP );		// 折り返さない
-	case F_TMPWRAPSETTING:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_SETTING_WIDTH );		// 指定桁で折り返す
-	case F_TMPWRAPWINDOW:		return ( pcEditDoc->m_nTextWrapMethodCur == WRAP_WINDOW_WIDTH );		// 右端で折り返す
+		// 2008.05.30 nasukoji	テキストの折り返し方法
+	case F_TMPWRAPNOWRAP:		return (pcEditDoc->m_nTextWrapMethodCur == WRAP_NO_TEXT_WRAP);		// 折り返さない
+	case F_TMPWRAPSETTING:		return (pcEditDoc->m_nTextWrapMethodCur == WRAP_SETTING_WIDTH);		// 指定桁で折り返す
+	case F_TMPWRAPWINDOW:		return (pcEditDoc->m_nTextWrapMethodCur == WRAP_WINDOW_WIDTH);		// 右端で折り返す
 	// 2009.07.06 syat  文字カウント方法
-	case F_SELECT_COUNT_MODE:	return ( pCEditWnd->m_nSelectCountMode == SELECT_COUNT_TOGGLE ?
-											pShareData->m_Common.m_sStatusbar.m_bDispSelCountByByte != FALSE :
-											pCEditWnd->m_nSelectCountMode == SELECT_COUNT_BY_BYTE );
-	// Mar. 6, 2002 genta
+	case F_SELECT_COUNT_MODE:	return (pCEditWnd->m_nSelectCountMode == SELECT_COUNT_TOGGLE ?
+		pShareData->m_Common.m_sStatusbar.m_bDispSelCountByByte != FALSE :
+		pCEditWnd->m_nSelectCountMode == SELECT_COUNT_BY_BYTE);
+		// Mar. 6, 2002 genta
 	case F_VIEWMODE:			return CAppMode::getInstance()->IsViewMode(); //ビューモード
 	//	From Here 2003.06.23 Moca
 	case F_CHGMOD_EOL_CRLF:		return EOL_CRLF == pcEditDoc->m_cDocEditor.GetNewLineCode();
 	case F_CHGMOD_EOL_LF:		return EOL_LF == pcEditDoc->m_cDocEditor.GetNewLineCode();
 	case F_CHGMOD_EOL_CR:		return EOL_CR == pcEditDoc->m_cDocEditor.GetNewLineCode();
-	//	To Here 2003.06.23 Moca
-	//	2003.07.21 genta
+		//	To Here 2003.06.23 Moca
+		//	2003.07.21 genta
 	case F_CHGMOD_INS:			return pcEditDoc->m_cDocEditor.IsInsMode();	//	Oct. 2, 2005 genta 挿入モードはドキュメント毎に補完するように変更した
 	case F_TOGGLE_KEY_SEARCH:	return pShareData->m_Common.m_sSearch.m_bUseCaretKeyWord != FALSE;	//	2007.02.03 genta キーワードポップアップのON/OFF状態を反映する
 	case F_BIND_WINDOW:			return ((pShareData->m_Common.m_sTabBar.m_bDispTabWnd) && !(pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin));	//2004.07.14 Kazika 追加
-	case F_TOPMOST:				return ((DWORD)::GetWindowLongPtr( pCEditWnd->GetHwnd(), GWL_EXSTYLE ) & WS_EX_TOPMOST) != 0;	// 2004.09.21 Moca
+	case F_TOPMOST:				return ((DWORD)::GetWindowLongPtr(pCEditWnd->GetHwnd(), GWL_EXSTYLE) & WS_EX_TOPMOST) != 0;	// 2004.09.21 Moca
 	// Jan. 10, 2004 genta インクリメンタルサーチ
 	case F_ISEARCH_NEXT:
 	case F_ISEARCH_PREV:
@@ -1322,7 +1345,7 @@ bool IsFuncChecked( const CEditDoc* pcEditDoc, const DLLSHAREDATA* pShareData, E
 	case F_ISEARCH_REGEXP_PREV:
 	case F_ISEARCH_MIGEMO_NEXT:
 	case F_ISEARCH_MIGEMO_PREV:
-		return pcEditDoc->m_pcEditWnd->GetActiveView().IsISearchEnabled( nId );
+		return pcEditDoc->m_pcEditWnd->GetActiveView().IsISearchEnabled(nId);
 	case F_OUTLINE_TOGGLE: // 20060201 aroka アウトラインウィンドウ
 		// ToDo:ブックマークリストが出ているときもへこんでしまう。
 		return pcEditDoc->m_pcEditWnd->m_cDlgFuncList.GetHwnd() != NULL;

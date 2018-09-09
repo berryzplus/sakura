@@ -5,7 +5,7 @@
 /*
 	Copyright (C) 2009, syat
 	Copyright (C) 2011, Moca
-	
+
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -45,56 +45,57 @@ class CComplementIfObj : public CWSHIfObj {
 
 	// コンストラクタ
 public:
-	CComplementIfObj( std::wstring& curWord, CHokanMgr* pMgr, int option )
-		: CWSHIfObj( L"Complement", false )
-		, m_sCurrentWord( curWord )
-		, m_pHokanMgr( pMgr )
-		, m_nOption( option )
+	CComplementIfObj(std::wstring& curWord, CHokanMgr* pMgr, int option)
+		: CWSHIfObj(L"Complement", false)
+		, m_sCurrentWord(curWord)
+		, m_pHokanMgr(pMgr)
+		, m_nOption(option)
 	{
 	}
 
 	// デストラクタ
 public:
-	~CComplementIfObj(){}
+	~CComplementIfObj() {}
 
 	// 実装
 public:
 	//コマンド情報を取得する
-	MacroFuncInfoArray GetMacroCommandInfo() const{ return m_MacroFuncInfoCommandArr; }
+	MacroFuncInfoArray GetMacroCommandInfo() const { return m_MacroFuncInfoCommandArr; }
 	//関数情報を取得する
-	MacroFuncInfoArray GetMacroFuncInfo() const{ return m_MacroFuncInfoArr; };
+	MacroFuncInfoArray GetMacroFuncInfo() const { return m_MacroFuncInfoArr; };
 	//関数を処理する
 	bool HandleFunction(CEditView* View, EFunctionCode ID, const VARIANT *Arguments, const int ArgSize, VARIANT &Result)
 	{
 		Variant varCopy;	// VT_BYREFだと困るのでコピー用
 
-		switch(LOWORD(ID)){
+		switch (LOWORD(ID)) {
 		case F_CM_GETCURRENTWORD:	//補完対象の文字列を取得
-			{
-				SysString s( m_sCurrentWord.c_str(), m_sCurrentWord.length() );
-				Wrap( &Result )->Receive( s );
-			}
-			return true;
+		{
+			SysString s(m_sCurrentWord.c_str(), m_sCurrentWord.length());
+			Wrap(&Result)->Receive(s);
+		}
+		return true;
 		case F_CM_GETOPTION:	//オプションを取得
-			{
-				Wrap( &Result )->Receive( m_nOption );
+		{
+			Wrap(&Result)->Receive(m_nOption);
+		}
+		return true;
+		case F_CM_ADDLIST:		//候補に追加する
+		{
+			std::wstring keyword;
+			if (variant_to_wstr(Arguments[0], keyword) != true) return false;
+			const wchar_t* word = keyword.c_str();
+			int nWordLen = keyword.length();
+			if (nWordLen <= 0) return false;
+			std::wstring strWord = std::wstring(word, nWordLen);
+			if (CHokanMgr::AddKouhoUnique(m_pHokanMgr->m_vKouho, strWord)) {
+				Wrap(&Result)->Receive(m_pHokanMgr->m_vKouho.size());
+			}
+			else {
+				Wrap(&Result)->Receive(-1);
 			}
 			return true;
-		case F_CM_ADDLIST:		//候補に追加する
-			{
-				std::wstring keyword;
-				if( variant_to_wstr( Arguments[0], keyword ) != true) return false;
-				const wchar_t* word = keyword.c_str();
-				int nWordLen = keyword.length();
-				if( nWordLen <= 0 ) return false;
-				std::wstring strWord = std::wstring(word, nWordLen);
-				if( CHokanMgr::AddKouhoUnique( m_pHokanMgr->m_vKouho, strWord ) ){
-					Wrap( &Result )->Receive( m_pHokanMgr->m_vKouho.size() );
-				}else{
-					Wrap( &Result )->Receive( -1 );
-				}
-				return true;
-			}
+		}
 		}
 		return false;
 	}
@@ -116,7 +117,7 @@ private:
 };
 
 //コマンド情報
-MacroFuncInfo CComplementIfObj::m_MacroFuncInfoCommandArr[] = 
+MacroFuncInfo CComplementIfObj::m_MacroFuncInfoCommandArr[] =
 {
 	//ID									関数名							引数										戻り値の型	m_pszData
 	//	終端
@@ -124,7 +125,7 @@ MacroFuncInfo CComplementIfObj::m_MacroFuncInfoCommandArr[] =
 };
 
 //関数情報
-MacroFuncInfo CComplementIfObj::m_MacroFuncInfoArr[] = 
+MacroFuncInfo CComplementIfObj::m_MacroFuncInfoArr[] =
 {
 	//ID								関数名				引数										戻り値の型	m_pszData
 	{EFunctionCode(F_CM_GETCURRENTWORD),L"GetCurrentWord",	{VT_EMPTY, VT_EMPTY, VT_EMPTY, VT_EMPTY},	VT_BSTR,	NULL }, //補完対象の文字列を取得

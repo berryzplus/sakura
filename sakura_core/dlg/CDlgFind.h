@@ -32,10 +32,10 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-//	int DoModal( HINSTANCE, HWND, LPARAM );	/* モーダルダイアログの表示 */
-	HWND DoModeless( HINSTANCE, HWND, LPARAM );	/* モードレスダイアログの表示 */
+	//	int DoModal( HINSTANCE, HWND, LPARAM );	/* モーダルダイアログの表示 */
+	HWND DoModeless(HINSTANCE, HWND, LPARAM);	/* モードレスダイアログの表示 */
 
-	void ChangeView( LPARAM );
+	void ChangeView(LPARAM);
 
 	SSearchOption m_sSearchOption;	// 検索オプション
 	int		m_bNOTIFYNOTFOUND;	// 検索／置換  見つからないときメッセージを表示
@@ -48,17 +48,17 @@ public:
 	CFontAutoDeleter		m_cFontText;
 
 protected:
-//@@@ 2002.2.2 YAZAKI CShareDataに移動
-//	void AddToSearchKeyArr( const char* );
-	/* オーバーライド? */
-	BOOL OnCbnDropDown( HWND hwndCtl, int wID );
-	int GetData( void );		/* ダイアログデータの取得 */
-	void SetCombosList( void );	/* 検索文字列/置換後文字列リストの設定 */
-	void SetData( void );		/* ダイアログデータの設定 */
-	BOOL OnInitDialog( HWND, WPARAM, LPARAM );
+	//@@@ 2002.2.2 YAZAKI CShareDataに移動
+	//	void AddToSearchKeyArr( const char* );
+		/* オーバーライド? */
+	BOOL OnCbnDropDown(HWND hwndCtl, int wID);
+	int GetData(void);		/* ダイアログデータの取得 */
+	void SetCombosList(void);	/* 検索文字列/置換後文字列リストの設定 */
+	void SetData(void);		/* ダイアログデータの設定 */
+	BOOL OnInitDialog(HWND, WPARAM, LPARAM);
 	BOOL OnDestroy();
-	BOOL OnBnClicked( int );
-	BOOL OnActivate( WPARAM wParam, LPARAM lParam );	// 2009.11.29 ryoji
+	BOOL OnBnClicked(int);
+	BOOL OnActivate(WPARAM wParam, LPARAM lParam);	// 2009.11.29 ryoji
 
 	// virtual BOOL OnKeyDown( WPARAM wParam, LPARAM lParam );
 	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add

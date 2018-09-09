@@ -45,7 +45,7 @@ void CModifyVisitor::SetLineModified(CDocLine* pcDocLine, int seq)
 void CModifyVisitor::ResetAllModifyFlag(CDocLineMgr* pcDocLineMgr, int seq)
 {
 	CDocLine* pDocLine = pcDocLineMgr->GetDocLineTop();
-	while( pDocLine ){
+	while (pDocLine) {
 		CDocLine* pDocLineNext = pDocLine->GetNextLine();
 		SetLineModified(pDocLine, seq);
 		pDocLine = pDocLineNext;

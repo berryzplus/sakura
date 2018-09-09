@@ -22,44 +22,44 @@
 
 
 /* 右クリックメニュー */
-void CViewCommander::Command_MENU_RBUTTON( void )
+void CViewCommander::Command_MENU_RBUTTON(void)
 {
 	int			nId;
 	int			nLength;
-//	HGLOBAL		hgClip;
-//	char*		pszClip;
+	//	HGLOBAL		hgClip;
+	//	char*		pszClip;
 	int			i;
 	/* ポップアップメニュー(右クリック) */
 	nId = m_pCommanderView->CreatePopUpMenu_R();
-	if( 0 == nId ){
+	if (0 == nId) {
 		return;
 	}
-	switch( nId ){
+	switch (nId) {
 	case IDM_COPYDICINFO:
 		const TCHAR*	pszStr;
-		pszStr = m_pCommanderView->m_cTipWnd.m_cInfo.GetStringPtr( &nLength );
+		pszStr = m_pCommanderView->m_cTipWnd.m_cInfo.GetStringPtr(&nLength);
 
 		TCHAR*		pszWork;
 		pszWork = new TCHAR[nLength + 1];
-		auto_memcpy( pszWork, pszStr, nLength );
+		auto_memcpy(pszWork, pszStr, nLength);
 		pszWork[nLength] = _T('\0');
 
 		// 見た目と同じように、\n を CR+LFへ変換する
-		for( i = 0; i < nLength ; ++i){
-			if( pszWork[i] == _T('\\') && pszWork[i + 1] == _T('n')){
-				pszWork[i] =     WCODE::CR;
+		for (i = 0; i < nLength; ++i) {
+			if (pszWork[i] == _T('\\') && pszWork[i + 1] == _T('n')) {
+				pszWork[i] = WCODE::CR;
 				pszWork[i + 1] = WCODE::LF;
 			}
 		}
 		/* クリップボードにデータを設定 */
-		m_pCommanderView->MySetClipboardData( pszWork, nLength, false );
+		m_pCommanderView->MySetClipboardData(pszWork, nLength, false);
 		delete[] pszWork;
 
 		break;
 
 	case IDM_JUMPDICT:
 		/* キーワード辞書ファイルを開く */
-		if(m_pCommanderView->m_pTypeData->m_bUseKeyWordHelp){		/* キーワード辞書セレクトを使用する */	// 2006.04.10 fon
+		if (m_pCommanderView->m_pTypeData->m_bUseKeyWordHelp) {		/* キーワード辞書セレクトを使用する */	// 2006.04.10 fon
 			//	Feb. 17, 2007 genta 相対パスを実行ファイル基準で開くように
 			m_pCommanderView->TagJumpSub(
 				m_pCommanderView->m_pTypeData->m_KeyHelpArr[m_pCommanderView->m_cTipWnd.m_nSearchDict].m_szPath,
@@ -73,7 +73,7 @@ void CViewCommander::Command_MENU_RBUTTON( void )
 	default:
 		/* コマンドコードによる処理振り分け */
 //		HandleCommand( nId, true, 0, 0, 0, 0 );
-		::PostMessageCmd( GetMainWindow(), WM_COMMAND, MAKELONG( nId, 0 ),  (LPARAM)NULL );
+		::PostMessageCmd(GetMainWindow(), WM_COMMAND, MAKELONG(nId, 0), (LPARAM)NULL);
 		break;
 	}
 	return;
@@ -82,7 +82,7 @@ void CViewCommander::Command_MENU_RBUTTON( void )
 
 
 /* カスタムメニュー表示 */
-int CViewCommander::Command_CUSTMENU( int nMenuIdx )
+int CViewCommander::Command_CUSTMENU(int nMenuIdx)
 {
 	HMENU		hMenu;
 
@@ -90,12 +90,12 @@ int CViewCommander::Command_CUSTMENU( int nMenuIdx )
 
 	//	Oct. 3, 2001 genta
 
-	if( nMenuIdx < 0 || MAX_CUSTOM_MENU <= nMenuIdx ){
+	if (nMenuIdx < 0 || MAX_CUSTOM_MENU <= nMenuIdx) {
 		return 0;
 	}
-	if( 0 == GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[nMenuIdx] ){
+	if (0 == GetDllShareData().m_Common.m_sCustomMenu.m_nCustMenuItemNumArr[nMenuIdx]) {
 		return 0;
 	}
 	hMenu = ::CreatePopupMenu();
-	return m_pCommanderView->CreatePopUpMenuSub( hMenu, nMenuIdx, NULL, KEYHELP_RMENU_NONE );
+	return m_pCommanderView->CreatePopUpMenuSub(hMenu, nMenuIdx, NULL, KEYHELP_RMENU_NONE);
 }

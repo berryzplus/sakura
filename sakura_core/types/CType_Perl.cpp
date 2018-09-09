@@ -36,13 +36,13 @@
 void CType_Perl::InitTypeConfigImp(STypeConfig* pType)
 {
 	//名前と拡張子
-	_tcscpy( pType->m_szTypeName, _T("Perl") );
-	_tcscpy( pType->m_szTypeExts, _T("cgi,pl,pm") );
+	_tcscpy(pType->m_szTypeName, _T("Perl"));
+	_tcscpy(pType->m_szTypeExts, _T("cgi,pl,pm"));
 
 	//設定
-	pType->m_cLineComment.CopyTo( 0, L"#", -1 );					/* 行コメントデリミタ */
+	pType->m_cLineComment.CopyTo(0, L"#", -1);					/* 行コメントデリミタ */
 	pType->m_eDefaultOutline = OUTLINE_PERL;						/* アウトライン解析方法 */
-	pType->m_nKeyWordSetIdx[0]  = 11;								/* キーワードセット */
+	pType->m_nKeyWordSetIdx[0] = 11;								/* キーワードセット */
 	pType->m_nKeyWordSetIdx[1] = 12;								/* キーワードセット2 */
 	pType->m_ColorInfoArr[COLORIDX_DIGIT].m_bDisp = true;			/* 半角数値を色分け表示 */
 	pType->m_ColorInfoArr[COLORIDX_BRACKET_PAIR].m_bDisp = true;	//対括弧の強調をデフォルトON	//Sep. 21, 2002 genta
@@ -66,7 +66,7 @@ void CType_Perl::InitTypeConfigImp(STypeConfig* pType)
 
 	@date 2005.06.18 genta パッケージ区切りを表す ::と'を考慮するように
 */
-void CDocOutline::MakeFuncList_Perl( CFuncInfoArr* pcFuncInfoArr )
+void CDocOutline::MakeFuncList_Perl(CFuncInfoArr* pcFuncInfoArr)
 {
 	const wchar_t*	pLine;
 	CLogicInt			nLineLen;
@@ -79,53 +79,53 @@ void CDocOutline::MakeFuncList_Perl( CFuncInfoArr* pcFuncInfoArr )
 	bool bExtEol = GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol;
 
 	CLogicInt	nLineCount;
-	for( nLineCount = CLogicInt(0); nLineCount <  m_pcDocRef->m_cDocLineMgr.GetLineCount(); ++nLineCount ){
+	for (nLineCount = CLogicInt(0); nLineCount < m_pcDocRef->m_cDocLineMgr.GetLineCount(); ++nLineCount) {
 		pLine = m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
 		nMode = 0;
-		for( i = 0; i < nLineLen; ++i ){
+		for (i = 0; i < nLineLen; ++i) {
 			/* 1バイト文字だけを処理する */
 			// 2005-09-02 D.S.Koba GetSizeOfChar
-			nCharChars = CNativeW::GetSizeOfChar( pLine, nLineLen, i );
-			if(	1 < nCharChars ){
+			nCharChars = CNativeW::GetSizeOfChar(pLine, nLineLen, i);
+			if (1 < nCharChars) {
 				break;
 			}
 
 			/* 単語読み込み中 */
-			if( 0 == nMode ){
+			if (0 == nMode) {
 				/* 空白やタブ記号等を飛ばす */
-				if( L'\t' == pLine[i] ||
+				if (L'\t' == pLine[i] ||
 					L' ' == pLine[i] ||
 					WCODE::IsLineDelimiter(pLine[i], bExtEol)
-				){
+					) {
 					continue;
 				}
-				if( 's' != pLine[i] )
+				if ('s' != pLine[i])
 					break;
 				//	sub の一文字目かもしれない
-				if( nLineLen - i < 4 )
+				if (nLineLen - i < 4)
 					break;
-				if( wcsncmp_literal( pLine + i, L"sub" ) )
+				if (wcsncmp_literal(pLine + i, L"sub"))
 					break;
-				int c = pLine[ i + 3 ];
-				if( c == L' ' || c == L'\t' ){
+				int c = pLine[i + 3];
+				if (c == L' ' || c == L'\t') {
 					nMode = 2;	//	発見
 					i += 3;
 				}
 				else
 					break;
 			}
-			else if( 2 == nMode ){
-				if( L'\t' == pLine[i] ||
+			else if (2 == nMode) {
+				if (L'\t' == pLine[i] ||
 					L' ' == pLine[i] ||
 					WCODE::IsLineDelimiter(pLine[i], bExtEol)
-				){
+					) {
 					continue;
 				}
-				if( L'_' == pLine[i] ||
-					(L'a' <= pLine[i] &&	pLine[i] <= L'z' )||
-					(L'A' <= pLine[i] &&	pLine[i] <= L'Z' )||
-					(L'0' <= pLine[i] &&	pLine[i] <= L'9' )
-				){
+				if (L'_' == pLine[i] ||
+					(L'a' <= pLine[i] && pLine[i] <= L'z') ||
+					(L'A' <= pLine[i] && pLine[i] <= L'Z') ||
+					(L'0' <= pLine[i] && pLine[i] <= L'9')
+					) {
 					//	関数名の始まり
 					nWordIdx = 0;
 					szWord[nWordIdx] = pLine[i];
@@ -137,23 +137,25 @@ void CDocOutline::MakeFuncList_Perl( CFuncInfoArr* pcFuncInfoArr )
 					break;
 
 			}
-			else if( 1 == nMode ){
-				if( L'_' == pLine[i] ||
-					(L'a' <= pLine[i] &&	pLine[i] <= L'z' )||
-					(L'A' <= pLine[i] &&	pLine[i] <= L'Z' )||
-					(L'0' <= pLine[i] &&	pLine[i] <= L'9' )||
+			else if (1 == nMode) {
+				if (L'_' == pLine[i] ||
+					(L'a' <= pLine[i] && pLine[i] <= L'z') ||
+					(L'A' <= pLine[i] && pLine[i] <= L'Z') ||
+					(L'0' <= pLine[i] && pLine[i] <= L'9') ||
 					//	Jun. 18, 2005 genta パッケージ修飾子を考慮
 					//	コロンは2つ連続しないといけないのだが，そこは手抜き
 					L':' == pLine[i] || L'\'' == pLine[i]
-				){
+					) {
 					++nWordIdx;
-					if( nWordIdx >= nMaxWordLeng ){
+					if (nWordIdx >= nMaxWordLeng) {
 						break;
-					}else{
+					}
+					else {
 						szWord[nWordIdx] = pLine[i];
 						szWord[nWordIdx + 1] = L'\0';
 					}
-				}else{
+				}
+				else {
 					//	関数名取得
 					/*
 					  カーソル位置変換
@@ -167,7 +169,7 @@ void CDocOutline::MakeFuncList_Perl( CFuncInfoArr* pcFuncInfoArr )
 						&ptPosXY
 					);
 					//	Mar. 9, 2001
-					pcFuncInfoArr->AppendData( nLineCount + CLogicInt(1), ptPosXY.GetY2() + CLayoutInt(1), szWord, 0 );
+					pcFuncInfoArr->AppendData(nLineCount + CLogicInt(1), ptPosXY.GetY2() + CLayoutInt(1), szWord, 0);
 
 					break;
 				}
@@ -304,117 +306,117 @@ const wchar_t* g_ppszKeywordsPERL[] = {
 	L"localtime",
 	L"log",
 	L"lstat",
-//			"//m",
-	L"map",
-	L"mkdir",
-	L"msgctl",
-	L"msgget",
-	L"msgsnd",
-	L"msgrcv",
-	L"my",
-	L"next",
-	L"no",
-	L"oct",
-	L"open",
-	L"opendir",
-	L"ord",
-	L"our",	// 2006.04.20 genta
-	L"pack",
-	L"package",
-	L"pipe",
-	L"pop",
-	L"pos",
-	L"print",
-	L"printf",
-	L"prototype",
-	L"push",
-//			"//q",
-	L"qq",
-	L"qr",
-	L"qx",
-	L"qw",
-	L"quotemeta",
-	L"rand",
-	L"read",
-	L"readdir",
-	L"readline",
-	L"readlink",
-	L"readpipe",
-	L"recv",
-	L"redo",
-	L"ref",
-	L"rename",
-	L"require",
-	L"reset",
-	L"return",
-	L"reverse",
-	L"rewinddir",
-	L"rindex",
-	L"rmdir",
-//			"//s",
-	L"scalar",
-	L"seek",
-	L"seekdir",
-	L"select",
-	L"semctl",
-	L"semget",
-	L"semop",
-	L"send",
-	L"setpgrp",
-	L"setpriority",
-	L"setsockopt",
-	L"shift",
-	L"shmctl",
-	L"shmget",
-	L"shmread",
-	L"shmwrite",
-	L"shutdown",
-	L"sin",
-	L"sleep",
-	L"socket",
-	L"socketpair",
-	L"sort",
-	L"splice",
-	L"split",
-	L"sprintf",
-	L"sqrt",
-	L"srand",
-	L"stat",
-	L"study",
-	L"sub",
-	L"substr",
-	L"symlink",
-	L"syscall",
-	L"sysopen",
-	L"sysread",
-	L"sysseek",
-	L"system",
-	L"syswrite",
-	L"tell",
-	L"telldir",
-	L"tie",
-	L"tied",
-	L"time",
-	L"times",
-	L"tr",
-	L"truncate",
-	L"uc",
-	L"ucfirst",
-	L"umask",
-	L"undef",
-	L"unlink",
-	L"unpack",
-	L"untie",
-	L"unshift",
-	L"use",
-	L"utime",
-	L"values",
-	L"vec",
-	L"wait",
-	L"waitpid",
-	L"wantarray",
-	L"warn",
-	L"write"
+	//			"//m",
+		L"map",
+		L"mkdir",
+		L"msgctl",
+		L"msgget",
+		L"msgsnd",
+		L"msgrcv",
+		L"my",
+		L"next",
+		L"no",
+		L"oct",
+		L"open",
+		L"opendir",
+		L"ord",
+		L"our",	// 2006.04.20 genta
+		L"pack",
+		L"package",
+		L"pipe",
+		L"pop",
+		L"pos",
+		L"print",
+		L"printf",
+		L"prototype",
+		L"push",
+		//			"//q",
+			L"qq",
+			L"qr",
+			L"qx",
+			L"qw",
+			L"quotemeta",
+			L"rand",
+			L"read",
+			L"readdir",
+			L"readline",
+			L"readlink",
+			L"readpipe",
+			L"recv",
+			L"redo",
+			L"ref",
+			L"rename",
+			L"require",
+			L"reset",
+			L"return",
+			L"reverse",
+			L"rewinddir",
+			L"rindex",
+			L"rmdir",
+			//			"//s",
+				L"scalar",
+				L"seek",
+				L"seekdir",
+				L"select",
+				L"semctl",
+				L"semget",
+				L"semop",
+				L"send",
+				L"setpgrp",
+				L"setpriority",
+				L"setsockopt",
+				L"shift",
+				L"shmctl",
+				L"shmget",
+				L"shmread",
+				L"shmwrite",
+				L"shutdown",
+				L"sin",
+				L"sleep",
+				L"socket",
+				L"socketpair",
+				L"sort",
+				L"splice",
+				L"split",
+				L"sprintf",
+				L"sqrt",
+				L"srand",
+				L"stat",
+				L"study",
+				L"sub",
+				L"substr",
+				L"symlink",
+				L"syscall",
+				L"sysopen",
+				L"sysread",
+				L"sysseek",
+				L"system",
+				L"syswrite",
+				L"tell",
+				L"telldir",
+				L"tie",
+				L"tied",
+				L"time",
+				L"times",
+				L"tr",
+				L"truncate",
+				L"uc",
+				L"ucfirst",
+				L"umask",
+				L"undef",
+				L"unlink",
+				L"unpack",
+				L"untie",
+				L"unshift",
+				L"use",
+				L"utime",
+				L"values",
+				L"vec",
+				L"wait",
+				L"waitpid",
+				L"wantarray",
+				L"warn",
+				L"write"
 };
 int g_nKeywordsPERL = _countof(g_ppszKeywordsPERL);
 

@@ -4,41 +4,41 @@
 
 
 
-namespace ApiWrap{
+namespace ApiWrap {
 
 	LRESULT List_GetText(HWND hwndList, int nIndex, ACHAR* str)
 	{
-		LRESULT nCount = SendMessage( hwndList, LB_GETTEXTLEN, (WPARAM)nIndex, (LPARAM)0);
-		if( nCount == LB_ERR )
+		LRESULT nCount = SendMessage(hwndList, LB_GETTEXTLEN, (WPARAM)nIndex, (LPARAM)0);
+		if (nCount == LB_ERR)
 			return LB_ERR;
-		return SendMessage( hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(TCHAR*)TcharReceiver<ACHAR>(str,nCount+1) );	// +1: NULL 文字分
+		return SendMessage(hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(TCHAR*)TcharReceiver<ACHAR>(str, nCount + 1));	// +1: NULL 文字分
 	}
 
 	LRESULT List_GetText(HWND hwndList, int nIndex, WCHAR* str)
 	{
-		LRESULT nCount = SendMessage( hwndList, LB_GETTEXTLEN, (WPARAM)nIndex, (LPARAM)0);
-		if( nCount == LB_ERR )
+		LRESULT nCount = SendMessage(hwndList, LB_GETTEXTLEN, (WPARAM)nIndex, (LPARAM)0);
+		if (nCount == LB_ERR)
 			return LB_ERR;
-		return SendMessage( hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(TCHAR*)TcharReceiver<WCHAR>(str,nCount+1) );	// +1: NULL 文字分
+		return SendMessage(hwndList, LB_GETTEXT, (WPARAM)nIndex, (LPARAM)(TCHAR*)TcharReceiver<WCHAR>(str, nCount + 1));	// +1: NULL 文字分
 	}
 
 	UINT DlgItem_GetText(HWND hwndDlg, int nIDDlgItem, ACHAR* str, int nMaxCount)
 	{
-		return GetDlgItemText(hwndDlg, nIDDlgItem, TcharReceiver<ACHAR>(str,nMaxCount), nMaxCount);
+		return GetDlgItemText(hwndDlg, nIDDlgItem, TcharReceiver<ACHAR>(str, nMaxCount), nMaxCount);
 	}
 
 	UINT DlgItem_GetText(HWND hwndDlg, int nIDDlgItem, WCHAR* str, int nMaxCount)
 	{
-		return GetDlgItemText(hwndDlg, nIDDlgItem, TcharReceiver<WCHAR>(str,nMaxCount), nMaxCount);
+		return GetDlgItemText(hwndDlg, nIDDlgItem, TcharReceiver<WCHAR>(str, nMaxCount), nMaxCount);
 	}
 
 	bool TreeView_GetItemTextVector(HWND hwndTree, TVITEM& item, std::vector<TCHAR>& vecStr)
 	{
 		BOOL ret = FALSE;
 		int nBufferSize = 64;
-		while( FALSE == ret ){
+		while (FALSE == ret) {
 			nBufferSize *= 2;
-			if( 0x10000 < nBufferSize ){
+			if (0x10000 < nBufferSize) {
 				break;
 			}
 			vecStr.resize(nBufferSize);
@@ -58,23 +58,23 @@ namespace ApiWrap{
 
 		::SendMessageAny(hwndTree, WM_SETREDRAW, (WPARAM)FALSE, 0);
 
-		htiCur = htiItem = TreeView_GetSelection( hwndTree );
+		htiCur = htiItem = TreeView_GetSelection(hwndTree);
 		if (!bExpand && htiCur != NULL) {
 			// 閉じる時はトップに変更
-			for (htiNext = htiCur; htiNext !=  NULL; ) {
+			for (htiNext = htiCur; htiNext != NULL; ) {
 				htiItem = htiNext;
-				htiNext = TreeView_GetParent( hwndTree, htiItem );
+				htiNext = TreeView_GetParent(hwndTree, htiItem);
 			}
 			if (htiCur != htiItem) {
 				htiCur = htiItem;
-				TreeView_SelectItem( hwndTree, htiCur );
+				TreeView_SelectItem(hwndTree, htiCur);
 			}
 		}
 
 		std::vector<HTREEITEM> tree;
 		HTREEITEM item = TreeView_GetRoot(hwndTree);
-		while( 0 < tree.size() || item != NULL ){
-			while(item != NULL && (int)tree.size() < nMaxDepth ){
+		while (0 < tree.size() || item != NULL) {
+			while (item != NULL && (int)tree.size() < nMaxDepth) {
 				// 先に展開してからGetChildしないと、ファイルツリーのサブアイテムが展開されない
 				TreeView_Expand(hwndTree, item, bExpand ? TVE_EXPAND : TVE_COLLAPSE);
 				tree.push_back(item);
@@ -87,14 +87,14 @@ namespace ApiWrap{
 
 		// 選択位置を戻す
 		if (htiCur == NULL) {
-			if (bExpand ) {
-				htiItem = TreeView_GetRoot( hwndTree );
-				TreeView_SelectSetFirstVisible( hwndTree, htiItem );
+			if (bExpand) {
+				htiItem = TreeView_GetRoot(hwndTree);
+				TreeView_SelectSetFirstVisible(hwndTree, htiItem);
 			}
-			TreeView_SelectItem( hwndTree, NULL );
+			TreeView_SelectItem(hwndTree, NULL);
 		}
 		else {
-			TreeView_SelectSetFirstVisible( hwndTree, htiCur );
+			TreeView_SelectSetFirstVisible(hwndTree, htiCur);
 		}
 
 		::SendMessageAny(hwndTree, WM_SETREDRAW, (WPARAM)TRUE, 0);

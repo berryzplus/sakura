@@ -28,9 +28,9 @@
 
 
 
-class CColor_Quote : public CColorStrategy{
+class CColor_Quote : public CColorStrategy {
 public:
-	CColor_Quote(wchar_t cQuote) : m_cQuote(cQuote), m_nCOMMENTEND(-1),m_nColorTypeIndex(0) {
+	CColor_Quote(wchar_t cQuote) : m_cQuote(cQuote), m_nCOMMENTEND(-1), m_nColorTypeIndex(0) {
 		m_szQuote[0] = cQuote;
 		m_szQuote[1] = cQuote;
 		m_szQuote[2] = cQuote;
@@ -38,15 +38,15 @@ public:
 	virtual void Update(void);
 	virtual EColorIndexType GetStrategyColor() const = 0;
 	virtual CLayoutColorInfo* GetStrategyColorInfo() const;
-	virtual void InitStrategyStatus(){ m_nCOMMENTEND = -1; }
+	virtual void InitStrategyStatus() { m_nCOMMENTEND = -1; }
 	virtual void SetStrategyColorInfo(const CLayoutColorInfo*);
 	virtual bool BeginColor(const CStringRef& cStr, int nPos);
 	virtual bool EndColor(const CStringRef& cStr, int nPos);
 	virtual bool Disp() const { return m_pTypeData->m_ColorInfoArr[this->GetStrategyColor()].m_bDisp; }
 
 	static bool IsCppRawString(const CStringRef& cStr, int nPos);
-	static int Match_Quote( wchar_t wcQuote, int nPos, const CStringRef& cLineStr, int escapeType, bool* pbEscapeEnd = NULL );
-	static int Match_QuoteStr( const wchar_t* szQuote, int nQuoteLen, int nPos, const CStringRef& cLineStr, bool bEscape );
+	static int Match_Quote(wchar_t wcQuote, int nPos, const CStringRef& cLineStr, int escapeType, bool* pbEscapeEnd = NULL);
+	static int Match_QuoteStr(const wchar_t* szQuote, int nQuoteLen, int nPos, const CStringRef& cLineStr, bool bEscape);
 private:
 
 	wchar_t m_cQuote;
@@ -63,16 +63,16 @@ protected:
 };
 
 
-class CColor_SingleQuote : public CColor_Quote{
+class CColor_SingleQuote : public CColor_Quote {
 public:
 	CColor_SingleQuote() : CColor_Quote(L'\'') { }
-	virtual EColorIndexType GetStrategyColor() const{ return COLORIDX_SSTRING; }
+	virtual EColorIndexType GetStrategyColor() const { return COLORIDX_SSTRING; }
 };
 
-class CColor_DoubleQuote : public CColor_Quote{
+class CColor_DoubleQuote : public CColor_Quote {
 public:
 	CColor_DoubleQuote() : CColor_Quote(L'"') { }
-	virtual EColorIndexType GetStrategyColor() const{ return COLORIDX_WSTRING; }
+	virtual EColorIndexType GetStrategyColor() const { return COLORIDX_WSTRING; }
 };
 
 #endif /* SAKURA_CCOLOR_QUOTE_26330E31_5ADC_4753_92DD_7567B7BA4451_H_ */

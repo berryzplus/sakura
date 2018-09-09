@@ -37,11 +37,11 @@
 //2012.01.03 シングルクォートの色分けをする
 void CType_Html::InitTypeConfigImp(STypeConfig* pType)
 {
-	_tcscpy( pType->m_szTypeName, _T("HTML") );
-	_tcscpy( pType->m_szTypeExts, _T("html,htm,shtml,plg") );
+	_tcscpy(pType->m_szTypeName, _T("HTML"));
+	_tcscpy(pType->m_szTypeExts, _T("html,htm,shtml,plg"));
 
 	//設定
-	pType->m_cBlockComments[0].SetBlockCommentRule( L"<!--", L"-->" );	/* ブロックコメントデリミタ */
+	pType->m_cBlockComments[0].SetBlockCommentRule(L"<!--", L"-->");	/* ブロックコメントデリミタ */
 	pType->m_nStringType = STRING_LITERAL_HTML;							/* 文字列区切り記号エスケープ方法 */
 	pType->m_bStringLineOnly = true; // 文字列は行内のみ
 	pType->m_nKeyWordSetIdx[0] = 1;										/* キーワードセット */
@@ -85,8 +85,8 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 	wchar_t			szTag[32];				//	一時領域  小文字で保持して高速化しています。
 
 	enum ELabelType {						//	列挙体：ラベルの種別
-		LT_DEFAULT,		LT_INLINE,		LT_IGNORE,		LT_EMPTY,
-		LT_BLOCK,		LT_PARAGRAPH,	LT_HEADING
+		LT_DEFAULT, LT_INLINE, LT_IGNORE, LT_EMPTY,
+		LT_BLOCK, LT_PARAGRAPH, LT_HEADING
 	};
 	enum ELabelType	nLabelType;				// ラベルの種別
 	CLogicInt		nLineCount;
@@ -94,24 +94,24 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 		このため、見出しの深さを記憶しておきます。
 		下位レベルの見出しの深さは現れるまで不定で、前の章節での深さは影響しません。 2008.08.15 aroka
 	*/
-	int				nHeadDepth[6+1];		// [0]は 空けておく
-	for(k=0;k<=6;k++){
+	int				nHeadDepth[6 + 1];		// [0]は 空けておく
+	for (k = 0; k <= 6; k++) {
 		nHeadDepth[k] = -1;
 	}
-	for(nLineCount=CLogicInt(0);nLineCount<m_pcDocRef->m_cDocLineMgr.GetLineCount();nLineCount++)
+	for (nLineCount = CLogicInt(0); nLineCount < m_pcDocRef->m_cDocLineMgr.GetLineCount(); nLineCount++)
 	{
-		pLineBuf	=	m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
-		if( !pLineBuf )
+		pLineBuf = m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
+		if (!pLineBuf)
 		{
 			break;
 		}
-		for(i=0;i<nLineLen-1;i++)
+		for (i = 0; i < nLineLen - 1; i++)
 		{
 			pLine = &pLineBuf[i];
 			// 2004.04.20 Moca コメントを処理する
-			if( bCommentTag )
+			if (bCommentTag)
 			{
-				if( i < nLineLen - 3 && 0 == wmemcmp( L"-->", pLine, 3 ) )
+				if (i < nLineLen - 3 && 0 == wmemcmp(L"-->", pLine, 3))
 				{
 					bCommentTag = false;
 					i += 2;
@@ -120,8 +120,8 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 				continue;
 			}
 			// 2014.12.25 Moca CDATA
-			if( bCDATA ){
-				if( i < nLineLen - 3 && 0 == wmemcmp( L"]]>", pLine, 3 ) )
+			if (bCDATA) {
+				if (i < nLineLen - 3 && 0 == wmemcmp(L"]]>", pLine, 3))
 				{
 					bCDATA = false;
 					i += 2;
@@ -130,35 +130,35 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 				continue;
 			}
 			// 2004.04.20 Moca To Here
-			if( *pLine!=L'<' || nDepth>=nMaxStack )
+			if (*pLine != L'<' || nDepth >= nMaxStack)
 			{
 				continue;
 			}
 			bEndTag = false;
 			pLine++; i++;
-			if( *pLine==L'/' )
+			if (*pLine == L'/')
 			{
 				pLine++; i++;
 				bEndTag = true;
 			}
-			for(j=0;i+j<nLineLen && j<_countof(szTitle)-1; )
+			for (j = 0; i + j < nLineLen && j < _countof(szTitle) - 1; )
 			{
 				// タグ名を切り出す
 				// スペース、タブ、「_:-.英数」以外の半角文字、１文字目の「-.数字」は認めない。
-				if( (pLine[j]==L' ' || pLine[j]==L'\t') ||
-					(pLine[j]<0x80 && !wcschr(L"_:-.",pLine[j]) && !isalnum(pLine[j])) ||
-					(j==0 &&( (pLine[j]>=L'0' && pLine[j]<=L'9') || pLine[j]==L'-' || pLine[j]==L'.' )) )
+				if ((pLine[j] == L' ' || pLine[j] == L'\t') ||
+					(pLine[j] < 0x80 && !wcschr(L"_:-.", pLine[j]) && !isalnum(pLine[j])) ||
+					(j == 0 && ((pLine[j] >= L'0' && pLine[j] <= L'9') || pLine[j] == L'-' || pLine[j] == L'.')))
 				{
 					break;
 				}
-				int nCharSize = CNativeW::GetSizeOfChar(pLine, nLineLen-i, j);
+				int nCharSize = CNativeW::GetSizeOfChar(pLine, nLineLen - i, j);
 				memcpy(szTitle + j, pLine + j, nCharSize * sizeof(wchar_t));
 				j += nCharSize;
 			}
-			if(j==0)
+			if (j == 0)
 			{
 				// 2004.04.20 Moca From Here コメントを処理する
-				if( i < nLineLen - 3 && 0 == wmemcmp( L"!--", pLine, 3 ) )
+				if (i < nLineLen - 3 && 0 == wmemcmp(L"!--", pLine, 3))
 				{
 					bCommentTag = true;
 					i += 3;
@@ -166,7 +166,7 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 				}
 				// 2004.04.20 Moca To Here
 				// 2014.12.25 Moca CDATA
-				if( bXml && i < nLineLen - 8 && 0 == wmemcmp( L"![CDATA[", pLine, 8 )){
+				if (bXml && i < nLineLen - 8 && 0 == wmemcmp(L"![CDATA[", pLine, 8)) {
 					bCDATA = true;
 					i += 8;
 					pLine += 8;
@@ -178,20 +178,20 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 				都度比較するのはコストが高いので、最初に分類しておく。 2008.08.15 aroka
 				比較の回数が多いため、小文字に変換しておいてstrcmpを使う。
 			*/
-			wcscpy( szTag, szTitle );
-			if( !bXml ){
-				_wcslwr( szTag );
+			wcscpy(szTag, szTitle);
+			if (!bXml) {
+				_wcslwr(szTag);
 			}
-			
+
 			nLabelType = LT_DEFAULT;
-			if( !bXml ){
+			if (!bXml) {
 				// 物理要素（見た目を変えるためのタグ）は構造解析しない。
-				if( !wcscmp(szTag,L"b") || !wcscmp(szTag,L"big") || !wcscmp(szTag,L"blink")
-				 || !wcscmp(szTag,L"font") || !wcscmp(szTag,L"i") || !wcscmp(szTag,L"marquee")
-				 || !wcscmp(szTag,L"nobr") || !wcscmp(szTag,L"s") || !wcscmp(szTag,L"small")
-				 || !wcscmp(szTag,L"strike") || !wcscmp(szTag,L"tt") || !wcscmp(szTag,L"u")
-				 || !wcscmp(szTag,L"bdo") || !wcscmp(szTag,L"sub") || !wcscmp(szTag,L"sup") )
-	 			{
+				if (!wcscmp(szTag, L"b") || !wcscmp(szTag, L"big") || !wcscmp(szTag, L"blink")
+					|| !wcscmp(szTag, L"font") || !wcscmp(szTag, L"i") || !wcscmp(szTag, L"marquee")
+					|| !wcscmp(szTag, L"nobr") || !wcscmp(szTag, L"s") || !wcscmp(szTag, L"small")
+					|| !wcscmp(szTag, L"strike") || !wcscmp(szTag, L"tt") || !wcscmp(szTag, L"u")
+					|| !wcscmp(szTag, L"bdo") || !wcscmp(szTag, L"sub") || !wcscmp(szTag, L"sup"))
+				{
 					nLabelType = LT_INLINE;
 				}
 				// インラインテキスト要素（テキストを修飾するタグ）は構造解析しない?
@@ -203,46 +203,46 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 //					nLabelType = LT_INLINE;
 //				}
 				// ルビ要素（XHTML1.1）は構造解析しない。
-				if( !wcscmp(szTag,L"rbc") || !wcscmp(szTag,L"rtc") || !wcscmp(szTag,L"ruby")
-				 || !wcscmp(szTag,L"rb") || !wcscmp(szTag,L"rt") || !wcscmp(szTag,L"rp") )
+				if (!wcscmp(szTag, L"rbc") || !wcscmp(szTag, L"rtc") || !wcscmp(szTag, L"ruby")
+					|| !wcscmp(szTag, L"rb") || !wcscmp(szTag, L"rt") || !wcscmp(szTag, L"rp"))
 				{
 					nLabelType = LT_INLINE;
 				}
 				// 空要素（内容を持たないタグ）のうち構造に関係ないものは構造解析しない。
-				if( !wcscmp(szTag,L"br") || !wcscmp(szTag,L"base") || !wcscmp(szTag,L"basefont")
-				 || !wcscmp(szTag,L"frame")
-				 // 2014.12.26 Moca 以下の要素を追加
-				 || !wcscmp(szTag,L"wbr")
-				 )
+				if (!wcscmp(szTag, L"br") || !wcscmp(szTag, L"base") || !wcscmp(szTag, L"basefont")
+					|| !wcscmp(szTag, L"frame")
+					// 2014.12.26 Moca 以下の要素を追加
+					|| !wcscmp(szTag, L"wbr")
+					)
 				{
 					nLabelType = LT_IGNORE;
 				}
 				// 空要素（内容を持たないタグ）のうち構造に関係するもの。
-				if( !wcscmp(szTag,L"area") || !wcscmp(szTag,L"hr") || !wcscmp(szTag,L"img")
-				 || !wcscmp(szTag,L"input") || !wcscmp(szTag,L"link") || !wcscmp(szTag,L"meta")
-				 || !wcscmp(szTag,L"param")
-				 // 2014.12.26 Moca 以下の要素を追加
-				 || !wcscmp(szTag,L"col") || !wcscmp(szTag,L"command") || !wcscmp(szTag,L"embed")
-				 || !wcscmp(szTag,L"keygen") || !wcscmp(szTag,L"source") || !wcscmp(szTag,L"track")
-				 )
+				if (!wcscmp(szTag, L"area") || !wcscmp(szTag, L"hr") || !wcscmp(szTag, L"img")
+					|| !wcscmp(szTag, L"input") || !wcscmp(szTag, L"link") || !wcscmp(szTag, L"meta")
+					|| !wcscmp(szTag, L"param")
+					// 2014.12.26 Moca 以下の要素を追加
+					|| !wcscmp(szTag, L"col") || !wcscmp(szTag, L"command") || !wcscmp(szTag, L"embed")
+					|| !wcscmp(szTag, L"keygen") || !wcscmp(szTag, L"source") || !wcscmp(szTag, L"track")
+					)
 				{
 					nLabelType = LT_EMPTY;
 				}
-				if( !wcscmp(szTag,L"div") || !wcscmp(szTag,L"center")
-				 || !wcscmp(szTag,L"address") || !wcscmp(szTag,L"blockquote")
-				 || !wcscmp(szTag,L"noscript") || !wcscmp(szTag,L"noframes")
-				 || !wcscmp(szTag,L"ol") || !wcscmp(szTag,L"ul") || !wcscmp(szTag,L"dl")
-				 || !wcscmp(szTag,L"dir") || !wcscmp(szTag,L"menu")
-				 || !wcscmp(szTag,L"pre") || !wcscmp(szTag,L"table")
-				 || !wcscmp(szTag,L"form") || !wcscmp(szTag,L"fieldset") || !wcscmp(szTag,L"isindex") )
+				if (!wcscmp(szTag, L"div") || !wcscmp(szTag, L"center")
+					|| !wcscmp(szTag, L"address") || !wcscmp(szTag, L"blockquote")
+					|| !wcscmp(szTag, L"noscript") || !wcscmp(szTag, L"noframes")
+					|| !wcscmp(szTag, L"ol") || !wcscmp(szTag, L"ul") || !wcscmp(szTag, L"dl")
+					|| !wcscmp(szTag, L"dir") || !wcscmp(szTag, L"menu")
+					|| !wcscmp(szTag, L"pre") || !wcscmp(szTag, L"table")
+					|| !wcscmp(szTag, L"form") || !wcscmp(szTag, L"fieldset") || !wcscmp(szTag, L"isindex"))
 				{
 					nLabelType = LT_BLOCK;
 				}
-				if( !wcscmp(szTag,L"p") )
+				if (!wcscmp(szTag, L"p"))
 				{
 					nLabelType = LT_PARAGRAPH;
 				}
-				if( (szTag[0]==L'h') && (L'1'<=szTitle[1]&&szTitle[1]<=L'6') ){
+				if ((szTag[0] == L'h') && (L'1' <= szTitle[1] && szTitle[1] <= L'6')) {
 					nLabelType = LT_HEADING;
 				}
 			}
@@ -250,30 +250,30 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 			// 2009.08.13 syat 「/>」で終わるタグの判定のため、終了タグ処理を開始タグ処理の後にした。
 			//                  （開始タグ処理の中で、bEndTagをtrueにしている所がある。）
 
-			if( ! bEndTag ) // 開始タグ
+			if (!bEndTag) // 開始タグ
 			{
-				if( nLabelType!=LT_INLINE && nLabelType!=LT_IGNORE ){
+				if (nLabelType != LT_INLINE && nLabelType != LT_IGNORE) {
 					// pの中でブロック要素がきたら、自動的にpを閉じる。 2008.09.07 aroka
-					if( bParaTag ){
-						if( nLabelType==LT_HEADING || nLabelType==LT_PARAGRAPH || nLabelType==LT_BLOCK ){
+					if (bParaTag) {
+						if (nLabelType == LT_HEADING || nLabelType == LT_PARAGRAPH || nLabelType == LT_BLOCK) {
 							nDepth--;
 						}
 					}
-					if( nLabelType==LT_HEADING ){
-						if( nHeadDepth[szTitle[1]-L'0'] != -1 ) // 小見出し:既出
+					if (nLabelType == LT_HEADING) {
+						if (nHeadDepth[szTitle[1] - L'0'] != -1) // 小見出し:既出
 						{
-							nDepth = nHeadDepth[szTitle[1]-L'0'];
-							for(k=szTitle[1]-L'0';k<=6;k++){
+							nDepth = nHeadDepth[szTitle[1] - L'0'];
+							for (k = szTitle[1] - L'0'; k <= 6; k++) {
 								nHeadDepth[k] = -1;
 							}
-							nHeadDepth[szTitle[1]-L'0'] = nDepth;
+							nHeadDepth[szTitle[1] - L'0'] = nDepth;
 							bParaTag = false;
 						}
 					}
-					if( nLabelType==LT_PARAGRAPH ){
+					if (nLabelType == LT_PARAGRAPH) {
 						bParaTag = true;
 					}
-					if( nLabelType==LT_BLOCK ){
+					if (nLabelType == LT_BLOCK) {
 						bParaTag = false;
 					}
 
@@ -284,22 +284,23 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 						&ptPos
 					);
 
-					if( nLabelType!=LT_EMPTY ){
+					if (nLabelType != LT_EMPTY) {
 						// 終了タグなしを除く全てのタグらしきものを判定
-						wcscpy(pszStack[nDepth],szTitle);
-						k	=	j;
+						wcscpy(pszStack[nDepth], szTitle);
+						k = j;
 						int x = j;
 						// 2014.12.25 32文字以上のとき,別の行のときにも「/>」bEndTagに対応
 						{
 							bool bLoop = true;
 							while (bLoop && pLine) {
 								for (; j < nLineLen - i; j++) {
-									if (pLine[j] == L'/' && pLine[j+1]== L'>') {
+									if (pLine[j] == L'/' && pLine[j + 1] == L'>') {
 										bEndTag = true; // <emptytag />
 										bLoop = false;
-										j+=2;
+										j += 2;
 										break;
-									}else if ( pLine[j] == L'>' ) {
+									}
+									else if (pLine[j] == L'>') {
 										bLoop = false;
 										j++;
 										break;
@@ -315,12 +316,12 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 							}
 						}
 						if (x < _countof(szTitle) - 3) {
-							if(!bEndTag)
+							if (!bEndTag)
 							{
-								szTitle[k++]	=	L' ';
+								szTitle[k++] = L' ';
 								bool bExtEol = GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol;
-								for (; i+j < nLineLen && k < _countof(szTitle) -1 ; k++, j++) {
-									if (pLine[j]==L'<' || WCODE::IsLineDelimiter(pLine[j], bExtEol)){
+								for (; i + j < nLineLen && k < _countof(szTitle) - 1; k++, j++) {
+									if (pLine[j] == L'<' || WCODE::IsLineDelimiter(pLine[j], bExtEol)) {
 										j--;
 										break;
 									}
@@ -328,63 +329,66 @@ void CDocOutline::MakeTopicList_html(CFuncInfoArr* pcFuncInfoArr, bool bXml)
 								}
 							}
 						}
-						szTitle[k]	=	L'\0';
-						pcFuncInfoArr->AppendData( nLineCount+CLogicInt(1), ptPos.GetY2()+CLayoutInt(1), szTitle, 0, nDepth++ );
+						szTitle[k] = L'\0';
+						pcFuncInfoArr->AppendData(nLineCount + CLogicInt(1), ptPos.GetY2() + CLayoutInt(1), szTitle, 0, nDepth++);
 					}
 					else
 					{
-						for(;i+j<nLineLen && j<_countof(szTitle)-1;j++)
+						for (; i + j < nLineLen && j < _countof(szTitle) - 1; j++)
 						{
-							if(pLine[j]==L'>')
+							if (pLine[j] == L'>')
 							{
 								break;
 							}
 							szTitle[j] = pLine[j];
 						}
-						szTitle[j]	=	L'\0';
-						pcFuncInfoArr->AppendData(nLineCount+CLogicInt(1),ptPos.GetY2()+CLayoutInt(1),szTitle,0,nDepth);
+						szTitle[j] = L'\0';
+						pcFuncInfoArr->AppendData(nLineCount + CLogicInt(1), ptPos.GetY2() + CLayoutInt(1), szTitle, 0, nDepth);
 					}
 				}
 			}
-			if( bEndTag ) // 終了タグ
+			if (bEndTag) // 終了タグ
 			{
 				int nDepthOrg = nDepth; // 2004.04.20 Moca 追加
-				while(nDepth>0)
+				while (nDepth > 0)
 				{
 					nDepth--;
 					if (bXml) {
-						if(!wcscmp(pszStack[nDepth],szTitle)){
+						if (!wcscmp(pszStack[nDepth], szTitle)) {
 							break;
 						}
-					}else{
-						if(!wcsicmp(pszStack[nDepth],szTitle)){
+					}
+					else {
+						if (!wcsicmp(pszStack[nDepth], szTitle)) {
 							break;
 						}
 					}
 				}
 				// 2004.04.20 Moca ツリー中と一致しないときは、この終了タグは無視
-				if( nDepth == 0 )
+				if (nDepth == 0)
 				{
 					if (bXml) {
-						if(wcscmp(pszStack[nDepth],szTitle)){
-							nDepth = nDepthOrg;
-						}
-					}else{
-						if(wcsicmp(pszStack[nDepth],szTitle)){
+						if (wcscmp(pszStack[nDepth], szTitle)) {
 							nDepth = nDepthOrg;
 						}
 					}
-				}else{
-					if( nLabelType==LT_HEADING ){	//	見出しの終わり
-						nHeadDepth[szTitle[1]-L'0'] = nDepth;
+					else {
+						if (wcsicmp(pszStack[nDepth], szTitle)) {
+							nDepth = nDepthOrg;
+						}
+					}
+				}
+				else {
+					if (nLabelType == LT_HEADING) {	//	見出しの終わり
+						nHeadDepth[szTitle[1] - L'0'] = nDepth;
 						nDepth++;
 					}
-					if( nLabelType==LT_PARAGRAPH ){
+					if (nLabelType == LT_PARAGRAPH) {
 						bParaTag = false;
 					}
 				}
 			}
-			i	+=	j;
+			i += j;
 		}
 	}
 }

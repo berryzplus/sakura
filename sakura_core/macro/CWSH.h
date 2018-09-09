@@ -29,7 +29,7 @@ class ImplementsIUnknown: public Base
 
 class CInterfaceObject: public ImplementsIUnknown<IDispatch>
  */
-typedef void (*ScriptErrorHandler)(BSTR Description, BSTR Source, void *Data);
+typedef void(*ScriptErrorHandler)(BSTR Description, BSTR Source, void *Data);
 
 class CWSHClient : IWSHClient
 {
@@ -47,10 +47,10 @@ public:
 	void *m_Data;
 	bool m_Valid; ///< trueの場合スクリプトエンジンが使用可能。falseになる場合は ScriptErrorHandlerにエラー内容が通知されている。
 	virtual /*override*/ void* GetData() const { return this->m_Data; }
-	const List& GetInterfaceObjects() {	return this->m_IfObjArr; }
+	const List& GetInterfaceObjects() { return this->m_IfObjArr; }
 
 	// 操作
-	void AddInterfaceObject( CIfObj* obj );
+	void AddInterfaceObject(CIfObj* obj);
 	bool Execute(const wchar_t *AScript);
 	void Error(BSTR Description, BSTR Source); ///< ScriptErrorHandlerを呼び出す。
 	void Error(const wchar_t* Description);          ///< ScriptErrorHandlerを呼び出す。

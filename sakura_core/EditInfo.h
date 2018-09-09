@@ -67,23 +67,23 @@ struct EditInfo {
 	int			m_nWindowSizeY;							//!< ウィンドウ  高さ(ピクセル数)
 	int			m_nWindowOriginX;						//!< ウィンドウ  物理位置(ピクセル数・マイナス値も有効)
 	int			m_nWindowOriginY;						//!< ウィンドウ  物理位置(ピクセル数・マイナス値も有効)
-	
+
 	// Mar. 7, 2002 genta
 	// Constructor 確実に初期化するため
 	EditInfo()
-	: m_nCharCode( CODE_AUTODETECT )
-	, m_bBom( false )
-	, m_nTypeId( -1 )
-	, m_nViewTopLine( -1 )
-	, m_nViewLeftCol( -1 )
-	, m_ptCursor(CLogicInt(-1), CLogicInt(-1))
-	, m_bIsModified( false )
-	, m_bIsGrep( false )
-	, m_bIsDebug( false )
-	, m_nWindowSizeX( -1 )
-	, m_nWindowSizeY( -1 )
-	, m_nWindowOriginX( CW_USEDEFAULT )	//	2004.05.13 Moca “指定無し”を-1からCW_USEDEFAULTに変更
-	, m_nWindowOriginY( CW_USEDEFAULT )
+		: m_nCharCode(CODE_AUTODETECT)
+		, m_bBom(false)
+		, m_nTypeId(-1)
+		, m_nViewTopLine(-1)
+		, m_nViewLeftCol(-1)
+		, m_ptCursor(CLogicInt(-1), CLogicInt(-1))
+		, m_bIsModified(false)
+		, m_bIsGrep(false)
+		, m_bIsDebug(false)
+		, m_nWindowSizeX(-1)
+		, m_nWindowSizeY(-1)
+		, m_nWindowOriginX(CW_USEDEFAULT)	//	2004.05.13 Moca “指定無し”を-1からCW_USEDEFAULTに変更
+		, m_nWindowOriginY(CW_USEDEFAULT)
 	{
 		m_szPath[0] = '\0';
 		m_szMarkLines[0] = L'\0';

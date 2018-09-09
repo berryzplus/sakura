@@ -47,7 +47,7 @@ class CEditView;
  *      GetMacroCommandInfo, GetMacroFuncInfo, HandleCommand, HandleFunction
  */
 class CWSHIfObj
-: public CIfObj
+	: public CIfObj
 {
 public:
 	// 型定義
@@ -56,10 +56,10 @@ public:
 
 	// コンストラクタ
 	CWSHIfObj(const wchar_t* name, bool isGlobal)
-	: CIfObj(name, isGlobal)
+		: CIfObj(name, isGlobal)
 	{}
 
-	virtual void ReadyMethods( CEditView* pView, int flags );
+	virtual void ReadyMethods(CEditView* pView, int flags);
 
 protected:
 	// 操作

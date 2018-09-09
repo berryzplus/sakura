@@ -3,7 +3,7 @@
 #include "CFigure_ZenSpace.h"
 #include "types/CTypeSupport.h"
 
-void Draw_ZenSpace( CGraphics& gr, const CMyRect& rc );
+void Draw_ZenSpace(CGraphics& gr, const CMyRect& rc);
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                      CFigure_ZenSpace                         //
@@ -11,7 +11,7 @@ void Draw_ZenSpace( CGraphics& gr, const CMyRect& rc );
 
 bool CFigure_ZenSpace::Match(const wchar_t* pText, int nTextLen) const
 {
-	if( pText[0] == L'　' ){
+	if (pText[0] == L'　') {
 		return true;
 	}
 	return false;
@@ -34,13 +34,13 @@ void CFigure_ZenSpace::DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pc
 
 	RECT rc;
 	//クリッピング矩形を計算。画面外なら描画しない
-	if(pcView->GetTextArea().GenerateClipRect(&rc, *pDispPos, CHabaXInt(dx[0])))
+	if (pcView->GetTextArea().GenerateClipRect(&rc, *pDispPos, CHabaXInt(dx[0])))
 	{
 		int u25a1Dx = pcView->GetTextMetrics().CalcTextWidth3(L"□", 1);
 		bool bDrawMySelf = dx[0] != u25a1Dx;
 		const wchar_t* pZenSp = (bDrawMySelf ? L"　" : L"□");
 		int fontNo = WCODE::GetFontNo(*pZenSp);
-		if( fontNo ){
+		if (fontNo) {
 			SFONT sFont;
 			sFont.m_sFontAttr = gr.GetCurrentMyFontAttr();
 			sFont.m_hFont = pcView->GetFontset().ChooseFontHandle(fontNo, sFont.m_sFontAttr);
@@ -52,23 +52,23 @@ void CFigure_ZenSpace::DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pc
 			gr,
 			pDispPos->GetDrawPos().x,
 			pDispPos->GetDrawPos().y + nHeightMargin,
-			ExtTextOutOption() & ~(bTrans? ETO_OPAQUE: 0),
+			ExtTextOutOption() & ~(bTrans ? ETO_OPAQUE : 0),
 			&rc,
 			pZenSp,
 			1,
 			dx
 		);
-		if( fontNo ){
+		if (fontNo) {
 			gr.PopMyFont();
 		}
-		if( bDrawMySelf ){
+		if (bDrawMySelf) {
 			gr.PushClipping(rc); // FIXME: 正確にはCombineRgn RGN_AND が必要
-			
+
 			// 全角SPの大きさ指定
 			CMyRect rcZenSp;
 			// 注：ベースライン無視
 			rcZenSp.SetPos(pDispPos->GetDrawPos().x, pDispPos->GetDrawPos().y);
-			rcZenSp.SetSize(dx[0]- pcView->m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_nColumnSpace,
+			rcZenSp.SetSize(dx[0] - pcView->m_pcEditDoc->m_cDocType.GetDocumentAttribute().m_nColumnSpace,
 				pcView->GetTextMetrics().GetHankakuHeight());
 
 			// 描画
@@ -78,17 +78,17 @@ void CFigure_ZenSpace::DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pc
 
 			// リージョン破棄
 			gr.PopClipping();
-			
+
 			// To Here 2003.08.17 ryoji 改行文字が欠けないように
 		}
-		
+
 	}
 
 	//位置進める
 	pDispPos->ForwardDrawCol(CLayoutXInt(dx[0]));
 }
 
-void Draw_ZenSpace( CGraphics& gr, const CMyRect& rc )
+void Draw_ZenSpace(CGraphics& gr, const CMyRect& rc)
 {
 	TEXTMETRIC tm;
 	tm.tmAscent = 0;
@@ -99,7 +99,7 @@ void Draw_ZenSpace( CGraphics& gr, const CMyRect& rc )
 	minWidth -= (minWidth + 5) / 10;
 	rc2.SetPos(
 		rc.left + (rc.Width() - minWidth) / 2,
-		rc.top  + tm.tmAscent - minWidth
+		rc.top + tm.tmAscent - minWidth
 	);
 	rc2.SetSize(minWidth, minWidth);
 	gr.PushPen(::GetTextColor(gr), 1);

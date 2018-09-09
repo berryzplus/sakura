@@ -47,16 +47,16 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 	//	Jun.  5, 2004 genta
 	//	ビューモードのチェックをCEditDocから上書き保存処理に移動
 	//	同名で上書きされるのを防ぐ
-	if( CAppMode::getInstance()->IsViewMode() && pSaveInfo->IsSamePath(pcDoc->m_cDocFile.GetFilePath()) ){
+	if (CAppMode::getInstance()->IsViewMode() && pSaveInfo->IsSamePath(pcDoc->m_cDocFile.GetFilePath())) {
 		ErrorBeep();
-		TopErrorMessage( CEditWnd::getInstance()->GetHwnd(), LS(STR_SAVEAGENT_VIEW_FILE) );
+		TopErrorMessage(CEditWnd::getInstance()->GetHwnd(), LS(STR_SAVEAGENT_VIEW_FILE));
 		return CALLBACK_INTERRUPT;
 	}
 
 	// 他ウィンドウで開いているか確認する	// 2009.04.07 ryoji
-	if( !pSaveInfo->IsSamePath(pcDoc->m_cDocFile.GetFilePath()) ){
+	if (!pSaveInfo->IsSamePath(pcDoc->m_cDocFile.GetFilePath())) {
 		HWND hwndOwner;
-		if( CShareData::getInstance()->IsPathOpened( pSaveInfo->cFilePath, &hwndOwner ) ){
+		if (CShareData::getInstance()->IsPathOpened(pSaveInfo->cFilePath, &hwndOwner)) {
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
 				LS(STR_SAVEAGENT_OTHER),
@@ -71,18 +71,18 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 		// ロックは一時的に解除してチェックする（チェックせずに後戻りできないところまで進めるより安全）
 		// ※ ロックしていてもファイル属性やアクセス許可の変更によって書き込めなくなっていることもある
 		bool bLock = (pSaveInfo->IsSamePath(pcDoc->m_cDocFile.GetFilePath()) && pcDoc->m_cDocFile.IsFileLocking());
-		if( bLock ) pcDoc->m_cDocFileOperation.DoFileUnlock();
-		try{
+		if (bLock) pcDoc->m_cDocFileOperation.DoFileUnlock();
+		try {
 			bool bExist = fexist(pSaveInfo->cFilePath);
 			CStream out(pSaveInfo->cFilePath, _T("ab"), true);	// 実際の保存は "wb" だがここは "ab"（ファイル内容は破棄しない）でチェックする	// 2009.08.21 ryoji
 			out.Close();
-			if(!bExist){
+			if (!bExist) {
 				::DeleteFile(pSaveInfo->cFilePath);
 			}
 		}
-		catch(CError_FileOpen){
+		catch (CError_FileOpen) {
 			// ※ たとえ上書き保存の場合でもここでの失敗では書込み禁止へは遷移しない
-			if( bLock ) pcDoc->m_cDocFileOperation.DoFileLock(false);
+			if (bLock) pcDoc->m_cDocFileOperation.DoFileLock(false);
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
 				LS(STR_SAVEAGENT_OTHER_APP),
@@ -90,7 +90,7 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 			);
 			return CALLBACK_INTERRUPT;
 		}
-		if( bLock ) pcDoc->m_cDocFileOperation.DoFileLock(false);
+		if (bLock) pcDoc->m_cDocFileOperation.DoFileLock(false);
 	}
 
 	return CALLBACK_CONTINUE;
@@ -119,9 +119,9 @@ void CSaveAgent::OnSave(const SSaveInfo& sSaveInfo)
 	);
 
 	//セーブ情報の確定
-	pcDoc->SetFilePathAndIcon( sSaveInfo.cFilePath );
-	pcDoc->m_cDocFile.SetCodeSet( sSaveInfo.eCharCode, sSaveInfo.bBomExist );
-	if(sSaveInfo.cEol.IsValid()){
+	pcDoc->SetFilePathAndIcon(sSaveInfo.cFilePath);
+	pcDoc->m_cDocFile.SetCodeSet(sSaveInfo.eCharCode, sSaveInfo.bBomExist);
+	if (sSaveInfo.cEol.IsValid()) {
 		pcDoc->m_cDocEditor.SetNewLineCode(sSaveInfo.cEol);
 	}
 }
@@ -134,12 +134,12 @@ void CSaveAgent::OnAfterSave(const SSaveInfo& sSaveInfo)
 	 * CloseHandle前ではFlushFileBuffersを呼んでもタイムスタンプが更新
 	 * されないことがある。
 	 */
-	GetLastWriteTimestamp( pcDoc->m_cDocFile.GetFilePath(), &pcDoc->m_cDocFile.GetFileTime() );
+	GetLastWriteTimestamp(pcDoc->m_cDocFile.GetFilePath(), &pcDoc->m_cDocFile.GetFileTime());
 
 	// タイプ別設定の変更を指示。
 	// 上書き（明示的な上書きや自動保存）では変更しない
 	// ---> 上書きの場合は一時的な折り返し桁変更やタブ幅変更を維持したままにする
-	if(!sSaveInfo.bOverwriteMode){
+	if (!sSaveInfo.bOverwriteMode) {
 		pcDoc->OnChangeSetting();
 	}
 }

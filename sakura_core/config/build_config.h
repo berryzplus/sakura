@@ -55,9 +55,9 @@
 
 //UNICODE BOOL定数.
 #ifdef _UNICODE
-static const bool UNICODE_BOOL=true;
+static const bool UNICODE_BOOL = true;
 #else
-static const bool UNICODE_BOOL=false;
+static const bool UNICODE_BOOL = false;
 #endif
 
 
@@ -88,15 +88,15 @@ static const bool UNICODE_BOOL=false;
 
 //デバッグ検証用：newされた領域をわざと汚す。2007.11.27 kobake
 #ifdef FILL_STRANGE_IN_NEW_MEMORY
-	void* operator new(size_t nSize);
-	#ifdef _MSC_VER
-		#if _MSC_VER == 1500
-			_Ret_bytecap_(_Size)	// for VS2008 Debug mode
-		#endif
-	#endif
-	void* operator new[](size_t nSize);
-	void operator delete(void* p);
-	void operator delete[](void* p);
+void* operator new(size_t nSize);
+#ifdef _MSC_VER
+#if _MSC_VER == 1500
+_Ret_bytecap_(_Size)	// for VS2008 Debug mode
+#endif
+#endif
+void* operator new[](size_t nSize);
+void operator delete(void* p);
+void operator delete[](void* p);
 #endif
 
 
@@ -104,15 +104,15 @@ static const bool UNICODE_BOOL=false;
 #ifdef USE_LEAK_CHECK_WITH_CRTDBG
 	//new演算子をオーバーライドするヘッダはcrtdbg.hの前にincludeしないとコンパイルエラーとなる	
 	//参考：http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=99818
-	#include <xiosbase>
-	#include <xlocale>
-	#include <xmemory>
-	#include <xtree>
+#include <xiosbase>
+#include <xlocale>
+#include <xmemory>
+#include <xtree>
 
-	#include <crtdbg.h>
-	#define new DEBUG_NEW
-	#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-	//それと、WinMainの先頭で _CrtSetDbgFlag() を呼ぶ.
+#include <crtdbg.h>
+#define new DEBUG_NEW
+#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+//それと、WinMainの先頭で _CrtSetDbgFlag() を呼ぶ.
 #endif
 
 #if _WIN64

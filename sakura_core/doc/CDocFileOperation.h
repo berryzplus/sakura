@@ -29,7 +29,7 @@
 
 class CEditDoc;
 
-class CDocFileOperation{
+class CDocFileOperation {
 public:
 	CDocFileOperation(CEditDoc* pcDoc) : m_pcDocRef(pcDoc) { }
 
@@ -37,7 +37,7 @@ public:
 	bool _ToDoLock() const;
 	void DoFileLock(bool bMsg = true);
 	void DoFileUnlock();
-	
+
 	//ロードUI
 	bool OpenFileDialog(
 		HWND				hwndParent,
@@ -58,14 +58,14 @@ public:
 		ECodeType	nCharCode			//!< [in] 文字コード種別
 	);
 
-	
+
 	//セーブUI
 	bool SaveFileDialog(SSaveInfo* pSaveInfo);	//!<「ファイル名を付けて保存」ダイアログ
 	bool SaveFileDialog(LPTSTR szPath);			//!<「ファイル名を付けて保存」ダイアログ
 
 	//セーブフロー
 	bool DoSaveFlow(SSaveInfo* pSaveInfo);
-	bool FileSaveAs( const WCHAR* filename = NULL,ECodeType eCodeType = CODE_NONE, EEolType eEolType = EOL_NONE, bool bDialog = true);	//!< ダイアログでファイル名を入力させ、保存。	// 2006.12.30 ryoji
+	bool FileSaveAs(const WCHAR* filename = NULL, ECodeType eCodeType = CODE_NONE, EEolType eEolType = EOL_NONE, bool bDialog = true);	//!< ダイアログでファイル名を入力させ、保存。	// 2006.12.30 ryoji
 	bool FileSave();			//!< 上書き保存。ファイル名が指定されていなかったらダイアログで入力を促す。	// 2006.12.30 ryoji
 
 	//クローズ

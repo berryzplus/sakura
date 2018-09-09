@@ -21,10 +21,10 @@ CCodeBase* CCodeFactory::CreateCodeBase(
 	int			nFlag			//!< bit 0: MIME Encodeされたヘッダをdecodeするかどうか
 )
 {
-  	switch( eCodeType ){
+	switch (eCodeType) {
 	case CODE_SJIS:			return new CShiftJis();
 	case CODE_EUC:			return new CEuc();
-	case CODE_JIS:			return new CJis((nFlag&1)==1);
+	case CODE_JIS:			return new CJis((nFlag & 1) == 1);
 	case CODE_UNICODE:		return new CUnicode();
 	case CODE_UTF8:			return new CUtf8();
 	case CODE_UTF7:			return new CUtf7();
@@ -34,7 +34,7 @@ CCodeBase* CCodeFactory::CreateCodeBase(
 	case CODE_CPACP:		return new CCodePage(eCodeType);
 	case CODE_CPOEM:		return new CCodePage(eCodeType);
 	default:
-		if( IsValidCodePageEx(eCodeType) ){
+		if (IsValidCodePageEx(eCodeType)) {
 			return new CCodePage(eCodeType);
 		}
 		assert_warning(0);

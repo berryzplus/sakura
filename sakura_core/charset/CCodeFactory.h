@@ -26,7 +26,7 @@
 
 class CCodeBase;
 
-class CCodeFactory{
+class CCodeFactory {
 public:
 	//! eCodeTypeに適合する CCodeBaseインスタンス を生成
 	static CCodeBase* CreateCodeBase(

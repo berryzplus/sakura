@@ -33,7 +33,7 @@
 
 	@note	取得後のポインタはユーザ管理の構造体にキャストして参照してください。
 */
-const TCHAR* CRecentFile::GetItemText( int nIndex ) const
+const TCHAR* CRecentFile::GetItemText(int nIndex) const
 {
 	return GetItem(nIndex)->m_szPath;
 }
@@ -57,32 +57,32 @@ CRecentFile::CRecentFile()
 	);
 }
 
-bool CRecentFile::DataToReceiveType( const EditInfo** dst, const EditInfo* src ) const
+bool CRecentFile::DataToReceiveType(const EditInfo** dst, const EditInfo* src) const
 {
 	*dst = src;
 	return true;
 }
 
-bool CRecentFile::TextToDataType( EditInfo* dst, LPCTSTR pszText ) const
+bool CRecentFile::TextToDataType(EditInfo* dst, LPCTSTR pszText) const
 {
-	if( _countof(dst->m_szPath) < auto_strlen(pszText) + 1 ){
+	if (_countof(dst->m_szPath) < auto_strlen(pszText) + 1) {
 		return false;
 	}
 	_tcscpy(dst->m_szPath, pszText);
 	return true;
 }
 
-int CRecentFile::CompareItem( const EditInfo* p1, const EditInfo* p2 ) const
+int CRecentFile::CompareItem(const EditInfo* p1, const EditInfo* p2) const
 {
 	return _tcsicmp(p1->m_szPath, p2->m_szPath);
 }
 
-void CRecentFile::CopyItem( EditInfo* dst, const EditInfo* src ) const
+void CRecentFile::CopyItem(EditInfo* dst, const EditInfo* src) const
 {
 	*dst = *src;
 }
 
-bool CRecentFile::ValidateReceiveType( const EditInfo* ) const
+bool CRecentFile::ValidateReceiveType(const EditInfo*) const
 {
 	return true;
 }
@@ -99,8 +99,8 @@ size_t CRecentFile::GetTextMaxLength() const
 int CRecentFile::FindItemByPath(const TCHAR* pszPath) const
 {
 	int n = GetItemCount();
-	for(int i=0;i<n;i++){
-		if(_tcsicmp(GetItem(i)->m_szPath,pszPath)==0)return i;
+	for (int i = 0; i < n; i++) {
+		if (_tcsicmp(GetItem(i)->m_szPath, pszPath) == 0)return i;
 	}
 	return -1;
 }

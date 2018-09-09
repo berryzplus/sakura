@@ -139,8 +139,8 @@ bool CZipFile::ChkPluginDef(const std::tstring& sDefFile, std::tstring& sFolderN
 				// 定義ファイルか
 				if (!vFolder && auto_strlen(bps) >= sDefFile.length()
 					&& (auto_stricmp(to_tchar(bps), to_tchar((sFolderName + _T("/") + sDefFile).c_str())) == 0
-					|| auto_stricmp(to_tchar(bps), to_tchar((sFolderName + _T("\\") + sDefFile).c_str())) == 0
-					|| auto_stricmp(to_tchar(bps), to_tchar((sZipName + _T("\\") + sFolderName + _T("\\") + sDefFile).c_str())) == 0)) {
+						|| auto_stricmp(to_tchar(bps), to_tchar((sFolderName + _T("\\") + sDefFile).c_str())) == 0
+						|| auto_stricmp(to_tchar(bps), to_tchar((sZipName + _T("\\") + sFolderName + _T("\\") + sDefFile).c_str())) == 0)) {
 					bFoundDef = true;
 					break;
 				}

@@ -74,7 +74,7 @@ struct CalTextWidthArg {
 	BOOL			bInsData;		//!< 追加文字列あり
 };
 
-class CLogicPointEx: public CLogicPoint{
+class CLogicPointEx : public CLogicPoint {
 public:
 	CLayoutInt ext;	//!< ピクセル幅
 	CLayoutXInt haba;	//!< ext設定時の１文字の幅
@@ -91,13 +91,13 @@ public:
 class CLayoutMgr : public CProgressSubject
 {
 private:
-	typedef CLayoutInt (CLayoutMgr::*CalcIndentProc)( CLayout* );
+	typedef CLayoutInt(CLayoutMgr::*CalcIndentProc)(CLayout*);
 
 public:
 	//生成と破棄
 	CLayoutMgr();
 	~CLayoutMgr();
-	void Create( CEditDoc*, CDocLineMgr* );
+	void Create(CEditDoc*, CDocLineMgr*);
 	void Init();
 	void _Empty();
 
@@ -110,7 +110,7 @@ public:
 	CLayoutInt GetTabSpace() const { return m_nTabSpace * m_nCharLayoutXPerKeta; }
 	CKetaXInt  GetTabSpaceKetas() const { return m_nTabSpace; }
 
-	void SetTabSpaceInfo( CKetaXInt nTabSpaceKeta, CLayoutXInt nCharLayoutXPerKeta ){
+	void SetTabSpaceInfo(CKetaXInt nTabSpaceKeta, CLayoutXInt nCharLayoutXPerKeta) {
 		m_nTabSpace = nTabSpaceKeta;
 		m_nCharLayoutXPerKeta = nCharLayoutXPerKeta;
 	}
@@ -120,25 +120,25 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
 	//2007.10.09 kobake 関数名変更: Search → SearchLineByLayoutY
-	CLayoutInt		GetLineCount() const{ return m_nLines; }	/* 全物理行数を返す */
-	const wchar_t*	GetLineStr( CLayoutInt nLine, CLogicInt* pnLineLen ) const;	/* 指定された物理行のデータへのポインタとその長さを返す */
-	const wchar_t*	GetLineStr( CLayoutInt nLine, CLogicInt* pnLineLen, const CLayout** ppcLayoutDes ) const;	/* 指定された物理行のデータへのポインタとその長さを返す */
+	CLayoutInt		GetLineCount() const { return m_nLines; }	/* 全物理行数を返す */
+	const wchar_t*	GetLineStr(CLayoutInt nLine, CLogicInt* pnLineLen) const;	/* 指定された物理行のデータへのポインタとその長さを返す */
+	const wchar_t*	GetLineStr(CLayoutInt nLine, CLogicInt* pnLineLen, const CLayout** ppcLayoutDes) const;	/* 指定された物理行のデータへのポインタとその長さを返す */
 
 	//先頭と末尾
-	CLayout*		GetTopLayout()		{ return m_pLayoutTop; }
-	CLayout*		GetBottomLayout()	{ return m_pLayoutBot; }
+	CLayout*		GetTopLayout() { return m_pLayoutTop; }
+	CLayout*		GetBottomLayout() { return m_pLayoutBot; }
 	const CLayout*	GetTopLayout() const { return m_pLayoutTop; }
 	const CLayout*	GetBottomLayout() const { return m_pLayoutBot; }
 
 	//レイアウトを探す
-	const CLayout*	SearchLineByLayoutY( CLayoutInt nLineLayout ) const;	/* 指定された物理行のレイアウトデータ(CLayout)へのポインタを返す */
-	CLayout*		SearchLineByLayoutY( CLayoutInt nLineLayout ){ return const_cast<CLayout*>(static_cast<const CLayoutMgr*>(this)->SearchLineByLayoutY(nLineLayout)); }
+	const CLayout*	SearchLineByLayoutY(CLayoutInt nLineLayout) const;	/* 指定された物理行のレイアウトデータ(CLayout)へのポインタを返す */
+	CLayout*		SearchLineByLayoutY(CLayoutInt nLineLayout) { return const_cast<CLayout*>(static_cast<const CLayoutMgr*>(this)->SearchLineByLayoutY(nLineLayout)); }
 
 	//ワードを探す
-	bool			WhereCurrentWord( CLayoutInt , CLogicInt , CLayoutRange* pSelect, CNativeW*, CNativeW* );	/* 現在位置の単語の範囲を調べる */
+	bool			WhereCurrentWord(CLayoutInt, CLogicInt, CLayoutRange* pSelect, CNativeW*, CNativeW*);	/* 現在位置の単語の範囲を調べる */
 
 	//判定
-	bool			IsEndOfLine( const CLayoutPoint& ptLinePos );	/* 指定位置が行末(改行文字の直前)か調べる */	//@@@ 2002.04.18 MIK
+	bool			IsEndOfLine(const CLayoutPoint& ptLinePos);	/* 指定位置が行末(改行文字の直前)か調べる */	//@@@ 2002.04.18 MIK
 
 	/*! 次のTAB位置までの幅
 		@param pos [in] 現在の位置
@@ -156,7 +156,7 @@ public:
 
 	/*! 次のTABまたはカンマ位置までの幅
 		@param pos [in] 現在の位置
-		@param 
+		@param
 		@return 次のTAB位置までの文字数．1～TAB幅
 	 */
 	CLayoutInt GetActualTsvSpace(CLayoutInt pos, wchar_t ch) const {
@@ -182,7 +182,7 @@ public:
 	CLayoutXInt GetMaxLineLayout() const { return m_nMaxLineKetas * m_nCharLayoutXPerKeta; }
 
 	// 2005.11.21 Moca 引用符の色分け情報を引数から除去
-	bool ChangeLayoutParam( CKetaXInt nTabSize, int nTsvMode, CKetaXInt nMaxLineKetas );
+	bool ChangeLayoutParam(CKetaXInt nTabSize, int nTsvMode, CKetaXInt nMaxLineKetas);
 
 	// Jul. 29, 2006 genta
 	void GetEndLayoutPos(CLayoutPoint* ptLayoutEnd);
@@ -194,38 +194,38 @@ public:
 	//                           検索                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 protected:
-	int PrevOrNextWord( CLayoutInt, CLogicInt, CLayoutPoint* pptLayoutNew, BOOL, BOOL bStopsBothEnds );	/* 現在位置の左右の単語の先頭位置を調べる */
+	int PrevOrNextWord(CLayoutInt, CLogicInt, CLayoutPoint* pptLayoutNew, BOOL, BOOL bStopsBothEnds);	/* 現在位置の左右の単語の先頭位置を調べる */
 public:
-	int PrevWord( CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds ){ return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, TRUE, bStopsBothEnds); }	/* 現在位置の左右の単語の先頭位置を調べる */
-	int NextWord( CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds ){ return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, FALSE, bStopsBothEnds); }	/* 現在位置の左右の単語の先頭位置を調べる */
+	int PrevWord(CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds) { return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, TRUE, bStopsBothEnds); }	/* 現在位置の左右の単語の先頭位置を調べる */
+	int NextWord(CLayoutInt nLineNum, CLogicInt nIdx, CLayoutPoint* pptLayoutNew, BOOL bStopsBothEnds) { return PrevOrNextWord(nLineNum, nIdx, pptLayoutNew, FALSE, bStopsBothEnds); }	/* 現在位置の左右の単語の先頭位置を調べる */
 
-	int SearchWord( CLayoutInt nLine, CLogicInt nIdx, ESearchDirection eSearchDirection, CLayoutRange* pMatchRange, const CSearchStringPattern& );	/* 単語検索 */
+	int SearchWord(CLayoutInt nLine, CLogicInt nIdx, ESearchDirection eSearchDirection, CLayoutRange* pMatchRange, const CSearchStringPattern&);	/* 単語検索 */
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                        単位の変換                           //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
 	//!ロジック→レイアウト
-	void LogicToLayoutEx( const CLogicPointEx& ptLogicEx, CLayoutPoint* pptLayout, CLayoutInt nLineHint = CLayoutInt(0) )
+	void LogicToLayoutEx(const CLogicPointEx& ptLogicEx, CLayoutPoint* pptLayout, CLayoutInt nLineHint = CLayoutInt(0))
 	{
-		LogicToLayout( ptLogicEx, pptLayout, nLineHint );
-		if( 0 < ptLogicEx.ext ){
+		LogicToLayout(ptLogicEx, pptLayout, nLineHint);
+		if (0 < ptLogicEx.ext) {
 			// 文字幅換算をする
 			int ext = std::max(0, ::MulDiv((Int)ptLogicEx.ext, (Int)m_nCharLayoutXPerKeta, (Int)ptLogicEx.haba));
 			pptLayout->x += ext;
 		}
 	}
-	void LogicToLayout( const CLogicPoint& ptLogic, CLayoutPoint* pptLayout, CLayoutInt nLineHint = CLayoutInt(0) );
-	void LogicToLayout( const CLogicRange& rangeLogic, CLayoutRange* prangeLayout )
+	void LogicToLayout(const CLogicPoint& ptLogic, CLayoutPoint* pptLayout, CLayoutInt nLineHint = CLayoutInt(0));
+	void LogicToLayout(const CLogicRange& rangeLogic, CLayoutRange* prangeLayout)
 	{
 		LogicToLayout(rangeLogic.GetFrom(), prangeLayout->GetFromPointer());
 		LogicToLayout(rangeLogic.GetTo(), prangeLayout->GetToPointer());
 	}
 
 	//!レイアウト→ロジック変換
-	void LayoutToLogicEx( const CLayoutPoint& ptLayout, CLogicPointEx* pptLogicEx ) const;
-	void LayoutToLogic( const CLayoutPoint& ptLayout, CLogicPoint* pptLogic ) const;
-	void LayoutToLogic( const CLayoutRange& rangeLayout, CLogicRange* prangeLogic ) const
+	void LayoutToLogicEx(const CLayoutPoint& ptLayout, CLogicPointEx* pptLogicEx) const;
+	void LayoutToLogic(const CLayoutPoint& ptLayout, CLogicPoint* pptLogic) const;
+	void LayoutToLogic(const CLayoutRange& rangeLayout, CLogicRange* prangeLogic) const
 	{
 		LayoutToLogic(rangeLayout.GetFrom(), prangeLogic->GetFromPointer());
 		LayoutToLogic(rangeLayout.GetTo(), prangeLogic->GetToPointer());
@@ -266,16 +266,16 @@ public:
 		LayoutReplaceArg*	pArg
 	);
 
-	BOOL CalculateTextWidth( BOOL bCalLineLen = TRUE, CLayoutInt nStart = CLayoutInt(-1), CLayoutInt nEnd = CLayoutInt(-1) );	/* テキスト最大幅を算出する */		// 2009.08.28 nasukoji
-	void ClearLayoutLineWidth( void );				/* 各行のレイアウト行長の記憶をクリアする */		// 2009.08.28 nasukoji
-	CLayoutXInt GetLayoutXOfChar( const wchar_t* pData, int nDataLen, int i ) const {
+	BOOL CalculateTextWidth(BOOL bCalLineLen = TRUE, CLayoutInt nStart = CLayoutInt(-1), CLayoutInt nEnd = CLayoutInt(-1));	/* テキスト最大幅を算出する */		// 2009.08.28 nasukoji
+	void ClearLayoutLineWidth(void);				/* 各行のレイアウト行長の記憶をクリアする */		// 2009.08.28 nasukoji
+	CLayoutXInt GetLayoutXOfChar(const wchar_t* pData, int nDataLen, int i) const {
 		CLayoutXInt nSpace = CLayoutXInt(0);
-		if( m_nSpacing ){
+		if (m_nSpacing) {
 			nSpace = CLayoutXInt(CNativeW::GetKetaOfChar(pData, nDataLen, i)) * m_nSpacing;
 		}
-		return CNativeW::GetColmOfChar( pData, nDataLen, i ) + nSpace;
+		return CNativeW::GetColmOfChar(pData, nDataLen, i) + nSpace;
 	}
-	CLayoutXInt GetLayoutXOfChar( const CStringRef& str, int i ) const {
+	CLayoutXInt GetLayoutXOfChar(const CStringRef& str, int i) const {
 		return GetLayoutXOfChar(str.GetPtr(), str.GetLength(), i);
 	}
 	CPixelXInt GetWidthPerKeta() const { return Int(m_nCharLayoutXPerKeta); }
@@ -286,8 +286,8 @@ protected:
 	/*
 	||  参照系
 	*/
-	const char* GetFirstLinrStr( int* );	/* 順アクセスモード：先頭行を得る */
-	const char* GetNextLinrStr( int* );	/* 順アクセスモード：次の行を得る */
+	const char* GetFirstLinrStr(int*);	/* 順アクセスモード：先頭行を得る */
+	const char* GetNextLinrStr(int*);	/* 順アクセスモード：次の行を得る */
 
 
 	/*
@@ -299,13 +299,13 @@ public:
 protected:
 	// 2005.11.21 Moca 引用符の色分け情報を引数から除去
 	// 2009.08.28 nasukoji	テキスト最大幅算出用引数追加
-	CLayoutInt DoLayout_Range( CLayout* , CLogicInt, CLogicPoint, EColorIndexType, CLayoutColorInfo*, const CalTextWidthArg*, CLayoutInt* );	/* 指定レイアウト行に対応する論理行の次の論理行から指定論理行数だけ再レイアウトする */
-	void CalculateTextWidth_Range( const CalTextWidthArg* pctwArg );	/* テキストが編集されたら最大幅を算出する */	// 2009.08.28 nasukoji
-	CLayout* DeleteLayoutAsLogical( CLayout*, CLayoutInt, CLogicInt , CLogicInt, CLogicPoint, CLayoutInt* );	/* 論理行の指定範囲に該当するレイアウト情報を削除 */
-	void ShiftLogicalLineNum( CLayout* , CLogicInt );	/* 指定行より後の行のレイアウト情報について、論理行番号を指定行数だけシフトする */
+	CLayoutInt DoLayout_Range(CLayout*, CLogicInt, CLogicPoint, EColorIndexType, CLayoutColorInfo*, const CalTextWidthArg*, CLayoutInt*);	/* 指定レイアウト行に対応する論理行の次の論理行から指定論理行数だけ再レイアウトする */
+	void CalculateTextWidth_Range(const CalTextWidthArg* pctwArg);	/* テキストが編集されたら最大幅を算出する */	// 2009.08.28 nasukoji
+	CLayout* DeleteLayoutAsLogical(CLayout*, CLayoutInt, CLogicInt, CLogicInt, CLogicPoint, CLayoutInt*);	/* 論理行の指定範囲に該当するレイアウト情報を削除 */
+	void ShiftLogicalLineNum(CLayout*, CLogicInt);	/* 指定行より後の行のレイアウト情報について、論理行番号を指定行数だけシフトする */
 
 	//部品
-	struct SLayoutWork{
+	struct SLayoutWork {
 		//毎ループ初期化
 		EKinsokuType	eKinsokuType;
 		CLogicInt		nPos;
@@ -331,7 +331,7 @@ protected:
 		//ループ外 (DoLayout_Rangeのみ)
 		bool			bNeedChangeCOMMENTMODE;
 		CLayoutInt		nModifyLayoutLinesNew;
-		
+
 		//ループ外 (DoLayout_Range引数)
 		CLayoutInt*		pnExtInsLineNum;
 		CLogicPoint		ptDelLogicalFrom;
@@ -356,26 +356,26 @@ protected:
 
 
 private:
-	bool _ExistKinsokuKuto(wchar_t wc) const{ return m_pszKinsokuKuto_1.exist(wc); }
-	bool _ExistKinsokuHead(wchar_t wc) const{ return m_pszKinsokuHead_1.exist(wc); }
-	bool IsKinsokuHead( wchar_t wc );	/*!< 行頭禁則文字をチェックする */	//@@@ 2002.04.08 MIK
-	bool IsKinsokuTail( wchar_t wc );	/*!< 行末禁則文字をチェックする */	//@@@ 2002.04.08 MIK
-	bool IsKinsokuKuto( wchar_t wc );	/*!< 句読点文字をチェックする */	//@@@ 2002.04.17 MIK
+	bool _ExistKinsokuKuto(wchar_t wc) const { return m_pszKinsokuKuto_1.exist(wc); }
+	bool _ExistKinsokuHead(wchar_t wc) const { return m_pszKinsokuHead_1.exist(wc); }
+	bool IsKinsokuHead(wchar_t wc);	/*!< 行頭禁則文字をチェックする */	//@@@ 2002.04.08 MIK
+	bool IsKinsokuTail(wchar_t wc);	/*!< 行末禁則文字をチェックする */	//@@@ 2002.04.08 MIK
+	bool IsKinsokuKuto(wchar_t wc);	/*!< 句読点文字をチェックする */	//@@@ 2002.04.17 MIK
 	//	2005-08-20 D.S.Koba 禁則関連処理の関数化
 	/*! 句読点ぶら下げの処理位置か
 		@date 2005-08-20 D.S.Koba
 		@date Sep. 3, 2005 genta 最適化
 	*/
-	bool IsKinsokuPosKuto(CLayoutInt nRest, CLayoutInt nCharChars ) const {
+	bool IsKinsokuPosKuto(CLayoutInt nRest, CLayoutInt nCharChars) const {
 		return nRest < nCharChars;
 	}
 	bool IsKinsokuPosHead(CLayoutInt, CLayoutInt, CLayoutInt);	//!< 行頭禁則の処理位置か
 	bool IsKinsokuPosTail(CLayoutInt, CLayoutInt, CLayoutInt);	//!< 行末禁則の処理位置か
 private:
 	//	Oct. 1, 2002 genta インデント幅計算関数群
-	CLayoutInt getIndentOffset_Normal( CLayout* pLayoutPrev );
-	CLayoutInt getIndentOffset_Tx2x( CLayout* pLayoutPrev );
-	CLayoutInt getIndentOffset_LeftSpace( CLayout* pLayoutPrev );
+	CLayoutInt getIndentOffset_Normal(CLayout* pLayoutPrev);
+	CLayoutInt getIndentOffset_Tx2x(CLayout* pLayoutPrev);
+	CLayoutInt getIndentOffset_LeftSpace(CLayout* pLayoutPrev);
 
 protected:
 	/*
@@ -383,9 +383,9 @@ protected:
 	*/
 	//@@@ 2002.09.23 YAZAKI
 	// 2009.08.28 nasukoji	nPosX引数追加
-	CLayout* CreateLayout( CDocLine* pCDocLine, CLogicPoint ptLogicPos, CLogicInt nLength, EColorIndexType nTypePrev, CLayoutInt nIndent, CLayoutInt nPosX, CLayoutColorInfo* );
-	CLayout* InsertLineNext( CLayout*, CLayout* );
-	void AddLineBottom( CLayout* );
+	CLayout* CreateLayout(CDocLine* pCDocLine, CLogicPoint ptLogicPos, CLogicInt nLength, EColorIndexType nTypePrev, CLayoutInt nIndent, CLayoutInt nPosX, CLayoutColorInfo*);
+	CLayout* InsertLineNext(CLayout*, CLayout*);
+	void AddLineBottom(CLayout*);
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                        メンバ変数                           //
@@ -424,7 +424,7 @@ protected:
 
 	mutable CLayoutInt		m_nPrevReferLine;
 	mutable CLayout*		m_pLayoutPrevRefer;
-	
+
 	// EOFカーソル位置を記憶する(_DoLayout/DoLayout_Rangeで無効にする)	//2006.10.01 Moca
 	CLayoutInt				m_nEOFLine; //!< EOF行数
 	CLayoutInt				m_nEOFColumn; //!< EOF幅位置

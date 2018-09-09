@@ -11,14 +11,14 @@
 //! BOMデータ取得
 void CUtf8::GetBom(CMemory* pcmemBom)
 {
-	static const BYTE UTF8_BOM[]={0xEF,0xBB,0xBF};
+	static const BYTE UTF8_BOM[] = { 0xEF,0xBB,0xBF };
 	pcmemBom->SetRawData(UTF8_BOM, sizeof(UTF8_BOM));
 }
 
 
 
-void CUtf8::GetEol(CMemory* pcmemEol, EEolType eEolType){
-	static const struct{
+void CUtf8::GetEol(CMemory* pcmemEol, EEolType eEolType) {
+	static const struct {
 		const char* szData;
 		int nLen;
 	}
@@ -31,7 +31,7 @@ void CUtf8::GetEol(CMemory* pcmemEol, EEolType eEolType){
 		"\xe2\x80\xa8",		3,	// EOL_LS
 		"\xe2\x80\xa9",		3,	// EOL_PS
 	};
-	pcmemEol->SetRawData(aEolTable[eEolType].szData,aEolTable[eEolType].nLen);
+	pcmemEol->SetRawData(aEolTable[eEolType].szData, aEolTable[eEolType].nLen);
 }
 
 
@@ -40,42 +40,44 @@ void CUtf8::GetEol(CMemory* pcmemEol, EEolType eEolType){
 
 	@param[in] bCESU8Mode CESU-8 を処理する場合 true
 */
-int CUtf8::Utf8ToUni( const char* pSrc, const int nSrcLen, wchar_t* pDst, bool bCESU8Mode )
+int CUtf8::Utf8ToUni(const char* pSrc, const int nSrcLen, wchar_t* pDst, bool bCESU8Mode)
 {
 	const unsigned char *pr, *pr_end;
 	unsigned short *pw;
 	int nclen;
 	ECharSet echarset;
 
-	if( nSrcLen < 1 ){
+	if (nSrcLen < 1) {
 		return 0;
 	}
 
 	pr = reinterpret_cast<const unsigned char*>(pSrc);
-	pr_end = reinterpret_cast<const unsigned char*>(pSrc+nSrcLen);
+	pr_end = reinterpret_cast<const unsigned char*>(pSrc + nSrcLen);
 	pw = reinterpret_cast<unsigned short*>(pDst);
 
-	for( ; ; ){
+	for (; ; ) {
 
 		// 文字をチェック
-		if( bCESU8Mode != true ){
-			nclen = CheckUtf8Char( reinterpret_cast<const char*>(pr), pr_end-pr, &echarset, true, 0 );
-		}else{
-			nclen = CheckCesu8Char( reinterpret_cast<const char*>(pr), pr_end-pr, &echarset, 0 );
+		if (bCESU8Mode != true) {
+			nclen = CheckUtf8Char(reinterpret_cast<const char*>(pr), pr_end - pr, &echarset, true, 0);
 		}
-		if( nclen < 1 ){
+		else {
+			nclen = CheckCesu8Char(reinterpret_cast<const char*>(pr), pr_end - pr, &echarset, 0);
+		}
+		if (nclen < 1) {
 			break;
 		}
 
 		// 変換
-		if( echarset != CHARSET_BINARY ){
-			pw += _Utf8ToUni_char( pr, nclen, pw, bCESU8Mode );
+		if (echarset != CHARSET_BINARY) {
+			pw += _Utf8ToUni_char(pr, nclen, pw, bCESU8Mode);
 			pr += nclen;
-		}else{
-			if( nclen != 1 ){	// 保護コード
+		}
+		else {
+			if (nclen != 1) {	// 保護コード
 				nclen = 1;
 			}
-			pw += BinToText( pr, 1, pw );
+			pw += BinToText(pr, 1, pw);
 			++pr;
 		}
 	}
@@ -87,48 +89,49 @@ int CUtf8::Utf8ToUni( const char* pSrc, const int nSrcLen, wchar_t* pDst, bool b
 
 //! UTF-8→Unicodeコード変換
 // 2007.08.13 kobake 作成
-EConvertResult CUtf8::_UTF8ToUnicode( const CMemory& cSrc, CNativeW* pDstMem, bool bCESU8Mode/*, bool decodeMime*/ )
+EConvertResult CUtf8::_UTF8ToUnicode(const CMemory& cSrc, CNativeW* pDstMem, bool bCESU8Mode/*, bool decodeMime*/)
 {
 	// エラー状態
 	bool bError = false;
 
 	// データ取得
 	int nSrcLen;
-	const char* pSrc = reinterpret_cast<const char*>( cSrc.GetRawPtr(&nSrcLen) );
+	const char* pSrc = reinterpret_cast<const char*>(cSrc.GetRawPtr(&nSrcLen));
 
-	if( &cSrc == pDstMem->_GetMemory() )
+	if (&cSrc == pDstMem->_GetMemory())
 	{
 		// 必要なバッファサイズを調べて確保する
 		wchar_t* pDst = new (std::nothrow) wchar_t[nSrcLen];
-		if( pDst == NULL ){
+		if (pDst == NULL) {
 			return RESULT_FAILURE;
 		}
 
 		// 変換
-		int nDstLen = Utf8ToUni( pSrc, nSrcLen, pDst, bCESU8Mode );
+		int nDstLen = Utf8ToUni(pSrc, nSrcLen, pDst, bCESU8Mode);
 
 		// pDstMem を更新
-		pDstMem->_GetMemory()->SetRawDataHoldBuffer( pDst, nDstLen*sizeof(wchar_t) );
+		pDstMem->_GetMemory()->SetRawDataHoldBuffer(pDst, nDstLen * sizeof(wchar_t));
 
 		// 後始末
-		delete [] pDst;
+		delete[] pDst;
 	}
 	else
 	{
 		// 変換先バッファサイズを設定してメモリ領域確保
-		pDstMem->AllocStringBuffer( nSrcLen + 1 );
+		pDstMem->AllocStringBuffer(nSrcLen + 1);
 		wchar_t* pDst = pDstMem->GetStringPtr();
 
 		// 変換
 		size_t nDstLen = Utf8ToUni(pSrc, nSrcLen, pDst, bCESU8Mode);
 
 		// pDstMem を更新
-		pDstMem->_SetStringLength( nDstLen );
+		pDstMem->_SetStringLength(nDstLen);
 	}
 
-	if( bError == false ){
+	if (bError == false) {
 		return RESULT_COMPLETE;
-	}else{
+	}
+	else {
 		return RESULT_LOSESOME;
 	}
 }
@@ -145,18 +148,18 @@ EConvertResult CUtf8::_UTF8ToUnicode( const CMemory& cSrc, CNativeW* pDstMem, bo
 
 	@param[in] bCESU8Mode CESU-8 を処理する場合 true
 */
-int CUtf8::UniToUtf8( const wchar_t* pSrc, const int nSrcLen, char* pDst, bool* pbError, bool bCESU8Mode )
+int CUtf8::UniToUtf8(const wchar_t* pSrc, const int nSrcLen, char* pDst, bool* pbError, bool bCESU8Mode)
 {
 	const unsigned short* pr = reinterpret_cast<const unsigned short*>(pSrc);
-	const unsigned short* pr_end = reinterpret_cast<const unsigned short*>(pSrc+nSrcLen);
+	const unsigned short* pr_end = reinterpret_cast<const unsigned short*>(pSrc + nSrcLen);
 	unsigned char* pw = reinterpret_cast<unsigned char*>(pDst);
 	int nclen;
-	bool berror=false;
+	bool berror = false;
 	ECharSet echarset;
 
-	while( (nclen = CheckUtf16leChar(reinterpret_cast<const wchar_t*>(pr), pr_end-pr, &echarset, 0)) > 0 ){
+	while ((nclen = CheckUtf16leChar(reinterpret_cast<const wchar_t*>(pr), pr_end - pr, &echarset, 0)) > 0) {
 		// 保護コード
-		switch( echarset ){
+		switch (echarset) {
 		case CHARSET_UNI_NORMAL:
 			nclen = 1;
 			break;
@@ -167,14 +170,16 @@ int CUtf8::UniToUtf8( const wchar_t* pSrc, const int nSrcLen, char* pDst, bool* 
 			echarset = CHARSET_BINARY;
 			nclen = 1;
 		}
-		if( echarset != CHARSET_BINARY ){
-			pw += _UniToUtf8_char( pr, nclen, pw, bCESU8Mode );
+		if (echarset != CHARSET_BINARY) {
+			pw += _UniToUtf8_char(pr, nclen, pw, bCESU8Mode);
 			pr += nclen;
-		}else{
-			if(  nclen == 1 && IsBinaryOnSurrogate(static_cast<wchar_t>(*pr)) ){
-				*pw = static_cast<unsigned char>( TextToBin(*pr) & 0x000000ff );
+		}
+		else {
+			if (nclen == 1 && IsBinaryOnSurrogate(static_cast<wchar_t>(*pr))) {
+				*pw = static_cast<unsigned char>(TextToBin(*pr) & 0x000000ff);
 				++pw;
-			}else{
+			}
+			else {
 				berror = true;
 				*pw = '?';
 				++pw;
@@ -183,7 +188,7 @@ int CUtf8::UniToUtf8( const wchar_t* pSrc, const int nSrcLen, char* pDst, bool* 
 		}
 	}
 
-	if( pbError ){
+	if (pbError) {
 		*pbError = berror;
 	}
 
@@ -192,7 +197,7 @@ int CUtf8::UniToUtf8( const wchar_t* pSrc, const int nSrcLen, char* pDst, bool* 
 
 
 //! コード変換 Unicode→UTF-8
-EConvertResult CUtf8::_UnicodeToUTF8( const CNativeW& cSrc, CMemory* pDstMem, bool bCesu8Mode )
+EConvertResult CUtf8::_UnicodeToUTF8(const CNativeW& cSrc, CMemory* pDstMem, bool bCesu8Mode)
 {
 	// エラー状態
 	bool bError = false;
@@ -204,22 +209,23 @@ EConvertResult CUtf8::_UnicodeToUTF8( const CNativeW& cSrc, CMemory* pDstMem, bo
 
 	// 必要なバッファサイズを調べてメモリを確保
 	char* pDst = new (std::nothrow) char[nSrcLen * 3];
-	if( pDst == NULL ){
+	if (pDst == NULL) {
 		return RESULT_FAILURE;
 	}
 
 	// 変換
-	int nDstLen = UniToUtf8( pSrc, nSrcLen, pDst, &bError, bCesu8Mode );
+	int nDstLen = UniToUtf8(pSrc, nSrcLen, pDst, &bError, bCesu8Mode);
 
 	// pDstMem を更新
-	pDstMem->SetRawDataHoldBuffer( pDst, nDstLen );
+	pDstMem->SetRawDataHoldBuffer(pDst, nDstLen);
 
 	// 後始末
-	delete [] pDst;
+	delete[] pDst;
 
-	if( bError == false ){
+	if (bError == false) {
 		return RESULT_COMPLETE;
-	}else{
+	}
+	else {
 		return RESULT_LOSESOME;
 	}
 }
@@ -232,7 +238,7 @@ EConvertResult CUtf8::_UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR*
 	int				i;
 	TCHAR*			pd;
 	unsigned char*	ps;
-	bool			bbinary=false;
+	bool			bbinary = false;
 
 	if (psStatusbar->m_bDispUtf8Codepoint) {
 		// Unicodeで表示
@@ -245,7 +251,7 @@ EConvertResult CUtf8::_UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR*
 	}
 	else {
 		cBuff._GetMemory()->SetRawDataHoldBuffer(cSrc, 2);
-		if( IsBinaryOnSurrogate(cSrc[0]) ){
+		if (IsBinaryOnSurrogate(cSrc[0])) {
 			bbinary = true;
 		}
 	}
@@ -262,14 +268,15 @@ EConvertResult CUtf8::_UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR*
 	}
 
 	// Hex変換
-	ps = reinterpret_cast<unsigned char*>( cBuff._GetMemory()->GetRawPtr() );
+	ps = reinterpret_cast<unsigned char*>(cBuff._GetMemory()->GetRawPtr());
 	pd = pDst;
-	if( bbinary == false ){
-		for (i = cBuff._GetMemory()->GetRawLength(); i >0; i--, ps ++, pd += 2) {
-			auto_sprintf( pd, _T("%02X"), *ps);
+	if (bbinary == false) {
+		for (i = cBuff._GetMemory()->GetRawLength(); i > 0; i--, ps++, pd += 2) {
+			auto_sprintf(pd, _T("%02X"), *ps);
 		}
-	}else{
-		auto_sprintf( pd, _T("?%02X"), *ps );
+	}
+	else {
+		auto_sprintf(pd, _T("?%02X"), *ps);
 	}
 
 	return RESULT_COMPLETE;

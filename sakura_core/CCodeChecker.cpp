@@ -18,15 +18,15 @@
 static bool _CheckSavingEolcode(const CDocLineMgr& pcDocLineMgr, CEol cEolType)
 {
 	bool bMix = false;
-	if( cEolType == EOL_NONE ){	//改行コード変換なし
+	if (cEolType == EOL_NONE) {	//改行コード変換なし
 		CEol cEolCheck;	//比較対象EOL
 		const CDocLine* pcDocLine = pcDocLineMgr.GetDocLineTop();
-		if( pcDocLine ){
+		if (pcDocLine) {
 			cEolCheck = pcDocLine->GetEol();
 		}
-		while( pcDocLine ){
+		while (pcDocLine) {
 			CEol cEol = pcDocLine->GetEol();
-			if( cEol != cEolCheck && cEol != EOL_NONE ){
+			if (cEol != cEolCheck && cEol != EOL_NONE) {
 				bMix = true;
 				break;
 			}
@@ -41,18 +41,18 @@ static EConvertResult _CheckSavingCharcode(const CDocLineMgr& pcDocLineMgr, ECod
 {
 	const CDocLine*	pcDocLine = pcDocLineMgr.GetDocLineTop();
 	const bool bCodePageMode = IsValidCodeOrCPType(eCodeType) && !IsValidCodeType(eCodeType);
-	CCodeBase* pCodeBase=CCodeFactory::CreateCodeBase(eCodeType,0);
+	CCodeBase* pCodeBase = CCodeFactory::CreateCodeBase(eCodeType, 0);
 	CMemory cmemTmp;	// バッファを再利用
 	CNativeW cmemTmp2;
 	CLogicInt nLine = CLogicInt(0);
-	while( pcDocLine ){
+	while (pcDocLine) {
 		// コード変換 pcDocLine -> cmemTmp
 		EConvertResult e = CIoBridge::ImplToFile(
 			pcDocLine->_GetDocLineDataWithEOL(),
 			&cmemTmp,
 			pCodeBase
 		);
-		if( bCodePageMode ){
+		if (bCodePageMode) {
 			// コードページはRESULT_LOSESOMEを返さないので、自分で文字列比較する
 			EConvertResult e2 = CIoBridge::FileToImpl(
 				cmemTmp,
@@ -66,48 +66,48 @@ static EConvertResult _CheckSavingCharcode(const CDocLineMgr& pcDocLineMgr, ECod
 			const wchar_t* p = pcDocLine->GetPtr();
 			const wchar_t* r = cmemTmp2.GetStringPtr();
 			int nPos = -1;
-			for( int i = 0; i < nDataMinLen; i++ ){
-				if( p[i] != r[i] ){
+			for (int i = 0; i < nDataMinLen; i++) {
+				if (p[i] != r[i]) {
 					nPos = i;
 					break;
 				}
 			}
-			if( nPos == -1 && nDocLineLen != nConvertLen ){
+			if (nPos == -1 && nDocLineLen != nConvertLen) {
 				nPos = nDataMinLen;
 			}
-			if( nPos != -1 ){
+			if (nPos != -1) {
 				point.y = nLine;
 				point.x = CLogicInt(nPos);
 				// 変換できなかった位置の1文字取得
-				wc.SetString( p + nPos, (Int)CNativeW::GetSizeOfChar( p, nDocLineLen, nPos ) );
+				wc.SetString(p + nPos, (Int)CNativeW::GetSizeOfChar(p, nDocLineLen, nPos));
 				delete pCodeBase;
 				return RESULT_LOSESOME;
 			}
 		}
-		if(e!=RESULT_COMPLETE){
-			if( e == RESULT_LOSESOME ){
+		if (e != RESULT_COMPLETE) {
+			if (e == RESULT_LOSESOME) {
 				// 行内の位置を特定
 				point.y = nLine;
 				point.x = CLogicInt(-1);
 				const WCHAR* pLine = pcDocLine->GetPtr();
 				const CLogicInt nLineLen = pcDocLine->GetLengthWithEOL();
-				CLogicInt chars = CNativeW::GetSizeOfChar( pLine, nLineLen, 0 );
+				CLogicInt chars = CNativeW::GetSizeOfChar(pLine, nLineLen, 0);
 				CLogicInt nPos = CLogicInt(0);
 				CNativeW mem;
-				while( 0 < chars ){
-					mem.SetStringHoldBuffer( pLine + nPos, chars );
+				while (0 < chars) {
+					mem.SetStringHoldBuffer(pLine + nPos, chars);
 					EConvertResult e2 = CIoBridge::ImplToFile(
 						mem,
 						&cmemTmp,
 						pCodeBase
 					);
-					if( e2 == RESULT_LOSESOME ){
+					if (e2 == RESULT_LOSESOME) {
 						point.x = nPos;
 						wc = mem;
 						break;
 					}
 					nPos += chars;
-					chars = CNativeW::GetSizeOfChar( pLine, nLineLen, nPos );
+					chars = CNativeW::GetSizeOfChar(pLine, nLineLen, nPos);
 				}
 			}
 			delete pCodeBase;
@@ -129,7 +129,7 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 
 	//改行コードが混在しているかどうか判定
 	bool bTmpResult = false;
-	if( pcDoc->m_cDocType.GetDocumentAttribute().m_bChkEnterAtEnd ){
+	if (pcDoc->m_cDocType.GetDocumentAttribute().m_bChkEnterAtEnd) {
 		bTmpResult = _CheckSavingEolcode(
 			pcDoc->m_cDocLineMgr, pSaveInfo->cEol
 		);
@@ -144,7 +144,7 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 			LS(STR_CODECHECKER_EOL_UNIFY),
 			pcDoc->m_cDocEditor.GetNewLineCode().GetName()
 		);
-		switch(nDlgResult){
+		switch (nDlgResult) {
 		case IDYES:		pSaveInfo->cEol = pcDoc->m_cDocEditor.GetNewLineCode(); break; //統一
 		case IDNO:		break; //続行
 		case IDCANCEL:	return CALLBACK_INTERRUPT; //中断
@@ -160,20 +160,21 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 	);
 
 	//ユーザ問い合わせ
-	if(nTmpResult==RESULT_LOSESOME){
+	if (nTmpResult == RESULT_LOSESOME) {
 		TCHAR szCpName[100];
 		TCHAR  szLineNum[60];  // 123桁
 		TCHAR  szCharCode[12]; // U+12ab or 1234abcd
 		CCodePage::GetNameNormal(szCpName, pSaveInfo->eCharCode);
 		szCharCode[0] = _T('\0');
 		szLineNum[0] = _T('\0');
-		if( point.x == -1 ){
+		if (point.x == -1) {
 			cmemChar.SetString(LSW(STR_ERR_CSHAREDATA22));
-		}else{
-			auto_sprintf( szLineNum, _T("%d"), (int)((Int)point.x) + 1 );
-			_tcscat( szLineNum, LS(STR_DLGFNCLST_LIST_COL) );
-			CUnicode().UnicodeToHex( cmemChar.GetStringPtr(), cmemChar.GetStringLength(),
-				szCharCode, &GetDllShareData().m_Common.m_sStatusbar );
+		}
+		else {
+			auto_sprintf(szLineNum, _T("%d"), (int)((Int)point.x) + 1);
+			_tcscat(szLineNum, LS(STR_DLGFNCLST_LIST_COL));
+			CUnicode().UnicodeToHex(cmemChar.GetStringPtr(), cmemChar.GetStringLength(),
+				szCharCode, &GetDllShareData().m_Common.m_sStatusbar);
 		}
 		int nDlgResult = MYMESSAGEBOX(
 			CEditWnd::getInstance()->GetHwnd(),
@@ -186,15 +187,15 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 			cmemChar.GetStringPtr(),
 			szCharCode
 		);
-		switch(nDlgResult){
+		switch (nDlgResult) {
 		case IDYES:		break; //続行
 		case IDNO:		return CALLBACK_INTERRUPT; //中断
 		case IDCANCEL:
-			{
-				CLogicPoint pt(point.x < 0 ? CLogicInt(0) : point.x, point.y);
-				pcDoc->m_pcEditWnd->GetActiveView().GetCommander().Command_MOVECURSOR(pt, 0);
-			}
-			return CALLBACK_INTERRUPT; //中断
+		{
+			CLogicPoint pt(point.x < 0 ? CLogicInt(0) : point.x, point.y);
+			pcDoc->m_pcEditWnd->GetActiveView().GetCommander().Command_MOVECURSOR(pt, 0);
+		}
+		return CALLBACK_INTERRUPT; //中断
 		}
 	}
 	return CALLBACK_CONTINUE;
@@ -203,7 +204,7 @@ ECallbackResult CCodeChecker::OnCheckSave(SSaveInfo* pSaveInfo)
 void CCodeChecker::OnFinalSave(ESaveResult eSaveResult)
 {
 	//カキコ結果
-	if(eSaveResult==SAVED_LOSESOME){
+	if (eSaveResult == SAVED_LOSESOME) {
 		ErrorMessage(CEditWnd::getInstance()->GetHwnd(), LS(STR_CODECHECKER_LOSESOME_SAVE));
 	}
 }
@@ -214,7 +215,7 @@ void CCodeChecker::OnFinalSave(ESaveResult eSaveResult)
 
 void CCodeChecker::OnFinalLoad(ELoadResult eLoadResult)
 {
-	if(eLoadResult==LOADED_LOSESOME){
+	if (eLoadResult == LOADED_LOSESOME) {
 		ErrorMessage(
 			CEditWnd::getInstance()->GetHwnd(),
 			LS(STR_CODECHECKER_LOSESOME_ROAD)

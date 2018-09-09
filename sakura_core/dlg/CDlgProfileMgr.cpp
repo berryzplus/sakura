@@ -11,8 +11,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -21,7 +21,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -52,15 +52,15 @@ const DWORD p_helpids[] = {
 };
 
 CDlgProfileMgr::CDlgProfileMgr()
-: CDialog(false, false)
+	: CDialog(false, false)
 {
 	return;
 }
 
 /*! モーダルダイアログの表示 */
-int CDlgProfileMgr::DoModal( HINSTANCE hInstance, HWND hwndParent, LPARAM lParam )
+int CDlgProfileMgr::DoModal(HINSTANCE hInstance, HWND hwndParent, LPARAM lParam)
 {
-	return (int)CDialog::DoModal( hInstance, hwndParent, IDD_PROFILEMGR, lParam );
+	return (int)CDialog::DoModal(hInstance, hwndParent, IDD_PROFILEMGR, lParam);
 }
 
 
@@ -70,28 +70,29 @@ static std::tstring GetProfileMgrFileName(LPCTSTR profName = NULL)
 	static TCHAR szPath2[_MAX_PATH];
 	static TCHAR* pszPath;
 	static bool bSet = false;
-	if( bSet == false ){
+	if (bSet == false) {
 		pszPath = szPath;
-		CFileNameManager::GetIniFileNameDirect( szPath, szPath2, _T("") );
-		if( szPath[0] == _T('\0') ){
+		CFileNameManager::GetIniFileNameDirect(szPath, szPath2, _T(""));
+		if (szPath[0] == _T('\0')) {
 			pszPath = szPath2;
 		}
 		bSet = true;
 	}
-	
+
 	TCHAR	szDir[_MAX_PATH];
-	SplitPath_FolderAndFile( pszPath, szDir, NULL );
+	SplitPath_FolderAndFile(pszPath, szDir, NULL);
 
 
 	TCHAR szIniFile[_MAX_PATH];
-	if( profName == NULL ){
+	if (profName == NULL) {
 		TCHAR szExePath[_MAX_PATH];
 		TCHAR szFname[_MAX_FNAME];
-		::GetModuleFileName( NULL, szExePath, _countof(szExePath) );
-		_tsplitpath( szExePath, NULL, NULL, szFname, NULL );
-		auto_snprintf_s( szIniFile, _MAX_PATH - 1, _T("%ts\\%ts_prof%ts"), szDir, szFname, _T(".ini") );
-	}else{
-		auto_snprintf_s( szIniFile, _MAX_PATH - 1, _T("%ts\\%ts"), szDir, profName );
+		::GetModuleFileName(NULL, szExePath, _countof(szExePath));
+		_tsplitpath(szExePath, NULL, NULL, szFname, NULL);
+		auto_snprintf_s(szIniFile, _MAX_PATH - 1, _T("%ts\\%ts_prof%ts"), szDir, szFname, _T(".ini"));
+	}
+	else {
+		auto_snprintf_s(szIniFile, _MAX_PATH - 1, _T("%ts\\%ts"), szDir, profName);
 	}
 
 	return std::tstring(szIniFile);
@@ -101,56 +102,56 @@ static std::tstring GetProfileMgrFileName(LPCTSTR profName = NULL)
 /*! ダイアログデータの設定 */
 void CDlgProfileMgr::SetData()
 {
-	SetData( -1 );
+	SetData(-1);
 }
 
 
-void CDlgProfileMgr::SetData( int nSelIndex )
+void CDlgProfileMgr::SetData(int nSelIndex)
 {
 	int		nExtent = 0;
-	HWND	hwndList = GetItemHwnd( IDC_LIST_PROFILE );
+	HWND	hwndList = GetItemHwnd(IDC_LIST_PROFILE);
 
-	List_ResetContent( hwndList );
+	List_ResetContent(hwndList);
 	SProfileSettings settings;
-	ReadProfSettings( settings );
+	ReadProfSettings(settings);
 	std::tstring strdef = _T("(default)");
-	if( settings.m_nDefaultIndex == 0 ){
+	if (settings.m_nDefaultIndex == 0) {
 		strdef += _T("*");
 	}
-	List_AddString( hwndList, strdef.c_str() );
-	CTextWidthCalc calc( hwndList );
-	calc.SetDefaultExtend( CTextWidthCalc::WIDTH_MARGIN_SCROLLBER );
+	List_AddString(hwndList, strdef.c_str());
+	CTextWidthCalc calc(hwndList);
+	calc.SetDefaultExtend(CTextWidthCalc::WIDTH_MARGIN_SCROLLBER);
 	int count = (int)settings.m_vProfList.size();
-	for(int i = 0; i < count; i++){
+	for (int i = 0; i < count; i++) {
 		std::tstring str = settings.m_vProfList[i];
-		if( settings.m_nDefaultIndex == i + 1 ){
+		if (settings.m_nDefaultIndex == i + 1) {
 			str += _T("*");
 		}
-		List_AddString( hwndList, str.c_str() );
-		calc.SetTextWidthIfMax( str.c_str() );
+		List_AddString(hwndList, str.c_str());
+		calc.SetTextWidthIfMax(str.c_str());
 	}
-	List_SetHorizontalExtent( hwndList, calc.GetCx() );
-	if( nSelIndex == -1 ){
+	List_SetHorizontalExtent(hwndList, calc.GetCx());
+	if (nSelIndex == -1) {
 		nSelIndex = settings.m_nDefaultIndex;
 	}
-	if( nSelIndex < 0 ){
+	if (nSelIndex < 0) {
 		nSelIndex = 0;
 	}
-	List_SetCurSel( hwndList, nSelIndex );
-	DlgItem_Enable( GetHwnd(), IDC_BUTTON_PROF_DELETE, nSelIndex != 0 );
-	DlgItem_Enable( GetHwnd(), IDC_BUTTON_PROF_RENAME, nSelIndex != 0 );
+	List_SetCurSel(hwndList, nSelIndex);
+	DlgItem_Enable(GetHwnd(), IDC_BUTTON_PROF_DELETE, nSelIndex != 0);
+	DlgItem_Enable(GetHwnd(), IDC_BUTTON_PROF_RENAME, nSelIndex != 0);
 
-	DlgItem_Enable( GetHwnd(), IDC_BUTTON_PROF_DEFCLEAR, settings.m_nDefaultIndex != -1 );
-	CheckDlgButtonBool( GetHwnd(), IDC_CHECK_PROF_DEFSTART, settings.m_bDefaultSelect );
+	DlgItem_Enable(GetHwnd(), IDC_BUTTON_PROF_DEFCLEAR, settings.m_nDefaultIndex != -1);
+	CheckDlgButtonBool(GetHwnd(), IDC_CHECK_PROF_DEFSTART, settings.m_bDefaultSelect);
 }
 
 
 
 static bool MyList_GetText(HWND hwndList, int index, TCHAR* szText)
 {
-	List_GetText( hwndList, index, szText );
-	TCHAR* pos = auto_strchr( szText, _T('*') );
-	if( pos != NULL ){
+	List_GetText(hwndList, index, szText);
+	TCHAR* pos = auto_strchr(szText, _T('*'));
+	if (pos != NULL) {
 		*pos = _T('\0');
 		return true;
 	}
@@ -166,35 +167,35 @@ int CDlgProfileMgr::GetData()
 
 int CDlgProfileMgr::GetData(bool bStart)
 {
-	HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
+	HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
 	int nCurIndex = List_GetCurSel(hwndList);
 	TCHAR szText[_MAX_PATH];
-	MyList_GetText( hwndList, nCurIndex, szText );
+	MyList_GetText(hwndList, nCurIndex, szText);
 	m_strProfileName = szText;
-	if( m_strProfileName == _T("(default)") ){
+	if (m_strProfileName == _T("(default)")) {
 		m_strProfileName = _T("");
 	}
-	bool bDefaultSelect = IsDlgButtonCheckedBool( GetHwnd(), IDC_CHECK_PROF_DEFSTART );
+	bool bDefaultSelect = IsDlgButtonCheckedBool(GetHwnd(), IDC_CHECK_PROF_DEFSTART);
 	SProfileSettings settings;
-	ReadProfSettings( settings );
+	ReadProfSettings(settings);
 	bool bWrtie = false;
-	if( settings.m_bDefaultSelect != bDefaultSelect ){
+	if (settings.m_bDefaultSelect != bDefaultSelect) {
 		bWrtie = true;
 	}
-	if( bDefaultSelect && bStart ){
+	if (bDefaultSelect && bStart) {
 		bWrtie = true;
-		SetDefaultProf( nCurIndex );
+		SetDefaultProf(nCurIndex);
 	}
-	if( bWrtie ){
+	if (bWrtie) {
 		UpdateIni();
 	}
 	return 1;
 }
 
 
-BOOL CDlgProfileMgr::OnBnClicked( int wID )
+BOOL CDlgProfileMgr::OnBnClicked(int wID)
 {
-	switch( wID ){
+	switch (wID) {
 	case IDC_BUTTON_PROF_CREATE:
 		CreateProf();
 		break;
@@ -208,63 +209,63 @@ BOOL CDlgProfileMgr::OnBnClicked( int wID )
 		break;
 
 	case IDC_BUTTON_PROF_DEFSET:
-		{
-			HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
-			int nSelIndex = List_GetCurSel( hwndList );
-			SetDefaultProf(nSelIndex);
-			UpdateIni();
-			List_SetCurSel( hwndList, nSelIndex );
-			DlgItem_Enable( GetHwnd(), IDC_BUTTON_PROF_DEFCLEAR, true );
-		}
-		break;
+	{
+		HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
+		int nSelIndex = List_GetCurSel(hwndList);
+		SetDefaultProf(nSelIndex);
+		UpdateIni();
+		List_SetCurSel(hwndList, nSelIndex);
+		DlgItem_Enable(GetHwnd(), IDC_BUTTON_PROF_DEFCLEAR, true);
+	}
+	break;
 
 	case IDC_BUTTON_PROF_DEFCLEAR:
-		{
-			HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
-			int nSelIndex = List_GetCurSel( hwndList );
-			ClearDefaultProf();
-			UpdateIni();
-			List_SetCurSel( hwndList, nSelIndex );
-			DlgItem_Enable( GetHwnd(), IDC_BUTTON_PROF_DEFCLEAR, false );
-		}
-		break;
+	{
+		HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
+		int nSelIndex = List_GetCurSel(hwndList);
+		ClearDefaultProf();
+		UpdateIni();
+		List_SetCurSel(hwndList, nSelIndex);
+		DlgItem_Enable(GetHwnd(), IDC_BUTTON_PROF_DEFCLEAR, false);
+	}
+	break;
 
 	case IDC_BUTTON_HELP:
 		/* 「検索」のヘルプ */
-		MyWinHelp( GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_PROFILEMGR) );
+		MyWinHelp(GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_PROFILEMGR));
 		break;
 
 	case IDOK:
 		GetData();
-		CloseDialog( 1 );
+		CloseDialog(1);
 		return TRUE;
 	case IDCANCEL:
 		GetData(false);
-		CloseDialog( 0 );
+		CloseDialog(0);
 		return TRUE;
 	}
 	return FALSE;
 }
 
 
-INT_PTR CDlgProfileMgr::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam )
+INT_PTR CDlgProfileMgr::DispatchEvent(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam)
 {
 	INT_PTR result;
-	result = CDialog::DispatchEvent( hWnd, wMsg, wParam, lParam );
-	switch( wMsg ){
+	result = CDialog::DispatchEvent(hWnd, wMsg, wParam, lParam);
+	switch (wMsg) {
 	case WM_COMMAND:
-		{
-			if( LOWORD(wParam) == IDC_LIST_PROFILE ){
-				switch( HIWORD(wParam) ){
-				case LBN_SELCHANGE:
-					HWND hwndList = (HWND)lParam;
-					int nIdx = List_GetCurSel( hwndList );
-					DlgItem_Enable( GetHwnd(), IDC_BUTTON_PROF_DELETE, nIdx != 0 );
-					DlgItem_Enable( GetHwnd(), IDC_BUTTON_PROF_RENAME, nIdx != 0 );
-					return TRUE;
-				}
+	{
+		if (LOWORD(wParam) == IDC_LIST_PROFILE) {
+			switch (HIWORD(wParam)) {
+			case LBN_SELCHANGE:
+				HWND hwndList = (HWND)lParam;
+				int nIdx = List_GetCurSel(hwndList);
+				DlgItem_Enable(GetHwnd(), IDC_BUTTON_PROF_DELETE, nIdx != 0);
+				DlgItem_Enable(GetHwnd(), IDC_BUTTON_PROF_RENAME, nIdx != 0);
+				return TRUE;
 			}
 		}
+	}
 	}
 	return result;
 }
@@ -272,40 +273,40 @@ INT_PTR CDlgProfileMgr::DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPAR
 
 void CDlgProfileMgr::UpdateIni()
 {
-	HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
+	HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
 	SProfileSettings settings;
-	ReadProfSettings( settings );
-	int nCount = List_GetCount( hwndList );
+	ReadProfSettings(settings);
+	int nCount = List_GetCount(hwndList);
 	settings.m_vProfList.clear();
 	settings.m_nDefaultIndex = -1;
-	for( int i = 0; i < nCount; i++ ){
+	for (int i = 0; i < nCount; i++) {
 		TCHAR szProfileName[_MAX_PATH];
-		if( MyList_GetText( hwndList, i, szProfileName ) ){
+		if (MyList_GetText(hwndList, i, szProfileName)) {
 			settings.m_nDefaultIndex = i;
 		}
-		if( 0 < i ){
+		if (0 < i) {
 			std::tstring str = szProfileName;
-			settings.m_vProfList.push_back( str );
+			settings.m_vProfList.push_back(str);
 		}
 	}
-	settings.m_bDefaultSelect = IsDlgButtonCheckedBool( GetHwnd(), IDC_CHECK_PROF_DEFSTART );
+	settings.m_bDefaultSelect = IsDlgButtonCheckedBool(GetHwnd(), IDC_CHECK_PROF_DEFSTART);
 
-	if( !WriteProfSettings( settings ) ){
-		ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_WRITE) );
+	if (!WriteProfSettings(settings)) {
+		ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_WRITE));
 	}
 }
 
 
 static bool IsProfileDuplicate(HWND hwndList, LPCTSTR szProfName, int skipIndex)
 {
-	int nCount = List_GetCount( hwndList );
-	for( int i = 0; i < nCount; i++ ){
-		if( skipIndex == i ){
+	int nCount = List_GetCount(hwndList);
+	for (int i = 0; i < nCount; i++) {
+		if (skipIndex == i) {
 			continue;
 		}
 		TCHAR szProfileName[_MAX_PATH];
-		MyList_GetText( hwndList, i, szProfileName );
-		if( 0 == auto_stricmp( szProfName, szProfileName ) ){
+		MyList_GetText(hwndList, i, szProfileName);
+		if (0 == auto_stricmp(szProfName, szProfileName)) {
 			return true;
 		}
 	}
@@ -320,37 +321,37 @@ void CDlgProfileMgr::CreateProf()
 	std::tstring strTitle = LS(STR_DLGPROFILE_NEW_PROF_TITLE);
 	std::tstring strMessage = LS(STR_DLGPROFILE_NEW_PROF_MSG);
 	szText[0] = _T('\0');
-	if( !cDlgInput1.DoModal(::GetModuleHandle(NULL), GetHwnd(), strTitle.c_str(), strMessage.c_str(), max_size, szText) ){
+	if (!cDlgInput1.DoModal(::GetModuleHandle(NULL), GetHwnd(), strTitle.c_str(), strMessage.c_str(), max_size, szText)) {
 		return;
 	}
-	if( szText[0] == _T('\0') ){
+	if (szText[0] == _T('\0')) {
 		return;
 	}
 	std::wstring strText = to_wchar(szText);
 	static const WCHAR szReservedChars[] = L"/\\*?<>&|:\"'\t";
-	for( int x = 0; x < _countof(szReservedChars); ++x ){
-		if( strText.npos != strText.find(szReservedChars[x]) ){
-			ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR) );
+	for (int x = 0; x < _countof(szReservedChars); ++x) {
+		if (strText.npos != strText.find(szReservedChars[x])) {
+			ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR));
 			return;
 		}
 	}
-	if( 0 == auto_strcmp( szText, _T("..") ) ){
-		ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR) );
+	if (0 == auto_strcmp(szText, _T(".."))) {
+		ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR));
 		return;
 	}
-	HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
-	if( IsProfileDuplicate( hwndList, szText, -1 ) ){
-		ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_ALREADY) );
+	HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
+	if (IsProfileDuplicate(hwndList, szText, -1)) {
+		ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_ALREADY));
 		return;
 	}
 	std::tstring strProfDir = GetProfileMgrFileName(szText);
-	if( IsFileExists(strProfDir.c_str(), true) ){
-		ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_FILE) );
+	if (IsFileExists(strProfDir.c_str(), true)) {
+		ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_FILE));
 		return;
 	}
 
-	List_AddString( hwndList, szText );
-	int sel = List_GetCurSel( hwndList );
+	List_AddString(hwndList, szText);
+	int sel = List_GetCurSel(hwndList);
 	UpdateIni();
 	SetData(sel);
 }
@@ -358,11 +359,11 @@ void CDlgProfileMgr::CreateProf()
 
 void CDlgProfileMgr::DeleteProf()
 {
-	HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
+	HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
 	int nCurIndex = List_GetCurSel(hwndList);
-	List_DeleteString( hwndList, nCurIndex );
+	List_DeleteString(hwndList, nCurIndex);
 	UpdateIni();
-	if( List_GetCount( hwndList ) <= nCurIndex ){
+	if (List_GetCount(hwndList) <= nCurIndex) {
 		nCurIndex--;
 	}
 	SetData(nCurIndex);
@@ -371,63 +372,64 @@ void CDlgProfileMgr::DeleteProf()
 
 void CDlgProfileMgr::RenameProf()
 {
-	HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
+	HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
 	CDlgInput1 cDlgInput1;
 	int nCurIndex = List_GetCurSel(hwndList);
 	TCHAR szText[_MAX_PATH];
-	bool bDefault = MyList_GetText( hwndList, nCurIndex, szText );
+	bool bDefault = MyList_GetText(hwndList, nCurIndex, szText);
 	TCHAR szTextOld[_MAX_PATH];
-	auto_strcpy( szTextOld, szText );
+	auto_strcpy(szTextOld, szText);
 	std::tstring strTitle = LS(STR_DLGPROFILE_RENAME_TITLE);
 	std::tstring strMessage = LS(STR_DLGPROFILE_RENAME_MSG);
 	int max_size = _MAX_PATH;
-	if( !cDlgInput1.DoModal(::GetModuleHandle(NULL), GetHwnd(), strTitle.c_str(), strMessage.c_str(), max_size, szText) ){
+	if (!cDlgInput1.DoModal(::GetModuleHandle(NULL), GetHwnd(), strTitle.c_str(), strMessage.c_str(), max_size, szText)) {
 		return;
 	}
-	if( szText[0] == _T('\0') ){
+	if (szText[0] == _T('\0')) {
 		return;
 	}
-	if( 0 == auto_strcmp( szTextOld, szText ) ){
+	if (0 == auto_strcmp(szTextOld, szText)) {
 		return; // 未変更
 	}
 	std::wstring strText = to_wchar(szText);
 	static const WCHAR szReservedChars[] = L"/\\*?<>&|:\"'\t";
-	for( int x = 0; x < _countof(szReservedChars); ++x ){
-		if( strText.npos != strText.find(szReservedChars[x]) ){
-			ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR) );
+	for (int x = 0; x < _countof(szReservedChars); ++x) {
+		if (strText.npos != strText.find(szReservedChars[x])) {
+			ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR));
 			return;
 		}
 	}
-	if( 0 == auto_strcmp( szText, _T("..") ) ){
-		ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR) );
+	if (0 == auto_strcmp(szText, _T(".."))) {
+		ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_INVALID_CHAR));
 		return;
 	}
-	if( IsProfileDuplicate( hwndList, szText, nCurIndex ) ){
-		ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_ALREADY) );
+	if (IsProfileDuplicate(hwndList, szText, nCurIndex)) {
+		ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_ALREADY));
 		return;
 	}
 	std::tstring strProfDirOld = GetProfileMgrFileName(szTextOld);
 	std::tstring strProfDir = GetProfileMgrFileName(szText);
-	if( IsFileExists(strProfDirOld.c_str(), false) ){
-		if( !IsFileExists(strProfDirOld.c_str(), true) ){
+	if (IsFileExists(strProfDirOld.c_str(), false)) {
+		if (!IsFileExists(strProfDirOld.c_str(), true)) {
 			// プロファイル名はディレクトリ
-			if( FALSE == ::MoveFile( strProfDirOld.c_str(), strProfDir.c_str() ) ){
-				ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_RENAME) );
+			if (FALSE == ::MoveFile(strProfDirOld.c_str(), strProfDir.c_str())) {
+				ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_RENAME));
 				return;
 			}
-		}else{
+		}
+		else {
 			// 旧プロファイル名はファイルだったので新規プロファイルとして作成確認
-			if( IsFileExists(strProfDir.c_str(), true) ){
-				ErrorMessage( GetHwnd(), LS(STR_DLGPROFILE_ERR_FILE) );
+			if (IsFileExists(strProfDir.c_str(), true)) {
+				ErrorMessage(GetHwnd(), LS(STR_DLGPROFILE_ERR_FILE));
 				return;
 			}
 		}
 	}
-	if( bDefault ){
+	if (bDefault) {
 		auto_strcat(szText, _T("*"));
 	}
-	List_DeleteString( hwndList, nCurIndex );
-	List_InsertString( hwndList, nCurIndex, szText );
+	List_DeleteString(hwndList, nCurIndex);
+	List_InsertString(hwndList, nCurIndex, szText);
 	UpdateIni();
 	SetData(nCurIndex);
 }
@@ -436,73 +438,75 @@ void CDlgProfileMgr::RenameProf()
 void CDlgProfileMgr::SetDefaultProf(int index)
 {
 	ClearDefaultProf();
-	HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
+	HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
 	TCHAR szProfileName[_MAX_PATH];
-	MyList_GetText( hwndList, index, szProfileName );
-	List_DeleteString( hwndList, index );
-	auto_strcat( szProfileName, _T("*") );
-	List_InsertString( hwndList, index, szProfileName );
+	MyList_GetText(hwndList, index, szProfileName);
+	List_DeleteString(hwndList, index);
+	auto_strcat(szProfileName, _T("*"));
+	List_InsertString(hwndList, index, szProfileName);
 }
 
 
 void CDlgProfileMgr::ClearDefaultProf()
 {
-	HWND hwndList = GetItemHwnd( IDC_LIST_PROFILE );
-	int nCount = List_GetCount( hwndList );
-	for( int i = 0; i < nCount; i++ ){
+	HWND hwndList = GetItemHwnd(IDC_LIST_PROFILE);
+	int nCount = List_GetCount(hwndList);
+	for (int i = 0; i < nCount; i++) {
 		TCHAR szProfileName[_MAX_PATH];
-		if( MyList_GetText( hwndList, i, szProfileName ) ){
-			List_DeleteString( hwndList, i );
-			List_InsertString( hwndList, i, szProfileName );
+		if (MyList_GetText(hwndList, i, szProfileName)) {
+			List_DeleteString(hwndList, i);
+			List_InsertString(hwndList, i, szProfileName);
 		}
 	}
 }
 
 
-static bool IOProfSettings( SProfileSettings& settings, bool bWrite )
+static bool IOProfSettings(SProfileSettings& settings, bool bWrite)
 {
 	CDataProfile cProf;
-	if( bWrite ){
+	if (bWrite) {
 		cProf.SetWritingMode();
-	}else{
+	}
+	else {
 		cProf.SetReadingMode();
 	}
 	std::tstring strIniName = GetProfileMgrFileName();
-	if( !bWrite ){
-		if( !cProf.ReadProfile( strIniName.c_str() ) ){
+	if (!bWrite) {
+		if (!cProf.ReadProfile(strIniName.c_str())) {
 			return false;
 		}
 	}
 	int nCount = (int)settings.m_vProfList.size();
 	const wchar_t* const pSection = L"Profile";
-	cProf.IOProfileData(pSection , L"nCount", nCount );
-	for(int i = 0; i < nCount; i++){
+	cProf.IOProfileData(pSection, L"nCount", nCount);
+	for (int i = 0; i < nCount; i++) {
 		wchar_t szKey[64];
 		std::tstring strProfName;
-		swprintf( szKey, L"P[%d]", i + 1 ); // 1開始
-		if( bWrite ){
+		swprintf(szKey, L"P[%d]", i + 1); // 1開始
+		if (bWrite) {
 			strProfName = settings.m_vProfList[i];
 			std::wstring wstrProfName = to_wchar(strProfName.c_str());
-			cProf.IOProfileData( pSection, szKey, wstrProfName );
-		}else{
+			cProf.IOProfileData(pSection, szKey, wstrProfName);
+		}
+		else {
 			std::wstring wstrProfName;
-			cProf.IOProfileData( pSection, szKey, wstrProfName );
+			cProf.IOProfileData(pSection, szKey, wstrProfName);
 			strProfName = to_tchar(wstrProfName.c_str());
-			settings.m_vProfList.push_back( strProfName );
+			settings.m_vProfList.push_back(strProfName);
 		}
 	}
-	cProf.IOProfileData( pSection, L"nDefaultIndex", settings.m_nDefaultIndex );
-	if( nCount < settings.m_nDefaultIndex ){
+	cProf.IOProfileData(pSection, L"nDefaultIndex", settings.m_nDefaultIndex);
+	if (nCount < settings.m_nDefaultIndex) {
 		settings.m_nDefaultIndex = -1;
 	}
-	if( settings.m_nDefaultIndex < -1 ){
+	if (settings.m_nDefaultIndex < -1) {
 		settings.m_nDefaultIndex = -1;
 	}
-	cProf.IOProfileData( pSection, L"szDllLanguage", StringBufferT(settings.m_szDllLanguage, _countof(settings.m_szDllLanguage)) );
-	cProf.IOProfileData( pSection, L"bDefaultSelect", settings.m_bDefaultSelect );
+	cProf.IOProfileData(pSection, L"szDllLanguage", StringBufferT(settings.m_szDllLanguage, _countof(settings.m_szDllLanguage)));
+	cProf.IOProfileData(pSection, L"bDefaultSelect", settings.m_bDefaultSelect);
 
-	if( bWrite ){
-		if( !cProf.WriteProfile( strIniName.c_str(), L"Sakura Profile ini" ) ){
+	if (bWrite) {
+		if (!cProf.WriteProfile(strIniName.c_str(), L"Sakura Profile ini")) {
 			return false;
 		}
 	}
@@ -510,20 +514,20 @@ static bool IOProfSettings( SProfileSettings& settings, bool bWrite )
 }
 
 
-bool CDlgProfileMgr::ReadProfSettings( SProfileSettings& settings )
+bool CDlgProfileMgr::ReadProfSettings(SProfileSettings& settings)
 {
 	settings.m_szDllLanguage[0] = _T('\0');
 	settings.m_nDefaultIndex = 0;
 	settings.m_vProfList.clear();
 	settings.m_bDefaultSelect = false;
 
-	return IOProfSettings( settings, false );
+	return IOProfSettings(settings, false);
 }
 
 
-bool CDlgProfileMgr::WriteProfSettings( SProfileSettings& settings )
+bool CDlgProfileMgr::WriteProfSettings(SProfileSettings& settings)
 {
-	return IOProfSettings( settings, true );
+	return IOProfSettings(settings, true);
 }
 
 

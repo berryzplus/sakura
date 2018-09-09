@@ -30,7 +30,7 @@
 
 class CTextMetrics;
 
-class CTextMetrics{
+class CTextMetrics {
 public:
 	//コンストラクタ・デストラクタ
 	CTextMetrics();
@@ -47,38 +47,38 @@ private:
 
 	//取得
 public:
-	int GetHankakuWidth() const{ return m_nCharWidth; }		//!< 半角文字の横幅を取得。単位はピクセル。
-	int GetHankakuHeight() const{ return m_nCharHeight; }	//!< 半角文字の縦幅を取得。単位はピクセル。
-	int GetHankakuDx() const{ return m_nDxBasis; }			//!< 半角文字の文字間隔を取得。単位はピクセル。
-	int GetZenkakuDx() const{ return m_nDxBasis*2; }		//!< 全角文字の文字間隔を取得。単位はピクセル。
-	int GetHankakuDy() const{ return m_nDyBasis; }			//!< Y方向文字間隔。文字縦幅＋行間隔。単位はピクセル。
+	int GetHankakuWidth() const { return m_nCharWidth; }		//!< 半角文字の横幅を取得。単位はピクセル。
+	int GetHankakuHeight() const { return m_nCharHeight; }	//!< 半角文字の縦幅を取得。単位はピクセル。
+	int GetHankakuDx() const { return m_nDxBasis; }			//!< 半角文字の文字間隔を取得。単位はピクセル。
+	int GetZenkakuDx() const { return m_nDxBasis * 2; }		//!< 全角文字の文字間隔を取得。単位はピクセル。
+	int GetHankakuDy() const { return m_nDyBasis; }			//!< Y方向文字間隔。文字縦幅＋行間隔。単位はピクセル。
 
 	CPixelXInt GetCharSpacing() const {
 		return GetHankakuDx() - GetHankakuWidth();
 	}
 	// レイアウト幅分のピクセル幅を取得する
-	int GetCharPxWidth(CLayoutXInt col) const{
+	int GetCharPxWidth(CLayoutXInt col) const {
 		return (Int)col;
 	}
 
-	int GetCharPxWidth() const{
+	int GetCharPxWidth() const {
 		return 1;
 	}
-	int GetCharHeightMarginByFontNo(int n) const{
+	int GetCharHeightMarginByFontNo(int n) const {
 		return m_aFontHeightMargin[n];
 	}
 
 	// 固定文字x桁のレイアウト幅を取得する
-	CLayoutXInt GetLayoutXDefault(CKetaXInt chars) const{
+	CLayoutXInt GetLayoutXDefault(CKetaXInt chars) const {
 		return CLayoutXInt(GetHankakuDx() * (Int)chars);
 	}
 	// 固定文字1桁あたりのレイアウト幅を取得する
-	CLayoutXInt GetLayoutXDefault() const{ return GetLayoutXDefault(CKetaXInt(1));}
-	
+	CLayoutXInt GetLayoutXDefault() const { return GetLayoutXDefault(CKetaXInt(1)); }
+
 
 	//文字間隔配列を取得
-	const int* GetDxArray_AllHankaku() const{ return m_anHankakuDx; } //!<半角文字列の文字間隔配列を取得。要素数は64。
-	const int* GetDxArray_AllZenkaku() const{ return m_anZenkakuDx; } //!<半角文字列の文字間隔配列を取得。要素数は64。
+	const int* GetDxArray_AllHankaku() const { return m_anHankakuDx; } //!<半角文字列の文字間隔配列を取得。要素数は64。
+	const int* GetDxArray_AllZenkaku() const { return m_anZenkakuDx; } //!<半角文字列の文字間隔配列を取得。要素数は64。
 
 	const int* GenerateDxArray2(
 		std::vector<int>* vResultArray, //!< [out] 文字間隔配列の受け取りコンテナ
@@ -120,7 +120,7 @@ public:
 	) const;
 
 private:
-//	HDC m_hdc; //!< 計算に用いるデバイスコンテキスト
+	//	HDC m_hdc; //!< 計算に用いるデバイスコンテキスト
 	int	m_nCharWidth;      //!< 半角文字の横幅
 	int m_nCharHeight;     //!< 半角文字の縦幅
 	int m_nDxBasis;        //!< 半角文字の文字間隔 (横幅+α)

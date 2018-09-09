@@ -28,7 +28,7 @@ COpeBlk::~COpeBlk()
 {
 	/* 操作の配列を削除する */
 	int size = (int)m_ppCOpeArr.size();
-	for( int i = 0; i < size; ++i ){
+	for (int i = 0; i < size; ++i) {
 		SAFE_DELETE(m_ppCOpeArr[i]);
 	}
 	m_ppCOpeArr.clear();
@@ -39,10 +39,10 @@ COpeBlk::~COpeBlk()
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /* 操作の追加 */
-bool COpeBlk::AppendOpe( COpe* pcOpe )
+bool COpeBlk::AppendOpe(COpe* pcOpe)
 {
-	if(pcOpe->m_ptCaretPos_PHY_Before.HasNegative() || pcOpe->m_ptCaretPos_PHY_After.HasNegative()){
-		TopErrorMessage( NULL,
+	if (pcOpe->m_ptCaretPos_PHY_Before.HasNegative() || pcOpe->m_ptCaretPos_PHY_After.HasNegative()) {
+		TopErrorMessage(NULL,
 			_T("COpeBlk::AppendOpe() error.\n")
 			_T("Bug.\n")
 			_T("pcOpe->m_ptCaretPos_PHY_Before = %d,%d\n")
@@ -61,9 +61,9 @@ bool COpeBlk::AppendOpe( COpe* pcOpe )
 
 
 /* 操作を返す */
-COpe* COpeBlk::GetOpe( int nIndex )
+COpe* COpeBlk::GetOpe(int nIndex)
 {
-	if( GetNum() <= nIndex ){
+	if (GetNum() <= nIndex) {
 		return NULL;
 	}
 	return m_ppCOpeArr[nIndex];
@@ -74,13 +74,13 @@ COpe* COpeBlk::GetOpe( int nIndex )
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 /* 編集操作要素ブロックのダンプ */
-void COpeBlk::DUMP( void )
+void COpeBlk::DUMP(void)
 {
 #ifdef _DEBUG
 	int i;
 	int size = GetNum();
-	for( i = 0; i < size; ++i ){
-		MYTRACE( _T("\tCOpeBlk.m_ppCOpeArr[%d]----\n"), i );
+	for (i = 0; i < size; ++i) {
+		MYTRACE(_T("\tCOpeBlk.m_ppCOpeArr[%d]----\n"), i);
 		m_ppCOpeArr[i]->DUMP();
 	}
 #endif

@@ -53,7 +53,7 @@ public:
 	int Create(HKEY root, const TCHAR* path, unsigned int access = (KEY_READ | KEY_WRITE))
 	{
 		LONG error = RegCreateKeyEx(root, path, 0, NULL, 0, access, NULL, &_key, NULL);
-		if(error != ERROR_SUCCESS)
+		if (error != ERROR_SUCCESS)
 		{
 			return error;
 		}
@@ -63,7 +63,7 @@ public:
 	int Open(HKEY root, const TCHAR* path, unsigned int access = KEY_READ)
 	{
 		LONG error = RegOpenKeyEx(root, path, 0, access, &_key);
-		if(error != ERROR_SUCCESS)
+		if (error != ERROR_SUCCESS)
 		{
 			return error;
 		}
@@ -72,7 +72,7 @@ public:
 	}
 	void Close()
 	{
-		if(_key != NULL)
+		if (_key != NULL)
 		{
 			RegCloseKey(_key);
 			_key = NULL;
@@ -88,7 +88,7 @@ public:
 		{
 			return nError;
 		}
-		if(pGetChars)
+		if (pGetChars)
 		{
 			*pGetChars = getChars;
 		}
@@ -103,7 +103,7 @@ public:
 		{
 			return nError;
 		}
-		if(pGetChars)
+		if (pGetChars)
 		{
 			*pGetChars = getChars;
 		}
@@ -111,7 +111,7 @@ public:
 	}
 	int SetValue(const TCHAR* valueName, const TCHAR* buffer, int nMaxChar = -1)
 	{
-		if(nMaxChar == -1)
+		if (nMaxChar == -1)
 		{
 			nMaxChar = (DWORD)_tcslen(buffer) * sizeof(TCHAR);
 		}
@@ -143,18 +143,18 @@ public:
 
 	int EnumKey(int &index, TCHAR* pNameBuffer, int nMaxChar, int* pGetChar = NULL) const
 	{
-		if(index < 0)
+		if (index < 0)
 		{
 			return ERROR_NO_MORE_ITEMS;
 		}
 		DWORD nSize = nMaxChar;
 		int nError = RegEnumKeyEx(_key, (DWORD)index, pNameBuffer, &nSize, NULL, NULL, NULL, NULL);
-		if(nError != ERROR_SUCCESS)
+		if (nError != ERROR_SUCCESS)
 		{
 			index = -1;
 			return nError;
 		}
-		if(pGetChar)
+		if (pGetChar)
 		{
 			*pGetChar = nMaxChar;
 		}
@@ -163,19 +163,19 @@ public:
 
 	int EnumValue(int &index, TCHAR* pNameBuffer, int nMaxChar, DWORD *lpType, BYTE *lpData, int nMaxData, DWORD* pDataLen) const
 	{
-		if(index < 0)
+		if (index < 0)
 		{
 			return ERROR_NO_MORE_ITEMS;
 		}
 		DWORD nValueSize = nMaxChar;
 		DWORD nDataSize = nMaxChar;
 		int nError = RegEnumValue(_key, (DWORD)index, pNameBuffer, &nValueSize, NULL, lpType, lpData, &nDataSize);
-		if(nError != ERROR_SUCCESS)
+		if (nError != ERROR_SUCCESS)
 		{
 			index = -1;
 			return nError;
 		}
-		if( pDataLen )
+		if (pDataLen)
 		{
 			*pDataLen = nDataSize;
 		}

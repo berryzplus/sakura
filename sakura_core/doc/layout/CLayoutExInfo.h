@@ -26,10 +26,10 @@
 
 #include "util/design_template.h"
 
-class CLayoutColorInfo{
+class CLayoutColorInfo {
 public:
-	CLayoutColorInfo(){}
-	virtual ~CLayoutColorInfo(){};
+	CLayoutColorInfo() {}
+	virtual ~CLayoutColorInfo() {};
 	virtual bool IsEqual(const CLayoutColorInfo*)const = 0;
 };
 
@@ -37,20 +37,20 @@ public:
 class CLayoutExInfo
 {
 public:
-	CLayoutExInfo() : m_colorInfo(NULL){}
-	~CLayoutExInfo(){
+	CLayoutExInfo() : m_colorInfo(NULL) {}
+	~CLayoutExInfo() {
 		delete m_colorInfo;
 	}
-	void SetColorInfo(CLayoutColorInfo* p){
-		if( m_colorInfo ){
+	void SetColorInfo(CLayoutColorInfo* p) {
+		if (m_colorInfo) {
 			delete m_colorInfo;
 		}
 		m_colorInfo = p;
 	}
-	const CLayoutColorInfo* GetColorInfo() const{
+	const CLayoutColorInfo* GetColorInfo() const {
 		return m_colorInfo;
 	}
-	CLayoutColorInfo* DetachColorInfo(){
+	CLayoutColorInfo* DetachColorInfo() {
 		CLayoutColorInfo* p = m_colorInfo;
 		m_colorInfo = NULL;
 		return p;

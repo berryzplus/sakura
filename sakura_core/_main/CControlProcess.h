@@ -25,20 +25,20 @@ class CControlTray;
 -----------------------------------------------------------------------*/
 /*!
 	@brief コントロールプロセスクラス
-	
+
 	コントロールプロセスはCControlTrayクラスのインスタンスを作る。
-	
+
 	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 */
 class CControlProcess : public CProcess {
 public:
-	CControlProcess( HINSTANCE hInstance, LPCTSTR lpCmdLine ) : 
-		CProcess( hInstance, lpCmdLine ),
+	CControlProcess(HINSTANCE hInstance, LPCTSTR lpCmdLine) :
+		CProcess(hInstance, lpCmdLine),
 		// 2006.04.10 ryoji 同期オブジェクトのハンドルを初期化
-		m_hMutex( NULL ),
-		m_hMutexCP( NULL ),
-		m_hEventCPInitialized( NULL ),
-		m_pcTray( 0 )
+		m_hMutex(NULL),
+		m_hMutexCP(NULL),
+		m_hEventCPInitialized(NULL),
+		m_pcTray(0)
 	{}
 
 	virtual ~CControlProcess();

@@ -34,18 +34,18 @@
 const TCHAR* CDocTypeManager::m_typeExtSeps = _T(" ;,");	// タイプ別拡張子 区切り文字
 const TCHAR* CDocTypeManager::m_typeExtWildcards = _T("*?");	// タイプ別拡張子 ワイルドカード
 
-static CMutex g_cDocTypeMutex( FALSE, GSTR_MUTEX_SAKURA_DOCTYPE );
+static CMutex g_cDocTypeMutex(FALSE, GSTR_MUTEX_SAKURA_DOCTYPE);
 
 
 /*!
 	ファイル名から、ドキュメントタイプ（数値）を取得する
-	
+
 	@param pszFilePath [in] ファイル名
-	
+
 	拡張子を切り出して GetDocumentTypeOfExt に渡すだけ．
 	@date 2014.12.06 syat ワイルドカード対応。２重拡張子対応をやめる
 */
-CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
+CTypeConfig CDocTypeManager::GetDocumentTypeOfPath(const TCHAR* pszFilePath)
 {
 	int		i;
 
@@ -56,7 +56,7 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
 		pszFileName = pszSep + 1;
 	}
 
-	for (i = 0; i < m_pShareData->m_nTypesCount; ++i){
+	for (i = 0; i < m_pShareData->m_nTypesCount; ++i) {
 		const STypeConfigMini* mini;
 		GetTypeConfigMini(CTypeConfig(i), &mini);
 		if (IsFileNameMatch(mini->m_szTypeExts, pszFileName)) {
@@ -69,28 +69,28 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfPath( const TCHAR* pszFilePath )
 
 /*!
 	拡張子から、ドキュメントタイプ（数値）を取得する
-	
+
 	@param pszExt [in] 拡張子 (先頭の.は含まない)
-	
+
 	指定された拡張子の属する文書タイプ番号を返す．
 	とりあえず今のところはタイプは拡張子のみに依存すると仮定している．
 	ファイル全体の形式に対応させるときは，また考え直す．
 	@date 2012.10.22 Moca ２重拡張子, 拡張子なしに対応
 	@date 2014.12.06 syat GetDocumentTypeOfPathに統合
 */
-CTypeConfig CDocTypeManager::GetDocumentTypeOfExt( const TCHAR* pszExt )
+CTypeConfig CDocTypeManager::GetDocumentTypeOfExt(const TCHAR* pszExt)
 {
 	return GetDocumentTypeOfPath(pszExt);
 }
 
-CTypeConfig CDocTypeManager::GetDocumentTypeOfId( int id )
+CTypeConfig CDocTypeManager::GetDocumentTypeOfId(int id)
 {
 	int		i;
 
-	for( i = 0; i < m_pShareData->m_nTypesCount; ++i ){
+	for (i = 0; i < m_pShareData->m_nTypesCount; ++i) {
 		const STypeConfigMini* mini;
-		GetTypeConfigMini( CTypeConfig(i), &mini );
-		if( mini->m_id == id ){
+		GetTypeConfigMini(CTypeConfig(i), &mini);
+		if (mini->m_id == id) {
 			return CTypeConfig(i);
 		}
 	}
@@ -100,13 +100,14 @@ CTypeConfig CDocTypeManager::GetDocumentTypeOfId( int id )
 bool CDocTypeManager::GetTypeConfig(CTypeConfig cDocumentType, STypeConfig& type)
 {
 	int n = cDocumentType.GetIndex();
-	if( 0 <= n && n < m_pShareData->m_nTypesCount ){
-		if( 0 == n ){
+	if (0 <= n && n < m_pShareData->m_nTypesCount) {
+		if (0 == n) {
 			type = m_pShareData->m_TypeBasis;
 			return true;
-		}else{
-			LockGuard<CMutex> guard( g_cDocTypeMutex );
-			 if( SendMessageAny( m_pShareData->m_sHandles.m_hwndTray, MYWM_GET_TYPESETTING, (WPARAM)n, 0 ) ){
+		}
+		else {
+			LockGuard<CMutex> guard(g_cDocTypeMutex);
+			if (SendMessageAny(m_pShareData->m_sHandles.m_hwndTray, MYWM_GET_TYPESETTING, (WPARAM)n, 0)) {
 				type = m_pShareData->m_sWorkBuffer.m_TypeConfig;
 				return true;
 			}
@@ -118,10 +119,10 @@ bool CDocTypeManager::GetTypeConfig(CTypeConfig cDocumentType, STypeConfig& type
 bool CDocTypeManager::SetTypeConfig(CTypeConfig cDocumentType, const STypeConfig& type)
 {
 	int n = cDocumentType.GetIndex();
-	if( 0 <= n && n < m_pShareData->m_nTypesCount ){
-		LockGuard<CMutex> guard( g_cDocTypeMutex );
+	if (0 <= n && n < m_pShareData->m_nTypesCount) {
+		LockGuard<CMutex> guard(g_cDocTypeMutex);
 		m_pShareData->m_sWorkBuffer.m_TypeConfig = type;
-		if( SendMessageAny( m_pShareData->m_sHandles.m_hwndTray, MYWM_SET_TYPESETTING, (WPARAM)n, 0 ) ){
+		if (SendMessageAny(m_pShareData->m_sHandles.m_hwndTray, MYWM_SET_TYPESETTING, (WPARAM)n, 0)) {
 			return true;
 		}
 	}
@@ -138,7 +139,7 @@ bool CDocTypeManager::SetTypeConfig(CTypeConfig cDocumentType, const STypeConfig
 bool CDocTypeManager::GetTypeConfigMini(CTypeConfig cDocumentType, const STypeConfigMini** type)
 {
 	int n = cDocumentType.GetIndex();
-	if( 0 <= n && n < m_pShareData->m_nTypesCount ){
+	if (0 <= n && n < m_pShareData->m_nTypesCount) {
 		*type = &m_pShareData->m_TypeMini[n];
 		return true;
 	}
@@ -147,19 +148,19 @@ bool CDocTypeManager::GetTypeConfigMini(CTypeConfig cDocumentType, const STypeCo
 
 bool CDocTypeManager::AddTypeConfig(CTypeConfig cDocumentType)
 {
-	LockGuard<CMutex> guard( g_cDocTypeMutex );
-	return FALSE != SendMessageAny( m_pShareData->m_sHandles.m_hwndTray, MYWM_ADD_TYPESETTING, (WPARAM)cDocumentType.GetIndex(), 0 );
+	LockGuard<CMutex> guard(g_cDocTypeMutex);
+	return FALSE != SendMessageAny(m_pShareData->m_sHandles.m_hwndTray, MYWM_ADD_TYPESETTING, (WPARAM)cDocumentType.GetIndex(), 0);
 }
 
 bool CDocTypeManager::DelTypeConfig(CTypeConfig cDocumentType)
 {
-	LockGuard<CMutex> guard( g_cDocTypeMutex );
-	return FALSE != SendMessageAny( m_pShareData->m_sHandles.m_hwndTray, MYWM_DEL_TYPESETTING, (WPARAM)cDocumentType.GetIndex(), 0 );
+	LockGuard<CMutex> guard(g_cDocTypeMutex);
+	return FALSE != SendMessageAny(m_pShareData->m_sHandles.m_hwndTray, MYWM_DEL_TYPESETTING, (WPARAM)cDocumentType.GetIndex(), 0);
 }
 
 /*!
 	タイプ別拡張子にファイル名がマッチするか
-	
+
 	@param pszTypeExts [in] タイプ別拡張子（ワイルドカードを含む）
 	@param pszFileName [in] ファイル名
 */
@@ -179,7 +180,8 @@ bool CDocTypeManager::IsFileNameMatch(const TCHAR* pszTypeExts, const TCHAR* psz
 			if (pszExt != NULL && _tcsicmp(token, pszExt + 1) == 0) {
 				return true;
 			}
-		} else {
+		}
+		else {
 			if (PathMatchSpec(pszFileName, token) == TRUE) {
 				return true;
 			}
@@ -191,7 +193,7 @@ bool CDocTypeManager::IsFileNameMatch(const TCHAR* pszTypeExts, const TCHAR* psz
 
 /*!
 	タイプ別拡張子の先頭拡張子を取得する
-	
+
 	@param pszTypeExts [in] タイプ別拡張子（ワイルドカードを含む）
 	@param szFirstExt  [out] 先頭拡張子
 	@param nBuffSize   [in] 先頭拡張子のバッファサイズ
@@ -221,16 +223,16 @@ void CDocTypeManager::GetFirstExt(const TCHAR* pszTypeExts, TCHAR szFirstExt[], 
 
 	@date 2014.12.06 syat CFileExtから移動
 */
-bool CDocTypeManager::ConvertTypesExtToDlgExt( const TCHAR *pszSrcExt, const TCHAR* szExt, TCHAR *pszDstExt )
+bool CDocTypeManager::ConvertTypesExtToDlgExt(const TCHAR *pszSrcExt, const TCHAR* szExt, TCHAR *pszDstExt)
 {
 	TCHAR	*token;
 	TCHAR	*p;
 
 	//	2003.08.14 MIK NULLじゃなくてfalse
-	if( NULL == pszSrcExt ) return false;
-	if( NULL == pszDstExt ) return false;
+	if (NULL == pszSrcExt) return false;
+	if (NULL == pszDstExt) return false;
 
-	p = _tcsdup( pszSrcExt );
+	p = _tcsdup(pszSrcExt);
 	pszDstExt[0] = _T('\0');
 
 	if (szExt != NULL && szExt[0] != _T('\0')) {
@@ -240,10 +242,10 @@ bool CDocTypeManager::ConvertTypesExtToDlgExt( const TCHAR *pszSrcExt, const TCH
 	}
 
 	token = _tcstok(p, m_typeExtSeps);
-	while( token )
+	while (token)
 	{
 		if (szExt == NULL || szExt[0] == _T('\0') || auto_stricmp(token, szExt + 1) != 0) {
-			if( pszDstExt[0] != '\0' ) _tcscat( pszDstExt, _T(";") );
+			if (pszDstExt[0] != '\0') _tcscat(pszDstExt, _T(";"));
 			// 拡張子指定なし、またはマッチした拡張子でない
 			if (_tcspbrk(token, m_typeExtWildcards) == NULL) {
 				if (_T('.') == *token) _tcscat(pszDstExt, _T("*"));
@@ -252,8 +254,8 @@ bool CDocTypeManager::ConvertTypesExtToDlgExt( const TCHAR *pszSrcExt, const TCH
 			_tcscat(pszDstExt, token);
 		}
 
-		token = _tcstok( NULL, m_typeExtSeps );
+		token = _tcstok(NULL, m_typeExtSeps);
 	}
-	free( p );	// 2003.05.20 MIK メモリ解放漏れ
+	free(p);	// 2003.05.20 MIK メモリ解放漏れ
 	return true;
 }

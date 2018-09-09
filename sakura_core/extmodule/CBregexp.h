@@ -22,8 +22,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -32,7 +32,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -62,7 +62,7 @@
 	@date 2005.03.19 かろと リファクタリング。クラス内部を隠蔽
 	@date 2006.01.22 かろと オプション追加・名称変更(全て行置換用Globalオプション追加のため)
 */
-class CBregexp : public CBregexpDll2{
+class CBregexp : public CBregexpDll2 {
 public:
 	CBregexp();
 	virtual ~CBregexp();
@@ -90,7 +90,7 @@ public:
 	};
 
 	//! DLLのバージョン情報を取得
-	const TCHAR* GetVersionT(){ return IsAvailable() ? to_tchar(BRegexpVersion()) : _T(""); }
+	const TCHAR* GetVersionT() { return IsAvailable() ? to_tchar(BRegexpVersion()) : _T(""); }
 
 	//	CJreエミュレーション関数
 	//!	検索パターンのコンパイル
@@ -111,7 +111,7 @@ public:
 		@name 結果を得るメソッドを追加し、BREGEXPを外部から隠す
 	*/
 	/*!
-	    検索に一致した文字列の先頭位置を返す(文字列先頭なら0)
+		検索に一致した文字列の先頭位置を返す(文字列先頭なら0)
 		@retval 検索に一致した文字列の先頭位置
 	*/
 	CLogicInt GetIndex(void)
@@ -119,7 +119,7 @@ public:
 		return CLogicInt(m_pRegExp->startp[0] - m_szTarget);
 	}
 	/*!
-	    検索に一致した文字列の次の位置を返す
+		検索に一致した文字列の次の位置を返す
 		@retval 検索に一致した文字列の次の位置
 	*/
 	CLogicInt GetLastIndex(void)
@@ -149,7 +149,8 @@ public:
 
 		if (m_pRegExp->outp == NULL) {
 			return CLogicInt(0);
-		} else {
+		}
+		else {
 			return CLogicInt(m_pRegExp->outendp - m_pRegExp->outp);
 		}
 	}
@@ -195,9 +196,9 @@ protected:
 		m_pcRegをBRegfree()に渡して解放する．解放後はNULLにセットする．
 		元々NULLなら何もしない
 	*/
-	void ReleaseCompileBuffer(void){
-		if( m_pRegExp ){
-			BRegfree( m_pRegExp );
+	void ReleaseCompileBuffer(void) {
+		if (m_pRegExp) {
+			BRegfree(m_pRegExp);
 			m_pRegExp = NULL;
 		}
 		m_ePatType = PAT_UNKNOWN;
@@ -207,10 +208,10 @@ private:
 	//	内部関数
 
 	//! 検索パターン作成
-	int CheckPattern( const wchar_t* szPattern );
-	wchar_t* MakePatternSub( const wchar_t* szPattern, const wchar_t* szPattern2, const wchar_t* szAdd2, int nOption );
-	wchar_t* MakePattern( const wchar_t* szPattern, const wchar_t* szPattern2, int nOption );
-	wchar_t* MakePatternAlternate( const wchar_t* const szSearch, const wchar_t* const szReplace, int nOption );
+	int CheckPattern(const wchar_t* szPattern);
+	wchar_t* MakePatternSub(const wchar_t* szPattern, const wchar_t* szPattern2, const wchar_t* szAdd2, int nOption);
+	wchar_t* MakePattern(const wchar_t* szPattern, const wchar_t* szPattern2, int nOption);
+	wchar_t* MakePatternAlternate(const wchar_t* const szSearch, const wchar_t* const szReplace, int nOption);
 
 	//	メンバ変数
 	BREGEXP_W*			m_pRegExp;			//!< コンパイル構造体
@@ -225,9 +226,9 @@ private:
 
 //	Jun. 26, 2001 genta
 //!	正規表現ライブラリのバージョン取得
-bool CheckRegexpVersion( HWND hWnd, int nCmpId, bool bShowMsg = false );
-bool CheckRegexpSyntax( const wchar_t* szPattern, HWND hWnd, bool bShowMessage, int nOption = -1, bool bKakomi = false );// 2002/2/1 hor追加
-bool InitRegexp( HWND hWnd, CBregexp& rRegexp, bool bShowMessage );
+bool CheckRegexpVersion(HWND hWnd, int nCmpId, bool bShowMsg = false);
+bool CheckRegexpSyntax(const wchar_t* szPattern, HWND hWnd, bool bShowMessage, int nOption = -1, bool bKakomi = false);// 2002/2/1 hor追加
+bool InitRegexp(HWND hWnd, CBregexp& rRegexp, bool bShowMessage);
 
 
 #endif

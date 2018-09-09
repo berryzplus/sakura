@@ -48,7 +48,7 @@ class CSMacroMgr;
 class CMenuDrawer;// 2002/2/10 aroka to here
 
 /*! プロパティシート番号
-	@date 2008.6.22 Uchi #define -> enum に変更	
+	@date 2008.6.22 Uchi #define -> enum に変更
 	@date 2008.6.22 Uchi順序変更 Win,Toolbar,Tab,Statusbarの順に、File,FileName 順に
 */
 enum PropComSheetOrder {
@@ -93,21 +93,21 @@ public:
 	~CPropCommon();
 	//	Sep. 29, 2001 genta マクロクラスを渡すように;
 //@@@ 2002.01.03 YAZAKI m_tbMyButtonなどをCShareDataからCMenuDrawerへ移動したことによる修正。
-	void Create( HWND, CImageListMgr*, CMenuDrawer* );	/* 初期化 */
+	void Create(HWND, CImageListMgr*, CMenuDrawer*);	/* 初期化 */
 
 	/*
 	||  Attributes & Operations
 	*/
-	INT_PTR DoPropertySheet( int, bool );	/* プロパティシートの作成 */
+	INT_PTR DoPropertySheet(int, bool);	/* プロパティシートの作成 */
 
 	// 2002.12.11 Moca 追加
-	void InitData( const int* = NULL, const TCHAR* = NULL, const TCHAR* = NULL );	//!< DLLSHAREDATAから一時データ領域に設定を複製する
-	void ApplyData( int* = NULL );	//!< 一時データ領域からにDLLSHAREDATA設定をコピーする
-	int GetPageNum(){ return m_nPageNum; }
+	void InitData(const int* = NULL, const TCHAR* = NULL, const TCHAR* = NULL);	//!< DLLSHAREDATAから一時データ領域に設定を複製する
+	void ApplyData(int* = NULL);	//!< 一時データ領域からにDLLSHAREDATA設定をコピーする
+	int GetPageNum() { return m_nPageNum; }
 
 	//
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	//	Jun. 2, 2001 genta
 	//	ここにあったEvent Handlerはprotectedエリアに移動した．
@@ -119,7 +119,7 @@ public:
 	int					m_nKeywordSet1;
 	//	Oct. 16, 2000 genta
 	CImageListMgr*	m_pcIcons;	//	Image List
-	
+
 	//	Oct. 2, 2001 genta 外部マクロ追加に伴う，対応部分の別クラス化
 	//	Oct. 15, 2001 genta Lookupはダイアログボックス内で別インスタンスを作るように
 	//	(検索対象として，設定用common領域を指すようにするため．)
@@ -132,7 +132,7 @@ public:
 	CommonSetting	m_Common;
 
 	// 2005.01.13 MIK セット数増加
-	struct SKeywordSetIndex{
+	struct SKeywordSetIndex {
 		int typeId;
 		int index[MAX_KEYWORDSET_PER_TYPE];
 	};
@@ -147,39 +147,39 @@ protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	void OnHelp( HWND, int );	/* ヘルプ */
-	int	SearchIntArr( int , int* , int );
-//	void DrawToolBarItemList( DRAWITEMSTRUCT* );	/* ツールバーボタンリストのアイテム描画 */
-//	void DrawColorButton( DRAWITEMSTRUCT* , COLORREF );	/* 色ボタンの描画 */ // 2002.11.09 Moca 未使用
-//	BOOL SelectColor( HWND , COLORREF* );	/* 色選択ダイアログ */
+	void OnHelp(HWND, int);	/* ヘルプ */
+	int	SearchIntArr(int, int*, int);
+	//	void DrawToolBarItemList( DRAWITEMSTRUCT* );	/* ツールバーボタンリストのアイテム描画 */
+	//	void DrawColorButton( DRAWITEMSTRUCT* , COLORREF );	/* 色ボタンの描画 */ // 2002.11.09 Moca 未使用
+	//	BOOL SelectColor( HWND , COLORREF* );	/* 色選択ダイアログ */
 
-	//	Jun. 2, 2001 genta
-	//	Event Handler, Dialog Procedureの見直し
-	//	Global関数だったDialog procedureをclassのstatic methodとして
-	//	組み込んだ．
-	//	ここから以下 Macroまで配置の見直しとstatic methodの追加
+		//	Jun. 2, 2001 genta
+		//	Event Handler, Dialog Procedureの見直し
+		//	Global関数だったDialog procedureをclassのstatic methodとして
+		//	組み込んだ．
+		//	ここから以下 Macroまで配置の見直しとstatic methodの追加
 
-	//! 汎用ダイアログプロシージャ
+		//! 汎用ダイアログプロシージャ
 	static INT_PTR DlgProc(
-		INT_PTR (CPropCommon::*DispatchPage)( HWND, UINT, WPARAM, LPARAM ),
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		INT_PTR(CPropCommon::*DispatchPage)(HWND, UINT, WPARAM, LPARAM),
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static INT_PTR DlgProc2( //独立ウィンドウ用
-		INT_PTR (CPropCommon::*DispatchPage)( HWND, UINT, WPARAM, LPARAM ),
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
-	typedef	INT_PTR (CPropCommon::*pDispatchPage)( HWND, UINT, WPARAM, LPARAM );
+		INT_PTR(CPropCommon::*DispatchPage)(HWND, UINT, WPARAM, LPARAM),
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	typedef	INT_PTR(CPropCommon::*pDispatchPage)(HWND, UINT, WPARAM, LPARAM);
 
 	int nLastPos_Macro; //!< 前回フォーカスのあった場所
 	int m_nLastPos_FILENAME; //!< 前回フォーカスのあった場所 ファイル名タブ用
 
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
-	void Import( HWND );	//!< インポートする
-	void Export( HWND );	//!< エクスポートする
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
+	void Import(HWND);	//!< インポートする
+	void Export(HWND);	//!< エクスポートする
 
-	HFONT SetCtrlFont( HWND hwndDlg, int idc_static, const LOGFONT& lf );			//!< コントロールにフォント設定する		// 2013/4/24 Uchi
-	HFONT SetFontLabel( HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps );	//!< フォントラベルにフォントとフォント名設定する	// 2013/4/24 Uchi
+	HFONT SetCtrlFont(HWND hwndDlg, int idc_static, const LOGFONT& lf);			//!< コントロールにフォント設定する		// 2013/4/24 Uchi
+	HFONT SetFontLabel(HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps);	//!< フォントラベルにフォントとフォント名設定する	// 2013/4/24 Uchi
 };
 
 
@@ -197,12 +197,12 @@ class CPropGeneral : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 };
 
 //==============================================================
@@ -212,12 +212,12 @@ class CPropFile : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
 	//	Aug. 21, 2000 genta
@@ -231,18 +231,18 @@ class CPropKeybind : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
-	void Import( HWND );	//!< インポートする
-	void Export( HWND );	//!< エクスポートする
+	void Import(HWND);	//!< インポートする
+	void Export(HWND);	//!< エクスポートする
 
 private:
-	void ChangeKeyList( HWND ); /* キーリストをチェックボックスの状態に合わせて更新する*/
+	void ChangeKeyList(HWND); /* キーリストをチェックボックスの状態に合わせて更新する*/
 };
 
 //==============================================================
@@ -252,15 +252,15 @@ class CPropToolbar : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	void DrawToolBarItemList( DRAWITEMSTRUCT* );	/* ツールバーボタンリストのアイテム描画 */
+	void DrawToolBarItemList(DRAWITEMSTRUCT*);	/* ツールバーボタンリストのアイテム描画 */
 };
 
 //==============================================================
@@ -270,25 +270,25 @@ class CPropKeyword : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static INT_PTR CALLBACK DlgProc_dialog(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	void SetKeyWordSet( HWND , int );	/* 指定キーワードセットの設定 */
-	void GetKeyWordSet( HWND , int );	/* 指定キーワードセットの取得 */
-	void DispKeywordCount( HWND hwndDlg );
+	void SetKeyWordSet(HWND, int);	/* 指定キーワードセットの設定 */
+	void GetKeyWordSet(HWND, int);	/* 指定キーワードセットの取得 */
+	void DispKeywordCount(HWND hwndDlg);
 
-	void Edit_List_KeyWord( HWND, HWND );		//!< リスト中で選択されているキーワードを編集する
-	void Delete_List_KeyWord( HWND , HWND );	//!< リスト中で選択されているキーワードを削除する
-	void Import_List_KeyWord( HWND , HWND );	//!< リスト中のキーワードをインポートする
-	void Export_List_KeyWord( HWND , HWND );	//!< リスト中のキーワードをエクスポートする
-	void Clean_List_KeyWord( HWND , HWND );		//!< リスト中のキーワードを整理する 2005.01.26 Moca
+	void Edit_List_KeyWord(HWND, HWND);		//!< リスト中で選択されているキーワードを編集する
+	void Delete_List_KeyWord(HWND, HWND);	//!< リスト中で選択されているキーワードを削除する
+	void Import_List_KeyWord(HWND, HWND);	//!< リスト中のキーワードをインポートする
+	void Export_List_KeyWord(HWND, HWND);	//!< リスト中のキーワードをエクスポートする
+	void Clean_List_KeyWord(HWND, HWND);		//!< リスト中のキーワードを整理する 2005.01.26 Moca
 };
 
 //==============================================================
@@ -298,15 +298,15 @@ class CPropCustmenu : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	void SetDataMenuList( HWND, int );
-	int  GetData( HWND );	//!< ダイアログデータの取得
-	void Import( HWND );	//!< カスタムメニュー設定をインポートする
-	void Export( HWND );	//!< カスタムメニュー設定をエクスポートする
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	void SetDataMenuList(HWND, int);
+	int  GetData(HWND);	//!< ダイアログデータの取得
+	void Import(HWND);	//!< カスタムメニュー設定をインポートする
+	void Export(HWND);	//!< カスタムメニュー設定をエクスポートする
 };
 
 //==============================================================
@@ -316,19 +316,19 @@ class CPropFormat : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	void ChangeDateExample( HWND hwndDlg );
-	void ChangeTimeExample( HWND hwndDlg );
+	void ChangeDateExample(HWND hwndDlg);
+	void ChangeTimeExample(HWND hwndDlg);
 
 	//	Sept. 10, 2000 JEPRO	次行を追加
-	void EnableFormatPropInput( HWND hwndDlg );	//	書式設定のON/OFF
+	void EnableFormatPropInput(HWND hwndDlg);	//	書式設定のON/OFF
 };
 
 //==============================================================
@@ -338,12 +338,12 @@ class CPropHelper : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 };
 
 //==============================================================
@@ -353,12 +353,12 @@ class CPropBackup : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
 	//	Aug. 16, 2000 genta
@@ -374,16 +374,16 @@ class CPropWin : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
 	//	Sept. 9, 2000 JEPRO		次行を追加
-	void EnableWinPropInput( HWND hwndDlg) ;	//	ウィンドウ設定のON/OFF
+	void EnableWinPropInput(HWND hwndDlg);	//	ウィンドウ設定のON/OFF
 };
 
 //==============================================================
@@ -393,12 +393,12 @@ class CPropTab : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
 	void EnableTabPropInput(HWND hwndDlg);
@@ -411,15 +411,15 @@ class CPropEdit : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	void EnableEditPropInput( HWND hwndDlg );
+	void EnableEditPropInput(HWND hwndDlg);
 };
 
 //==============================================================
@@ -429,15 +429,15 @@ class CPropGrep : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	void SetRegexpVersion( HWND ); // 2007.08.12 genta バージョン表示
+	void SetRegexpVersion(HWND); // 2007.08.12 genta バージョン表示
 };
 
 //==============================================================
@@ -447,21 +447,21 @@ class CPropMacro : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	void InitDialog( HWND hwndDlg );//!< Macroページの初期化
+	void InitDialog(HWND hwndDlg);//!< Macroページの初期化
 	//	To Here Jun. 2, 2001 genta
-	void SetMacro2List_Macro( HWND hwndDlg );//!< Macroデータの設定
-	void SelectBaseDir_Macro( HWND hwndDlg );//!< Macroディレクトリの選択
-	void OnFileDropdown_Macro( HWND hwndDlg );//!< ファイルドロップダウンが開かれるとき
-	void CheckListPosition_Macro( HWND hwndDlg );//!< リストビューのFocus位置確認
-	static int CALLBACK DirCallback_Macro( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData );
+	void SetMacro2List_Macro(HWND hwndDlg);//!< Macroデータの設定
+	void SelectBaseDir_Macro(HWND hwndDlg);//!< Macroディレクトリの選択
+	void OnFileDropdown_Macro(HWND hwndDlg);//!< ファイルドロップダウンが開かれるとき
+	void CheckListPosition_Macro(HWND hwndDlg);//!< リストビューのFocus位置確認
+	static int CALLBACK DirCallback_Macro(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 };
 
 //==============================================================
@@ -471,17 +471,17 @@ class CPropFileName : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	static int SetListViewItem_FILENAME( HWND hListView, int, LPTSTR, LPTSTR, bool );//!<ListViewのアイテムを設定
-	static void GetListViewItem_FILENAME( HWND hListView, int, LPTSTR, LPTSTR );//!<ListViewのアイテムを取得
-	static int MoveListViewItem_FILENAME( HWND hListView, int, int );//!<ListViewのアイテムを移動する
+	static int SetListViewItem_FILENAME(HWND hListView, int, LPTSTR, LPTSTR, bool);//!<ListViewのアイテムを設定
+	static void GetListViewItem_FILENAME(HWND hListView, int, LPTSTR, LPTSTR);//!<ListViewのアイテムを取得
+	static int MoveListViewItem_FILENAME(HWND hListView, int, int);//!<ListViewのアイテムを移動する
 };
 
 //==============================================================
@@ -491,12 +491,12 @@ class CPropStatusbar : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 };
 
 //==============================================================
@@ -506,18 +506,18 @@ class CPropPlugin : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	std::tstring GetReadMeFile(const std::tstring& sName);	//	Readme ファイルの取得
 	bool BrowseReadMe(const std::tstring& sReadMeName);		//	Readme ファイルの表示
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
 
 private:
-	void SetData_LIST( HWND );
-	void InitDialog( HWND hwndDlg );	//!< Pluginページの初期化
+	void SetData_LIST(HWND);
+	void InitDialog(HWND hwndDlg);	//!< Pluginページの初期化
 	void EnablePluginPropInput(HWND hwndDlg);
 };
 
@@ -528,20 +528,20 @@ class CPropMainMenu : CPropCommon
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
-		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 protected:
 	//! Message Handler
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );
-	void SetData( HWND );	//!< ダイアログデータの設定
-	int  GetData( HWND );	//!< ダイアログデータの取得
-	void Import( HWND );	//!< メニュー設定をインポートする
-	void Export( HWND );	//!< メニュー設定をエクスポートする
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);
+	void SetData(HWND);	//!< ダイアログデータの設定
+	int  GetData(HWND);	//!< ダイアログデータの取得
+	void Import(HWND);	//!< メニュー設定をインポートする
+	void Export(HWND);	//!< メニュー設定をエクスポートする
 
 private:
-	bool GetDataTree( HWND, HTREEITEM, int );
+	bool GetDataTree(HWND, HTREEITEM, int);
 
-	bool Check_MainMenu( HWND, std::wstring& );						// メニューの検査
-	bool Check_MainMenu_Sub( HWND, HTREEITEM, int, std::wstring& );	// メニューの検査
+	bool Check_MainMenu(HWND, std::wstring&);						// メニューの検査
+	bool Check_MainMenu_Sub(HWND, HTREEITEM, int, std::wstring&);	// メニューの検査
 };
 
 

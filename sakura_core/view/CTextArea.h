@@ -30,7 +30,7 @@ class CLayoutMgr;
 #include "DispPos.h"
 
 
-class CTextArea{
+class CTextArea {
 public:
 	CTextArea(CEditView* pEditView);
 	virtual ~CTextArea();
@@ -47,7 +47,7 @@ public:
 	}
 	void SetViewTopLine(CLayoutInt nLine)
 	{
-		m_nViewTopLine=nLine;
+		m_nViewTopLine = nLine;
 	}
 
 	//!表示域の一番左の桁
@@ -57,7 +57,7 @@ public:
 	}
 	void SetViewLeftCol(CLayoutInt nLeftCol)
 	{
-		m_nViewLeftCol=nLeftCol;
+		m_nViewLeftCol = nLeftCol;
 	}
 
 	//!右にはみ出した最初の列を返す
@@ -111,7 +111,7 @@ public:
 	}
 	void SetTopYohaku(int nPixel)
 	{
-		m_nTopYohaku=nPixel;
+		m_nTopYohaku = nPixel;
 	}
 	int GetLeftYohaku() const
 	{
@@ -119,7 +119,7 @@ public:
 	}
 	void SetLeftYohaku(int nPixel)
 	{
-		m_nLeftYohaku=nPixel;
+		m_nLeftYohaku = nPixel;
 	}
 	// 行番号の幅(余白なし)
 	int GetLineNumberWidth() const
@@ -135,10 +135,10 @@ public:
 	);
 
 	//! 行番号表示に必要な幅を設定
-	bool DetectWidthOfLineNumberArea( bool bRedraw );
+	bool DetectWidthOfLineNumberArea(bool bRedraw);
 
 	//! 行番号表示に必要な桁数を計算
-	int  DetectWidthOfLineNumberArea_calculate(const CLayoutMgr*, bool bLayout=false) const;
+	int  DetectWidthOfLineNumberArea_calculate(const CLayoutMgr*, bool bLayout = false) const;
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                           判定                              //
@@ -146,14 +146,14 @@ public:
 	bool IsRectIntersected(const RECT& rc) const
 	{
 		//rcが無効またはゼロ領域の場合はfalse
-		if( rc.left >= rc.right )return false;
-		if( rc.top  >= rc.bottom )return false;
+		if (rc.left >= rc.right)return false;
+		if (rc.top >= rc.bottom)return false;
 
-		if( rc.left >= this->GetAreaRight() )return false; //右外
-		if( rc.right <= this->GetAreaLeft() )return false; //左外
-		if( rc.top >= this->GetAreaBottom() )return false; //下外
-		if( rc.bottom <= this->GetAreaTop() )return false; //上外
-		
+		if (rc.left >= this->GetAreaRight())return false; //右外
+		if (rc.right <= this->GetAreaLeft())return false; //左外
+		if (rc.top >= this->GetAreaBottom())return false; //下外
+		if (rc.bottom <= this->GetAreaTop())return false; //上外
+
 		return true;
 	}
 
@@ -198,16 +198,16 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//$ Generateなんていう大げさな名前じゃなくて、Get～で良い気がしてきた
 	//!クリッピング矩形を作成。表示範囲外だった場合はfalseを返す。
-	void GenerateCharRect(RECT* rc,const DispPos& sPos,CLayoutXInt nColumns) const;
+	void GenerateCharRect(RECT* rc, const DispPos& sPos, CLayoutXInt nColumns) const;
 	bool TrimRectByArea(RECT* rc) const;
-	bool GenerateClipRect(RECT* rc,const DispPos& sPos,CLayoutXInt nColumns) const;
-	bool GenerateClipRectRight(RECT* rc,const DispPos& sPos) const; //!< 右端まで全部
-	bool GenerateClipRectLine(RECT* rc,const DispPos& sPos) const;  //!< 行全部
+	bool GenerateClipRect(RECT* rc, const DispPos& sPos, CLayoutXInt nColumns) const;
+	bool GenerateClipRectRight(RECT* rc, const DispPos& sPos) const; //!< 右端まで全部
+	bool GenerateClipRectLine(RECT* rc, const DispPos& sPos) const;  //!< 行全部
 
-	void GenerateTopRect   (RECT* rc, CLayoutInt nLineCount) const;
+	void GenerateTopRect(RECT* rc, CLayoutInt nLineCount) const;
 	void GenerateBottomRect(RECT* rc, CLayoutInt nLineCount) const;
-	void GenerateLeftRect  (RECT* rc, CLayoutInt nColCount ) const;
-	void GenerateRightRect (RECT* rc, CLayoutInt nColCount ) const;
+	void GenerateLeftRect(RECT* rc, CLayoutInt nColCount) const;
+	void GenerateRightRect(RECT* rc, CLayoutInt nColCount) const;
 
 	void GenerateLineNumberRect(RECT* rc) const;
 

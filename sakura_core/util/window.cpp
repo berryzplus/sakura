@@ -22,43 +22,43 @@ bool CDPI::bInitialized = false;
 	@date 2007.10.22 ryoji フラグ値としてGA_ROOTOWNER2（本関数固有）を追加
 	@date 2008.04.09 ryoji GA_ROOTOWNER2 は可能な限り祖先を遡るように動作修正
 */
-HWND MyGetAncestor( HWND hWnd, UINT gaFlags )
+HWND MyGetAncestor(HWND hWnd, UINT gaFlags)
 {
 	HWND hwndAncestor;
 	HWND hwndDesktop = ::GetDesktopWindow();
 	HWND hwndWk;
 
-	if( hWnd == hwndDesktop )
+	if (hWnd == hwndDesktop)
 		return NULL;
 
-	switch( gaFlags )
+	switch (gaFlags)
 	{
 	case GA_PARENT:	// 親ウィンドウを返す（オーナーは返さない）
-		hwndAncestor = ( (DWORD)::GetWindowLongPtr( hWnd, GWL_STYLE ) & WS_CHILD )? ::GetParent( hWnd ): hwndDesktop;
+		hwndAncestor = ((DWORD)::GetWindowLongPtr(hWnd, GWL_STYLE) & WS_CHILD) ? ::GetParent(hWnd) : hwndDesktop;
 		break;
 
 	case GA_ROOT:	// 親子関係を遡って直近上位のトップレベルウィンドウを返す
 		hwndAncestor = hWnd;
-		while( (DWORD)::GetWindowLongPtr( hwndAncestor, GWL_STYLE ) & WS_CHILD )
-			hwndAncestor = ::GetParent( hwndAncestor );
+		while ((DWORD)::GetWindowLongPtr(hwndAncestor, GWL_STYLE) & WS_CHILD)
+			hwndAncestor = ::GetParent(hwndAncestor);
 		break;
 
 	case GA_ROOTOWNER:	// 親子関係と所有関係をGetParent()で遡って所有されていないトップレベルウィンドウを返す
 		hwndWk = hWnd;
-		do{
+		do {
 			hwndAncestor = hwndWk;
-			hwndWk = ::GetParent( hwndAncestor );
-		}while( hwndWk != NULL );
+			hwndWk = ::GetParent(hwndAncestor);
+		} while (hwndWk != NULL);
 		break;
 
 	case GA_ROOTOWNER2:	// 所有関係をGetWindow()で遡って所有されていないトップレベルウィンドウを返す
 		hwndWk = hWnd;
-		do{
+		do {
 			hwndAncestor = hwndWk;
-			hwndWk = ::GetParent( hwndAncestor );
-			if( hwndWk == NULL )
-				hwndWk = ::GetWindow( hwndAncestor, GW_OWNER );
-		}while( hwndWk != NULL );
+			hwndWk = ::GetParent(hwndAncestor);
+			if (hwndWk == NULL)
+				hwndWk = ::GetWindow(hwndAncestor, GW_OWNER);
+		} while (hwndWk != NULL);
 		break;
 
 	default:
@@ -76,19 +76,20 @@ HWND MyGetAncestor( HWND hWnd, UINT gaFlags )
 
 	@date 2003.07.04 genta 一回の呼び出しで複数メッセージを処理するように
 */
-BOOL BlockingHook( HWND hwndDlgCancel )
+BOOL BlockingHook(HWND hwndDlgCancel)
 {
 	MSG		msg;
 	BOOL	ret;
 	//	Jun. 04, 2003 genta メッセージをあるだけ処理するように
-	while(( ret = (BOOL)::PeekMessage( &msg, NULL, 0, 0, PM_REMOVE )) != 0 ){
-		if ( msg.message == WM_QUIT ){
+	while ((ret = (BOOL)::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) != 0) {
+		if (msg.message == WM_QUIT) {
 			return FALSE;
 		}
-		if( NULL != hwndDlgCancel && IsDialogMessage( hwndDlgCancel, &msg ) ){
-		}else{
-			::TranslateMessage( &msg );
-			::DispatchMessage( &msg );
+		if (NULL != hwndDlgCancel && IsDialogMessage(hwndDlgCancel, &msg)) {
+		}
+		else {
+			::TranslateMessage(&msg);
+			::DispatchMessage(&msg);
 		}
 	}
 	return TRUE/*ret*/;
@@ -101,13 +102,13 @@ BOOL BlockingHook( HWND hwndDlgCancel )
 	@date 2007.11.07 ryoji 対象がdisableのときは最近のポップアップをフォアグラウンド化する．
 		（モーダルダイアログやメッセージボックスを表示しているようなとき）
 */
-void ActivateFrameWindow( HWND hwnd )
+void ActivateFrameWindow(HWND hwnd)
 {
 	// 編集ウィンドウでタブまとめ表示の場合は表示位置を復元する
 	DLLSHAREDATA* pShareData = &GetDllShareData();
-	if( pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin ) {
-		if( IsSakuraMainWindow( hwnd ) ){
-			if( pShareData->m_sFlags.m_bEditWndChanging )
+	if (pShareData->m_Common.m_sTabBar.m_bDispTabWnd && !pShareData->m_Common.m_sTabBar.m_bDispTabWndMultiWin) {
+		if (IsSakuraMainWindow(hwnd)) {
+			if (pShareData->m_sFlags.m_bEditWndChanging)
 				return;	// 切替の最中(busy)は要求を無視する
 			pShareData->m_sFlags.m_bEditWndChanging = TRUE;	// 編集ウィンドウ切替中ON	2007.04.03 ryoji
 
@@ -127,20 +128,20 @@ void ActivateFrameWindow( HWND hwnd )
 
 	// 対象がdisableのときは最近のポップアップをフォアグラウンド化する
 	HWND hwndActivate;
-	hwndActivate = ::IsWindowEnabled( hwnd )? hwnd: ::GetLastActivePopup( hwnd );
-	if( ::IsIconic( hwnd ) ){
-		::ShowWindow( hwnd, SW_RESTORE );
+	hwndActivate = ::IsWindowEnabled(hwnd) ? hwnd : ::GetLastActivePopup(hwnd);
+	if (::IsIconic(hwnd)) {
+		::ShowWindow(hwnd, SW_RESTORE);
 	}
-	else if ( ::IsZoomed( hwnd ) ){
-		::ShowWindow( hwnd, SW_MAXIMIZE );
+	else if (::IsZoomed(hwnd)) {
+		::ShowWindow(hwnd, SW_MAXIMIZE);
 	}
 	else {
-		::ShowWindow( hwnd, SW_SHOW );
+		::ShowWindow(hwnd, SW_SHOW);
 	}
-	::SetForegroundWindow( hwndActivate );
-	::BringWindowToTop( hwndActivate );
+	::SetForegroundWindow(hwndActivate);
+	::BringWindowToTop(hwndActivate);
 
-	if( pShareData )
+	if (pShareData)
 		pShareData->m_sFlags.m_bEditWndChanging = FALSE;	// 編集ウィンドウ切替中OFF	2007.04.03 ryoji
 
 	return;
@@ -152,7 +153,7 @@ CTextWidthCalc::CTextWidthCalc(HWND hParent, int nID)
 	assert_warning(hParent);
 
 	hwnd = ::GetDlgItem(hParent, nID);
-	hDC = ::GetDC( hwnd );
+	hDC = ::GetDC(hwnd);
 	assert(hDC);
 	hFont = (HFONT)::SendMessageAny(hwnd, WM_GETFONT, 0, 0);
 	hFontOld = (HFONT)::SelectObject(hDC, hFont);
@@ -167,7 +168,7 @@ CTextWidthCalc::CTextWidthCalc(HWND hwndThis)
 	assert_warning(hwndThis);
 
 	hwnd = hwndThis;
-	hDC = ::GetDC( hwnd );
+	hDC = ::GetDC(hwnd);
 	assert(hDC);
 	hFont = (HFONT)::SendMessageAny(hwnd, WM_GETFONT, 0, 0);
 	hFontOld = (HFONT)::SelectObject(hDC, hFont);
@@ -180,9 +181,9 @@ CTextWidthCalc::CTextWidthCalc(HWND hwndThis)
 CTextWidthCalc::CTextWidthCalc(HFONT font)
 {
 	hwnd = 0;
-	HDC hDCTemp = ::GetDC( NULL ); // Desktop
-	hDC = ::CreateCompatibleDC( hDCTemp );
-	::ReleaseDC( NULL, hDCTemp );
+	HDC hDCTemp = ::GetDC(NULL); // Desktop
+	hDC = ::CreateCompatibleDC(hDCTemp);
+	::ReleaseDC(NULL, hDCTemp);
 	assert(hDC);
 	hFont = font;
 	hFontOld = (HFONT)::SelectObject(hDC, hFont);
@@ -205,11 +206,12 @@ CTextWidthCalc::CTextWidthCalc(HDC hdc)
 
 CTextWidthCalc::~CTextWidthCalc()
 {
-	if(hDC && !bFromDC){
+	if (hDC && !bFromDC) {
 		::SelectObject(hDC, hFontOld);
-		if( bHDCComp ){
+		if (bHDCComp) {
 			::DeleteDC(hDC);
-		}else{
+		}
+		else {
 			::ReleaseDC(hwnd, hDC);
 		}
 		hwnd = 0;
@@ -225,10 +227,10 @@ bool CTextWidthCalc::SetWidthIfMax(int width)
 
 bool CTextWidthCalc::SetWidthIfMax(int width, int extCx)
 {
-	if( INT_MIN == extCx ){
+	if (INT_MIN == extCx) {
 		extCx = nExt;
 	}
-	if( nCx < width + extCx ){
+	if (nCx < width + extCx) {
 		nCx = width + extCx;
 		return true;
 	}
@@ -243,7 +245,7 @@ bool CTextWidthCalc::SetTextWidthIfMax(LPCTSTR pszText)
 bool CTextWidthCalc::SetTextWidthIfMax(LPCTSTR pszText, int extCx)
 {
 	SIZE size;
-	if( ::GetTextExtentPoint32( hDC, pszText, _tcslen(pszText), &size ) ){
+	if (::GetTextExtentPoint32(hDC, pszText, _tcslen(pszText), &size)) {
 		return SetWidthIfMax(size.cx, extCx);
 	}
 	return false;
@@ -252,7 +254,7 @@ bool CTextWidthCalc::SetTextWidthIfMax(LPCTSTR pszText, int extCx)
 int CTextWidthCalc::GetTextWidth(LPCTSTR pszText) const
 {
 	SIZE size;
-	if( ::GetTextExtentPoint32( hDC, pszText, _tcslen(pszText), &size ) ){
+	if (::GetTextExtentPoint32(hDC, pszText, _tcslen(pszText), &size)) {
 		return size.cx;
 	}
 	return 0;
@@ -273,18 +275,18 @@ CFontAutoDeleter::CFontAutoDeleter()
 
 CFontAutoDeleter::~CFontAutoDeleter()
 {
-	if( m_hFont ){
-		DeleteObject( m_hFont );
+	if (m_hFont) {
+		DeleteObject(m_hFont);
 		m_hFont = NULL;
 	}
 }
 
-void CFontAutoDeleter::SetFont( HFONT hfontOld, HFONT hfont, HWND hwnd )
+void CFontAutoDeleter::SetFont(HFONT hfontOld, HFONT hfont, HWND hwnd)
 {
-	if( m_hFont ){
-		::DeleteObject( m_hFont );
+	if (m_hFont) {
+		::DeleteObject(m_hFont);
 	}
-	if( m_hFont != hfontOld ){
+	if (m_hFont != hfontOld) {
 		m_hFontOld = hfontOld;
 	}
 	m_hFont = hfont;
@@ -295,8 +297,8 @@ void CFontAutoDeleter::SetFont( HFONT hfontOld, HFONT hfont, HWND hwnd )
 */
 void CFontAutoDeleter::ReleaseOnDestroy()
 {
-	if( m_hFont ){
-		::DeleteObject( m_hFont );
+	if (m_hFont) {
+		::DeleteObject(m_hFont);
 		m_hFont = NULL;
 	}
 	m_hFontOld = NULL;
@@ -307,9 +309,9 @@ void CFontAutoDeleter::ReleaseOnDestroy()
 #if 0
 void CFontAutoDeleter::Release()
 {
-	if( m_hwnd && m_hFont ){
-		::SendMessageAny( m_hwnd, WM_SETFONT, (WPARAM)m_hFontOld, FALSE );
-		::DeleteObject( m_hFont );
+	if (m_hwnd && m_hFont) {
+		::SendMessageAny(m_hwnd, WM_SETFONT, (WPARAM)m_hFontOld, FALSE);
+		::DeleteObject(m_hFont);
 		m_hFont = NULL;
 		m_hwnd = NULL;
 	}

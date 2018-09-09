@@ -65,7 +65,7 @@ int CDlgWindowList::DoModal(
 
 BOOL CDlgWindowList::OnBnClicked(int wID)
 {
-	switch(wID){
+	switch (wID) {
 	case IDC_BUTTON_HELP:
 		/* ヘルプ */
 		MyWinHelp(GetHwnd(), HELP_CONTEXT, ::FuncID_To_HelpContextID(F_DLGWINLIST));
@@ -100,7 +100,7 @@ void CDlgWindowList::GetDataListView(std::vector<HWND>& aHwndList)
 			lvitem.mask = LVIF_PARAM;
 			lvitem.iItem = i;
 			lvitem.iSubItem = 0;
-			if (ListView_GetItem(hwndList, &lvitem )) {
+			if (ListView_GetItem(hwndList, &lvitem)) {
 				aHwndList.push_back((HWND)lvitem.lParam);
 			}
 		}
@@ -152,15 +152,15 @@ void CDlgWindowList::SetData()
 			CFileNameManager::getInstance()->GetMenuFullLabel_WinListNoEscape(szName, _countof(szName), pEditInfo, pEditNode[i].m_nId, i, calc.GetDC());
 
 			LV_ITEM lvi;
-			lvi.mask     = LVIF_TEXT | LVIF_PARAM;
-			lvi.pszText  = szName;
-			lvi.iItem    = i;
+			lvi.mask = LVIF_TEXT | LVIF_PARAM;
+			lvi.pszText = szName;
+			lvi.iItem = i;
 			lvi.iSubItem = 0;
-			lvi.lParam   = (LPARAM)pEditNode[i].GetHwnd();
+			lvi.lParam = (LPARAM)pEditNode[i].GetHwnd();
 			ListView_InsertItem(hwndList, &lvi);
 		}
 
-		delete [] pEditNode;
+		delete[] pEditNode;
 	}
 	return;
 }
@@ -219,11 +219,11 @@ BOOL CDlgWindowList::OnInitDialog(HWND hwndDlg, WPARAM wParam, LPARAM lParam)
 	GetItemClientRect(IDC_LIST_WINDOW, rcListView);
 
 	LV_COLUMN	col;
-	col.mask     = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
-	col.fmt      = LVCFMT_LEFT;
-	col.cx       = rcListView.right - rcListView.left - ::GetSystemMetrics(SM_CXVSCROLL) - 10;
+	col.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+	col.fmt = LVCFMT_LEFT;
+	col.cx = rcListView.right - rcListView.left - ::GetSystemMetrics(SM_CXVSCROLL) - 10;
 	TCHAR szNull[] = _T("");
-	col.pszText  = szNull;
+	col.pszText = szNull;
 	col.iSubItem = 0;
 	ListView_InsertColumn(hwndList, 0, &col);
 	LONG lngStyle = ListView_GetExtendedListViewStyle(hwndList);
@@ -259,21 +259,21 @@ BOOL CDlgWindowList::OnSize(WPARAM wParam, LPARAM lParam)
 BOOL CDlgWindowList::OnMove(WPARAM wParam, LPARAM lParam)
 {
 	::GetWindowRect(GetHwnd(), &GetDllShareData().m_Common.m_sOthers.m_rcWindowListDialog);
-	
+
 	return CDialog::OnMove(wParam, lParam);
 }
 
 
 BOOL CDlgWindowList::OnMinMaxInfo(LPARAM lParam)
 {
-	LPMINMAXINFO lpmmi = (LPMINMAXINFO) lParam;
+	LPMINMAXINFO lpmmi = (LPMINMAXINFO)lParam;
 	if (m_ptDefaultSize.x < 0) {
 		return 0;
 	}
 	lpmmi->ptMinTrackSize.x = m_ptDefaultSize.x;
 	lpmmi->ptMinTrackSize.y = m_ptDefaultSize.y;
-	lpmmi->ptMaxTrackSize.x = m_ptDefaultSize.x*3;
-	lpmmi->ptMaxTrackSize.y = m_ptDefaultSize.y*3;
+	lpmmi->ptMaxTrackSize.x = m_ptDefaultSize.x * 3;
+	lpmmi->ptMaxTrackSize.y = m_ptDefaultSize.y * 3;
 	return 0;
 }
 

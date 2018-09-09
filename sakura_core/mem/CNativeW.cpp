@@ -8,34 +8,34 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 CNativeW::CNativeW()
 #if _DEBUG
-: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
+	: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
 #endif
 {
 }
 
 CNativeW::CNativeW(const CNativeW& rhs)
 #if _DEBUG
-: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
+	: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
 #endif
 {
 	SetNativeData(rhs);
 }
 
 //! nDataLenは文字単位。
-CNativeW::CNativeW( const wchar_t* pData, int nDataLen )
+CNativeW::CNativeW(const wchar_t* pData, int nDataLen)
 #if _DEBUG
-: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
+	: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
 #endif
 {
-	SetString(pData,nDataLen);
+	SetString(pData, nDataLen);
 }
 
-CNativeW::CNativeW( const wchar_t* pData)
+CNativeW::CNativeW(const wchar_t* pData)
 #if _DEBUG
-: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
+	: m_pDebugData((PWCHAR&)_DebugGetPointerRef())
 #endif
 {
-	SetString(pData,wcslen(pData));
+	SetString(pData, wcslen(pData));
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -44,42 +44,42 @@ CNativeW::CNativeW( const wchar_t* pData)
 
 
 // バッファの内容を置き換える
-void CNativeW::SetString( const wchar_t* pData, int nDataLen )
+void CNativeW::SetString(const wchar_t* pData, int nDataLen)
 {
-	CNative::SetRawData(pData,nDataLen * sizeof(wchar_t));
+	CNative::SetRawData(pData, nDataLen * sizeof(wchar_t));
 }
 
 // バッファの内容を置き換える
-void CNativeW::SetString( const wchar_t* pszData )
+void CNativeW::SetString(const wchar_t* pszData)
 {
-	CNative::SetRawData(pszData,wcslen(pszData) * sizeof(wchar_t));
+	CNative::SetRawData(pszData, wcslen(pszData) * sizeof(wchar_t));
 }
 
-void CNativeW::SetStringHoldBuffer( const wchar_t* pData, int nDataLen )
+void CNativeW::SetStringHoldBuffer(const wchar_t* pData, int nDataLen)
 {
 	CNative::SetRawDataHoldBuffer(pData, nDataLen * sizeof(wchar_t));
 }
 
 // バッファの内容を置き換える
-void CNativeW::SetNativeData( const CNativeW& pcNative )
+void CNativeW::SetNativeData(const CNativeW& pcNative)
 {
 	CNative::SetRawData(pcNative);
 }
 
 //! (重要：nDataLenは文字単位) バッファサイズの調整。必要に応じて拡大する。
-void CNativeW::AllocStringBuffer( int nDataLen )
+void CNativeW::AllocStringBuffer(int nDataLen)
 {
 	CNative::AllocBuffer(nDataLen * sizeof(wchar_t));
 }
 
 //! バッファの最後にデータを追加する
-void CNativeW::AppendString( const wchar_t* pszData )
+void CNativeW::AppendString(const wchar_t* pszData)
 {
-	CNative::AppendRawData(pszData,wcslen(pszData) * sizeof(wchar_t));
+	CNative::AppendRawData(pszData, wcslen(pszData) * sizeof(wchar_t));
 }
 
 //! バッファの最後にデータを追加する。nLengthは文字単位。
-void CNativeW::AppendString( const wchar_t* pszData, int nLength )
+void CNativeW::AppendString(const wchar_t* pszData, int nLength)
 {
 	CNative::AppendRawData(pszData, nLength * sizeof(wchar_t));
 }
@@ -106,7 +106,7 @@ void CNativeW::AppendStringF(const wchar_t* pszData, ...)
 }
 
 //! バッファの最後にデータを追加する
-void CNativeW::AppendNativeData( const CNativeW& cmemData )
+void CNativeW::AppendNativeData(const CNativeW& cmemData)
 {
 	CNative::AppendRawData(cmemData.GetStringPtr(), cmemData.GetRawLength());
 }
@@ -114,32 +114,32 @@ void CNativeW::AppendNativeData( const CNativeW& cmemData )
 // -- -- charからの移行用 -- -- //
 
 //! バッファの内容を置き換える。nDataLenは文字単位。
-void CNativeW::SetStringOld( const char* pData, int nDataLen )
+void CNativeW::SetStringOld(const char* pData, int nDataLen)
 {
 	int nLen;
-	wchar_t* szTmp=mbstowcs_new(pData,nDataLen,&nLen);
-	SetString(szTmp,nLen);
+	wchar_t* szTmp = mbstowcs_new(pData, nDataLen, &nLen);
+	SetString(szTmp, nLen);
 	delete[] szTmp;
 }
 
 //! バッファの内容を置き換える
-void CNativeW::SetStringOld( const char* pszData )
+void CNativeW::SetStringOld(const char* pszData)
 {
-	SetStringOld(pszData,strlen(pszData));
+	SetStringOld(pszData, strlen(pszData));
 }
 
-void CNativeW::AppendStringOld( const char* pData, int nDataLen )
+void CNativeW::AppendStringOld(const char* pData, int nDataLen)
 {
 	int nLen;
-	wchar_t* szTmp=mbstowcs_new(pData,nDataLen,&nLen);
-	AppendString(szTmp,nLen);
+	wchar_t* szTmp = mbstowcs_new(pData, nDataLen, &nLen);
+	AppendString(szTmp, nLen);
 	delete[] szTmp;
 }
 
 //! バッファの最後にデータを追加する。pszDataはSJIS。
-void CNativeW::AppendStringOld( const char* pszData )
+void CNativeW::AppendStringOld(const char* pszData)
 {
-	AppendStringOld(pszData,strlen(pszData));
+	AppendStringOld(pszData, strlen(pszData));
 }
 
 
@@ -150,28 +150,29 @@ void CNativeW::AppendStringOld( const char* pszData )
 // GetAt()と同機能
 wchar_t CNativeW::operator[](int nIndex) const
 {
-	if( nIndex < GetStringLength() ){
+	if (nIndex < GetStringLength()) {
 		return GetStringPtr()[nIndex];
-	}else{
+	}
+	else {
 		return 0;
 	}
 }
 
 
 /* 等しい内容か */
-bool CNativeW::IsEqual( const CNativeW& cmem1, const CNativeW& cmem2 )
+bool CNativeW::IsEqual(const CNativeW& cmem1, const CNativeW& cmem2)
 {
-	if(&cmem1==&cmem2)return true;
+	if (&cmem1 == &cmem2)return true;
 
 	const wchar_t* psz1;
 	const wchar_t* psz2;
 	int nLen1;
 	int nLen2;
 
-	psz1 = cmem1.GetStringPtr( &nLen1 );
-	psz2 = cmem2.GetStringPtr( &nLen2 );
-	if( nLen1 == nLen2 ){
-		if( 0 == wmemcmp( psz1, psz2, nLen1 ) ){
+	psz1 = cmem1.GetStringPtr(&nLen1);
+	psz2 = cmem2.GetStringPtr(&nLen2);
+	if (nLen1 == nLen2) {
+		if (0 == wmemcmp(psz1, psz2, nLen1)) {
 			return true;
 		}
 	}
@@ -184,40 +185,42 @@ bool CNativeW::IsEqual( const CNativeW& cmem1, const CNativeW& cmem2 )
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! 文字列置換
-void CNativeW::Replace( const wchar_t* pszFrom, const wchar_t* pszTo )
+void CNativeW::Replace(const wchar_t* pszFrom, const wchar_t* pszTo)
 {
-	int			nFromLen = wcslen( pszFrom );
-	int			nToLen = wcslen( pszTo );
-	Replace( pszFrom, nFromLen, pszTo, nToLen );
+	int			nFromLen = wcslen(pszFrom);
+	int			nToLen = wcslen(pszTo);
+	Replace(pszFrom, nFromLen, pszTo, nToLen);
 }
 
-void CNativeW::Replace( const wchar_t* pszFrom, int nFromLen, const wchar_t* pszTo, int nToLen )
+void CNativeW::Replace(const wchar_t* pszFrom, int nFromLen, const wchar_t* pszTo, int nToLen)
 {
 	CNativeW	cmemWork;
 	int			nBgnOld = 0;
 	int			nBgn = 0;
-	while( nBgn <= GetStringLength() - nFromLen ){
-		if( 0 == wmemcmp( &GetStringPtr()[nBgn], pszFrom, nFromLen ) ){
-			if( nBgnOld == 0 && nFromLen <= nToLen ){
-				cmemWork.AllocStringBuffer( GetStringLength() );
+	while (nBgn <= GetStringLength() - nFromLen) {
+		if (0 == wmemcmp(&GetStringPtr()[nBgn], pszFrom, nFromLen)) {
+			if (nBgnOld == 0 && nFromLen <= nToLen) {
+				cmemWork.AllocStringBuffer(GetStringLength());
 			}
-			if( 0  < nBgn - nBgnOld ){
-				cmemWork.AppendString( &GetStringPtr()[nBgnOld], nBgn - nBgnOld );
+			if (0 < nBgn - nBgnOld) {
+				cmemWork.AppendString(&GetStringPtr()[nBgnOld], nBgn - nBgnOld);
 			}
-			cmemWork.AppendString( pszTo, nToLen );
+			cmemWork.AppendString(pszTo, nToLen);
 			nBgn = nBgn + nFromLen;
 			nBgnOld = nBgn;
-		}else{
+		}
+		else {
 			nBgn++;
 		}
 	}
-	if( nBgnOld != 0 ){
-		if( 0  < GetStringLength() - nBgnOld ){
-			cmemWork.AppendString( &GetStringPtr()[nBgnOld], GetStringLength() - nBgnOld );
+	if (nBgnOld != 0) {
+		if (0 < GetStringLength() - nBgnOld) {
+			cmemWork.AppendString(&GetStringPtr()[nBgnOld], GetStringLength() - nBgnOld);
 		}
-		SetNativeData( cmemWork );
-	}else{
-		if( this->GetStringPtr() == NULL ){
+		SetNativeData(cmemWork);
+	}
+	else {
+		if (this->GetStringPtr() == NULL) {
 			this->SetString(L"");
 		}
 	}
@@ -235,9 +238,9 @@ void CNativeW::Replace( const wchar_t* pszFrom, int nFromLen, const wchar_t* psz
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! 指定した位置の文字がwchar_t何個分かを返す
-CLogicInt CNativeW::GetSizeOfChar( const wchar_t* pData, int nDataLen, int nIdx )
+CLogicInt CNativeW::GetSizeOfChar(const wchar_t* pData, int nDataLen, int nIdx)
 {
-	if( nIdx >= nDataLen )
+	if (nIdx >= nDataLen)
 		return CLogicInt(0);
 
 	// サロゲートチェック					2008/7/5 Uchi
@@ -252,10 +255,10 @@ CLogicInt CNativeW::GetSizeOfChar( const wchar_t* pData, int nDataLen, int nIdx 
 }
 
 //! 指定した位置の文字が半角何個分かを返す
-CKetaXInt CNativeW::GetKetaOfChar( const wchar_t* pData, int nDataLen, int nIdx )
+CKetaXInt CNativeW::GetKetaOfChar(const wchar_t* pData, int nDataLen, int nIdx)
 {
 	//文字列範囲外なら 0
-	if( nIdx >= nDataLen )
+	if (nIdx >= nDataLen)
 		return CKetaXInt(0);
 
 	// サロゲートチェック BMP 以外は全角扱い		2008/7/5 Uchi
@@ -269,14 +272,14 @@ CKetaXInt CNativeW::GetKetaOfChar( const wchar_t* pData, int nDataLen, int nIdx 
 		}
 		// 単独（ブロークンペア）
 		// return CKetaXInt(2);
-		 if( IsBinaryOnSurrogate(pData[nIdx]) )
+		if (IsBinaryOnSurrogate(pData[nIdx]))
 			return CKetaXInt(1);
 		else
 			return CKetaXInt(2);
 	}
 
 	//半角文字なら 1
-	if(WCODE::IsHankaku(pData[nIdx]) )
+	if (WCODE::IsHankaku(pData[nIdx]))
 		return CKetaXInt(1);
 
 	//全角文字なら 2
@@ -286,21 +289,22 @@ CKetaXInt CNativeW::GetKetaOfChar( const wchar_t* pData, int nDataLen, int nIdx 
 
 
 //! 指定した位置の文字の文字幅を返す
-CHabaXInt CNativeW::GetHabaOfChar( const wchar_t* pData, int nDataLen, int nIdx )
+CHabaXInt CNativeW::GetHabaOfChar(const wchar_t* pData, int nDataLen, int nIdx)
 {
 	//文字列範囲外なら 0
-	if( nIdx >= nDataLen ){
+	if (nIdx >= nDataLen) {
 		return CHabaXInt(0);
 	}
 	// HACK:改行コードに対して1を返す
-	if( WCODE::IsLineDelimiter(pData[nIdx], GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol) ){
+	if (WCODE::IsLineDelimiter(pData[nIdx], GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol)) {
 		return CHabaXInt(1);
 	}
 
 	// サロゲートチェック
-	if(IsUTF16High(pData[nIdx]) && nIdx + 1 < nDataLen && IsUTF16Low(pData[nIdx + 1])){
+	if (IsUTF16High(pData[nIdx]) && nIdx + 1 < nDataLen && IsUTF16Low(pData[nIdx + 1])) {
 		return CHabaXInt(WCODE::CalcPxWidthByFont2(pData + nIdx));
-	}else if(IsUTF16Low(pData[nIdx]) && 0 < nIdx && IsUTF16High(pData[nIdx - 1])) {
+	}
+	else if (IsUTF16Low(pData[nIdx]) && 0 < nIdx && IsUTF16High(pData[nIdx - 1])) {
 		// サロゲートペア（下位）
 		return CHabaXInt(0); // 不正位置
 	}
@@ -309,11 +313,11 @@ CHabaXInt CNativeW::GetHabaOfChar( const wchar_t* pData, int nDataLen, int nIdx 
 
 /* ポインタで示した文字の次にある文字の位置を返します */
 /* 次にある文字がバッファの最後の位置を越える場合は&pData[nDataLen]を返します */
-const wchar_t* CNativeW::GetCharNext( const wchar_t* pData, int nDataLen, const wchar_t* pDataCurrent )
+const wchar_t* CNativeW::GetCharNext(const wchar_t* pData, int nDataLen, const wchar_t* pDataCurrent)
 {
 	const wchar_t* pNext = pDataCurrent + 1;
 
-	if( pNext >= &pData[nDataLen] ){
+	if (pNext >= &pData[nDataLen]) {
 		return &pData[nDataLen];
 	}
 
@@ -329,28 +333,28 @@ const wchar_t* CNativeW::GetCharNext( const wchar_t* pData, int nDataLen, const 
 
 /* ポインタで示した文字の直前にある文字の位置を返します */
 /* 直前にある文字がバッファの先頭の位置を越える場合はpDataを返します */
-const wchar_t* CNativeW::GetCharPrev( const wchar_t* pData, int nDataLen, const wchar_t* pDataCurrent )
+const wchar_t* CNativeW::GetCharPrev(const wchar_t* pData, int nDataLen, const wchar_t* pDataCurrent)
 {
 	const wchar_t* pPrev = pDataCurrent - 1;
-	if( pPrev <= pData ){
+	if (pPrev <= pData) {
 		return pData;
 	}
 
 	// サロゲートペア対応	2008/7/6 Uchi
 	if (IsUTF16Low(*pPrev)) {
-		if (IsUTF16High(*(pPrev-1))) {
+		if (IsUTF16High(*(pPrev - 1))) {
 			pPrev -= 1;
 		}
 	}
 
 	return pPrev;
-//	return ::CharPrevW_AnyBuild( pData, pDataCurrent );
+	//	return ::CharPrevW_AnyBuild( pData, pDataCurrent );
 }
 
 
 //ShiftJISに変換して返す
 const char* CNativeW::GetStringPtrOld() const
 {
-	return to_achar(GetStringPtr(),GetStringLength());
+	return to_achar(GetStringPtr(), GetStringLength());
 }
 

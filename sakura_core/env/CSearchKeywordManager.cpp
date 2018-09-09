@@ -35,10 +35,10 @@
 /*!	m_aSearchKeysにpszSearchKeyを追加する。
 	YAZAKI
 */
-void CSearchKeywordManager::AddToSearchKeyArr( const wchar_t* pszSearchKey )
+void CSearchKeywordManager::AddToSearchKeyArr(const wchar_t* pszSearchKey)
 {
 	CRecentSearch	cRecentSearchKey;
-	cRecentSearchKey.AppendItem( pszSearchKey );
+	cRecentSearchKey.AppendItem(pszSearchKey);
 	cRecentSearchKey.Terminate();
 	GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence++;
 }
@@ -46,10 +46,10 @@ void CSearchKeywordManager::AddToSearchKeyArr( const wchar_t* pszSearchKey )
 /*!	m_aReplaceKeysにpszReplaceKeyを追加する
 	YAZAKI
 */
-void CSearchKeywordManager::AddToReplaceKeyArr( const wchar_t* pszReplaceKey )
+void CSearchKeywordManager::AddToReplaceKeyArr(const wchar_t* pszReplaceKey)
 {
 	CRecentReplace	cRecentReplaceKey;
-	cRecentReplaceKey.AppendItem( pszReplaceKey );
+	cRecentReplaceKey.AppendItem(pszReplaceKey);
 	cRecentReplaceKey.Terminate();
 	GetDllShareData().m_Common.m_sSearch.m_nReplaceKeySequence++;
 
@@ -59,19 +59,19 @@ void CSearchKeywordManager::AddToReplaceKeyArr( const wchar_t* pszReplaceKey )
 /*!	m_aGrepFilesにpszGrepFileを追加する
 	YAZAKI
 */
-void CSearchKeywordManager::AddToGrepFileArr( const TCHAR* pszGrepFile )
+void CSearchKeywordManager::AddToGrepFileArr(const TCHAR* pszGrepFile)
 {
 	CRecentGrepFile	cRecentGrepFile;
-	cRecentGrepFile.AppendItem( pszGrepFile );
+	cRecentGrepFile.AppendItem(pszGrepFile);
 	cRecentGrepFile.Terminate();
 }
 
 /*!	m_aGrepFolders にpszGrepFolder を追加する
 	YAZAKI
 */
-void CSearchKeywordManager::AddToGrepFolderArr( const TCHAR* pszGrepFolder )
+void CSearchKeywordManager::AddToGrepFolderArr(const TCHAR* pszGrepFolder)
 {
 	CRecentGrepFolder	cRecentGrepFolder;
-	cRecentGrepFolder.AppendItem( pszGrepFolder );
+	cRecentGrepFolder.AppendItem(pszGrepFolder);
 	cRecentGrepFolder.Terminate();
 }

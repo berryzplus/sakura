@@ -41,14 +41,14 @@ enum ECodeType {
 	CODE_CESU8,						//!< CESU-8
 	CODE_LATIN1,					//!< Latin1				(Latin1, 欧文, Windows-1252, Windows Codepage 1252 West European)
 	CODE_CODEMAX,
-	CODE_CPACP      = 90,
-	CODE_CPOEM      = 91,
-	CODE_AUTODETECT	= 99,			//!< 文字コード自動判別
-	CODE_ERROR      = -1,			//!< エラー
-	CODE_NONE       = -1,			//!< 未検出
-	CODE_DEFAULT    = CODE_SJIS,	//!< デフォルトの文字コード
+	CODE_CPACP = 90,
+	CODE_CPOEM = 91,
+	CODE_AUTODETECT = 99,			//!< 文字コード自動判別
+	CODE_ERROR = -1,			//!< エラー
+	CODE_NONE = -1,			//!< 未検出
+	CODE_DEFAULT = CODE_SJIS,	//!< デフォルトの文字コード
 	/*
-		- MS-CP50220 
+		- MS-CP50220
 			Unicode から cp50220 への変換時に、
 			JIS X 0201 片仮名は JIS X 0208 の片仮名に置換される
 		- MS-CP50221
@@ -57,7 +57,7 @@ enum ECodeType {
 		- MS-CP50222
 			Unicode から cp50222 への変換時に、
 			JIS X 0201 片仮名は、SO/SI を用いてエンコードされる
-		
+
 		参考
 		http://legacy-encoding.sourceforge.jp/wiki/
 	*/
@@ -77,7 +77,7 @@ bool IsValidCodeType(int code);
 //!有効な文字コードセットならtrue。ただし、SJISは除く(ファイル一覧に文字コードを[]付きで表示のため)
 inline bool IsValidCodeTypeExceptSJIS(int code)
 {
-	return IsValidCodeType(code) && code!=CODE_SJIS;
+	return IsValidCodeType(code) && code != CODE_SJIS;
 }
 
 // 2010/6/21 Uchi 削除
@@ -115,7 +115,7 @@ inline bool IsValidCodeOrCPTypeExceptSJIS(int code)
 //                           名前                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-class CCodeTypeName{
+class CCodeTypeName {
 public:
 	CCodeTypeName(ECodeType eCodeType) : m_eCodeType(eCodeType) { InitCodeSet(); }
 	CCodeTypeName(int eCodeType) : m_eCodeType((ECodeType)eCodeType) { InitCodeSet(); }
@@ -135,7 +135,7 @@ private:
 //                      コンボボックス                         //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
-class CCodeTypesForCombobox{
+class CCodeTypesForCombobox {
 public:
 	CCodeTypesForCombobox() { InitCodeSet(); }
 	int			GetCount() const;

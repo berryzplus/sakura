@@ -21,7 +21,7 @@
 
 /*!
 	@brief プロセス基底クラス
-	
+
 	@author aroka
 	@date 2002/01/07
 */
@@ -29,10 +29,10 @@ CProcess::CProcess(
 	HINSTANCE	hInstance,		//!< handle to process instance
 	LPCTSTR		lpCmdLine		//!< pointer to command line
 )
-: m_hInstance( hInstance )
-, m_hWnd( 0 )
+	: m_hInstance(hInstance)
+	, m_hWnd(0)
 #ifdef USE_CRASHDUMP
-, m_pfnMiniDumpWriteDump(NULL)
+	, m_pfnMiniDumpWriteDump(NULL)
 #endif
 {
 	m_pcShareData = CShareData::getInstance();
@@ -46,10 +46,10 @@ CProcess::CProcess(
 bool CProcess::InitializeProcess()
 {
 	/* 共有データ構造体のアドレスを返す */
-	if( !GetShareData().InitShareData() ){
+	if (!GetShareData().InitShareData()) {
 		//	適切なデータを得られなかった
-		::MYMESSAGEBOX( NULL, MB_OK | MB_ICONERROR,
-			GSTR_APPNAME, _T("異なるバージョンのエディタを同時に起動することはできません。") );
+		::MYMESSAGEBOX(NULL, MB_OK | MB_ICONERROR,
+			GSTR_APPNAME, _T("異なるバージョンのエディタを同時に起動することはできません。"));
 		return false;
 	}
 
@@ -62,32 +62,32 @@ bool CProcess::InitializeProcess()
 
 /*!
 	@brief プロセス実行
-	
+
 	@author aroka
 	@date 2002/01/16
 */
 bool CProcess::Run()
 {
-	if( InitializeProcess() )
+	if (InitializeProcess())
 	{
 #ifdef USE_CRASHDUMP
-		HMODULE hDllDbgHelp = LoadLibraryExedir( _T("dbghelp.dll") );
+		HMODULE hDllDbgHelp = LoadLibraryExedir(_T("dbghelp.dll"));
 		m_pfnMiniDumpWriteDump = NULL;
-		if( hDllDbgHelp ){
-			*(FARPROC*)&m_pfnMiniDumpWriteDump = ::GetProcAddress( hDllDbgHelp, "MiniDumpWriteDump" );
+		if (hDllDbgHelp) {
+			*(FARPROC*)&m_pfnMiniDumpWriteDump = ::GetProcAddress(hDllDbgHelp, "MiniDumpWriteDump");
 		}
 
 		__try {
 #endif
-			MainLoop() ;
+			MainLoop();
 			OnExitProcess();
 #ifdef USE_CRASHDUMP
 		}
-		__except( WriteDump( GetExceptionInformation() ) ){
+		__except (WriteDump(GetExceptionInformation())) {
 		}
 
-		if( hDllDbgHelp ){
-			::FreeLibrary( hDllDbgHelp );
+		if (hDllDbgHelp) {
+			::FreeLibrary(hDllDbgHelp);
 			m_pfnMiniDumpWriteDump = NULL;
 		}
 #endif
@@ -99,19 +99,19 @@ bool CProcess::Run()
 #ifdef USE_CRASHDUMP
 /*!
 	@brief クラッシュダンプ
-	
+
 	@author ryoji
 	@date 2009.01.21
 */
-int CProcess::WriteDump( PEXCEPTION_POINTERS pExceptPtrs )
+int CProcess::WriteDump(PEXCEPTION_POINTERS pExceptPtrs)
 {
-	if( !m_pfnMiniDumpWriteDump )
+	if (!m_pfnMiniDumpWriteDump)
 		return EXCEPTION_CONTINUE_SEARCH;
 
 	static TCHAR szFile[MAX_PATH];
 	// 出力先はiniと同じ（InitializeProcess()後に確定）
 	// Vista以降では C:\Users\(ユーザ名)\AppData\Local\CrashDumps に出力
-	GetInidirOrExedir( szFile, _APP_NAME_(_T) _T(".dmp") );
+	GetInidirOrExedir(szFile, _APP_NAME_(_T) _T(".dmp"));
 
 	HANDLE hFile = ::CreateFile(
 		szFile,
@@ -122,7 +122,7 @@ int CProcess::WriteDump( PEXCEPTION_POINTERS pExceptPtrs )
 		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH,
 		NULL);
 
-	if( hFile != INVALID_HANDLE_VALUE ){
+	if (hFile != INVALID_HANDLE_VALUE) {
 		MINIDUMP_EXCEPTION_INFORMATION eInfo;
 		eInfo.ThreadId = GetCurrentThreadId();
 		eInfo.ExceptionPointers = pExceptPtrs;

@@ -27,7 +27,7 @@
 #include "view/figures/CFigureStrategy.h"
 
 //! 改行描画
-class CFigure_Eol : public CFigureSpace{
+class CFigure_Eol : public CFigureSpace {
 public:
 	//traits
 	bool Match(const wchar_t* pText, int nTextLen) const;
@@ -39,7 +39,7 @@ public:
 	//action
 	bool DrawImp(SColorStrategyInfo* pInfo);
 	void DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans) const {};
-	EColorIndexType GetColorIdx(void) const{ return COLORIDX_EOL; }
+	EColorIndexType GetColorIdx(void) const { return COLORIDX_EOL; }
 };
 
 #endif /* SAKURA_CFIGURE_EOL_F6A22B9F_DDED_4BE9_9A2C_62931DB224F6_H_ */

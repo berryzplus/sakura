@@ -13,7 +13,7 @@ EConvertResult CIoBridge::FileToImpl(
 )
 {
 	//任意の文字コードからUnicodeへ変換する
-	EConvertResult ret = pCode->CodeToUnicode(cSrc,pDst);
+	EConvertResult ret = pCode->CodeToUnicode(cSrc, pDst);
 
 	//結果
 	return ret;
@@ -26,7 +26,7 @@ EConvertResult CIoBridge::ImplToFile(
 )
 {
 	// Unicodeから任意の文字コードへ変換する
-	EConvertResult ret = pCode->UnicodeToCode(cSrc,pDst);
+	EConvertResult ret = pCode->UnicodeToCode(cSrc, pDst);
 
 	//結果
 	return ret;

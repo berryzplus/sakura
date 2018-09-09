@@ -35,15 +35,15 @@ void CEditView::TranslateCommand_grep(
 	LPARAM&			lparam4
 )
 {
-	if( ! CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode )
+	if (!CEditApp::getInstance()->m_pcGrepAgent->m_bGrepMode)
 		return;
 
-	if( nCommand == F_WCHAR ){
+	if (nCommand == F_WCHAR) {
 		//	Jan. 23, 2005 genta 文字判定忘れ
-		if( WCODE::IsLineDelimiter((wchar_t)lparam1, GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol)
-				&& GetDllShareData().m_Common.m_sSearch.m_bGTJW_RETURN ){
+		if (WCODE::IsLineDelimiter((wchar_t)lparam1, GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol)
+			&& GetDllShareData().m_Common.m_sSearch.m_bGTJW_RETURN) {
 			nCommand = F_TAGJUMP;
-			lparam1 = GetKeyState_Control()?1:0;
+			lparam1 = GetKeyState_Control() ? 1 : 0;
 		}
 	}
 }

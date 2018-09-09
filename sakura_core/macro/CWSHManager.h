@@ -29,9 +29,9 @@
 #include "macro/CWSHIfObj.h"
 class CEditView;
 
-typedef void (*EngineCallback)(wchar_t *Ext, char *EngineName);
+typedef void(*EngineCallback)(wchar_t *Ext, char *EngineName);
 
-class CWSHMacroManager: public CMacroManagerBase
+class CWSHMacroManager : public CMacroManagerBase
 {
 public:
 	CWSHMacroManager(std::wstring const AEngineName);
@@ -45,8 +45,8 @@ public:
 	static CMacroManagerBase* Creator(const TCHAR* FileExt);
 	static void declare();
 
-	void AddParam( CWSHIfObj* param );				//インタフェースオブジェクトを追加する
-	void AddParam( CWSHIfObj::List& params );		//インタフェースオブジェクト達を追加する
+	void AddParam(CWSHIfObj* param);				//インタフェースオブジェクトを追加する
+	void AddParam(CWSHIfObj::List& params);		//インタフェースオブジェクト達を追加する
 	void ClearParam();								//インタフェースオブジェクトを削除する
 protected:
 	std::wstring m_Source;

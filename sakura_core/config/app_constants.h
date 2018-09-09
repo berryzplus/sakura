@@ -32,21 +32,21 @@
 
 // アプリ名。2007.09.21 kobake 整理
 #ifdef _UNICODE
-	#define _APP_NAME_(TYPE) TYPE("sakura")
+#define _APP_NAME_(TYPE) TYPE("sakura")
 #else
-	#define _APP_NAME_(TYPE) TYPE("sakura")
+#define _APP_NAME_(TYPE) TYPE("sakura")
 #endif
 
 #ifdef _DEBUG
-	#define _APP_NAME_2_(TYPE) TYPE("(デバッグ版)")
+#define _APP_NAME_2_(TYPE) TYPE("(デバッグ版)")
 #else
-	#define _APP_NAME_2_(TYPE) TYPE("")
+#define _APP_NAME_2_(TYPE) TYPE("")
 #endif
 
 #ifdef ALPHA_VERSION
-	#define _APP_NAME_3_(TYPE) TYPE("(Alpha Version)")
+#define _APP_NAME_3_(TYPE) TYPE("(Alpha Version)")
 #else
-	#define _APP_NAME_3_(TYPE) TYPE("")
+#define _APP_NAME_3_(TYPE) TYPE("")
 #endif
 
 //例:UNICODEデバッグ→_T("sakura(デバッグ版)")
@@ -68,8 +68,8 @@ const int COLUMNSPACE_MAX = 64;
 //	Aug. 14, 2005 genta 定数定義追加
 // 2007.09.07 kobake 定数名変更: MAXLINESIZE→MAXLINEKETAS
 // 2007.09.07 kobake 定数名変更: MINLINESIZE→MINLINEKETAS
-const int MAXLINEKETAS		= 10240;	//!< 1行の桁数の最大値
-const int MINLINEKETAS		= 10;		//!< 1行の桁数の最小値
+const int MAXLINEKETAS = 10240;	//!< 1行の桁数の最大値
+const int MINLINEKETAS = 10;		//!< 1行の桁数の最小値
 
 // 2014.08.02 定数定義追加 katze
 const int LINENUMWIDTH_MIN = 2;

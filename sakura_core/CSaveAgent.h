@@ -24,7 +24,7 @@
 #ifndef SAKURA_CSAVEAGENT_441713C1_707B_4B6D_8DBE_D398BA4EBFA2_H_
 #define SAKURA_CSAVEAGENT_441713C1_707B_4B6D_8DBE_D398BA4EBFA2_H_
 
-class CSaveAgent : public CDocListenerEx{
+class CSaveAgent : public CDocListenerEx {
 public:
 	CSaveAgent();
 	ECallbackResult OnCheckSave(SSaveInfo* pSaveInfo);

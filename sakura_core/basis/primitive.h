@@ -87,10 +87,10 @@ typedef char KEYCODE;
 
 //int互換
 #ifdef USE_STRICT_INT
-	#include "CLaxInteger.h"
-	typedef CLaxInteger Int;
+#include "CLaxInteger.h"
+typedef CLaxInteger Int;
 #else
-	typedef int Int;
+typedef int Int;
 #endif
 
 #endif /* SAKURA_PRIMITIVE_0AE619F1_2A04_42A0_92F6_72C9B845799E_H_ */

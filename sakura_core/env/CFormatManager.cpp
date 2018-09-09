@@ -32,14 +32,14 @@
 
 /*! 日付をフォーマット
 	systime：時刻データ
-	
+
 	pszDest：フォーマット済みテキスト格納用バッファ
 	nDestLen：pszDestの長さ
-	
+
 	pszDateFormat：
 		カスタムのときのフォーマット
 */
-const TCHAR* CFormatManager::MyGetDateFormat( const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen )
+const TCHAR* CFormatManager::MyGetDateFormat(const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen)
 {
 	return MyGetDateFormat(
 		systime,
@@ -60,21 +60,22 @@ const TCHAR* CFormatManager::MyGetDateFormat(
 {
 	const TCHAR* pszForm;
 	DWORD dwFlags;
-	if( 0 == nDateFormatType ){
+	if (0 == nDateFormatType) {
 		dwFlags = DATE_LONGDATE;
 		pszForm = NULL;
-	}else{
+	}
+	else {
 		dwFlags = 0;
 		pszForm = szDateFormat;
 	}
-	::GetDateFormat( CSelectLang::getDefaultLangId(), dwFlags, &systime, pszForm, pszDest, nDestLen );
+	::GetDateFormat(CSelectLang::getDefaultLangId(), dwFlags, &systime, pszForm, pszDest, nDestLen);
 	return pszDest;
 }
 
 
 
 /* 時刻をフォーマット */
-const TCHAR* CFormatManager::MyGetTimeFormat( const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen )
+const TCHAR* CFormatManager::MyGetTimeFormat(const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen)
 {
 	return MyGetTimeFormat(
 		systime,
@@ -96,10 +97,11 @@ const TCHAR* CFormatManager::MyGetTimeFormat(
 {
 	const TCHAR* pszForm;
 	DWORD dwFlags;
-	if( 0 == nTimeFormatType ){
+	if (0 == nTimeFormatType) {
 		dwFlags = 0;
 		pszForm = NULL;
-	}else{
+	}
+	else {
 		dwFlags = 0;
 		pszForm = szTimeFormat;
 	}

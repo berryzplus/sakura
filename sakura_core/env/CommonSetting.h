@@ -33,14 +33,14 @@
 // Apr. 05, 2003 genta WindowCaption用領域（変換前）の長さ
 static const int MAX_CAPTION_CONF_LEN = 256;
 
-static const int MAX_DATETIMEFOREMAT_LEN	= 100;
-static const int MAX_CUSTOM_MENU			=  25;
-static const int MAX_CUSTOM_MENU_NAME_LEN	=  32;
-static const int MAX_CUSTOM_MENU_ITEMS		=  48;
-static const int MAX_TOOLBAR_BUTTON_ITEMS	= 512;	//ツールバーに登録可能なボタン最大数	
-static const int MAX_TOOLBAR_ICON_X			=  32;	//アイコンBMPの桁数
-static const int MAX_TOOLBAR_ICON_Y			=  15;	//アイコンBMPの段数
-static const int MAX_TOOLBAR_ICON_COUNT		= MAX_TOOLBAR_ICON_X * MAX_TOOLBAR_ICON_Y; // =480
+static const int MAX_DATETIMEFOREMAT_LEN = 100;
+static const int MAX_CUSTOM_MENU = 25;
+static const int MAX_CUSTOM_MENU_NAME_LEN = 32;
+static const int MAX_CUSTOM_MENU_ITEMS = 48;
+static const int MAX_TOOLBAR_BUTTON_ITEMS = 512;	//ツールバーに登録可能なボタン最大数	
+static const int MAX_TOOLBAR_ICON_X = 32;	//アイコンBMPの桁数
+static const int MAX_TOOLBAR_ICON_Y = 15;	//アイコンBMPの段数
+static const int MAX_TOOLBAR_ICON_COUNT = MAX_TOOLBAR_ICON_X * MAX_TOOLBAR_ICON_Y; // =480
 //Oct. 22, 2000 JEPRO アイコンの最大登録数を128個増やした(256→384)	
 //2010/3/14 Uchi アイコンの最大登録数を32個増やした(384→416)
 //2010/6/26 syat アイコンの最大登録数を15段に増やした(416→480)
@@ -58,7 +58,7 @@ struct CommonSetting_General
 	//	intをビット単位に分割して使う
 	//	下4bitをCaretTypeに当てておく(将来の予約で多めに取っておく)
 	int		GetCaretType(void) const { return m_nCaretType & 0xf; }
-	void	SetCaretType(const int f){ m_nCaretType &= ~0xf; m_nCaretType |= f & 0xf; }
+	void	SetCaretType(const int f) { m_nCaretType &= ~0xf; m_nCaretType |= f & 0xf; }
 
 	//カーソル
 	int		m_nCaretType;							//!< カーソルのタイプ 0=win 1=dos 
@@ -98,10 +98,10 @@ struct CommonSetting_General
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //	2004.05.13 Moca
 //! ウィンドウサイズ・位置の制御方法
-enum EWinSizeMode{
-	WINSIZEMODE_DEF		= 0, //!< 指定なし
-	WINSIZEMODE_SAVE	= 1, //!< 継承(保存)
-	WINSIZEMODE_SET		= 2  //!< 直接指定(固定)
+enum EWinSizeMode {
+	WINSIZEMODE_DEF = 0, //!< 指定なし
+	WINSIZEMODE_SAVE = 1, //!< 継承(保存)
+	WINSIZEMODE_SET = 2  //!< 直接指定(固定)
 };
 
 struct CommonSetting_Window
@@ -139,7 +139,7 @@ struct CommonSetting_Window
 	BOOL			m_bSplitterWndVScroll;		//!< 分割ウィンドウの垂直スクロールの同期をとる 2001/06/20 asa-o
 
 	//タイトルバー
-	TCHAR			m_szWindowCaptionActive  [MAX_CAPTION_CONF_LEN];	//!< タイトルバー(アクティブ時)
+	TCHAR			m_szWindowCaptionActive[MAX_CAPTION_CONF_LEN];	//!< タイトルバー(アクティブ時)
 	TCHAR			m_szWindowCaptionInactive[MAX_CAPTION_CONF_LEN];	//!< タイトルバー(非アクティブ時)
 
 	//INI内設定のみ
@@ -158,13 +158,13 @@ struct CommonSetting_Window
 //                         タブバー                            //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //! 閉じるボタン
-enum EDispTabClose{
-	DISPTABCLOSE_NO			= 0, //!< なし
-	DISPTABCLOSE_ALLWAYS	= 1, //!< 常に表示
-	DISPTABCLOSE_AUTO		= 2  //!< 自動表示
+enum EDispTabClose {
+	DISPTABCLOSE_NO = 0, //!< なし
+	DISPTABCLOSE_ALLWAYS = 1, //!< 常に表示
+	DISPTABCLOSE_AUTO = 2  //!< 自動表示
 };
 
-enum ETabPosition{
+enum ETabPosition {
 	TabPosition_Top,
 	TabPosition_Bottom,
 	TabPosition_Left,
@@ -202,7 +202,7 @@ struct CommonSetting_TabBar
 //                           編集                              //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //! ファイルダイアログの初期位置
-enum EOpenDialogDir{
+enum EOpenDialogDir {
 	OPENDIALOGDIR_CUR, //!< カレントフォルダ
 	OPENDIALOGDIR_MRU, //!< 最近使ったフォルダ
 	OPENDIALOGDIR_SEL, //!< 指定フォルダ
@@ -247,24 +247,24 @@ struct CommonSetting_File
 {
 public:
 	// カーソル位置を復元するかどうか  Oct. 27, 2000 genta
-	bool	GetRestoreCurPosition() const		{ return m_bRestoreCurPosition; }
-	void	SetRestoreCurPosition(bool i)		{ m_bRestoreCurPosition = i; }
+	bool	GetRestoreCurPosition() const { return m_bRestoreCurPosition; }
+	void	SetRestoreCurPosition(bool i) { m_bRestoreCurPosition = i; }
 
 	// ブックマークを復元するかどうか  2002.01.16 hor
-	bool	GetRestoreBookmarks() const			{ return m_bRestoreBookmarks; }
-	void	SetRestoreBookmarks(bool i)			{ m_bRestoreBookmarks = i; }
+	bool	GetRestoreBookmarks() const { return m_bRestoreBookmarks; }
+	void	SetRestoreBookmarks(bool i) { m_bRestoreBookmarks = i; }
 
 	// ファイル読み込み時にMIMEのdecodeを行うか  Nov. 12, 2000 genta
-	bool	GetAutoMIMEdecode() const			{ return m_bAutoMIMEdecode; }
-	void	SetAutoMIMEdecode(bool i)			{ m_bAutoMIMEdecode = i; }
+	bool	GetAutoMIMEdecode() const { return m_bAutoMIMEdecode; }
+	void	SetAutoMIMEdecode(bool i) { m_bAutoMIMEdecode = i; }
 
 	// 前回と文字コードが異なるときに問い合わせを行う  Oct. 03, 2004 genta
-	bool	GetQueryIfCodeChange() const		{ return m_bQueryIfCodeChange; }
-	void	SetQueryIfCodeChange(bool i)		{ m_bQueryIfCodeChange = i; }
-	
+	bool	GetQueryIfCodeChange() const { return m_bQueryIfCodeChange; }
+	void	SetQueryIfCodeChange(bool i) { m_bQueryIfCodeChange = i; }
+
 	// 開こうとしたファイルが存在しないとき警告する  Oct. 09, 2004 genta
-	bool	GetAlertIfFileNotExist() const		{ return m_bAlertIfFileNotExist; }
-	void	SetAlertIfFileNotExist(bool i)		{ m_bAlertIfFileNotExist = i; }
+	bool	GetAlertIfFileNotExist() const { return m_bAlertIfFileNotExist; }
+	void	SetAlertIfFileNotExist(bool i) { m_bAlertIfFileNotExist = i; }
 
 public:
 	//ファイルの排他制御
@@ -299,16 +299,16 @@ public:
 
 //	Aug. 15, 2000 genta
 //! Backup Flags
-enum EBackupOptionFlag{
-	BKUP_YEAR		= 32,
-	BKUP_MONTH		= 16,
-	BKUP_DAY		= 8,
-	BKUP_HOUR		= 4,
-	BKUP_MIN		= 2,
-	BKUP_SEC		= 1,
+enum EBackupOptionFlag {
+	BKUP_YEAR = 32,
+	BKUP_MONTH = 16,
+	BKUP_DAY = 8,
+	BKUP_HOUR = 4,
+	BKUP_MIN = 2,
+	BKUP_SEC = 1,
 
 	//	Aug. 21, 2000 genta
-	BKUP_AUTO		= 64,
+	BKUP_AUTO = 64,
 };
 
 struct CommonSetting_Backup
@@ -316,31 +316,31 @@ struct CommonSetting_Backup
 public:
 	//	Aug. 15, 2000 genta
 	//	Backup設定のアクセス関数
-	int		GetBackupType(void) const			{ return m_nBackUpType; }
-	void	SetBackupType(int n)				{ m_nBackUpType = n; }
+	int		GetBackupType(void) const { return m_nBackUpType; }
+	void	SetBackupType(int n) { m_nBackUpType = n; }
 
-	bool	GetBackupOpt(EBackupOptionFlag flag) const			{ return ( flag & m_nBackUpType_Opt1 ) == flag; }
-	void	SetBackupOpt(EBackupOptionFlag flag, bool value)	{ m_nBackUpType_Opt1 = value ? ( flag | m_nBackUpType_Opt1) :  ((~flag) & m_nBackUpType_Opt1 ); }
+	bool	GetBackupOpt(EBackupOptionFlag flag) const { return (flag & m_nBackUpType_Opt1) == flag; }
+	void	SetBackupOpt(EBackupOptionFlag flag, bool value) { m_nBackUpType_Opt1 = value ? (flag | m_nBackUpType_Opt1) : ((~flag) & m_nBackUpType_Opt1); }
 
 	//	バックアップ数
-	int		GetBackupCount(void) const			{ return m_nBackUpType_Opt2 & 0xffff; }
-	void	SetBackupCount(int value)			{ m_nBackUpType_Opt2 = (m_nBackUpType_Opt2 & 0xffff0000) | ( value & 0xffff ); }
+	int		GetBackupCount(void) const { return m_nBackUpType_Opt2 & 0xffff; }
+	void	SetBackupCount(int value) { m_nBackUpType_Opt2 = (m_nBackUpType_Opt2 & 0xffff0000) | (value & 0xffff); }
 
 	//	バックアップの拡張子先頭文字(1文字)
-	TCHAR	GetBackupExtChar(void) const		{ return (TCHAR)(( m_nBackUpType_Opt2 >> 16 ) & 0xff) ; }
-	void	SetBackupExtChar(int value)			{ m_nBackUpType_Opt2 = (m_nBackUpType_Opt2 & 0xff00ffff) | (( value & 0xff ) << 16 ); }
+	TCHAR	GetBackupExtChar(void) const { return (TCHAR)((m_nBackUpType_Opt2 >> 16) & 0xff); }
+	void	SetBackupExtChar(int value) { m_nBackUpType_Opt2 = (m_nBackUpType_Opt2 & 0xff00ffff) | ((value & 0xff) << 16); }
 
 	//	Aug. 21, 2000 genta
 	//	自動Backup
-	bool	IsAutoBackupEnabled(void) const		{ return GetBackupOpt( BKUP_AUTO ); }
-	void	EnableAutoBackup(bool flag)			{ SetBackupOpt( BKUP_AUTO, flag ); }
+	bool	IsAutoBackupEnabled(void) const { return GetBackupOpt(BKUP_AUTO); }
+	void	EnableAutoBackup(bool flag) { SetBackupOpt(BKUP_AUTO, flag); }
 
-	int		GetAutoBackupInterval(void) const	{ return m_nBackUpType_Opt3; }
-	void	SetAutoBackupInterval(int i)		{ m_nBackUpType_Opt3 = i; }
+	int		GetAutoBackupInterval(void) const { return m_nBackUpType_Opt3; }
+	void	SetAutoBackupInterval(int i) { m_nBackUpType_Opt3 = i; }
 
 	//	Backup詳細設定のアクセス関数
 	int		GetBackupTypeAdv(void) const { return m_nBackUpType_Opt4; }
-	void	SetBackupTypeAdv(int n){ m_nBackUpType_Opt4 = n; }
+	void	SetBackupTypeAdv(int n) { m_nBackUpType_Opt4 = n; }
 
 public:
 	bool		m_bBackUp;					//!< 保存時にバックアップを作成する
@@ -434,8 +434,8 @@ struct CommonSetting_KeyBind
 {
 	// キー割り当て
 	int					m_nKeyNameArrNum;			//!< キー割り当て表の有効データ数
-	KEYDATA				m_pKeyNameArr[100+1];		//!< キー割り当て表 未割り当てキーコード用にダミーを追加
-	BYTE				m_VKeyToKeyNameArr[256+10];	//!< キーコード→割り当て表インデックス // 2012.11.25 aroka
+	KEYDATA				m_pKeyNameArr[100 + 1];		//!< キー割り当て表 未割り当てキーコード用にダミーを追加
+	BYTE				m_VKeyToKeyNameArr[256 + 10];	//!< キーコード→割り当て表インデックス // 2012.11.25 aroka
 };
 
 
@@ -447,11 +447,11 @@ struct CommonSetting_KeyBind
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 struct CommonSetting_CustomMenu
 {
-	WCHAR			m_szCustMenuNameArr   [MAX_CUSTOM_MENU][MAX_CUSTOM_MENU_NAME_LEN + 1];
-	int				m_nCustMenuItemNumArr [MAX_CUSTOM_MENU];
+	WCHAR			m_szCustMenuNameArr[MAX_CUSTOM_MENU][MAX_CUSTOM_MENU_NAME_LEN + 1];
+	int				m_nCustMenuItemNumArr[MAX_CUSTOM_MENU];
 	EFunctionCode	m_nCustMenuItemFuncArr[MAX_CUSTOM_MENU][MAX_CUSTOM_MENU_ITEMS];
-	KEYCODE			m_nCustMenuItemKeyArr [MAX_CUSTOM_MENU][MAX_CUSTOM_MENU_ITEMS];
-	bool			m_bCustMenuPopupArr   [MAX_CUSTOM_MENU];
+	KEYCODE			m_nCustMenuItemKeyArr[MAX_CUSTOM_MENU][MAX_CUSTOM_MENU_ITEMS];
+	bool			m_bCustMenuPopupArr[MAX_CUSTOM_MENU];
 };
 
 
@@ -533,7 +533,7 @@ struct CommonSetting_FileName
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 //! ドッキング配置
-enum EDockSide{
+enum EDockSide {
 	DOCKSIDE_FLOAT,				//!< フローティング
 	DOCKSIDE_LEFT,				//!< 左ドッキング
 	DOCKSIDE_TOP,				//!< 上ドッキング
@@ -542,21 +542,21 @@ enum EDockSide{
 	DOCKSIDE_UNDOCKABLE = -1,	//!< ドッキング禁止
 };
 
-enum EFileTreeItemType{
+enum EFileTreeItemType {
 	EFileTreeItemType_Grep,
 	EFileTreeItemType_File,
 	EFileTreeItemType_Folder
 };
 
-struct SFileTreeItem{
+struct SFileTreeItem {
 public:
 	EFileTreeItemType m_eFileTreeItemType;
 	SFilePath	m_szTargetPath;	//!< フォルダorファイルパス
-	StaticString<TCHAR,_MAX_PATH> m_szLabelName; //!< ラベル名(""のときはファイル名を使う)
+	StaticString<TCHAR, _MAX_PATH> m_szLabelName; //!< ラベル名(""のときはファイル名を使う)
 	int  m_nDepth;	//!< 階層
 
 	// GrepタイプTreeItem
-	StaticString<TCHAR,_MAX_PATH>	m_szTargetFile;	//!< ファイル一覧
+	StaticString<TCHAR, _MAX_PATH>	m_szTargetFile;	//!< ファイル一覧
 	bool		m_bIgnoreHidden;		//!< 隠しファイルを除く
 	bool		m_bIgnoreReadOnly;		//!< 読み取り専用ファイルを除く
 	bool		m_bIgnoreSystem;		//!< システムファイルを除く
@@ -567,10 +567,10 @@ public:
 		, m_bIgnoreHidden(true)
 		, m_bIgnoreReadOnly(false)
 		, m_bIgnoreSystem(false)
-		{}
+	{}
 };
 
-struct SFileTree{
+struct SFileTree {
 	bool		m_bProject;			//!< プロジェクトファイルモード
 	SFilePath	m_szProjectIni;		//!< デフォルトiniパス
 	int			m_nItemCount;		//!< ファイルパス数
@@ -694,14 +694,14 @@ enum EMainMenuType {
 	T_LEAF,			//!< 機能コマンド
 	T_SEPARATOR,	//!< 区切線
 	T_SPECIAL,		//!< 特殊機能コマンド
-}; 
+};
 
 class CMainMenu {
 public:
 	EMainMenuType	m_nType;		//!< 種類
 	EFunctionCode	m_nFunc;		//!< Function
 	WCHAR			m_sKey[2];		//!< アクセスキー
-	WCHAR			m_sName[MAX_MAIN_MENU_NAME_LEN+1];	//!< 名前
+	WCHAR			m_sName[MAX_MAIN_MENU_NAME_LEN + 1];	//!< 名前
 	int 			m_nLevel;		//!< レベル
 };
 

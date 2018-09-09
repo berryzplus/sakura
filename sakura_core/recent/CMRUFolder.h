@@ -14,8 +14,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -24,7 +24,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -47,18 +47,18 @@ public:
 	~CMRUFolder();
 
 	//	メニューを取得する
-	HMENU CreateMenu( CMenuDrawer* pCMenuDrawer ) const;	//	うーん。pCMenuDrawerが必要なくなるといいなぁ。
-	HMENU CreateMenu( HMENU hMenu, CMenuDrawer* pCMenuDrawer ) const;	//	2010/5/21 Uchi
-	BOOL DestroyMenu( HMENU hMenu ) const;
-	
+	HMENU CreateMenu(CMenuDrawer* pCMenuDrawer) const;	//	うーん。pCMenuDrawerが必要なくなるといいなぁ。
+	HMENU CreateMenu(HMENU hMenu, CMenuDrawer* pCMenuDrawer) const;	//	2010/5/21 Uchi
+	BOOL DestroyMenu(HMENU hMenu) const;
+
 	//	フォルダ名の一覧を教えて
 	std::vector<LPCTSTR> GetPathList() const;
 
 	//	アクセス関数
 	int Length() const;	//	アイテムの数。
-	int MenuLength(void) const{ return t_min(Length(), m_cRecentFolder.GetViewCount()); }	//	メニューに表示されるアイテムの数
+	int MenuLength(void) const { return t_min(Length(), m_cRecentFolder.GetViewCount()); }	//	メニューに表示されるアイテムの数
 	void ClearAll();					//	アイテムを削除～。
-	void Add( const TCHAR* pszFolder );	//	pszFolderを追加する。
+	void Add(const TCHAR* pszFolder);	//	pszFolderを追加する。
 	const TCHAR* GetPath(int num) const;
 
 protected:

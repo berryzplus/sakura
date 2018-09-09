@@ -26,13 +26,13 @@ class CEditWnd;
 -----------------------------------------------------------------------*/
 /*!
 	@brief エディタプロセスクラス
-	
+
 	エディタプロセスはCEditWndクラスのインスタンスを作る。
 */
 class CNormalProcess : public CProcess {
 public:
 	//コンストラクタ・デストラクタ
-	CNormalProcess( HINSTANCE hInstance, LPCTSTR lpCmdLine );
+	CNormalProcess(HINSTANCE hInstance, LPCTSTR lpCmdLine);
 	virtual ~CNormalProcess();
 
 protected:
@@ -44,7 +44,7 @@ protected:
 protected:
 	//実装補助
 	HANDLE _GetInitializeMutex() const; // 2002/2/8 aroka
-	void OpenFiles( HWND );
+	void OpenFiles(HWND);
 
 private:
 	CEditApp*	m_pcEditApp;	//2007.10.23 kobake

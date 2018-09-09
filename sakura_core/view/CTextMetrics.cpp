@@ -47,14 +47,14 @@ CTextMetrics::~CTextMetrics()
 
 void CTextMetrics::CopyTextMetricsStatus(CTextMetrics* pDst) const
 {
-	pDst->SetHankakuWidth			(GetHankakuWidth());		/* 半角文字の幅 */
-	pDst->SetHankakuHeight			(GetHankakuHeight());		/* 文字の高さ */
+	pDst->SetHankakuWidth(GetHankakuWidth());		/* 半角文字の幅 */
+	pDst->SetHankakuHeight(GetHankakuHeight());		/* 文字の高さ */
 	pDst->m_aFontHeightMargin = m_aFontHeightMargin;
 }
 
 /*
 	文字の大きさを調べる
-	
+
 	※ビルド種により、微妙にサイズが変わるようでした。
 	　サイズを合わせるため、適当な文字で調整。
 */
@@ -68,9 +68,9 @@ void CTextMetrics::Update(HDC hdc, HFONT hFont, int nLineSpace, int nColmSpace)
 	int tmAscent[1];
 	int tmAscentMaxHeight;
 	m_aFontHeightMargin.resize(size);
-	for( int i = 0; i < size; i++ ){
-		HFONT hFontOld = (HFONT)::SelectObject( hdc, hFontArray[i] );
- 		SIZE  sz;
+	for (int i = 0; i < size; i++) {
+		HFONT hFontOld = (HFONT)::SelectObject(hdc, hFontArray[i]);
+		SIZE  sz;
 		// LocalCache::m_han_size と一致していなければならない
 		{
 			// KB145994
@@ -81,38 +81,38 @@ void CTextMetrics::Update(HDC hdc, HFONT hFont, int nLineSpace, int nColmSpace)
 		}
 		TEXTMETRIC tm;
 		GetTextMetrics(hdc, &tm);
-		if( GetHankakuHeight() < sz.cy ){
+		if (GetHankakuHeight() < sz.cy) {
 			SetHankakuHeight(sz.cy);
 			tmAscentMaxHeight = tm.tmAscent;
 		}
-		if( i == 0 && GetHankakuWidth() < sz.cx ){
+		if (i == 0 && GetHankakuWidth() < sz.cx) {
 			SetHankakuWidth(sz.cx);
 		}
 		tmAscent[i] = tm.tmAscent;
-		::SelectObject( hdc, hFontOld );
+		::SelectObject(hdc, hFontOld);
 	}
 	int minMargin = 0;
-	for(int i = 0; i < size; i++){
-		if( tmAscentMaxHeight - tmAscent[i] < minMargin ){
+	for (int i = 0; i < size; i++) {
+		if (tmAscentMaxHeight - tmAscent[i] < minMargin) {
 			minMargin = tmAscentMaxHeight - tmAscent[i];
 		}
 	}
-	if( minMargin < 0 ){
+	if (minMargin < 0) {
 		minMargin *= -1;
-		SetHankakuHeight( GetHankakuHeight() + minMargin );
+		SetHankakuHeight(GetHankakuHeight() + minMargin);
 	}
 	int nOrgHeight = GetHankakuHeight();
-	if( nLineSpace < 0 ){
+	if (nLineSpace < 0) {
 		// マイナスの場合は文字の高さも引く
-		SetHankakuHeight( std::max(1, GetHankakuHeight() + nLineSpace) );
+		SetHankakuHeight(std::max(1, GetHankakuHeight() + nLineSpace));
 	}
-	for( int i = 0; i < size; i++ ){
+	for (int i = 0; i < size; i++) {
 		m_aFontHeightMargin[i] = tmAscentMaxHeight - tmAscent[i] + minMargin;
 	}
-	
+
 	// Dx/Dyも設定
-	SetHankakuDx( GetHankakuWidth() + nColmSpace );
-	SetHankakuDy( std::max(1, nOrgHeight + nLineSpace) );
+	SetHankakuDx(GetHankakuWidth() + nColmSpace);
+	SetHankakuDy(std::max(1, nOrgHeight + nLineSpace));
 }
 
 
@@ -122,26 +122,26 @@ void CTextMetrics::Update(HDC hdc, HFONT hFont, int nLineSpace, int nColmSpace)
 
 void CTextMetrics::SetHankakuWidth(int nHankakuWidth)
 {
-	m_nCharWidth=nHankakuWidth;
+	m_nCharWidth = nHankakuWidth;
 }
 
 //! 半角文字の縦幅を設定。単位はピクセル。
 void CTextMetrics::SetHankakuHeight(int nHankakuHeight)
 {
-	m_nCharHeight=nHankakuHeight;
+	m_nCharHeight = nHankakuHeight;
 }
 
 
 //!文字間隔基準設定。nDxBasisは半角文字の基準ピクセル幅。SetHankakuDx
 void CTextMetrics::SetHankakuDx(int nDxBasis)
 {
-	m_nDxBasis=nDxBasis;
-	for(int i=0;i<_countof(m_anHankakuDx);i++)m_anHankakuDx[i]=GetHankakuDx();
-	for(int i=0;i<_countof(m_anZenkakuDx);i++)m_anZenkakuDx[i]=GetZenkakuDx();
+	m_nDxBasis = nDxBasis;
+	for (int i = 0; i < _countof(m_anHankakuDx); i++)m_anHankakuDx[i] = GetHankakuDx();
+	for (int i = 0; i < _countof(m_anZenkakuDx); i++)m_anZenkakuDx[i] = GetZenkakuDx();
 }
 void CTextMetrics::SetHankakuDy(int nDyBasis)
 {
-	m_nDyBasis=nDyBasis;
+	m_nDyBasis = nDyBasis;
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -161,16 +161,16 @@ const int* CTextMetrics::GenerateDxArray(
 {
 
 	vResultArray->resize(nLength);
-	if(!pText || nLength<=0)return NULL;
+	if (!pText || nLength <= 0)return NULL;
 
-	int* p=&(*vResultArray)[0];
+	int* p = &(*vResultArray)[0];
 	int	 nLayoutCnt = nIndent;
-	const wchar_t* x=pText;
-	for (int i=0; i<nLength; i++, p++, x++) {
+	const wchar_t* x = pText;
+	for (int i = 0; i < nLength; i++, p++, x++) {
 		// サロゲートチェック
 		if (*x == WCODE::TAB) {
 			// TAB対応	2013/5/7 Uchi
-			if (i > 0 && *(x-1) == WCODE::TAB) {
+			if (i > 0 && *(x - 1) == WCODE::TAB) {
 				*p = nTabSpace;
 				nLayoutCnt += *p;
 			}
@@ -178,37 +178,40 @@ const int* CTextMetrics::GenerateDxArray(
 				*p = (nTabSpace + nHankakuDx - 1) - ((nLayoutCnt + nHankakuDx - 1) % nTabSpace);
 				nLayoutCnt += *p;
 			}
-		}else
-		if(IsUTF16High(*x)){
-			if(i+1 < nLength && IsUTF16Low(x[1])){
-				int n = 0;
-				if(nCharSpacing){
-					n = CNativeW::GetKetaOfChar(pText, nLength, i) * nCharSpacing;
+		}
+		else
+			if (IsUTF16High(*x)) {
+				if (i + 1 < nLength && IsUTF16Low(x[1])) {
+					int n = 0;
+					if (nCharSpacing) {
+						n = CNativeW::GetKetaOfChar(pText, nLength, i) * nCharSpacing;
+					}
+					*p = WCODE::CalcPxWidthByFont2(x) + n;
+					p++;
+					x++;
+					i++;
+					*p = 0;
 				}
-				*p = WCODE::CalcPxWidthByFont2(x) + n;
-				p++;
-				x++;
-				i++;
-				*p = 0;
-			}else{
+				else {
+					int n = 0;
+					if (nCharSpacing) {
+						n = CNativeW::GetKetaOfChar(pText, nLength, i) * nCharSpacing;
+					}
+					*p = WCODE::CalcPxWidthByFont(*x) + n;
+					nLayoutCnt += *p;
+				}
+			}
+			else {
 				int n = 0;
-				if(nCharSpacing){
+				if (nCharSpacing) {
 					n = CNativeW::GetKetaOfChar(pText, nLength, i) * nCharSpacing;
 				}
 				*p = WCODE::CalcPxWidthByFont(*x) + n;
 				nLayoutCnt += *p;
 			}
-		}else{
-			int n = 0;
-			if(nCharSpacing){
-				n = CNativeW::GetKetaOfChar(pText, nLength, i) * nCharSpacing;
-			}
-			*p = WCODE::CalcPxWidthByFont(*x) + n;
-			nLayoutCnt += *p;
-		}
 	}
 
-	if(vResultArray->size())
+	if (vResultArray->size())
 		return &(*vResultArray)[0];
 	else
 		return NULL;
@@ -225,9 +228,9 @@ int CTextMetrics::CalcTextWidth(
 	//return pnDx[0] * nLength;
 
 	//UNICODE時代の動作
-	int w=0;
-	for(int i=0;i<nLength;i++){
-		w+=pnDx[i];
+	int w = 0;
+	for (int i = 0; i < nLength; i++) {
+		w += pnDx[i];
 	}
 	return w;
 }

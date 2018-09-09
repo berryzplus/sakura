@@ -69,25 +69,25 @@ enum PropTypeSheetOrder {
 
 	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 */
-class CPropTypes{
+class CPropTypes {
 
 public:
 	//生成と破棄
 	CPropTypes();
 	~CPropTypes();
-	void Create( HINSTANCE, HWND );	//!< 初期化
-	INT_PTR DoPropertySheet( int );		//!< プロパティシートの作成
+	void Create(HINSTANCE, HWND);	//!< 初期化
+	INT_PTR DoPropertySheet(int);		//!< プロパティシートの作成
 
 	//インターフェース	
-	void SetTypeData( const STypeConfig& t ){ m_Types = t; }	//!< タイプ別設定データの設定  Jan. 23, 2005 genta
-	void GetTypeData( STypeConfig& t ) const { t = m_Types; }	//!< タイプ別設定データの取得  Jan. 23, 2005 genta
+	void SetTypeData(const STypeConfig& t) { m_Types = t; }	//!< タイプ別設定データの設定  Jan. 23, 2005 genta
+	void GetTypeData(STypeConfig& t) const { t = m_Types; }	//!< タイプ別設定データの取得  Jan. 23, 2005 genta
 	HWND GetHwndParent()const { return m_hwndParent; }
-	int GetPageNum(){ return m_nPageNum; }
+	int GetPageNum() { return m_nPageNum; }
 	bool GetChangeKeyWordSet() const { return m_bChangeKeyWordSet; }
 
 protected:
 	//イベント
-	void OnHelp( HWND , int );	//!< ヘルプ
+	void OnHelp(HWND, int);	//!< ヘルプ
 
 protected:
 	//各種参照
@@ -106,7 +106,7 @@ protected:
 
 	// カラー用データ
 	DWORD			m_dwCustColors[16];						//!< フォントDialogカスタムパレット
-	int				m_nSet[ MAX_KEYWORDSET_PER_TYPE ];		//!< keyword set index  2005.01.13 MIK
+	int				m_nSet[MAX_KEYWORDSET_PER_TYPE];		//!< keyword set index  2005.01.13 MIK
 	int				m_nCurrentColorType;					//!< 現在選択されている色タイプ
 	CKeyWordSetMgr*	m_pCKeyWordSetMgr;						//!< メモリ削減のためポインタに  Mar. 31, 2003 genta
 	bool			m_bChangeKeyWordSet;
@@ -118,15 +118,15 @@ protected:
 	//                      各プロパティページ                     //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< メッセージ処理
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);			//!< メッセージ処理
 protected:
-	void SetData( HWND );											//!< ダイアログデータの設定
-	int  GetData( HWND );											//!< ダイアログデータの取得
-	bool Import( HWND );											//!< インポート
-	bool Export( HWND );											//!< エクスポート
+	void SetData(HWND);											//!< ダイアログデータの設定
+	int  GetData(HWND);											//!< ダイアログデータの取得
+	bool Import(HWND);											//!< インポート
+	bool Export(HWND);											//!< エクスポート
 
-	HFONT SetCtrlFont( HWND hwndDlg, int idc_static, const LOGFONT& lf );								//!< コントロールにフォント設定する		// 2013/4/24 Uchi
-	HFONT SetFontLabel( HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps, bool bUse = true );	//!< フォントラベルにフォントとフォント名設定する	// 2013/4/24 Uchi
+	HFONT SetCtrlFont(HWND hwndDlg, int idc_static, const LOGFONT& lf);								//!< コントロールにフォント設定する		// 2013/4/24 Uchi
+	HFONT SetFontLabel(HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps, bool bUse = true);	//!< フォントラベルにフォントとフォント名設定する	// 2013/4/24 Uchi
 };
 
 
@@ -142,10 +142,10 @@ protected:
 class CPropTypesScreen : public CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< メッセージ処理
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);			//!< メッセージ処理
 protected:
-	void SetData( HWND );											//!< ダイアログデータの設定
-	int  GetData( HWND );											//!< ダイアログデータの取得
+	void SetData(HWND);											//!< ダイアログデータの設定
+	int  GetData(HWND);											//!< ダイアログデータの取得
 
 public:
 	static void AddOutlineMethod(int nMethod, const WCHAR* szName);	//!<アウトライン解析ルールの追加
@@ -161,14 +161,14 @@ public:
 class CPropTypesWindow : public CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< メッセージ処理
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);			//!< メッセージ処理
 protected:
-	void SetData( HWND );											//!< ダイアログデータの設定
-	int  GetData( HWND );											//!< ダイアログデータの取得
+	void SetData(HWND);											//!< ダイアログデータの設定
+	int  GetData(HWND);											//!< ダイアログデータの取得
 
 protected:
 	void SetCombobox(HWND hwndWork, const int* nIds, int nCount, int select);
-	void EnableTypesPropInput( HWND hwndDlg );						//!< タイプ別設定のON/OFF
+	void EnableTypesPropInput(HWND hwndDlg);						//!< タイプ別設定のON/OFF
 public:
 private:
 };
@@ -179,21 +179,21 @@ private:
 class CPropTypesColor : public CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< メッセージ処理
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);			//!< メッセージ処理
 protected:
-	void SetData( HWND );											//!< ダイアログデータの設定
-	void SetDataKeyword( HWND );									//!< セット名コンボボックスの値セット
-	int  GetData( HWND );											//!< ダイアログデータの取得
-	bool Import( HWND );											//!< インポート
-	bool Export( HWND );											//!< エクスポート
+	void SetData(HWND);											//!< ダイアログデータの設定
+	void SetDataKeyword(HWND);									//!< セット名コンボボックスの値セット
+	int  GetData(HWND);											//!< ダイアログデータの取得
+	bool Import(HWND);											//!< インポート
+	bool Export(HWND);											//!< エクスポート
 
 protected:
-	void DrawColorListItem( DRAWITEMSTRUCT* );				//!< 色種別リスト オーナー描画
-	void EnableTypesPropInput( HWND hwndDlg );				//!< タイプ別設定のカラー設定のON/OFF
-	void RearrangeKeywordSet( HWND );						//!< キーワードセット再配置  Jan. 23, 2005 genta
-	void DrawColorButton( DRAWITEMSTRUCT* , COLORREF );		//!< 色ボタンの描画
+	void DrawColorListItem(DRAWITEMSTRUCT*);				//!< 色種別リスト オーナー描画
+	void EnableTypesPropInput(HWND hwndDlg);				//!< タイプ別設定のカラー設定のON/OFF
+	void RearrangeKeywordSet(HWND);						//!< キーワードセット再配置  Jan. 23, 2005 genta
+	void DrawColorButton(DRAWITEMSTRUCT*, COLORREF);		//!< 色ボタンの描画
 public:
-	static BOOL SelectColor( HWND , COLORREF*, DWORD* );	//!< 色選択ダイアログ
+	static BOOL SelectColor(HWND, COLORREF*, DWORD*);	//!< 色選択ダイアログ
 private:
 };
 
@@ -203,10 +203,10 @@ private:
 class CPropTypesSupport : public CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< メッセージ処理
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);			//!< メッセージ処理
 protected:
-	void SetData( HWND );											//!< ダイアログデータの設定
-	int  GetData( HWND );											//!< ダイアログデータの取得
+	void SetData(HWND);											//!< ダイアログデータの設定
+	int  GetData(HWND);											//!< ダイアログデータの取得
 public:
 	static void AddHokanMethod(int nMethod, const WCHAR* szName);	//!<補完種別の追加
 	static void RemoveHokanMethod(int nMethod, const WCHAR* szName);	//!<補完種別の追加
@@ -218,13 +218,13 @@ public:
 class CPropTypesRegex : public CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< メッセージ処理
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);			//!< メッセージ処理
 protected:
-	void SetData( HWND );											//!< ダイアログデータの設定
-	void SetDataKeywordList( HWND );								//!< ダイアログデータの設定リスト部分
-	int  GetData( HWND );											//!< ダイアログデータの取得
-	bool Import( HWND );											//!< インポート
-	bool Export( HWND );											//!< エクスポート
+	void SetData(HWND);											//!< ダイアログデータの設定
+	void SetDataKeywordList(HWND);								//!< ダイアログデータの設定リスト部分
+	int  GetData(HWND);											//!< ダイアログデータの取得
+	bool Import(HWND);											//!< インポート
+	bool Export(HWND);											//!< エクスポート
 private:
 	BOOL RegexKakomiCheck(const wchar_t *s);	//@@@ 2001.11.17 add MIK
 
@@ -238,20 +238,20 @@ private:
 class CPropTypesKeyHelp : public CPropTypes
 {
 public:
-	INT_PTR DispatchEvent( HWND, UINT, WPARAM, LPARAM );			//!< メッセージ処理
+	INT_PTR DispatchEvent(HWND, UINT, WPARAM, LPARAM);			//!< メッセージ処理
 protected:
-	void SetData( HWND );											//!< ダイアログデータの設定
-	int  GetData( HWND );											//!< ダイアログデータの取得
-	bool Import( HWND );											//!< インポート
-	bool Export( HWND );											//!< エクスポート
+	void SetData(HWND);											//!< ダイアログデータの設定
+	int  GetData(HWND);											//!< ダイアログデータの取得
+	bool Import(HWND);											//!< インポート
+	bool Export(HWND);											//!< エクスポート
 };
 
 template<typename T>
-void InitTypeNameId2( std::vector<TYPE_NAME_ID2<T> >& vec, TYPE_NAME_ID<T>* arr, size_t size )
+void InitTypeNameId2(std::vector<TYPE_NAME_ID2<T> >& vec, TYPE_NAME_ID<T>* arr, size_t size)
 {
-	for( size_t i = 0; i < size; i++ ){
-		TYPE_NAME_ID2<T> item = {arr[i].nMethod, arr[i].nNameId, NULL};
-		vec.push_back( item );
+	for (size_t i = 0; i < size; i++) {
+		TYPE_NAME_ID2<T> item = { arr[i].nMethod, arr[i].nNameId, NULL };
+		vec.push_back(item);
 	}
 }
 

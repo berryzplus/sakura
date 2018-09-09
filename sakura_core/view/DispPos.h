@@ -28,17 +28,17 @@
 #include "doc/layout/CLayoutMgr.h"
 #include "doc/layout/CLayout.h"
 
-struct DispPos{
+struct DispPos {
 public:
-	DispPos(int nDx,int nDy)
-	: m_nDx(nDx)
-	, m_nDy(nDy)
+	DispPos(int nDx, int nDy)
+		: m_nDx(nDx)
+		, m_nDy(nDy)
 	{
-		m_ptDrawOrigin.x=0;
-		m_ptDrawOrigin.y=0;
-		m_ptDrawLayout.x=CLayoutInt(0);
-		m_ptDrawLayout.y=CLayoutInt(0);
-		m_nLineRef=CLayoutInt(0);
+		m_ptDrawOrigin.x = 0;
+		m_ptDrawOrigin.y = 0;
+		m_ptDrawLayout.x = CLayoutInt(0);
+		m_ptDrawLayout.y = CLayoutInt(0);
+		m_nLineRef = CLayoutInt(0);
 		//キャッシュ
 		m_pcLayoutRef = CEditDoc::GetInstance(0)->m_cLayoutMgr.GetTopLayout();
 	}
@@ -49,8 +49,8 @@ public:
 	//固定値
 	void InitDrawPos(const POINT& pt)
 	{
-		m_ptDrawOrigin=pt;
-		m_ptDrawLayout.x=m_ptDrawLayout.y=CLayoutInt(0);
+		m_ptDrawOrigin = pt;
+		m_ptDrawLayout.x = m_ptDrawLayout.y = CLayoutInt(0);
 	}
 
 	//取得
@@ -71,15 +71,15 @@ public:
 	}
 
 	//進む
-	void ForwardDrawCol (CLayoutXInt nColOffset ){ m_ptDrawLayout.x += nColOffset; }
-	void ForwardDrawLine(int nOffsetLine){ m_ptDrawLayout.y += nOffsetLine; }
+	void ForwardDrawCol(CLayoutXInt nColOffset) { m_ptDrawLayout.x += nColOffset; }
+	void ForwardDrawLine(int nOffsetLine) { m_ptDrawLayout.y += nOffsetLine; }
 
 	//リセット
-	void ResetDrawCol(){ m_ptDrawLayout.x = CLayoutInt(0); }
+	void ResetDrawCol() { m_ptDrawLayout.x = CLayoutInt(0); }
 
 	//取得
-	CLayoutInt GetDrawCol() const{ return m_ptDrawLayout.x; }
-	CLayoutInt GetDrawLine() const{ return m_ptDrawLayout.y; }
+	CLayoutInt GetDrawCol() const { return m_ptDrawLayout.x; }
+	CLayoutInt GetDrawLine() const { return m_ptDrawLayout.y; }
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                     テキスト参照位置                        //
@@ -90,14 +90,14 @@ public:
 	{
 		m_nLineRef = nOffsetLine;
 		//キャッシュ更新
-		m_pcLayoutRef = CEditDoc::GetInstance(0)->m_cLayoutMgr.SearchLineByLayoutY( m_nLineRef );
+		m_pcLayoutRef = CEditDoc::GetInstance(0)->m_cLayoutMgr.SearchLineByLayoutY(m_nLineRef);
 	}
 	void ForwardLayoutLineRef(int nOffsetLine);
 
 
 	//取得
-	CLayoutInt		GetLayoutLineRef() const{ return m_nLineRef; }
-	const CLayout*	GetLayoutRef() const{ return m_pcLayoutRef; }
+	CLayoutInt		GetLayoutLineRef() const { return m_nLineRef; }
+	const CLayout*	GetLayoutRef() const { return m_pcLayoutRef; }
 
 
 private:

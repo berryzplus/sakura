@@ -28,7 +28,7 @@
 #include "util/file.h"
 #include <Shlwapi.h>	// 2006.06.17 ryoji
 
-/*! 
+/*!
 	カレントディレクトリを実行ファイルの場所に移動
 	@date 2010.08.28 Moca 新規作成
 */
@@ -36,20 +36,21 @@ void ChangeCurrentDirectoryToExeDir()
 {
 	TCHAR szExeDir[_MAX_PATH];
 	szExeDir[0] = _T('\0');
-	GetExedir( szExeDir, NULL );
-	if( szExeDir[0] ){
-		::SetCurrentDirectory( szExeDir );
-	}else{
+	GetExedir(szExeDir, NULL);
+	if (szExeDir[0]) {
+		::SetCurrentDirectory(szExeDir);
+	}
+	else {
 		// 移動できないときはSYSTEM32(9xではSYSTEM)に移動
 		szExeDir[0] = _T('\0');
-		int n = ::GetSystemDirectory( szExeDir, _MAX_PATH );
-		if( n && n < _MAX_PATH ){
-			::SetCurrentDirectory( szExeDir );
+		int n = ::GetSystemDirectory(szExeDir, _MAX_PATH);
+		if (n && n < _MAX_PATH) {
+			::SetCurrentDirectory(szExeDir);
 		}
 	}
 }
 
-/*! 
+/*!
 	@date 2010.08.28 Moca 新規作成
 */
 HMODULE LoadLibraryExedir(LPCTSTR pszDll)
@@ -57,7 +58,7 @@ HMODULE LoadLibraryExedir(LPCTSTR pszDll)
 	CCurrentDirectoryBackupPoint dirBack;
 	// DLL インジェクション対策としてEXEのフォルダに移動する
 	ChangeCurrentDirectoryToExeDir();
-	return ::LoadLibrary( pszDll );
+	return ::LoadLibrary(pszDll);
 }
 
 /*!	シェルやコモンコントロール DLL のバージョン番号を取得
@@ -78,18 +79,18 @@ DWORD GetDllVersion(LPCTSTR lpszDllName)
 	   tested to ensure that it is a fully qualified path before it is used. */
 	hinstDll = LoadLibraryExedir(lpszDllName);
 
-	if(hinstDll)
+	if (hinstDll)
 	{
 		DLLGETVERSIONPROC pDllGetVersion;
 		pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll,
-						  "DllGetVersion");
+			"DllGetVersion");
 
 		/* Because some DLLs might not implement this function, you
 		must test for it explicitly. Depending on the particular
 		DLL, the lack of a DllGetVersion function can be a useful
 		indicator of the version. */
 
-		if(pDllGetVersion)
+		if (pDllGetVersion)
 		{
 			DLLVERSIONINFO dvi;
 			HRESULT hr;
@@ -99,9 +100,9 @@ DWORD GetDllVersion(LPCTSTR lpszDllName)
 
 			hr = (*pDllGetVersion)(&dvi);
 
-			if(SUCCEEDED(hr))
+			if (SUCCEEDED(hr))
 			{
-			   dwVersion = PACKVERSION(dvi.dwMajorVersion, dvi.dwMinorVersion);
+				dwVersion = PACKVERSION(dvi.dwMajorVersion, dvi.dwMinorVersion);
 			}
 		}
 
@@ -114,31 +115,31 @@ DWORD GetDllVersion(LPCTSTR lpszDllName)
 
 /*!
 	@brief アプリケーションアイコンの取得
-	
+
 	アイコンファイルが存在する場合はそこから，無い場合は
 	リソースファイルから取得する
-	
+
 	@param hInst [in] Instance Handle
 	@param nResource [in] デフォルトアイコン用Resource ID
 	@param szFile [in] アイコンファイル名
 	@param bSmall [in] true: small icon (16x16) / false: large icon (32x32)
-	
+
 	@return アイコンハンドル．失敗した場合はNULL．
-	
+
 	@date 2002.12.02 genta 新規作成
 	@date 2007.05.20 ryoji iniファイルパスを優先
 	@author genta
 */
-HICON GetAppIcon( HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSmall )
+HICON GetAppIcon(HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSmall)
 {
 	// サイズの設定
-	int size = ( bSmall ? 16 : 32 );
+	int size = (bSmall ? 16 : 32);
 
 	TCHAR szPath[_MAX_PATH];
 	HICON hIcon;
 
 	// ファイルからの読み込みをまず試みる
-	GetInidirOrExedir( szPath, szFile );
+	GetInidirOrExedir(szPath, szFile);
 
 	hIcon = (HICON)::LoadImage(
 		NULL,
@@ -148,7 +149,7 @@ HICON GetAppIcon( HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSma
 		size,
 		LR_SHARED | LR_LOADFROMFILE
 	);
-	if( hIcon != NULL ){
+	if (hIcon != NULL) {
 		return hIcon;
 	}
 
@@ -161,7 +162,7 @@ HICON GetAppIcon( HINSTANCE hInst, int nResource, const TCHAR* szFile, bool bSma
 		size,
 		LR_SHARED
 	);
-	
+
 	return hIcon;
 }
 
@@ -197,18 +198,18 @@ void GetAppVersionInfo(
 	static bool bLoad = false;
 	static DWORD dwVersionMS = 0;
 	static DWORD dwVersionLS = 0;
-	if( hInstance == NULL && bLoad ){
+	if (hInstance == NULL && bLoad) {
 		*pdwProductVersionMS = dwVersionMS;
 		*pdwProductVersionLS = dwVersionLS;
 		return;
 	}
-	if( NULL != ( hRSRC = ::FindResource( hInstance, MAKEINTRESOURCE(nVersionResourceID), RT_VERSION ) )
-	 && NULL != ( hgRSRC = ::LoadResource( hInstance, hRSRC ) )
-	 && NULL != ( pVVIH = (VS_VERSION_INFO_HEAD*)::LockResource( hgRSRC ) )
-	){
+	if (NULL != (hRSRC = ::FindResource(hInstance, MAKEINTRESOURCE(nVersionResourceID), RT_VERSION))
+		&& NULL != (hgRSRC = ::LoadResource(hInstance, hRSRC))
+		&& NULL != (pVVIH = (VS_VERSION_INFO_HEAD*)::LockResource(hgRSRC))
+		) {
 		*pdwProductVersionMS = pVVIH->Value.dwProductVersionMS;
 		*pdwProductVersionLS = pVVIH->Value.dwProductVersionLS;
-		if( hInstance == NULL ){
+		if (hInstance == NULL) {
 			dwVersionMS = pVVIH->Value.dwProductVersionMS;
 			dwVersionLS = pVVIH->Value.dwProductVersionLS;
 			bLoad = true;

@@ -32,19 +32,19 @@
 #include "types/CType.h" // CTypeConfig
 #include "env/CDocTypeManager.h"
 
-class CDocType{
+class CDocType {
 public:
 	//生成と破棄
 	CDocType(CEditDoc* pcDoc);
-	
+
 	//ロック機能	//	Nov. 29, 2000 genta 設定の一時変更時に拡張子による強制的な設定変更を無効にする
-	void LockDocumentType(){ m_nSettingTypeLocked = true; }
-	void UnlockDocumentType(){ m_nSettingTypeLocked = false; }
-	bool GetDocumentLockState(){ return m_nSettingTypeLocked; }
-	
+	void LockDocumentType() { m_nSettingTypeLocked = true; }
+	void UnlockDocumentType() { m_nSettingTypeLocked = false; }
+	bool GetDocumentLockState() { return m_nSettingTypeLocked; }
+
 	// 文書種別の設定と取得		// Nov. 23, 2000 genta
 	void SetDocumentType(CTypeConfig type, bool force, bool bTypeOnly = false);	//!< 文書種別の設定
-	void SetDocumentTypeIdx( int id = -1, bool force = false);
+	void SetDocumentTypeIdx(int id = -1, bool force = false);
 	CTypeConfig GetDocumentType() const					//!< 文書種別の取得
 	{
 		return m_nSettingType;

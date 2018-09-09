@@ -12,8 +12,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -22,7 +22,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -57,30 +57,30 @@ public:
 	~CImageListMgr();
 
 	bool Create(HINSTANCE hInstance);	//	生成
-	
+
 	/*! @brief アイコンの描画
-	
+
 		指定されたDCの指定された座標にアイコンを描画する．
-	
+
 		@param index [in] 描画するアイコン番号
 		@param dc [in] 描画するDevice Context
 		@param x [in] 描画するX座標
 		@param y [in] 描画するY座標
 		@param fstyle [in] 描画スタイル
-		
+
 		@date 2003.09.06 genta 背景の透過処理に伴い背景色指定削除
 	*/
-	bool Draw(int index, HDC dc, int x, int y, int fstyle ) const	//	描画
-	;
-	
+	bool Draw(int index, HDC dc, int x, int y, int fstyle) const	//	描画
+		;
+
 	//! アイコン数を返す
 	int  Count(void) const;	//	アイコン数
-	
+
 	//! アイコンの幅
 	int  cx(void) const { return m_cx; }
 	//! アイコンの高さ
 	int  cy(void) const { return m_cy; }
-	
+
 	//! アイコンを追加する
 	int Add(const TCHAR* szPath);
 
@@ -89,7 +89,7 @@ public:
 
 	/*!
 		イメージのToolBarへの登録
-	
+
 		@param hToolBar [in] 登録するToolBar
 		@param id [in] 登録する先頭アイコン番号
 
@@ -102,12 +102,12 @@ protected:
 	int m_cx;			//!<	width of icon
 	int m_cy;			//!<	height of icon
 	/*!	@brief 透過色
-	
+
 		描画を自前で行うため，透過色を覚えておく必要がある．
 		@date 2003.07.21 genta
 	*/
 	COLORREF m_cTrans;
-	
+
 	/*! アイコン用ビットマップを保持する
 		@date 2003.07.21 genta
 	*/
@@ -117,11 +117,11 @@ protected:
 
 	//	オリジナルテキストエディタからの描画関数
 	//	2003.08.27 Moca 背景を透過処理するので背景色の指定は不要に
-	void MyBitBlt( HDC drawdc, int nXDest, int nYDest, 
-					int nWidth, int nHeight, HBITMAP bmp,
-					int nXSrc, int nYSrc, COLORREF colToTransParent ) const;
-	void DitherBlt2( HDC drawdc, int nXDest, int nYDest, int nWidth, 
-                        int nHeight, HBITMAP bmp, int nXSrc, int nYSrc ) const;
+	void MyBitBlt(HDC drawdc, int nXDest, int nYDest,
+		int nWidth, int nHeight, HBITMAP bmp,
+		int nXSrc, int nYSrc, COLORREF colToTransParent) const;
+	void DitherBlt2(HDC drawdc, int nXDest, int nYDest, int nWidth,
+		int nHeight, HBITMAP bmp, int nXSrc, int nYSrc) const;
 
 	//! ビットマップを一行拡張する
 	void Extend(bool = true);

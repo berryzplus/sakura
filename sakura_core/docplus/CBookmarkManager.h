@@ -33,17 +33,17 @@ class CBregexp;
 #include "CSearchAgent.h"
 
 //! 行に付加するブックマーク情報
-class CLineBookmarked{
+class CLineBookmarked {
 public:
 	CLineBookmarked() : m_bBookmarked(false) { }
-	operator bool() const{ return m_bBookmarked; }
-	CLineBookmarked& operator=(bool b){ m_bBookmarked = b; return *this; }
+	operator bool() const { return m_bBookmarked; }
+	CLineBookmarked& operator=(bool b) { m_bBookmarked = b; return *this; }
 private:
 	bool m_bBookmarked;
 };
 
 //! 行のブックマーク情報の取得
-class CBookmarkGetter{
+class CBookmarkGetter {
 public:
 	CBookmarkGetter(const CDocLine* pcDocLine) : m_pcDocLine(pcDocLine) { }
 	bool IsBookmarked() const;
@@ -52,7 +52,7 @@ private:
 };
 
 //! 行のブックマーク情報の取得・設定
-class CBookmarkSetter : public CBookmarkGetter{
+class CBookmarkSetter : public CBookmarkGetter {
 public:
 	CBookmarkSetter(CDocLine* pcDocLine) : CBookmarkGetter(pcDocLine), m_pcDocLine(pcDocLine) { }
 	void SetBookmark(bool bFlag);
@@ -61,15 +61,15 @@ private:
 };
 
 //! 行全体のブックマーク情報の管理
-class CBookmarkManager{
+class CBookmarkManager {
 public:
 	CBookmarkManager(CDocLineMgr* pcDocLineMgr) : m_pcDocLineMgr(pcDocLineMgr) { }
 
 	void ResetAllBookMark();															//!< ブックマークの全解除
-	bool SearchBookMark( CLogicInt nLineNum, ESearchDirection , CLogicInt* pnLineNum );	//!< ブックマーク検索
-	void SetBookMarks( wchar_t* );														//!< 物理行番号のリストからまとめて行マーク
+	bool SearchBookMark(CLogicInt nLineNum, ESearchDirection, CLogicInt* pnLineNum);	//!< ブックマーク検索
+	void SetBookMarks(wchar_t*);														//!< 物理行番号のリストからまとめて行マーク
 	LPCWSTR GetBookMarks();																//!< 行マークされてる物理行番号のリストを作る
-	void MarkSearchWord( const CSearchStringPattern& );			//!< 検索条件に該当する行にブックマークをセットする
+	void MarkSearchWord(const CSearchStringPattern&);			//!< 検索条件に該当する行にブックマークをセットする
 
 private:
 	CDocLineMgr* m_pcDocLineMgr;

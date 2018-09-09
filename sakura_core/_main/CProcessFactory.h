@@ -33,11 +33,11 @@ class CProcess;
 */
 class CProcessFactory {
 public:
-	CProcess* Create( HINSTANCE hInstance, LPCTSTR lpCmdLine );
+	CProcess* Create(HINSTANCE hInstance, LPCTSTR lpCmdLine);
 protected:
 private:
 	bool IsValidVersion();
-	bool ProfileSelect( HINSTANCE, LPCTSTR );
+	bool ProfileSelect(HINSTANCE, LPCTSTR);
 	bool IsStartingControlProcess();
 	bool IsExistControlProcess();
 	bool StartControlProcess();

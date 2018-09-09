@@ -44,19 +44,19 @@ struct DocLineReplaceArg {
 クラスの宣言
 -----------------------------------------------------------------------*/
 //2007.09.30 kobake WhereCurrentWord_2 を CWordParse に移動
-class CDocLineMgr{
+class CDocLineMgr {
 public:
 	//コンストラクタ・デストラクタ
 	CDocLineMgr();
 	~CDocLineMgr();
 
 	//状態
-	CLogicInt GetLineCount() const{ return m_nLines; }	//!< 全行数を返す
+	CLogicInt GetLineCount() const { return m_nLines; }	//!< 全行数を返す
 
 	//行データへのアクセス
-	const CDocLine* GetLine( CLogicInt nLine ) const;						//!< 指定行を取得
-	CDocLine* GetLine( CLogicInt nLine ){
-		return const_cast<CDocLine*>(const_cast<CDocLine*>(static_cast<const CDocLineMgr*>(this)->GetLine( nLine )));
+	const CDocLine* GetLine(CLogicInt nLine) const;						//!< 指定行を取得
+	CDocLine* GetLine(CLogicInt nLine) {
+		return const_cast<CDocLine*>(const_cast<CDocLine*>(static_cast<const CDocLineMgr*>(this)->GetLine(nLine)));
 	}
 	const CDocLine* GetDocLineTop() const { return m_pDocLineTop; }		//!< 先頭行を取得
 	CDocLine* GetDocLineTop() { return m_pDocLineTop; }		//!< 先頭行を取得
@@ -67,7 +67,7 @@ public:
 	CDocLine* InsertNewLine(CDocLine* pPos);	//!< pPosの直前に新しい行を挿入
 	CDocLine* AddNewLine();						//!< 最下部に新しい行を挿入
 	void DeleteAllLine();						//!< 全ての行を削除する
-	void DeleteLine( CDocLine* );				//!< 行の削除
+	void DeleteLine(CDocLine*);				//!< 行の削除
 
 	//デバッグ
 	void DUMP();

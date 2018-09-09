@@ -28,7 +28,7 @@
 
 
 //!全角カナ→半角カナ
-class CConvert_ZenkataToHankata : public CConvert{
+class CConvert_ZenkataToHankata : public CConvert {
 public:
 	bool DoConvert(CNativeW* pcData);
 };

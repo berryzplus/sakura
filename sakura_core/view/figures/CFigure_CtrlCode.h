@@ -27,7 +27,7 @@
 #include "view/figures/CFigureStrategy.h"
 
 //! コントロールコード描画
-class CFigure_CtrlCode : public CFigureSpace{
+class CFigure_CtrlCode : public CFigureSpace {
 public:
 	//traits
 	bool Match(const wchar_t* pText, int nTextLen) const;
@@ -35,31 +35,31 @@ public:
 	//action
 	bool DrawImp(SColorStrategyInfo* pInfo);
 	virtual void DispSpaceEx(CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans, int width) const;
-	virtual wchar_t GetAlternateChar() const{ return L'･'; }
-	void DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans) const{assert(0);};
-	EColorIndexType GetColorIdx(void) const{ return COLORIDX_CTRLCODE; }
+	virtual wchar_t GetAlternateChar() const { return L'･'; }
+	void DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans) const { assert(0); };
+	EColorIndexType GetColorIdx(void) const { return COLORIDX_CTRLCODE; }
 };
 
 //! バイナリ半角描画
-class CFigure_HanBinary : public CFigure_CtrlCode{
+class CFigure_HanBinary : public CFigure_CtrlCode {
 public:
 	//traits
 	bool Match(const wchar_t* pText, int nTextLen) const;
 
 	//action
-	virtual wchar_t GetAlternateChar() const{ return L'〓'; }
-	EColorIndexType GetColorIdx(void) const{ return COLORIDX_CTRLCODE; }
+	virtual wchar_t GetAlternateChar() const { return L'〓'; }
+	EColorIndexType GetColorIdx(void) const { return COLORIDX_CTRLCODE; }
 };
 
 //! バイナリ全角描画
-class CFigure_ZenBinary : public CFigure_CtrlCode{
+class CFigure_ZenBinary : public CFigure_CtrlCode {
 public:
 	//traits
 	bool Match(const wchar_t* pText, int nTextLen) const;
 
 	//action
-	virtual wchar_t GetAlternateChar() const{ return L'〓'; }
-	EColorIndexType GetColorIdx(void) const{ return COLORIDX_CTRLCODE; }
+	virtual wchar_t GetAlternateChar() const { return L'〓'; }
+	EColorIndexType GetColorIdx(void) const { return COLORIDX_CTRLCODE; }
 };
 
 #endif /* SAKURA_CFIGURE_CTRLCODE_9CEA1624_5811_4A1D_8607_1FA8A8439D15_H_ */

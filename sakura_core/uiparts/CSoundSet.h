@@ -24,12 +24,12 @@
 #ifndef SAKURA_CSOUNDSET_FFF3DED9_DD53_49CD_B0FF_7A9AB2D2BE719_H_
 #define SAKURA_CSOUNDSET_FFF3DED9_DD53_49CD_B0FF_7A9AB2D2BE719_H_
 
-class CSoundSet{
+class CSoundSet {
 public:
 	CSoundSet() : m_nMuteCount(0) { }
 	void NeedlessToSaveBeep(); //上書き不要ビープ音
-	void MuteOn(){ m_nMuteCount++; }
-	void MuteOff(){ m_nMuteCount--; }
+	void MuteOn() { m_nMuteCount++; }
+	void MuteOff() { m_nMuteCount--; }
 private:
 	int	m_nMuteCount;
 };

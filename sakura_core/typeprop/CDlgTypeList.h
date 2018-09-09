@@ -30,27 +30,27 @@ class CDlgTypeList : public CDialog
 {
 public:
 	// 型
-	struct SResult{
+	struct SResult {
 		CTypeConfig	cDocumentType;	//!< 文書種類
 		bool			bTempChange;	//!< 旧PROP_TEMPCHANGE_FLAG
 	};
 
 public:
 	// インターフェース
-	int DoModal( HINSTANCE, HWND, SResult* );	/* モーダルダイアログの表示 */
+	int DoModal(HINSTANCE, HWND, SResult*);	/* モーダルダイアログの表示 */
 
 protected:
 	// 実装ヘルパ関数
-	BOOL OnLbnDblclk( int );
-	BOOL OnBnClicked( int );
-	BOOL OnActivate( WPARAM wParam, LPARAM lParam );
-	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );
+	BOOL OnLbnDblclk(int);
+	BOOL OnBnClicked(int);
+	BOOL OnActivate(WPARAM wParam, LPARAM lParam);
+	INT_PTR DispatchEvent(HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam);
 	void SetData();	/* ダイアログデータの設定 */
 	void SetData(int);	/* ダイアログデータの設定 */
 	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
-	bool Import( void );			// 2010/4/12 Uchi
-	bool Export( void );			// 2010/4/12 Uchi
-	bool InitializeType( void );	// 2010/4/12 Uchi
+	bool Import(void);			// 2010/4/12 Uchi
+	bool Export(void);			// 2010/4/12 Uchi
+	bool InitializeType(void);	// 2010/4/12 Uchi
 	bool CopyType();
 	bool UpType();
 	bool DownType();
@@ -61,9 +61,9 @@ protected:
 private:
 	CTypeConfig				m_nSettingType;
 	// 関連付け状態
-	bool m_bRegistryChecked[ MAX_TYPES ];	//レジストリ確認 未／済
-	bool m_bExtRMenu[ MAX_TYPES ];			//右クリック登録 未／済
-	bool m_bExtDblClick[ MAX_TYPES ];		//ダブルクリック 未／済
+	bool m_bRegistryChecked[MAX_TYPES];	//レジストリ確認 未／済
+	bool m_bExtRMenu[MAX_TYPES];			//右クリック登録 未／済
+	bool m_bExtDblClick[MAX_TYPES];		//ダブルクリック 未／済
 	bool m_bAlertFileAssociation;			//関連付け警告の表示フラグ
 	bool m_bEnableTempChange;				//一時適用の有効化
 };

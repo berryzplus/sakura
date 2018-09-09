@@ -21,7 +21,7 @@ static ACHAR* CreateMbString(
 )
 {
 	//必要な領域サイズを取得
-	int nNewLen=WideCharToMultiByte(
+	int nNewLen = WideCharToMultiByte(
 		CP_SJIS,				// 2008/5/12 Uchi
 		0,
 		pWideString,
@@ -33,7 +33,7 @@ static ACHAR* CreateMbString(
 	);
 
 	//領域を確保
-	ACHAR* buf=new ACHAR[nNewLen+1];
+	ACHAR* buf = new ACHAR[nNewLen + 1];
 
 	//変換
 	nNewLen = WideCharToMultiByte(
@@ -46,10 +46,10 @@ static ACHAR* CreateMbString(
 		NULL,
 		NULL
 	);
-	buf[nNewLen]='\0';
+	buf[nNewLen] = '\0';
 
 	//結果
-	if(pnMbLength)*pnMbLength=nNewLen;
+	if (pnMbLength)*pnMbLength = nNewLen;
 	return buf;
 }
 
@@ -64,7 +64,7 @@ static void DestroyMbString(ACHAR* pMbString)
 
 
 
-namespace ApiWrap{
+namespace ApiWrap {
 
 
 
@@ -76,7 +76,7 @@ namespace ApiWrap{
 		@param DirPath
 			有効なパス名を指定する、null で終わる文字列へのポインタを指定します。
 			パスの最後のコンポーネントがファイル名ではなくディレクトリである場合、
-			文字列の最後に円記号（\）を記述しなければなりません。 
+			文字列の最後に円記号（\）を記述しなければなりません。
 
 		@returns
 			関数が成功すると、TRUE が返ります。
@@ -94,22 +94,22 @@ namespace ApiWrap{
 	*/
 	BOOL MakeSureDirectoryPathExistsW(LPCWSTR szDirPath)
 	{
-		const wchar_t* p=szDirPath-1;
+		const wchar_t* p = szDirPath - 1;
 		for (;;) {
-			p=wcschr(p+1,L'\\');
-			if(!p)break; //'\\'を走査し終わったので終了
+			p = wcschr(p + 1, L'\\');
+			if (!p)break; //'\\'を走査し終わったので終了
 
 			//先頭からpまでの部分文字列 -> szBuf
 			wchar_t szBuf[_MAX_PATH];
-			wcsncpy_s(szBuf,_countof(szBuf),szDirPath,p-szDirPath);
+			wcsncpy_s(szBuf, _countof(szBuf), szDirPath, p - szDirPath);
 
 			//存在するか
-			int nAcc = _waccess(szBuf,0);
-			if(nAcc==0)continue; //存在するなら、次へ
+			int nAcc = _waccess(szBuf, 0);
+			if (nAcc == 0)continue; //存在するなら、次へ
 
 			//ディレクトリ作成
 			int nDir = _wmkdir(szBuf);
-			if(nDir==-1)return FALSE; //エラーが発生したので、FALSEを返す
+			if (nDir == -1)return FALSE; //エラーが発生したので、FALSEを返す
 		}
 		return TRUE;
 	}
@@ -138,34 +138,34 @@ namespace ApiWrap{
 		const int*		lpDx
 	)
 	{
-		if(lpwString==NULL || *lpwString==L'\0')return FALSE;
-		if(cbCount>1024)return FALSE;
+		if (lpwString == NULL || *lpwString == L'\0')return FALSE;
+		if (cbCount > 1024)return FALSE;
 
-		int nNewLength=0;
+		int nNewLength = 0;
 		//ANSI文字列を生成
 		ACHAR* pNewString = CreateMbString(
 			lpwString,
-			cbCount==-1?wcslen(lpwString):cbCount,
+			cbCount == -1 ? wcslen(lpwString) : cbCount,
 			&nNewLength
 		);
 
 		//文字間隔配列を生成
 		int nHankakuDx;
-		const int* lpDxNew=NULL;
-		if(lpDx){
-			if(WCODE::IsHankaku(lpwString[0]))nHankakuDx=lpDx[0];
-			else nHankakuDx=lpDx[0]/2;
-			static int aDx[1024]={0}; //1024半角文字まで
-			if(aDx[0]!=nHankakuDx){
-				for(int i=0;i<_countof(aDx);i++){
-					aDx[i]=nHankakuDx;
+		const int* lpDxNew = NULL;
+		if (lpDx) {
+			if (WCODE::IsHankaku(lpwString[0]))nHankakuDx = lpDx[0];
+			else nHankakuDx = lpDx[0] / 2;
+			static int aDx[1024] = { 0 }; //1024半角文字まで
+			if (aDx[0] != nHankakuDx) {
+				for (int i = 0; i < _countof(aDx); i++) {
+					aDx[i] = nHankakuDx;
 				}
 			}
-			lpDxNew=aDx;
+			lpDxNew = aDx;
 		}
 
 		//APIコール
-		BOOL ret=::ExtTextOut(hdc,x,y,fuOptions,lprc,pNewString,nNewLength,lpDxNew);
+		BOOL ret = ::ExtTextOut(hdc, x, y, fuOptions, lprc, pNewString, nNewLength, lpDxNew);
 
 		//後始末
 		DestroyMbString(pNewString);
@@ -184,13 +184,13 @@ namespace ApiWrap{
 		int		cbString
 	)
 	{
-		int nNewLength=0;
+		int nNewLength = 0;
 		ACHAR* pNewString = CreateMbString(
 			lpwString,
-			cbString==-1?wcslen(lpwString):cbString,
+			cbString == -1 ? wcslen(lpwString) : cbString,
 			&nNewLength
 		);
-		BOOL ret=::TextOut(hdc,nXStart,nYStart,pNewString,nNewLength);
+		BOOL ret = ::TextOut(hdc, nXStart, nYStart, pNewString, nNewLength);
 		DestroyMbString(pNewString);
 		DEBUG_SETPIXEL(hdc);
 		return ret;
@@ -203,7 +203,7 @@ namespace ApiWrap{
 	)
 	{
 		//$$ サロゲートペア無視
-		if(*lpsz)return const_cast<LPWSTR>(lpsz+1);
+		if (*lpsz)return const_cast<LPWSTR>(lpsz + 1);
 		else return const_cast<LPWSTR>(lpsz);
 	}
 
@@ -213,24 +213,24 @@ namespace ApiWrap{
 	)
 	{
 		//$$ サロゲートペア無視
-		if(lpszCurrent>lpszStart)return const_cast<LPWSTR>(lpszCurrent-1);
+		if (lpszCurrent > lpszStart)return const_cast<LPWSTR>(lpszCurrent - 1);
 		else return const_cast<LPWSTR>(lpszStart);
 	}
 
 #if 1
 	BOOL GetTextExtentPoint32W_AnyBuild(
-		HDC		hdc, 
-		LPCWSTR	lpString, 
-		int		cbString, 
+		HDC		hdc,
+		LPCWSTR	lpString,
+		int		cbString,
 		LPSIZE	lpSize
 	)
 	{
 		vector<char> buf;
-		wcstombs_vector(lpString,cbString,&buf);
+		wcstombs_vector(lpString, cbString, &buf);
 		return GetTextExtentPoint32A(
 			hdc,
 			&buf[0],
-			buf.size()-1,
+			buf.size() - 1,
 			lpSize
 		);
 	}
@@ -250,13 +250,13 @@ namespace ApiWrap{
 	)
 	{
 		//まずはACHARでロード
-		int nTmpCnt = nBufferCount*2+2;
+		int nTmpCnt = nBufferCount * 2 + 2;
 		ACHAR* pTmp = new ACHAR[nTmpCnt];
-		int ret=LoadStringA(hInstance, uID, pTmp, nTmpCnt);
+		int ret = LoadStringA(hInstance, uID, pTmp, nTmpCnt);
 
 		//WCHARに変換
 		mbstowcs2(lpBuffer, pTmp, nBufferCount);
-		int ret2=wcslen(lpBuffer);
+		int ret2 = wcslen(lpBuffer);
 
 		//後始末
 		delete[] pTmp;
@@ -277,29 +277,29 @@ namespace ApiWrap{
 		> Vista で Aero を OFF にすると SetPixel がうまく動かないそうです。
 		> しかも、SP1 でも修正されていないとか。
 	*/
-	void SetPixelSurely(HDC hdc,int x,int y,COLORREF c)
+	void SetPixelSurely(HDC hdc, int x, int y, COLORREF c)
 	{
 		if (!IsWinVista_or_later()) {
-		//Vistaより前：SetPixel直呼び出し
-			::SetPixel(hdc,x,y,c);
+			//Vistaより前：SetPixel直呼び出し
+			::SetPixel(hdc, x, y, c);
 		}
 		else {
-		//Vista以降：SetPixelエミュレート
+			//Vista以降：SetPixelエミュレート
 			static HPEN hPen = NULL;
 			static COLORREF clrPen = 0;
-			if(hPen && c!=clrPen){
+			if (hPen && c != clrPen) {
 				DeleteObject(hPen);
 				hPen = NULL;
 			}
 			//ペン生成
-			if(!hPen){
-				hPen = CreatePen(PS_SOLID,1,clrPen = c);
+			if (!hPen) {
+				hPen = CreatePen(PS_SOLID, 1, clrPen = c);
 			}
 			//描画
-			HPEN hpnOld = (HPEN)SelectObject(hdc,hPen);
-			::MoveToEx(hdc,x,y,NULL);
-			::LineTo(hdc,x+1,y+1);
-			SelectObject(hdc,hpnOld);
+			HPEN hpnOld = (HPEN)SelectObject(hdc, hPen);
+			::MoveToEx(hdc, x, y, NULL);
+			::LineTo(hdc, x + 1, y + 1);
+			SelectObject(hdc, hpnOld);
 		}
 	}
 }

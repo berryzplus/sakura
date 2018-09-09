@@ -27,14 +27,14 @@
 #include "view/figures/CFigureStrategy.h"
 
 //! 全角スペース描画
-class CFigure_ZenSpace : public CFigureSpace{
+class CFigure_ZenSpace : public CFigureSpace {
 public:
 	//traits
 	bool Match(const wchar_t* pText, int nTextLen) const;
 
 	//action
 	void DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans) const;
-	EColorIndexType GetColorIdx(void) const{ return COLORIDX_ZENSPACE; }
+	EColorIndexType GetColorIdx(void) const { return COLORIDX_ZENSPACE; }
 };
 
 #endif /* SAKURA_CFIGURE_ZENSPACE_DFBCDF91_0C96_4195_86C4_D0A3D480E1EB_H_ */

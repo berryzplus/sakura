@@ -46,11 +46,11 @@
 #include "util/shell.h"
 #include "sakura_rc.h"
 
-int	CPropCommon::SearchIntArr( int nKey, int* pnArr, int nArrNum )
+int	CPropCommon::SearchIntArr(int nKey, int* pnArr, int nArrNum)
 {
 	int i;
-	for( i = 0; i < nArrNum; ++i ){
-		if( nKey == pnArr[i] ){
+	for (i = 0; i < nArrNum; ++i) {
+		if (nKey == pnArr[i]) {
 			return i;
 		}
 	}
@@ -69,27 +69,29 @@ int	CPropCommon::SearchIntArr( int nKey, int* pnArr, int nArrNum )
 	@param lParam パラメータ2
 */
 INT_PTR CPropCommon::DlgProc(
-	INT_PTR (CPropCommon::*DispatchPage)( HWND, UINT, WPARAM, LPARAM ),
+	INT_PTR(CPropCommon::*DispatchPage)(HWND, UINT, WPARAM, LPARAM),
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 )
 {
 	PROPSHEETPAGE*	pPsp;
 	CPropCommon*	pCPropCommon;
-	switch( uMsg ){
+	switch (uMsg) {
 	case WM_INITDIALOG:
 		pPsp = (PROPSHEETPAGE*)lParam;
-		pCPropCommon = ( CPropCommon* )(pPsp->lParam);
-		if( NULL != pCPropCommon ){
-			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, pPsp->lParam );
-		}else{
+		pCPropCommon = (CPropCommon*)(pPsp->lParam);
+		if (NULL != pCPropCommon) {
+			return (pCPropCommon->*DispatchPage)(hwndDlg, uMsg, wParam, pPsp->lParam);
+		}
+		else {
 			return FALSE;
 		}
 	default:
 		// Modified by KEITA for WIN64 2003.9.6
-		pCPropCommon = ( CPropCommon* )::GetWindowLongPtr( hwndDlg, DWLP_USER );
-		if( NULL != pCPropCommon ){
-			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, lParam );
-		}else{
+		pCPropCommon = (CPropCommon*)::GetWindowLongPtr(hwndDlg, DWLP_USER);
+		if (NULL != pCPropCommon) {
+			return (pCPropCommon->*DispatchPage)(hwndDlg, uMsg, wParam, lParam);
+		}
+		else {
 			return FALSE;
 		}
 	}
@@ -98,25 +100,27 @@ INT_PTR CPropCommon::DlgProc(
 
 // 独立ウィンドウ用 2013.3.14 aroka
 INT_PTR CPropCommon::DlgProc2(
-	INT_PTR (CPropCommon::*DispatchPage)( HWND, UINT, WPARAM, LPARAM ),
+	INT_PTR(CPropCommon::*DispatchPage)(HWND, UINT, WPARAM, LPARAM),
 	HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 )
 {
 	CPropCommon*	pCPropCommon;
-	switch( uMsg ){
+	switch (uMsg) {
 	case WM_INITDIALOG:
-		pCPropCommon = ( CPropCommon* )(lParam);
-		if( NULL != pCPropCommon ){
-			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, IDOK, lParam );
-		}else{
+		pCPropCommon = (CPropCommon*)(lParam);
+		if (NULL != pCPropCommon) {
+			return (pCPropCommon->*DispatchPage)(hwndDlg, uMsg, IDOK, lParam);
+		}
+		else {
 			return FALSE;
 		}
 	default:
 		// Modified by KEITA for WIN64 2003.9.6
-		pCPropCommon = ( CPropCommon* )::GetWindowLongPtr( hwndDlg, DWLP_USER );
-		if( NULL != pCPropCommon ){
-			return (pCPropCommon->*DispatchPage)( hwndDlg, uMsg, wParam, lParam );
-		}else{
+		pCPropCommon = (CPropCommon*)::GetWindowLongPtr(hwndDlg, DWLP_USER);
+		if (NULL != pCPropCommon) {
+			return (pCPropCommon->*DispatchPage)(hwndDlg, uMsg, wParam, lParam);
+		}
+		else {
 			return FALSE;
 		}
 	}
@@ -126,31 +130,31 @@ INT_PTR CPropCommon::DlgProc2(
 CPropCommon::CPropCommon()
 {
 	{
-		assert( sizeof(CPropGeneral)   - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropWin)       - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropMainMenu)  - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropToolbar)   - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropTab)       - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropStatusbar) - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropEdit)      - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropFile)      - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropFileName)  - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropBackup)    - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropFormat)    - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropGrep)      - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropKeybind)   - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropCustmenu)  - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropKeyword)   - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropHelper)    - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropMacro)     - sizeof(CPropCommon) == 0 );
-		assert( sizeof(CPropPlugin)    - sizeof(CPropCommon) == 0 );
+		assert(sizeof(CPropGeneral) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropWin) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropMainMenu) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropToolbar) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropTab) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropStatusbar) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropEdit) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropFile) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropFileName) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropBackup) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropFormat) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropGrep) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropKeybind) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropCustmenu) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropKeyword) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropHelper) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropMacro) - sizeof(CPropCommon) == 0);
+		assert(sizeof(CPropPlugin) - sizeof(CPropCommon) == 0);
 	}
 
 	/* 共有データ構造体のアドレスを返す */
 	m_pShareData = &GetDllShareData();
 
 	m_hwndParent = NULL;	/* オーナーウィンドウのハンドル */
-	m_hwndThis  = NULL;		/* このダイアログのハンドル */
+	m_hwndThis = NULL;		/* このダイアログのハンドル */
 	m_nPageNum = ID_PROPCOM_PAGENUM_GENERAL;
 	m_nKeywordSet1 = -1;
 
@@ -171,7 +175,7 @@ CPropCommon::~CPropCommon()
 
 /* 初期化 */
 //@@@ 2002.01.03 YAZAKI m_tbMyButtonなどをCShareDataからCMenuDrawerへ移動したことによる修正。
-void CPropCommon::Create( HWND hwndParent, CImageListMgr* pcIcons, CMenuDrawer* pMenuDrawer )
+void CPropCommon::Create(HWND hwndParent, CImageListMgr* pcIcons, CMenuDrawer* pMenuDrawer)
 {
 	m_hwndParent = hwndParent;	/* オーナーウィンドウのハンドル */
 	m_pcIcons = pcIcons;
@@ -179,7 +183,7 @@ void CPropCommon::Create( HWND hwndParent, CImageListMgr* pcIcons, CMenuDrawer* 
 	// 2007.11.02 ryoji マクロ設定を変更したあと、画面を閉じないでカスタムメニュー、ツールバー、
 	//                  キー割り当ての画面に切り替えた時に各画面でマクロ設定の変更が反映されるよう、
 	//                  m_Common.m_sMacro.m_MacroTable（ローカルメンバ）でm_cLookupを初期化する
-	m_cLookup.Init( m_Common.m_sMacro.m_MacroTable, &m_Common );	//	機能名・番号resolveクラス．
+	m_cLookup.Init(m_Common.m_sMacro.m_MacroTable, &m_Common);	//	機能名・番号resolveクラス．
 
 //@@@ 2002.01.03 YAZAKI m_tbMyButtonなどをCShareDataからCMenuDrawerへ移動したことによる修正。
 	m_pcMenuDrawer = pMenuDrawer;
@@ -200,7 +204,7 @@ void CPropCommon::Create( HWND hwndParent, CImageListMgr* pcIcons, CMenuDrawer* 
 struct ComPropSheetInfo {
 	int m_nTabNameId;										//!< TABの表示名
 	unsigned int resId;										//!< Property sheetに対応するDialog resource
-	INT_PTR (CALLBACK *DProc)(HWND, UINT, WPARAM, LPARAM);	//!< Dialog Procedure
+	INT_PTR(CALLBACK *DProc)(HWND, UINT, WPARAM, LPARAM);	//!< Dialog Procedure
 };
 //	To Here Jun. 2, 2001 genta
 
@@ -208,7 +212,7 @@ struct ComPropSheetInfo {
 /*! プロパティシートの作成
 	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 */
-INT_PTR CPropCommon::DoPropertySheet( int nPageNum, bool bTrayProc )
+INT_PTR CPropCommon::DoPropertySheet(int nPageNum, bool bTrayProc)
 {
 	INT_PTR				nRet;
 	int					nIdx;
@@ -243,56 +247,58 @@ INT_PTR CPropCommon::DoPropertySheet( int nPageNum, bool bTrayProc )
 
 	std::tstring		sTabname[_countof(ComPropSheetInfoList)];
 	PROPSHEETPAGE		psp[_countof(ComPropSheetInfoList)];
-	for( nIdx = 0; nIdx < _countof(ComPropSheetInfoList); nIdx++ ){
+	for (nIdx = 0; nIdx < _countof(ComPropSheetInfoList); nIdx++) {
 		sTabname[nIdx] = LS(ComPropSheetInfoList[nIdx].m_nTabNameId);
 
 		PROPSHEETPAGE *p = &psp[nIdx];
-		memset_raw( p, 0, sizeof_raw( *p ) );
-		p->dwSize      = sizeof_raw( *p );
-		p->dwFlags     = PSP_USETITLE | PSP_HASHELP;
-		p->hInstance   = CSelectLang::getLangRsrcInstance();
-		p->pszTemplate = MAKEINTRESOURCE( ComPropSheetInfoList[nIdx].resId );
-		p->pszIcon     = NULL;
-		p->pfnDlgProc  = ComPropSheetInfoList[nIdx].DProc;
-		p->pszTitle    = sTabname[nIdx].c_str();
-		p->lParam      = (LPARAM)this;
+		memset_raw(p, 0, sizeof_raw(*p));
+		p->dwSize = sizeof_raw(*p);
+		p->dwFlags = PSP_USETITLE | PSP_HASHELP;
+		p->hInstance = CSelectLang::getLangRsrcInstance();
+		p->pszTemplate = MAKEINTRESOURCE(ComPropSheetInfoList[nIdx].resId);
+		p->pszIcon = NULL;
+		p->pfnDlgProc = ComPropSheetInfoList[nIdx].DProc;
+		p->pszTitle = sTabname[nIdx].c_str();
+		p->lParam = (LPARAM)this;
 		p->pfnCallback = NULL;
 	}
 	//	To Here Jun. 2, 2001 genta
 
 	PROPSHEETHEADER		psh;
-	memset_raw( &psh, 0, sizeof_raw( psh ) );
-	
+	memset_raw(&psh, 0, sizeof_raw(psh));
+
 	//	Jun. 29, 2002 こおり
 	//	Windows 95対策．Property SheetのサイズをWindows95が認識できる物に固定する．
 	psh.dwSize = sizeof_old_PROPSHEETHEADER;
 
 	//	JEPROtest Sept. 30, 2000 共通設定の隠れ[適用]ボタンの正体はここ。行頭のコメントアウトを入れ替えてみればわかる
-	psh.dwFlags    = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE | PSH_USEPAGELANG;
+	psh.dwFlags = PSH_NOAPPLYNOW | PSH_PROPSHEETPAGE | PSH_USEPAGELANG;
 	psh.hwndParent = m_hwndParent;
-	psh.hInstance  = CSelectLang::getLangRsrcInstance();
-	psh.pszIcon    = NULL;
-	psh.pszCaption = LS( STR_PROPCOMMON );	//_T("共通設定");
-	psh.nPages     = nIdx;
+	psh.hInstance = CSelectLang::getLangRsrcInstance();
+	psh.pszIcon = NULL;
+	psh.pszCaption = LS(STR_PROPCOMMON);	//_T("共通設定");
+	psh.nPages = nIdx;
 
 	//- 20020106 aroka # psh.nStartPage は unsigned なので負にならない
-	if( -1 == nPageNum ){
+	if (-1 == nPageNum) {
 		psh.nStartPage = m_nPageNum;
-	}else
-	if( 0 > nPageNum ){			//- 20020106 aroka
-		psh.nStartPage = 0;
-	}else{
-		psh.nStartPage = nPageNum;
 	}
-	if( psh.nPages - 1 < psh.nStartPage ){
+	else
+		if (0 > nPageNum) {			//- 20020106 aroka
+			psh.nStartPage = 0;
+		}
+		else {
+			psh.nStartPage = nPageNum;
+		}
+	if (psh.nPages - 1 < psh.nStartPage) {
 		psh.nStartPage = psh.nPages - 1;
 	}
 
 	psh.ppsp = psp;
 	psh.pfnCallback = NULL;
 
-	nRet = MyPropertySheet( &psh );	// 2007.05.24 ryoji 独自拡張プロパティシート
-	if( -1 == nRet ){
+	nRet = MyPropertySheet(&psh);	// 2007.05.24 ryoji 独自拡張プロパティシート
+	if (-1 == nRet) {
 		TCHAR*	pszMsgBuf;
 		::FormatMessage(
 			FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -311,7 +317,7 @@ INT_PTR CPropCommon::DoPropertySheet( int nPageNum, bool bTrayProc )
 			psh.nStartPage,
 			pszMsgBuf
 		);
-		::LocalFree( pszMsgBuf );
+		::LocalFree(pszMsgBuf);
 	}
 
 	return nRet;
@@ -324,31 +330,31 @@ INT_PTR CPropCommon::DoPropertySheet( int nPageNum, bool bTrayProc )
 
 	@date 2002.12.11 Moca CEditDoc::OpenPropertySheetから移動
 */
-void CPropCommon::InitData( const int* tempTypeKeywordSet, const TCHAR* name, const TCHAR* exts )
+void CPropCommon::InitData(const int* tempTypeKeywordSet, const TCHAR* name, const TCHAR* exts)
 {
 	m_Common = m_pShareData->m_Common;
 	m_tempTypeName[0] = _T('\0');
 	m_tempTypeExts[0] = _T('\0');
 
 	//2002/04/25 YAZAKI STypeConfig全体を保持する必要はない。
-	if( tempTypeKeywordSet ){
+	if (tempTypeKeywordSet) {
 		m_nKeywordSet1 = tempTypeKeywordSet[0];
 		auto_strcpy(m_tempTypeName, name);
 		auto_strcpy(m_tempTypeExts, exts);
 		SKeywordSetIndex indexs;
 		indexs.typeId = -1;
-		for( int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++ ){
+		for (int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++) {
 			indexs.index[j] = tempTypeKeywordSet[j];
 		}
 		m_Types_nKeyWordSetIdx.push_back(indexs);
 	}
 	int i;
-	for( i = 0; i < GetDllShareData().m_nTypesCount; ++i ){
+	for (i = 0; i < GetDllShareData().m_nTypesCount; ++i) {
 		SKeywordSetIndex indexs;
 		STypeConfig type;
 		CDocTypeManager().GetTypeConfig(CTypeConfig(i), type);
 		indexs.typeId = type.m_id;
-		for( int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++ ){
+		for (int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++) {
 			indexs.index[j] = type.m_nKeyWordSetIdx[j];
 		}
 		m_Types_nKeyWordSetIdx.push_back(indexs);
@@ -360,27 +366,27 @@ void CPropCommon::InitData( const int* tempTypeKeywordSet, const TCHAR* name, co
 	@note ShareDataにコピーするだけなので，更新要求などは，利用する側で処理してもらう
 	@date 2002.12.11 Moca CEditDoc::OpenPropertySheetから移動
 */
-void CPropCommon::ApplyData( int* tempTypeKeywordSet )
+void CPropCommon::ApplyData(int* tempTypeKeywordSet)
 {
 	m_pShareData->m_Common = m_Common;
 
 	int i;
 	const int nSize = (int)m_Types_nKeyWordSetIdx.size();
 	int nBegin = 0;
-	if( tempTypeKeywordSet ){
-		for( int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++ ){
+	if (tempTypeKeywordSet) {
+		for (int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++) {
 			tempTypeKeywordSet[j] = m_Types_nKeyWordSetIdx[0].index[j];
 		}
 		nBegin = 1;
 	}
-	for( i = nBegin; i < nSize; ++i ){
-		CTypeConfig configIdx = CDocTypeManager().GetDocumentTypeOfId( m_Types_nKeyWordSetIdx[i].typeId );
-		if( configIdx.IsValidType() ){
+	for (i = nBegin; i < nSize; ++i) {
+		CTypeConfig configIdx = CDocTypeManager().GetDocumentTypeOfId(m_Types_nKeyWordSetIdx[i].typeId);
+		if (configIdx.IsValidType()) {
 			STypeConfig type;
 			CDocTypeManager().GetTypeConfig(configIdx, type);
 			//2002/04/25 YAZAKI STypeConfig全体を保持する必要はない。
 			/* 変更された設定値のコピー */
-			for( int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++ ){
+			for (int j = 0; j < MAX_KEYWORDSET_PER_TYPE; j++) {
 				type.m_nKeyWordSetIdx[j] = m_Types_nKeyWordSetIdx[i].index[j];
 			}
 			CDocTypeManager().SetTypeConfig(configIdx, type);
@@ -392,10 +398,10 @@ void CPropCommon::ApplyData( int* tempTypeKeywordSet )
 
 /* ヘルプ */
 //Stonee, 2001/05/18 機能番号からヘルプトピック番号を調べるようにした
-void CPropCommon::OnHelp( HWND hwndParent, int nPageID )
+void CPropCommon::OnHelp(HWND hwndParent, int nPageID)
 {
 	int		nContextID;
-	switch( nPageID ){
+	switch (nPageID) {
 	case IDD_PROP_GENERAL:
 		nContextID = ::FuncID_To_HelpContextID(F_OPTION_GENERAL);
 		break;
@@ -405,11 +411,11 @@ void CPropCommon::OnHelp( HWND hwndParent, int nPageID )
 	case IDD_PROP_FILE:
 		nContextID = ::FuncID_To_HelpContextID(F_OPTION_FILE);
 		break;
-//	Sept. 10, 2000 JEPRO ID名を実際の名前に変更するため以下の行はコメントアウト
-//	変更は少し後の行(Sept. 9, 2000)で行っている
-//	case IDD_PROP1P5:
-//		nContextID = 84;
-//		break;
+		//	Sept. 10, 2000 JEPRO ID名を実際の名前に変更するため以下の行はコメントアウト
+		//	変更は少し後の行(Sept. 9, 2000)で行っている
+		//	case IDD_PROP1P5:
+		//		nContextID = 84;
+		//		break;
 	case IDD_PROP_TOOLBAR:
 		nContextID = ::FuncID_To_HelpContextID(F_OPTION_TOOLBAR);
 		break;
@@ -423,7 +429,7 @@ void CPropCommon::OnHelp( HWND hwndParent, int nPageID )
 		nContextID = ::FuncID_To_HelpContextID(F_OPTION_HELPER);
 		break;
 
-	// From Here Sept. 9, 2000 JEPRO 共通設定のヘルプボタンが効かなくなっていた部分を以下の追加によって修正
+		// From Here Sept. 9, 2000 JEPRO 共通設定のヘルプボタンが効かなくなっていた部分を以下の追加によって修正
 	case IDD_PROP_EDIT:
 		nContextID = ::FuncID_To_HelpContextID(F_OPTION_EDIT);
 		break;
@@ -445,7 +451,7 @@ void CPropCommon::OnHelp( HWND hwndParent, int nPageID )
 	case IDD_PROP_KEYBIND:
 		nContextID = ::FuncID_To_HelpContextID(F_OPTION_KEYBIND);
 		break;
-	// To Here Sept. 9, 2000
+		// To Here Sept. 9, 2000
 	case IDD_PROP_MACRO:	//@@@ 2002.01.02
 		nContextID = ::FuncID_To_HelpContextID(F_OPTION_MACRO);
 		break;
@@ -463,8 +469,8 @@ void CPropCommon::OnHelp( HWND hwndParent, int nPageID )
 		nContextID = -1;
 		break;
 	}
-	if( -1 != nContextID ){
-		MyWinHelp( hwndParent, HELP_CONTEXT, nContextID );	// 2006.10.10 ryoji MyWinHelpに変更に変更
+	if (-1 != nContextID) {
+		MyWinHelp(hwndParent, HELP_CONTEXT, nContextID);	// 2006.10.10 ryoji MyWinHelpに変更に変更
 	}
 	return;
 }
@@ -474,17 +480,17 @@ void CPropCommon::OnHelp( HWND hwndParent, int nPageID )
 /*!	コントロールにフォント設定する
 	@date 2013.04.24 Uchi
 */
-HFONT CPropCommon::SetCtrlFont( HWND hwndDlg, int idc_ctrl, const LOGFONT& lf )
+HFONT CPropCommon::SetCtrlFont(HWND hwndDlg, int idc_ctrl, const LOGFONT& lf)
 {
 	HFONT	hFont;
 	HWND	hCtrl;
 
 	// 論理フォントを作成
-	hCtrl = ::GetDlgItem( hwndDlg, idc_ctrl );
-	hFont = ::CreateFontIndirect( &lf );
+	hCtrl = ::GetDlgItem(hwndDlg, idc_ctrl);
+	hFont = ::CreateFontIndirect(&lf);
 	if (hFont) {
 		// フォントの設定
-		::SendMessage( hCtrl, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0) );
+		::SendMessage(hCtrl, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(FALSE, 0));
 	}
 
 	return hFont;
@@ -495,23 +501,23 @@ HFONT CPropCommon::SetCtrlFont( HWND hwndDlg, int idc_ctrl, const LOGFONT& lf )
 /*!	フォントラベルにフォントとフォント名設定する
 	@date 2013.04.24 Uchi
 */
-HFONT CPropCommon::SetFontLabel( HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps )
+HFONT CPropCommon::SetFontLabel(HWND hwndDlg, int idc_static, const LOGFONT& lf, int nps)
 {
 	HFONT	hFont;
 	TCHAR	szFontName[80];
 	LOGFONT lfTemp;
 	lfTemp = lf;
 	// 大きすぎるフォントは小さく表示
-	if( lfTemp.lfHeight < -16 ){
+	if (lfTemp.lfHeight < -16) {
 		lfTemp.lfHeight = -16;
 	}
 
-	hFont = SetCtrlFont( hwndDlg, idc_static, lfTemp );
+	hFont = SetCtrlFont(hwndDlg, idc_static, lfTemp);
 
 	// フォント名の設定
-	auto_sprintf( szFontName, nps % 10 ? _T("%s(%.1fpt)") : _T("%s(%.0fpt)"),
-		lf.lfFaceName, double(nps)/10 );
-	::DlgItem_SetText( hwndDlg, idc_static, szFontName );
+	auto_sprintf(szFontName, nps % 10 ? _T("%s(%.1fpt)") : _T("%s(%.0fpt)"),
+		lf.lfFaceName, double(nps) / 10);
+	::DlgItem_SetText(hwndDlg, idc_static, szFontName);
 
 	return hFont;
 }

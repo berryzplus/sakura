@@ -32,7 +32,7 @@ class CGrepEnumKeys;
 class CGrepEnumFiles;
 class CGrepEnumFolders;
 
-struct SGrepOption{
+struct SGrepOption {
 	bool		bGrepReplace;			//!< Grep置換
 	bool		bGrepSubFolder;			//!< サブフォルダからも検索する
 	bool		bGrepStdout;			//!< 標準出力モード
@@ -47,24 +47,24 @@ struct SGrepOption{
 	bool		bGrepBackup;			//!< Grep置換：バックアップ
 
 	SGrepOption() :
-		 bGrepReplace(false)
-		,bGrepSubFolder(true)
-		,bGrepStdout(false)
-		,bGrepHeader(true)
-		,nGrepCharSet(CODE_AUTODETECT)
-		,nGrepOutputLineType(1)
-		,nGrepOutputStyle(1)
-		,bGrepOutputFileOnly(false)
-		,bGrepOutputBaseFolder(false)
-		,bGrepSeparateFolder(false)
-		,bGrepPaste(false)
-		,bGrepBackup(false)
+		bGrepReplace(false)
+		, bGrepSubFolder(true)
+		, bGrepStdout(false)
+		, bGrepHeader(true)
+		, nGrepCharSet(CODE_AUTODETECT)
+		, nGrepOutputLineType(1)
+		, nGrepOutputStyle(1)
+		, bGrepOutputFileOnly(false)
+		, bGrepOutputBaseFolder(false)
+		, bGrepSeparateFolder(false)
+		, bGrepPaste(false)
+		, bGrepBackup(false)
 	{}
 };
 
 //	Jun. 26, 2001 genta	正規表現ライブラリの差し替え
 //	Mar. 28, 2004 genta DoGrepFileから不要な引数を削除
-class CGrepAgent : public CDocListenerEx{
+class CGrepAgent : public CDocListenerEx {
 public:
 	CGrepAgent();
 
@@ -72,9 +72,9 @@ public:
 	ECallbackResult OnBeforeClose();
 	void OnAfterSave(const SSaveInfo& sSaveInfo);
 
-	static void CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>& vPaths );
-	static std::tstring ChopYen( const std::tstring& str );
-	void AddTail( CEditView* pcEditView, const CNativeW& cmem, bool bAddStdout );
+	static void CreateFolders(const TCHAR* pszPath, std::vector<std::tstring>& vPaths);
+	static std::tstring ChopYen(const std::tstring& str);
+	void AddTail(CEditView* pcEditView, const CNativeW& cmem, bool bAddStdout);
 
 	// Grep実行
 	DWORD DoGrep(

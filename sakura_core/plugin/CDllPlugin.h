@@ -33,15 +33,15 @@
 #define	PII_DLL							L"Dll"			//DLL情報
 #define	PII_DLL_NAME					L"Name"			//名前
 
-typedef void (*DllPlugHandler)();
+typedef void(*DllPlugHandler)();
 
 class CDllPlug
 	: public CPlug
 {
 public:
-	CDllPlug( CPlugin& plugin, PlugId id, wstring sJack, wstring sHandler, wstring sLabel )
-		: CPlug( plugin, id, sJack, sHandler, sLabel )
-		, m_handler( NULL )
+	CDllPlug(CPlugin& plugin, PlugId id, wstring sJack, wstring sHandler, wstring sLabel)
+		: CPlug(plugin, id, sJack, sHandler, sLabel)
+		, m_handler(NULL)
 	{
 	}
 public:
@@ -53,7 +53,7 @@ class CDllPlugin
 {
 	//コンストラクタ
 public:
-	CDllPlugin( const tstring& sBaseDir ) : CPlugin( sBaseDir ), CDllImp() {
+	CDllPlugin(const tstring& sBaseDir) : CPlugin(sBaseDir), CDllImp() {
 	}
 
 	//デストラクタ
@@ -62,15 +62,15 @@ public:
 
 	//実装
 public:
-	bool ReadPluginDef( CDataProfile *cProfile, CDataProfile *cProfileMlang );
-	bool ReadPluginOption( CDataProfile *cProfile ) {
+	bool ReadPluginDef(CDataProfile *cProfile, CDataProfile *cProfileMlang);
+	bool ReadPluginOption(CDataProfile *cProfile) {
 		return true;
 	}
-	CPlug* CreatePlug( CPlugin& plugin, PlugId id, wstring sJack, wstring sHandler, wstring sLabel );
-	CPlug::Array GetPlugs() const{
+	CPlug* CreatePlug(CPlugin& plugin, PlugId id, wstring sJack, wstring sHandler, wstring sLabel);
+	CPlug::Array GetPlugs() const {
 		return m_plugs;
 	}
-	bool InvokePlug( CEditView* view, CPlug& plug, CWSHIfObj::List& params );
+	bool InvokePlug(CEditView* view, CPlug& plug, CWSHIfObj::List& params);
 
 	bool InitDllImp() {
 		return true;

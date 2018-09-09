@@ -27,7 +27,7 @@
 #include "view/figures/CFigureStrategy.h"
 
 //! カンマ描画（CSVモード）
-class CFigure_Comma : public CFigureSpace{
+class CFigure_Comma : public CFigureSpace {
 public:
 	//traits
 	bool Match(const wchar_t* pText, int nTextLen) const;
@@ -38,7 +38,7 @@ public:
 
 	//action
 	void DispSpace(CGraphics& gr, DispPos* pDispPos, CEditView* pcView, bool bTrans) const;
-	EColorIndexType GetColorIdx(void) const{ return COLORIDX_TAB; }
+	EColorIndexType GetColorIdx(void) const { return COLORIDX_TAB; }
 };
 
 #endif /* SAKURA_CFigure_Comma_BE7B2FF5_E07E_4DEC_BE66_C90F628C1ED1_H_ */

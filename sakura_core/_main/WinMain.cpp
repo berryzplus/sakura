@@ -58,71 +58,72 @@ int WINAPI _tWinMain(
 	::_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_ALLOC_MEM_DF);
 #endif
 
-	MY_RUNNINGTIMER(cRunningTimer, "WinMain" );
+	MY_RUNNINGTIMER(cRunningTimer, "WinMain");
 	{
 		// 2014.04.24 DLLの検索パスからカレントディレクトリを削除する
-		HMODULE kernel32 = GetModuleHandleA( "KERNEL32" );
-		if( kernel32 ){
-			typedef BOOL (WINAPI* Proc_pfnSetDllDirectoryW)(LPCWSTR);
-			Proc_pfnSetDllDirectoryW pfnSetDllDirectoryW = (Proc_pfnSetDllDirectoryW)GetProcAddress( kernel32, "SetDllDirectoryW" );
-			if( pfnSetDllDirectoryW ){
-				pfnSetDllDirectoryW( L"" );
+		HMODULE kernel32 = GetModuleHandleA("KERNEL32");
+		if (kernel32) {
+			typedef BOOL(WINAPI* Proc_pfnSetDllDirectoryW)(LPCWSTR);
+			Proc_pfnSetDllDirectoryW pfnSetDllDirectoryW = (Proc_pfnSetDllDirectoryW)GetProcAddress(kernel32, "SetDllDirectoryW");
+			if (pfnSetDllDirectoryW) {
+				pfnSetDllDirectoryW(L"");
 			}
-			typedef BOOL (WINAPI* Proc_pfnSetSearchPathMode)(DWORD);
-			Proc_pfnSetSearchPathMode pfnSetSearchPathMode = (Proc_pfnSetSearchPathMode)GetProcAddress( kernel32, "SetSearchPathMode" );
-			if( pfnSetSearchPathMode ){
+			typedef BOOL(WINAPI* Proc_pfnSetSearchPathMode)(DWORD);
+			Proc_pfnSetSearchPathMode pfnSetSearchPathMode = (Proc_pfnSetSearchPathMode)GetProcAddress(kernel32, "SetSearchPathMode");
+			if (pfnSetSearchPathMode) {
 				const DWORD dwBASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE = 1;
 				const DWORD dwBASE_SEARCH_PATH_PERMANENT = 0x8000;
-				pfnSetSearchPathMode( dwBASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE | dwBASE_SEARCH_PATH_PERMANENT );
+				pfnSetSearchPathMode(dwBASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE | dwBASE_SEARCH_PATH_PERMANENT);
 			}
 		}
 		// 2010.08.28 Moca DLLインジェクション対策
 		CCurrentDirectoryBackupPoint dirBack;
 		ChangeCurrentDirectoryToExeDir();
 
-		setlocale( LC_ALL, "Japanese" ); //2007.08.16 kobake 追加
-		::OleInitialize( NULL );	// 2009.01.07 ryoji 追加
+		setlocale(LC_ALL, "Japanese"); //2007.08.16 kobake 追加
+		::OleInitialize(NULL);	// 2009.01.07 ryoji 追加
 	}
-	
+
 	//開発情報
 	DEBUG_TRACE(_T("-- -- WinMain -- --\n"));
-	DEBUG_TRACE(_T("sizeof(DLLSHAREDATA) = %d\n"),sizeof(DLLSHAREDATA));
+	DEBUG_TRACE(_T("sizeof(DLLSHAREDATA) = %d\n"), sizeof(DLLSHAREDATA));
 
 	//プロセスの生成とメッセージループ
 	CProcessFactory aFactory;
 	CProcess *process = 0;
-	try{
+	try {
 #ifdef __MINGW32__
 		LPTSTR pszCommandLine;
 		pszCommandLine = ::GetCommandLine();
 		// 実行ファイル名をスキップする
-		if( _T('\"') == *pszCommandLine ){
+		if (_T('\"') == *pszCommandLine) {
 			pszCommandLine++;
-			while( _T('\"') != *pszCommandLine && _T('\0') != *pszCommandLine ){
+			while (_T('\"') != *pszCommandLine && _T('\0') != *pszCommandLine) {
 				pszCommandLine++;
 			}
-			if( _T('\"') == *pszCommandLine ){
+			if (_T('\"') == *pszCommandLine) {
 				pszCommandLine++;
 			}
-		}else{
-			while( _T(' ') != *pszCommandLine && _T('\t') != *pszCommandLine
-				&& _T('\0') != *pszCommandLine ){
+		}
+		else {
+			while (_T(' ') != *pszCommandLine && _T('\t') != *pszCommandLine
+				&& _T('\0') != *pszCommandLine) {
 				pszCommandLine++;
 			}
 		}
 		// 次のトークンまで進める
-		while( _T(' ') == *pszCommandLine || _T('\t') == *pszCommandLine ){
+		while (_T(' ') == *pszCommandLine || _T('\t') == *pszCommandLine) {
 			pszCommandLine++;
 		}
-		process = aFactory.Create( hInstance, pszCommandLine );
+		process = aFactory.Create(hInstance, pszCommandLine);
 #else
-		process = aFactory.Create( hInstance, lpCmdLine );
+		process = aFactory.Create(hInstance, lpCmdLine);
 #endif
-		MY_TRACETIME( cRunningTimer, "ProcessObject Created" );
+		MY_TRACETIME(cRunningTimer, "ProcessObject Created");
 	}
-	catch(...){
+	catch (...) {
 	}
-	if( 0 != process ){
+	if (0 != process) {
 		process->Run();
 		delete process;
 	}

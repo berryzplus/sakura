@@ -101,16 +101,16 @@ enum EColorIndexType {
 	COLORIDX_LAST,			//!< カラーの最後
 
 	//カラー表示制御用(ブロックコメント)
-	COLORIDX_BLOCK1			= COLORIDX_BLOCK_BIT,			//!< ブロックコメント1(文字色と背景色は行コメントと同じ)
+	COLORIDX_BLOCK1 = COLORIDX_BLOCK_BIT,			//!< ブロックコメント1(文字色と背景色は行コメントと同じ)
 	COLORIDX_BLOCK2,										//!< ブロックコメント2(文字色と背景色は行コメントと同じ)
 
 	//カラー表示制御用(正規表現キーワード)
-	COLORIDX_REGEX_FIRST	= COLORIDX_REGEX_BIT,						//!< 正規表現キーワード(最初)
-	COLORIDX_REGEX_LAST		= COLORIDX_REGEX_FIRST + COLORIDX_LAST - 1,	//!< 正規表現キーワード(最後)
+	COLORIDX_REGEX_FIRST = COLORIDX_REGEX_BIT,						//!< 正規表現キーワード(最初)
+	COLORIDX_REGEX_LAST = COLORIDX_REGEX_FIRST + COLORIDX_LAST - 1,	//!< 正規表現キーワード(最後)
 
 	// -- -- 別名 -- -- //
-	COLORIDX_DEFAULT		= COLORIDX_TEXT,							//!< デフォルト
-	COLORIDX_SEARCHTAIL		= COLORIDX_SEARCH5,
+	COLORIDX_DEFAULT = COLORIDX_TEXT,							//!< デフォルト
+	COLORIDX_SEARCHTAIL = COLORIDX_SEARCH5,
 };
 
 #endif

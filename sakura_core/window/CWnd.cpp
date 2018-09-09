@@ -21,37 +21,37 @@
 
 
 /* CWndウィンドウメッセージのコールバック関数 */
-LRESULT CALLBACK CWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK CWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	CWnd* pCWnd = (CWnd*)::GetWindowLongPtr( hwnd, GWLP_USERDATA );
+	CWnd* pCWnd = (CWnd*)::GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
-	if( pCWnd ){
+	if (pCWnd) {
 		/* クラスオブジェクトのポインタを使ってメッセージを配送する */
-		return pCWnd->DispatchEvent( hwnd, uMsg, wParam, lParam );
+		return pCWnd->DispatchEvent(hwnd, uMsg, wParam, lParam);
 	}
-	else{
+	else {
 		/* ふつうはここには来ない */
-		return ::DefWindowProc( hwnd, uMsg, wParam, lParam );
+		return ::DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 }
 
 //!Windowsフック(CBT)
 namespace CWindowCreationHook
 {
-	int		g_nCnt  = 0; //参照カウンタ
+	int		g_nCnt = 0; //参照カウンタ
 	HHOOK	g_hHook = NULL;
 
 	//!フック用コールバック
 	static LRESULT CALLBACK CBTProc(int nCode, WPARAM wParam, LPARAM lParam)
 	{
-		if(nCode==HCBT_CREATEWND){
+		if (nCode == HCBT_CREATEWND) {
 			HWND hwnd = (HWND)wParam;
 			CBT_CREATEWND* pCreateWnd = (CBT_CREATEWND*)lParam;
 			CWnd* pcWnd = static_cast<CWnd*>(pCreateWnd->lpcs->lpCreateParams);
 
 			//CWnd以外のウィンドウ生成イベントは無視する
 			WNDPROC wndproc = (WNDPROC)::GetWindowLongPtr(hwnd, GWLP_WNDPROC);
-			if(wndproc!=CWndProc)goto next;
+			if (wndproc != CWndProc)goto next;
 
 			//ウィンドウにCWndを関連付ける
 			::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pcWnd);
@@ -59,14 +59,14 @@ namespace CWindowCreationHook
 			//CWndにウィンドウを関連付ける
 			pcWnd->_SetHwnd(hwnd);
 		}
-next:
+	next:
 		return ::CallNextHookEx(g_hHook, nCode, wParam, lParam);
 	}
 
 	//!フック開始
 	void Use()
 	{
-		if(++g_nCnt>=1 && g_hHook==NULL){
+		if (++g_nCnt >= 1 && g_hHook == NULL) {
 			g_hHook = ::SetWindowsHookEx(WH_CBT, CBTProc, NULL, GetCurrentThreadId());
 		}
 	}
@@ -74,9 +74,9 @@ next:
 	//!フック終了
 	void Unuse()
 	{
-		if(--g_nCnt<=0 && g_hHook!=NULL){
+		if (--g_nCnt <= 0 && g_hHook != NULL) {
 			::UnhookWindowsHookEx(g_hHook);
-			g_hHook=NULL;
+			g_hHook = NULL;
 		}
 	}
 } //namespace CWindowCreationHook
@@ -88,18 +88,18 @@ CWnd::CWnd(const TCHAR* pszInheritanceAppend)
 	m_hwndParent = NULL;	/* オーナーウィンドウのハンドル */
 	m_hWnd = NULL;			/* このウィンドウのハンドル */
 #ifdef _DEBUG
-	_tcscpy( m_szClassInheritances, _T("CWnd") );
-	_tcscat( m_szClassInheritances, pszInheritanceAppend );
+	_tcscpy(m_szClassInheritances, _T("CWnd"));
+	_tcscat(m_szClassInheritances, pszInheritanceAppend);
 #endif
 }
 
 CWnd::~CWnd()
 {
-	if( ::IsWindow( m_hWnd ) ){
+	if (::IsWindow(m_hWnd)) {
 		/* クラスオブジェクトのポインタをNULLにして拡張ウィンドウメモリに格納しておく */
 		// Modified by KEITA for WIN64 2003.9.6
-		::SetWindowLongPtr( m_hWnd, GWLP_USERDATA, (LONG_PTR)NULL );
-		::DestroyWindow( m_hWnd );
+		::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, (LONG_PTR)NULL);
+		::DestroyWindow(m_hWnd);
 	}
 	m_hWnd = NULL;
 	return;
@@ -126,17 +126,17 @@ ATOM CWnd::RegisterWC(
 	//	Apr. 27, 2000 genta
 	//	サイズ変更時のちらつきを抑えるためCS_HREDRAW | CS_VREDRAW を外した
 	wc.style = CS_DBLCLKS;
-	wc.lpfnWndProc   = CWndProc;
-	wc.cbClsExtra    = 0;
-	wc.cbWndExtra    = 32;
-	wc.hInstance     = m_hInstance;
-	wc.hIcon         = hIcon;
-	wc.hCursor       = hCursor;
+	wc.lpfnWndProc = CWndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 32;
+	wc.hInstance = m_hInstance;
+	wc.hIcon = hIcon;
+	wc.hCursor = hCursor;
 	wc.hbrBackground = hbrBackground;
-	wc.lpszMenuName  = lpszMenuName;
+	wc.lpszMenuName = lpszMenuName;
 	wc.lpszClassName = lpszClassName;
-	wc.hIconSm       = hIconSm;
-	return ::RegisterClassEx( &wc );
+	wc.hIconSm = hIconSm;
+	return ::RegisterClassEx(&wc);
 }
 
 /* 作成 */
@@ -183,8 +183,8 @@ HWND CWnd::Create(
 	//Windowsフック解除
 	CWindowCreationHook::Unuse();
 
-	if( NULL == m_hWnd ){
-		::MessageBox( m_hwndParent, _T("CWnd::Create()\n\n::CreateWindowEx failed."), _T("error"), MB_OK );
+	if (NULL == m_hWnd) {
+		::MessageBox(m_hwndParent, _T("CWnd::Create()\n\n::CreateWindowEx failed."), _T("error"), MB_OK);
 		return NULL;
 	}
 
@@ -195,66 +195,66 @@ HWND CWnd::Create(
 
 
 /* メッセージ配送 */
-LRESULT CWnd::DispatchEvent( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp )
+LRESULT CWnd::DispatchEvent(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	#define CALLH(message, method) case message: return method( hwnd, msg, wp, lp )
-	switch( msg ){
-	CALLH( WM_CREATE			, OnCreate			);
-	CALLH( WM_CLOSE				, OnClose			);
-	CALLH( WM_DESTROY			, OnDestroy			);
-	CALLH( WM_SIZE				, OnSize			);
-	CALLH( WM_MOVE				, OnMove			);
-	CALLH( WM_COMMAND			, OnCommand			);
-	CALLH( WM_LBUTTONDOWN		, OnLButtonDown		);
-	CALLH( WM_LBUTTONUP			, OnLButtonUp		);
-	CALLH( WM_LBUTTONDBLCLK		, OnLButtonDblClk	);
-	CALLH( WM_RBUTTONDOWN		, OnRButtonDown		);
-	CALLH( WM_RBUTTONUP			, OnRButtonUp		);
-	CALLH( WM_RBUTTONDBLCLK		, OnRButtonDblClk	);
-	CALLH( WM_MBUTTONDOWN		, OnMButtonDown		);
-	CALLH( WM_MBUTTONUP			, OnMButtonUp		);
-	CALLH( WM_MBUTTONDBLCLK		, OnMButtonDblClk	);
-	CALLH( WM_MOUSEMOVE			, OnMouseMove		);
-	CALLH( WM_MOUSEWHEEL		, OnMouseWheel		);
-	CALLH( WM_MOUSEHWHEEL		, OnMouseHWheel		);
-	CALLH( WM_PAINT				, OnPaint			);
-	CALLH( WM_TIMER				, OnTimer			);
-	CALLH( WM_QUERYENDSESSION	, OnQueryEndSession	);
+#define CALLH(message, method) case message: return method( hwnd, msg, wp, lp )
+	switch (msg) {
+		CALLH(WM_CREATE, OnCreate);
+		CALLH(WM_CLOSE, OnClose);
+		CALLH(WM_DESTROY, OnDestroy);
+		CALLH(WM_SIZE, OnSize);
+		CALLH(WM_MOVE, OnMove);
+		CALLH(WM_COMMAND, OnCommand);
+		CALLH(WM_LBUTTONDOWN, OnLButtonDown);
+		CALLH(WM_LBUTTONUP, OnLButtonUp);
+		CALLH(WM_LBUTTONDBLCLK, OnLButtonDblClk);
+		CALLH(WM_RBUTTONDOWN, OnRButtonDown);
+		CALLH(WM_RBUTTONUP, OnRButtonUp);
+		CALLH(WM_RBUTTONDBLCLK, OnRButtonDblClk);
+		CALLH(WM_MBUTTONDOWN, OnMButtonDown);
+		CALLH(WM_MBUTTONUP, OnMButtonUp);
+		CALLH(WM_MBUTTONDBLCLK, OnMButtonDblClk);
+		CALLH(WM_MOUSEMOVE, OnMouseMove);
+		CALLH(WM_MOUSEWHEEL, OnMouseWheel);
+		CALLH(WM_MOUSEHWHEEL, OnMouseHWheel);
+		CALLH(WM_PAINT, OnPaint);
+		CALLH(WM_TIMER, OnTimer);
+		CALLH(WM_QUERYENDSESSION, OnQueryEndSession);
 
-	CALLH( WM_MEASUREITEM		, OnMeasureItem		);
-	CALLH( WM_MENUCHAR			, OnMenuChar		);
-	CALLH( WM_NOTIFY			, OnNotify			);	//@@@ 2003.05.31 MIK
-	CALLH( WM_DRAWITEM			, OnDrawItem		);	// 2006.02.01 ryoji
-	CALLH( WM_CAPTURECHANGED	, OnCaptureChanged	);	// 2006.11.30 ryoji
+		CALLH(WM_MEASUREITEM, OnMeasureItem);
+		CALLH(WM_MENUCHAR, OnMenuChar);
+		CALLH(WM_NOTIFY, OnNotify);	//@@@ 2003.05.31 MIK
+		CALLH(WM_DRAWITEM, OnDrawItem);	// 2006.02.01 ryoji
+		CALLH(WM_CAPTURECHANGED, OnCaptureChanged);	// 2006.11.30 ryoji
 
 	default:
-		if( WM_APP <= msg && msg <= 0xBFFF ){
+		if (WM_APP <= msg && msg <= 0xBFFF) {
 			/* アプリケーション定義のメッセージ(WM_APP <= msg <= 0xBFFF) */
-			return DispatchEvent_WM_APP( hwnd, msg, wp, lp );
+			return DispatchEvent_WM_APP(hwnd, msg, wp, lp);
 		}
 		break;	/* default */
 	}
-	return CallDefWndProc( hwnd, msg, wp, lp );
+	return CallDefWndProc(hwnd, msg, wp, lp);
 }
 
 /* アプリケーション定義のメッセージ(WM_APP <= msg <= 0xBFFF) */
-LRESULT CWnd::DispatchEvent_WM_APP( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp )
+LRESULT CWnd::DispatchEvent_WM_APP(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	return CallDefWndProc( hwnd, msg, wp, lp );
+	return CallDefWndProc(hwnd, msg, wp, lp);
 }
 
 /* デフォルトメッセージ処理 */
-LRESULT CWnd::CallDefWndProc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp )
+LRESULT CWnd::CallDefWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	return ::DefWindowProc( hwnd, msg, wp, lp );
+	return ::DefWindowProc(hwnd, msg, wp, lp);
 }
 
 
 /* ウィンドウを破棄 */
 void CWnd::DestroyWindow()
 {
-	if(m_hWnd){
-		::DestroyWindow( m_hWnd );
+	if (m_hWnd) {
+		::DestroyWindow(m_hWnd);
 		m_hWnd = NULL;
 	}
 }

@@ -53,7 +53,8 @@ void CTsvModeInfo::CalcTabLength(CDocLineMgr* cDocLineMgr)
 			if (pcLine[i] == delimiter) {
 				if (nField == m_tabLength.size()) {
 					m_tabLength.push_back(nFieldWidth);
-				} else if (m_tabLength[nField] < nFieldWidth) {
+				}
+				else if (m_tabLength[nField] < nFieldWidth) {
 					m_tabLength[nField] = nFieldWidth;
 				}
 				nField++;
@@ -61,28 +62,31 @@ void CTsvModeInfo::CalcTabLength(CDocLineMgr* cDocLineMgr)
 				i++;
 				continue;
 			}
-			if( pcLine[i] != WCODE::TAB ){
+			if (pcLine[i] != WCODE::TAB) {
 				CKetaXInt nKeta = CNativeW::GetKetaOfChar(pcLine, nLineLen, i);
 				nFieldWidth += Int(nKeta);
-			} else {
+			}
+			else {
 				nFieldWidth++;
 			}
-			nCharChars = CNativeW::GetSizeOfChar( pcLine, nLineLen, i );
+			nCharChars = CNativeW::GetSizeOfChar(pcLine, nLineLen, i);
 			i += nCharChars;
 		}
 		if (nField == m_tabLength.size()) {
 			m_tabLength.push_back(nFieldWidth);
-		} else if (m_tabLength[nField] < nFieldWidth) {
+		}
+		else if (m_tabLength[nField] < nFieldWidth) {
 			m_tabLength[nField] = nFieldWidth;
 			nField++;
 		}
 	}
 
-	for (ui = 0; ui<m_tabLength.size(); ui++) {
+	for (ui = 0; ui < m_tabLength.size(); ui++) {
 		if (ui == 0) {
 			m_tabLength[0] += 2;
-		} else {
-			m_tabLength[ui] += m_tabLength[ui-1] + 2;
+		}
+		else {
+			m_tabLength[ui] += m_tabLength[ui - 1] + 2;
 		}
 	}
 }
@@ -96,5 +100,5 @@ CLayoutInt CTsvModeInfo::GetActualTabLength(CLayoutInt pos, CLayoutInt px) const
 			return CLayoutInt(m_tabLength[i] * px) - pos;
 		}
 	}
-	return CLayoutInt(px*2);
+	return CLayoutInt(px * 2);
 }

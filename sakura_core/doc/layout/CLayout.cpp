@@ -24,14 +24,14 @@ CLayout::~CLayout()
 	return;
 }
 
-void CLayout::DUMP( void )
+void CLayout::DUMP(void)
 {
-	DEBUG_TRACE( _T("\n\n■CLayout::DUMP()======================\n") );
-	DEBUG_TRACE( _T("m_ptLogicPos.y=%d\t\t対応する論理行番号\n"), m_ptLogicPos.y );
-	DEBUG_TRACE( _T("m_ptLogicPos.x=%d\t\t対応する論理行の先頭からのオフセット\n"), m_ptLogicPos.x );
-	DEBUG_TRACE( _T("m_nLength=%d\t\t対応する論理行のハイト数\n"), (int)m_nLength );
-	DEBUG_TRACE( _T("m_nTypePrev=%d\t\tタイプ 0=通常 1=行コメント 2=ブロックコメント 3=シングルクォーテーション文字列 4=ダブルクォーテーション文字列 \n"), m_nTypePrev );
-	DEBUG_TRACE( _T("======================\n") );
+	DEBUG_TRACE(_T("\n\n■CLayout::DUMP()======================\n"));
+	DEBUG_TRACE(_T("m_ptLogicPos.y=%d\t\t対応する論理行番号\n"), m_ptLogicPos.y);
+	DEBUG_TRACE(_T("m_ptLogicPos.x=%d\t\t対応する論理行の先頭からのオフセット\n"), m_ptLogicPos.x);
+	DEBUG_TRACE(_T("m_nLength=%d\t\t対応する論理行のハイト数\n"), (int)m_nLength);
+	DEBUG_TRACE(_T("m_nTypePrev=%d\t\tタイプ 0=通常 1=行コメント 2=ブロックコメント 3=シングルクォーテーション文字列 4=ダブルクォーテーション文字列 \n"), m_nTypePrev);
+	DEBUG_TRACE(_T("======================\n"));
 	return;
 }
 
@@ -42,17 +42,17 @@ void CLayout::DUMP( void )
 CLayoutInt CLayout::CalcLayoutWidth(const CLayoutMgr& cLayoutMgr) const
 {
 	//ソース
-	const wchar_t* pText    = m_pCDocLine->GetPtr();
+	const wchar_t* pText = m_pCDocLine->GetPtr();
 	CLogicInt      nTextLen = m_pCDocLine->GetLengthWithoutEOL();
 
 	//計算
 	CLayoutInt nWidth = GetIndent();
 	CLogicInt nLen = GetLogicPos().x + m_nLength; //EOL=0,1
-	for(CLogicInt i=m_ptLogicPos.GetX2();i<nLen;){
-		if(pText[i]==WCODE::TAB || (pText[i] == L',' && cLayoutMgr.m_tsvInfo.m_nTsvMode == TSV_MODE_CSV)){
+	for (CLogicInt i = m_ptLogicPos.GetX2(); i < nLen;) {
+		if (pText[i] == WCODE::TAB || (pText[i] == L',' && cLayoutMgr.m_tsvInfo.m_nTsvMode == TSV_MODE_CSV)) {
 			nWidth += cLayoutMgr.GetActualTsvSpace(nWidth, pText[i]);
 		}
-		else{
+		else {
 			nWidth += cLayoutMgr.GetLayoutXOfChar(pText, nTextLen, i);
 		}
 		i += t_max(CLogicInt(1), CNativeW::GetSizeOfChar(pText, nTextLen, i));
@@ -64,16 +64,16 @@ CLayoutInt CLayout::CalcLayoutWidth(const CLayoutMgr& cLayoutMgr) const
 CLayoutInt CLayout::CalcLayoutOffset(const CLayoutMgr& cLayoutMgr, CLogicInt nStartPos, CLayoutInt nStartOffset) const
 {
 	CLayoutInt nRet = nStartOffset;
-	if(this->GetLogicOffset()){
+	if (this->GetLogicOffset()) {
 		const wchar_t* pLine = this->m_pCDocLine->GetPtr();
 		int nLineLen = this->m_pCDocLine->GetLengthWithEOL();
 		const int nOffset = GetLogicOffset();
-		for(int i = (Int)nStartPos; i < nOffset; i++){
-			if(pLine[i]==WCODE::TAB || pLine[i] == L','){
-				nRet+=cLayoutMgr.GetActualTsvSpace(nRet, pLine[i]);
+		for (int i = (Int)nStartPos; i < nOffset; i++) {
+			if (pLine[i] == WCODE::TAB || pLine[i] == L',') {
+				nRet += cLayoutMgr.GetActualTsvSpace(nRet, pLine[i]);
 			}
-			else{
-				nRet+=CNativeW::GetKetaOfChar(pLine,nLineLen,i);
+			else {
+				nRet += CNativeW::GetKetaOfChar(pLine, nLineLen, i);
 			}
 		}
 	}

@@ -23,14 +23,14 @@
 
 #if 0
 //デバッグウォッチ用の型
-struct TestArrayA{ char    a[100]; };
-struct TestArrayW{ wchar_t a[100]; };
-struct TestArrayI{ int     a[100]; };
+struct TestArrayA { char    a[100]; };
+struct TestArrayW { wchar_t a[100]; };
+struct TestArrayI { int     a[100]; };
 void Test()
 {
-	TestArrayA a; a.a[0]=0;
-	TestArrayW w; w.a[0]=0;
-	TestArrayI i; i.a[0]=0;
+	TestArrayA a; a.a[0] = 0;
+	TestArrayW w; w.a[0] = 0;
+	TestArrayI i; i.a[0] = 0;
 }
 #endif
 
@@ -47,18 +47,18 @@ void Test()
 	引数で与えられた情報をDebugStringとして出力する．
 */
 #ifdef _UNICODE
-void DebugOutW( LPCWSTR lpFmt, ...)
+void DebugOutW(LPCWSTR lpFmt, ...)
 {
 	//整形
 	static WCHAR szText[16000];
 	va_list argList;
 	va_start(argList, lpFmt);
-	int ret = tchar_vsnprintf_s( szText, _countof(szText), lpFmt, argList );
+	int ret = tchar_vsnprintf_s(szText, _countof(szText), lpFmt, argList);
 
 	//出力
-	::OutputDebugStringW( szText );
-	if( -1 == ret ){
-		::OutputDebugStringW( L"(切り捨てました...)\n" );
+	::OutputDebugStringW(szText);
+	if (-1 == ret) {
+		::OutputDebugStringW(L"(切り捨てました...)\n");
 	}
 #ifdef USE_DEBUGMON
 	DebugMonitor_Output(NULL, to_wchar(szText));
@@ -72,18 +72,18 @@ void DebugOutW( LPCWSTR lpFmt, ...)
 }
 #endif
 
-void DebugOutA( LPCSTR lpFmt, ...)
+void DebugOutA(LPCSTR lpFmt, ...)
 {
 	//整形
 	static CHAR szText[16000];
 	va_list argList;
 	va_start(argList, lpFmt);
-	int ret = tchar_vsnprintf_s( szText, _countof(szText), lpFmt, argList );
+	int ret = tchar_vsnprintf_s(szText, _countof(szText), lpFmt, argList);
 
 	//出力
-	::OutputDebugStringA( szText );
-	if( -1 == ret ){
-		::OutputDebugStringA( "(切り捨てました...)\n" );
+	::OutputDebugStringA(szText);
+	if (-1 == ret) {
+		::OutputDebugStringA("(切り捨てました...)\n");
 	}
 #ifdef USE_DEBUGMON
 	DebugMonitor_Output(NULL, to_wchar(szText));

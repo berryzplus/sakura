@@ -29,12 +29,12 @@
 //c++規格への準拠が厳しくなったため、WindowsSDKが無名enumをtypedefするコードが怒られる。
 #if defined(_MSC_VER) && _MSC_VER >= 1900
 	//一時的に警告を無効にしてインクルードする
-	#pragma warning(push)
-	#pragma warning(disable:4091)
-	#include <ImageHlp.h> //MakeSureDirectoryPathExists
-	#pragma warning(pop)
+#pragma warning(push)
+#pragma warning(disable:4091)
+#include <ImageHlp.h> //MakeSureDirectoryPathExists
+#pragma warning(pop)
 #else
-	#include <ImageHlp.h> //MakeSureDirectoryPathExists
+#include <ImageHlp.h> //MakeSureDirectoryPathExists
 #endif
 
 
@@ -55,9 +55,9 @@ namespace ApiWrap
 	//W版が無いので、自作
 	BOOL MakeSureDirectoryPathExistsW(LPCWSTR wszDirPath);
 #ifdef _UNICODE
-	#define MakeSureDirectoryPathExistsT MakeSureDirectoryPathExistsW
+#define MakeSureDirectoryPathExistsT MakeSureDirectoryPathExistsW
 #else
-	#define MakeSureDirectoryPathExistsT MakeSureDirectoryPathExists
+#define MakeSureDirectoryPathExistsT MakeSureDirectoryPathExists
 #endif
 
 
@@ -81,7 +81,7 @@ namespace ApiWrap
 		const int*		lpDx
 	)
 	{
-		BOOL ret=::ExtTextOut(hdc,x,y,fuOptions,lprc,lpwString,cbCount,lpDx);
+		BOOL ret = ::ExtTextOut(hdc, x, y, fuOptions, lprc, lpwString, cbCount, lpDx);
 		DEBUG_SETPIXEL(hdc);
 		return ret;
 	}
@@ -107,7 +107,7 @@ namespace ApiWrap
 		int		cbString
 	)
 	{
-		BOOL ret=::TextOut(hdc,nXStart,nYStart,lpwString,cbString);
+		BOOL ret = ::TextOut(hdc, nXStart, nYStart, lpwString, cbString);
 		DEBUG_SETPIXEL(hdc);
 		return ret;
 	}
@@ -131,12 +131,12 @@ namespace ApiWrap
 	);
 
 #ifdef _UNICODE
-	#define GetTextExtentPoint32W_AnyBuild GetTextExtentPoint32
+#define GetTextExtentPoint32W_AnyBuild GetTextExtentPoint32
 #else
 	BOOL GetTextExtentPoint32W_AnyBuild(
-		HDC		hdc, 
-		LPCWSTR	lpString, 
-		int		cbString, 
+		HDC		hdc,
+		LPCWSTR	lpString,
+		int		cbString,
 		LPSIZE	lpSize
 	);
 #endif
@@ -171,7 +171,7 @@ namespace ApiWrap
 	//                    描画API 不具合ラップ                     //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//VistaでSetPixelが動かないため、代替関数を用意。
-	void SetPixelSurely(HDC hdc,int x,int y,COLORREF c);
+	void SetPixelSurely(HDC hdc, int x, int y, COLORREF c);
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                      よく使う引数値                         //
@@ -190,19 +190,19 @@ namespace ApiWrap
 	//! SHIFTを押しているかどうか
 	inline bool GetKeyState_Shift()
 	{
-		return (::GetKeyState(VK_SHIFT)&0x8000)!=0;
+		return (::GetKeyState(VK_SHIFT) & 0x8000) != 0;
 	}
 
 	//! CTRLを押しているかどうか
 	inline bool GetKeyState_Control()
 	{
-		return (::GetKeyState(VK_CONTROL)&0x8000)!=0;
+		return (::GetKeyState(VK_CONTROL) & 0x8000) != 0;
 	}
 
 	//! ALTを押しているかどうか
 	inline bool GetKeyState_Alt()
 	{
-		return (::GetKeyState(VK_MENU)&0x8000)!=0;
+		return (::GetKeyState(VK_MENU) & 0x8000) != 0;
 	}
 
 
@@ -212,20 +212,20 @@ namespace ApiWrap
 
 	//	Jun. 29, 2002 こおり
 	//	Windows 95対策．Property SheetのサイズをWindows95が認識できる物に固定する．
-	#if defined(_WIN64) || defined(_UNICODE)
-		static const size_t sizeof_old_PROPSHEETHEADER = sizeof(PROPSHEETHEADER);
-	#else
-		static const size_t sizeof_old_PROPSHEETHEADER = 40;
-	#endif
+#if defined(_WIN64) || defined(_UNICODE)
+	static const size_t sizeof_old_PROPSHEETHEADER = sizeof(PROPSHEETHEADER);
+#else
+	static const size_t sizeof_old_PROPSHEETHEADER = 40;
+#endif
 
 	//	Jan. 29, 2002 genta
 	//	Win95/NTが納得するsizeof( MENUITEMINFO )
 	//	これ以外の値を与えると古いOSでちゃんと動いてくれない．
-	#if defined(_WIN64) || defined(_UNICODE)
-		static const int SIZEOF_MENUITEMINFO = sizeof(MENUITEMINFO);
-	#else
-		static const int SIZEOF_MENUITEMINFO = 44;
-	#endif
+#if defined(_WIN64) || defined(_UNICODE)
+	static const int SIZEOF_MENUITEMINFO = sizeof(MENUITEMINFO);
+#else
+	static const int SIZEOF_MENUITEMINFO = 44;
+#endif
 
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -235,16 +235,16 @@ namespace ApiWrap
 	// 現在となっては、特に意味はありません。
 
 	//文字コードに関係のなさそうな SendMessage は SendMessageAny に差し替えておく。
-	#define SendMessageAny SendMessage
+#define SendMessageAny SendMessage
 
-	//WM_COMMAND系の SendMessage は SendMessageCmd に差し替えておく。
-	#define SendMessageCmd SendMessage
+//WM_COMMAND系の SendMessage は SendMessageCmd に差し替えておく。
+#define SendMessageCmd SendMessage
 
-	//文字コードに関係のなさそうな PostMessage は PostMessageAny に差し替えておく。
-	#define PostMessageAny PostMessage
+//文字コードに関係のなさそうな PostMessage は PostMessageAny に差し替えておく。
+#define PostMessageAny PostMessage
 
-	//WM_COMMAND系の PostMessage は PostMessageCmd に差し替えておく。
-	#define PostMessageCmd PostMessage
+//WM_COMMAND系の PostMessage は PostMessageCmd に差し替えておく。
+#define PostMessageCmd PostMessage
 
 }
 using namespace ApiWrap;

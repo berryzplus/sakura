@@ -57,7 +57,7 @@ CWSHMacroManager::~CWSHMacroManager()
 /** WSHマクロの実行
 
 	@param EditView [in] 操作対象EditView
-	
+
 	@date 2007.07.20 genta : flags追加
 */
 bool CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
@@ -65,14 +65,14 @@ bool CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
 	CWSHClient* Engine;
 	Engine = new CWSHClient(m_EngineName.c_str(), MacroError, EditView);
 	bool bRet = false;
-	if(Engine->m_Valid)
+	if (Engine->m_Valid)
 	{
 		//インタフェースオブジェクトの登録
 		CWSHIfObj* objEditor = new CEditorIfObj();
-		objEditor->ReadyMethods( EditView, flags );
-		Engine->AddInterfaceObject( objEditor );
-		for( CWSHIfObj::ListIter it = m_Params.begin(); it != m_Params.end(); it++ ) {
-			(*it)->ReadyMethods( EditView, flags );
+		objEditor->ReadyMethods(EditView, flags);
+		Engine->AddInterfaceObject(objEditor);
+		for (CWSHIfObj::ListIter it = m_Params.begin(); it != m_Params.end(); it++) {
+			(*it)->ReadyMethods(EditView, flags);
 			Engine->AddInterfaceObject(*it);
 		}
 
@@ -91,14 +91,14 @@ bool CWSHMacroManager::ExecKeyMacro(CEditView *EditView, int flags) const
 BOOL CWSHMacroManager::LoadKeyMacro(HINSTANCE hInstance, const TCHAR* pszPath)
 {
 	//ソース読み込み -> m_Source
-	m_Source=L"";
-	
+	m_Source = L"";
+
 	CTextInputStream in(pszPath);
-	if(!in)
+	if (!in)
 		return FALSE;
 
-	while(in){
-		m_Source+=in.ReadLineW()+L"\r\n";
+	while (in) {
+		m_Source += in.ReadLineW() + L"\r\n";
 	}
 	return TRUE;
 }
@@ -112,21 +112,21 @@ BOOL CWSHMacroManager::LoadKeyMacro(HINSTANCE hInstance, const TCHAR* pszPath)
 BOOL CWSHMacroManager::LoadKeyMacroStr(HINSTANCE hInstance, const TCHAR* pszCode)
 {
 	//ソース読み込み -> m_Source
-	m_Source = to_wchar( pszCode );
+	m_Source = to_wchar(pszCode);
 	return TRUE;
 }
 
 CMacroManagerBase* CWSHMacroManager::Creator(const TCHAR* FileExt)
 {
 	TCHAR FileExtWithDot[1024], FileType[1024], EngineName[1024]; //1024を超えたら後は知りません
-	
-	_tcscpy( FileExtWithDot, _T(".") );
-	_tcscat( FileExtWithDot, FileExt );
 
-	if(ReadRegistry(HKEY_CLASSES_ROOT, FileExtWithDot, NULL, FileType, 1024))
+	_tcscpy(FileExtWithDot, _T("."));
+	_tcscat(FileExtWithDot, FileExt);
+
+	if (ReadRegistry(HKEY_CLASSES_ROOT, FileExtWithDot, NULL, FileType, 1024))
 	{
 		lstrcat(FileType, _T("\\ScriptEngine"));
-		if(ReadRegistry(HKEY_CLASSES_ROOT, FileType, NULL, EngineName, 1024))
+		if (ReadRegistry(HKEY_CLASSES_ROOT, FileType, NULL, EngineName, 1024))
 		{
 			wchar_t EngineNameW[1024];
 			_tcstowcs(EngineNameW, EngineName, _countof(EngineNameW));
@@ -143,15 +143,15 @@ void CWSHMacroManager::declare()
 }
 
 //インタフェースオブジェクトを追加する
-void CWSHMacroManager::AddParam( CWSHIfObj* param )
+void CWSHMacroManager::AddParam(CWSHIfObj* param)
 {
-	m_Params.push_back( param );
+	m_Params.push_back(param);
 }
 
 //インタフェースオブジェクト達を追加する
-void CWSHMacroManager::AddParam( CWSHIfObj::List& params )
+void CWSHMacroManager::AddParam(CWSHIfObj::List& params)
 {
-	m_Params.insert( m_Params.end(), params.begin(), params.end() );
+	m_Params.insert(m_Params.end(), params.begin(), params.end());
 }
 
 //インタフェースオブジェクトを削除する

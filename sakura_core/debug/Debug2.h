@@ -34,12 +34,12 @@
 #endif
 
 #ifdef _DEBUG
-	void debug_output(const char* str, ...);
-	void debug_exit();
-	void debug_exit2(const char* file, int line, const char* exp);
-	void warning_point();
+void debug_output(const char* str, ...);
+void debug_exit();
+void debug_exit2(const char* file, int line, const char* exp);
+void warning_point();
 
-	#define assert(exp) \
+#define assert(exp) \
 	{ \
 		if(!(exp)){ \
 			debug_output("!assert: %hs(%d): %hs\n", __FILE__, __LINE__, #exp); \
@@ -47,7 +47,7 @@
 		} \
 	}
 
-	#define assert_warning(exp) \
+#define assert_warning(exp) \
 	{ \
 		if(!(exp)){ \
 			debug_output("!warning: %hs(%d): %hs\n", __FILE__, __LINE__, #exp); \
@@ -56,8 +56,8 @@
 	}
 
 #else
-	#define assert(exp)
-	#define assert_warning(exp)
+#define assert(exp)
+#define assert_warning(exp)
 #endif
 
 #endif /* SAKURA_DEBUG2_69DB6343_0580_4F92_98D6_63216724B2D19_H_ */

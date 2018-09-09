@@ -13,8 +13,8 @@
 	warranty. In no event will the authors be held liable for any damages
 	arising from the use of this software.
 
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
+	Permission is granted to anyone to use this software for any purpose,
+	including commercial applications, and to alter it and redistribute it
 	freely, subject to the following restrictions:
 
 		1. The origin of this software must not be misrepresented;
@@ -23,7 +23,7 @@
 		   in the product documentation would be appreciated but is
 		   not required.
 
-		2. Altered source versions must be plainly marked as such, 
+		2. Altered source versions must be plainly marked as such,
 		   and must not be misrepresented as being the original software.
 
 		3. This notice may not be removed or altered from any source
@@ -34,7 +34,7 @@
 #include "CUxTheme.h"
 
 CUxTheme::CUxTheme()
- : m_bInitialized(false)
+	: m_bInitialized(false)
 {
 }
 
@@ -51,13 +51,13 @@ CUxTheme::~CUxTheme()
 	@author ryoji
 	@date 2007.04.01 ryoji 新規
 */
-bool CUxTheme::InitThemeDll( TCHAR* str )
+bool CUxTheme::InitThemeDll(TCHAR* str)
 {
-	if( m_bInitialized )
+	if (m_bInitialized)
 		return IsAvailable();
 
 	m_bInitialized = true;
-	return DLL_SUCCESS == CDllImp::InitDll( str );
+	return DLL_SUCCESS == CDllImp::InitDll(str);
 }
 
 /*!
@@ -80,7 +80,7 @@ bool CUxTheme::InitDllImp()
 		{ NULL, 0 }
 	};
 
-	if( !RegisterEntries( table ) ){
+	if (!RegisterEntries(table)) {
 		return false;
 	}
 
@@ -88,51 +88,51 @@ bool CUxTheme::InitDllImp()
 }
 
 /*! IsThemeActive API Wrapper */
-BOOL CUxTheme::IsThemeActive( VOID )
+BOOL CUxTheme::IsThemeActive(VOID)
 {
-	if( !InitThemeDll() )
+	if (!InitThemeDll())
 		return FALSE;
 	return m_pfnIsThemeActive();
 }
 
 /*! SetWindowTheme API Wrapper */
-HRESULT CUxTheme::SetWindowTheme( HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList )
+HRESULT CUxTheme::SetWindowTheme(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList)
 {
-	if( !InitThemeDll() )
+	if (!InitThemeDll())
 		return S_FALSE;
-	return m_pfnSetWindowTheme( hwnd, pszSubAppName, pszSubIdList );
+	return m_pfnSetWindowTheme(hwnd, pszSubAppName, pszSubIdList);
 }
 
 /*! SetWindowTheme API Wrapper */
-HTHEME CUxTheme::OpenThemeData( HWND hwnd, LPCWSTR pszClassList )
+HTHEME CUxTheme::OpenThemeData(HWND hwnd, LPCWSTR pszClassList)
 {
-	if( !InitThemeDll() )
+	if (!InitThemeDll())
 		return NULL;
-	return (HTHEME)m_pfnOpenThemeData( hwnd, pszClassList );
+	return (HTHEME)m_pfnOpenThemeData(hwnd, pszClassList);
 }
 
 /*! SetWindowTheme API Wrapper */
-HRESULT CUxTheme::DrawThemeBackground( HTHEME htheme, HDC hdc, int iPartId, int iStateId, RECT* prc, RECT* prcClip )
+HRESULT CUxTheme::DrawThemeBackground(HTHEME htheme, HDC hdc, int iPartId, int iStateId, RECT* prc, RECT* prcClip)
 {
-	if( !InitThemeDll() )
+	if (!InitThemeDll())
 		return S_FALSE;
-	return m_pfnDrawThemeBackground( htheme, hdc, iPartId, iStateId, prc, prcClip );
+	return m_pfnDrawThemeBackground(htheme, hdc, iPartId, iStateId, prc, prcClip);
 }
 
 /*! SetWindowTheme API Wrapper */
-HRESULT CUxTheme::DrawThemeParentBackground( HWND hwnd, HDC hdc, RECT *prc )
+HRESULT CUxTheme::DrawThemeParentBackground(HWND hwnd, HDC hdc, RECT *prc)
 {
-	if( !InitThemeDll() )
+	if (!InitThemeDll())
 		return S_FALSE;
-	return m_pfnDrawThemeParentBackground( hwnd, hdc, prc );
+	return m_pfnDrawThemeParentBackground(hwnd, hdc, prc);
 }
 
 /*! SetWindowTheme API Wrapper */
-BOOL CUxTheme::IsThemeBackgroundPartiallyTransparent( HTHEME htheme, int iPartId, int iStateId )
+BOOL CUxTheme::IsThemeBackgroundPartiallyTransparent(HTHEME htheme, int iPartId, int iStateId)
 {
-	if( !InitThemeDll() )
+	if (!InitThemeDll())
 		return FALSE;
-	return m_pfnIsThemeBackgroundPartiallyTransparent( htheme, iPartId, iStateId );
+	return m_pfnIsThemeBackgroundPartiallyTransparent(htheme, iPartId, iStateId);
 }
 
 

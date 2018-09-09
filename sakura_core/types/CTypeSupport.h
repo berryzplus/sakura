@@ -34,14 +34,14 @@
 /*!タイプサポートクラス
 	今のところタイプ別設定の色情報取得の補助
 */
-class CTypeSupport{
+class CTypeSupport {
 private:
-	static const COLORREF INVALID_COLOR=0xFFFFFFFF; //無効な色定数
+	static const COLORREF INVALID_COLOR = 0xFFFFFFFF; //無効な色定数
 
 public:
 	CTypeSupport(const CEditView* pEditView, EColorIndexType eColorIdx)
-	: m_pFontset(&pEditView->GetFontset())
-	, m_nColorIdx(ToColorInfoArrIndex(eColorIdx))
+		: m_pFontset(&pEditView->GetFontset())
+		, m_nColorIdx(ToColorInfoArrIndex(eColorIdx))
 	{
 		assert(0 <= m_nColorIdx);
 		m_pTypes = &pEditView->m_pcEditDoc->m_cDocType.GetDocumentAttribute();
@@ -51,7 +51,7 @@ public:
 	}
 	virtual ~CTypeSupport()
 	{
-		if(m_gr){
+		if (m_gr) {
 			RewindGraphicsState(*m_gr);
 		}
 	}
@@ -99,7 +99,7 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                           描画                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	void FillBack(CGraphics& gr,const RECT& rc)
+	void FillBack(CGraphics& gr, const RECT& rc)
 	{
 		gr.FillSolidMyRect(rc, m_pColorInfoArr->m_sColorAttr.m_cBACK);
 	}
@@ -111,12 +111,12 @@ public:
 	{
 		SFONT sFont;
 		sFont.m_sFontAttr = m_pColorInfoArr->m_sFontAttr;
-		sFont.m_hFont = m_pFontset->ChooseFontHandle( 0, m_pColorInfoArr->m_sFontAttr );
+		sFont.m_hFont = m_pFontset->ChooseFontHandle(0, m_pColorInfoArr->m_sFontAttr);
 		return sFont;
 	}
 	void SetGraphicsState_WhileThisObj(CGraphics& gr)
 	{
-		if(m_gr){
+		if (m_gr) {
 			RewindGraphicsState(*m_gr);
 		}
 
@@ -131,7 +131,7 @@ public:
 	}
 	void RewindGraphicsState(CGraphics& gr)
 	{
-		if(m_gr){
+		if (m_gr) {
 			gr.PopTextBackColor();
 			gr.PopTextForeColor();
 			gr.PopMyFont();

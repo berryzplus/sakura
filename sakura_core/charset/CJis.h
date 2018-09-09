@@ -26,13 +26,13 @@
 
 #include "CCodeBase.h"
 
-class CJis : public CCodeBase{
+class CJis : public CCodeBase {
 public:
 	CJis(bool base64decode = true) : m_base64decode(base64decode) { }
 public:
 	//CCodeBaseインターフェース
-	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst){ return JISToUnicode(cSrc, pDst, m_base64decode); }	//!< 特定コード → UNICODE    変換
-	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst){ return UnicodeToJIS(cSrc, pDst); }	//!< UNICODE    → 特定コード 変換
+	EConvertResult CodeToUnicode(const CMemory& cSrc, CNativeW* pDst) { return JISToUnicode(cSrc, pDst, m_base64decode); }	//!< 特定コード → UNICODE    変換
+	EConvertResult UnicodeToCode(const CNativeW& cSrc, CMemory* pDst) { return UnicodeToJIS(cSrc, pDst); }	//!< UNICODE    → 特定コード 変換
 // GetEolはCCodeBaseに移動	2010/6/13 Uchi
 	EConvertResult UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* pDst, const CommonSetting_Statusbar* psStatusbar);			//!< UNICODE → Hex 変換
 
@@ -43,10 +43,10 @@ public:
 
 protected:
 	// 2008.11.10  変換ロジックを書き直す
-	static int _JisToUni_block( const unsigned char*, const int, unsigned short*, const EMyJisEscseq, bool* pbError );
-	static int JisToUni( const char*, const int, wchar_t*, bool* pbError );
-	static int _SjisToJis_char( const unsigned char*, unsigned char*, const ECharSet, bool* pbError );
-	static int UniToJis( const wchar_t*, const int, char*, bool* pbError );
+	static int _JisToUni_block(const unsigned char*, const int, unsigned short*, const EMyJisEscseq, bool* pbError);
+	static int JisToUni(const char*, const int, wchar_t*, bool* pbError);
+	static int _SjisToJis_char(const unsigned char*, unsigned char*, const ECharSet, bool* pbError);
+	static int UniToJis(const wchar_t*, const int, char*, bool* pbError);
 
 private:
 	//変換方針
@@ -62,8 +62,8 @@ public:
 	static const char JISESCDATA_JISX0208_1978[];
 	static const char JISESCDATA_JISX0208_1983[];
 	static const char JISESCDATA_JISX0208_1990[];
-//	static const int TABLE_JISESCLEN[];
-//	static const char* TABLE_JISESCDATA[];
+	//	static const int TABLE_JISESCLEN[];
+	//	static const char* TABLE_JISESCDATA[];
 };
 
 
@@ -83,14 +83,14 @@ public:
 	JIS X 0201 ラテン    1b 28 48            ESC ( H         (歴史的[*2])
 	JIS X 0201 片仮名    1b 28 49            ESC ( I
 	ISO/IEC 646 IRV      1b 28 42            ESC ( B
-	
-	
+
+
 	  [*1] 各バイトを便宜的にISO/IEC 646 IRVの文字で表したもの。
-	       ただしESCはバイト値1bを表す。
-	
+		   ただしESCはバイト値1bを表す。
+
 	  [*2] JIS X 0201の指示としては使用すべきでないが、古いデータでは
-	       使われている可能性がある。
-	
+		   使われている可能性がある。
+
 	出展：http://www.asahi-net.or.jp/~wq6k-yn/code/
 	参考：http://homepage2.nifty.com/zaco/code/
 */

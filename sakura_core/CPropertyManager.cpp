@@ -28,7 +28,7 @@
 #include "env/CDocTypeManager.h"
 #include <memory>
 
-void CPropertyManager::Create( HWND hwndOwner, CImageListMgr* pImageList, CMenuDrawer* pMenuDrawer )
+void CPropertyManager::Create(HWND hwndOwner, CImageListMgr* pImageList, CMenuDrawer* pMenuDrawer)
 {
 	m_hwndOwner = hwndOwner;
 	m_pImageList = pImageList;
@@ -39,22 +39,22 @@ void CPropertyManager::Create( HWND hwndOwner, CImageListMgr* pImageList, CMenuD
 }
 
 /*! 共通設定 プロパティシート */
-bool CPropertyManager::OpenPropertySheet( HWND hWnd, int nPageNum, bool bTrayProc )
+bool CPropertyManager::OpenPropertySheet(HWND hWnd, int nPageNum, bool bTrayProc)
 {
 	bool bRet;
 	CPropCommon* pcPropCommon = new CPropCommon();
-	pcPropCommon->Create( m_hwndOwner, m_pImageList, m_pMenuDrawer );
+	pcPropCommon->Create(m_hwndOwner, m_pImageList, m_pMenuDrawer);
 
 	// 2002.12.11 Moca この部分で行われていたデータのコピーをCPropCommonに移動・関数化
 	// 共通設定の一時設定領域にSharaDataをコピーする
 	pcPropCommon->InitData();
 
-	if( nPageNum != -1 ){
+	if (nPageNum != -1) {
 		m_nPropComPageNum = nPageNum;
 	}
 
 	/* プロパティシートの作成 */
-	if( pcPropCommon->DoPropertySheet( m_nPropComPageNum, bTrayProc ) ){
+	if (pcPropCommon->DoPropertySheet(m_nPropComPageNum, bTrayProc)) {
 
 		// 2002.12.11 Moca この部分で行われていたデータのコピーをCPropCommonに移動・関数化
 		// ShareData に 設定を適用・コピーする
@@ -63,19 +63,19 @@ bool CPropertyManager::OpenPropertySheet( HWND hWnd, int nPageNum, bool bTrayPro
 
 		// 印刷中にキーワードを上書きしないように
 		CShareDataLockCounter* pLock = NULL;
-		CShareDataLockCounter::WaitLock( pcPropCommon->m_hwndParent, &pLock );
+		CShareDataLockCounter::WaitLock(pcPropCommon->m_hwndParent, &pLock);
 
 		pcPropCommon->ApplyData();
 		// note: 基本的にここで適用しないで、MYWM_CHANGESETTINGからたどって適用してください。
 		// 自ウィンドウには最後に通知されます。大抵は、OnChangeSetting にあります。
 		// ここでしか適用しないと、ほかのウィンドウが変更されません。
 
-		if( bGroup != (GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin ) ){
+		if (bGroup != (GetDllShareData().m_Common.m_sTabBar.m_bDispTabWnd && !GetDllShareData().m_Common.m_sTabBar.m_bDispTabWndMultiWin)) {
 			CAppNodeManager::getInstance()->ResetGroupId();
 		}
 
 		/* アクセラレータテーブルの再作成 */
-		::SendMessageAny( GetDllShareData().m_sHandles.m_hwndTray, MYWM_CHANGESETTING,  (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL );
+		::SendMessageAny(GetDllShareData().m_sHandles.m_hwndTray, MYWM_CHANGESETTING, (WPARAM)0, (LPARAM)PM_CHANGESETTING_ALL);
 
 		/* 設定変更を反映させる */
 		/* 全編集ウィンドウへメッセージをポストする */
@@ -88,7 +88,8 @@ bool CPropertyManager::OpenPropertySheet( HWND hWnd, int nPageNum, bool bTrayPro
 
 		delete pLock;
 		bRet = true;
-	}else{
+	}
+	else {
 		bRet = false;
 	}
 
@@ -103,26 +104,26 @@ bool CPropertyManager::OpenPropertySheet( HWND hWnd, int nPageNum, bool bTrayPro
 
 
 /*! タイプ別設定 プロパティシート */
-bool CPropertyManager::OpenPropertySheetTypes( HWND hWnd, int nPageNum, CTypeConfig nSettingType )
+bool CPropertyManager::OpenPropertySheetTypes(HWND hWnd, int nPageNum, CTypeConfig nSettingType)
 {
 	bool bRet;
 	CPropTypes* pcPropTypes = new CPropTypes();
-	pcPropTypes->Create( G_AppInstance(), m_hwndOwner );
+	pcPropTypes->Create(G_AppInstance(), m_hwndOwner);
 
 	std::unique_ptr<STypeConfig> pType(new STypeConfig());
 	CDocTypeManager().GetTypeConfig(nSettingType, *pType);
 	pcPropTypes->SetTypeData(*pType);
 	// Mar. 31, 2003 genta メモリ削減のためポインタに変更しProperySheet内で取得するように
 
-	if( nPageNum != -1 ){
+	if (nPageNum != -1) {
 		m_nPropTypePageNum = nPageNum;
 	}
 
 	/* プロパティシートの作成 */
-	if( pcPropTypes->DoPropertySheet( m_nPropTypePageNum ) ){
+	if (pcPropTypes->DoPropertySheet(m_nPropTypePageNum)) {
 		// 2013.06.10 Moca 印刷終了まで待機する
 		CShareDataLockCounter* pLock = NULL;
-		CShareDataLockCounter::WaitLock( pcPropTypes->GetHwndParent(), &pLock );
+		CShareDataLockCounter::WaitLock(pcPropTypes->GetHwndParent(), &pLock);
 
 		pcPropTypes->GetTypeData(*pType);
 
@@ -139,10 +140,10 @@ bool CPropertyManager::OpenPropertySheetTypes( HWND hWnd, int nPageNum, CTypeCon
 			(LPARAM)PM_CHANGESETTING_TYPE,
 			hWnd
 		);
-		if( pcPropTypes->GetChangeKeyWordSet() ){
+		if (pcPropTypes->GetChangeKeyWordSet()) {
 			CAppNodeGroupHandle(0).SendMessageToAllEditors(
 				WM_COMMAND,
-				(WPARAM)MAKELONG( F_REDRAW, 0 ),
+				(WPARAM)MAKELONG(F_REDRAW, 0),
 				(LPARAM)0,
 				hWnd
 			);
@@ -150,7 +151,8 @@ bool CPropertyManager::OpenPropertySheetTypes( HWND hWnd, int nPageNum, CTypeCon
 
 		delete pLock;
 		bRet = true;
-	}else{
+	}
+	else {
 		bRet = false;
 	}
 

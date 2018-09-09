@@ -25,7 +25,7 @@
 #define SAKURA_CSTRICTRANGE_01CCFDA1_93B9_4053_BF1E_0CFE0E5F55A1_H_
 
 template <class PointType>
-class CRangeBase{
+class CRangeBase {
 public:
 	typedef typename PointType::IntType IntType;
 public:
@@ -37,17 +37,17 @@ public:
 	{
 		operator=(rhs);
 	}
-	CRangeBase(const PointType& _ptFrom,const PointType& _ptTo)
+	CRangeBase(const PointType& _ptFrom, const PointType& _ptTo)
 	{
-		m_ptFrom=_ptFrom;
-		m_ptTo=_ptTo;
+		m_ptFrom = _ptFrom;
+		m_ptTo = _ptTo;
 	}
 
 	//代入
 	CRangeBase& operator = (const CRangeBase& rhs)
 	{
-		m_ptFrom=rhs.m_ptFrom;
-		m_ptTo=rhs.m_ptTo;
+		m_ptFrom = rhs.m_ptFrom;
+		m_ptTo = rhs.m_ptTo;
 		return *this;
 	}
 
@@ -65,11 +65,11 @@ public:
 	//! 1文字しか選択してない状態ならtrue
 	bool IsOne() const
 	{
-		return m_ptFrom==m_ptTo;
+		return m_ptFrom == m_ptTo;
 	}
 	bool IsLineOne() const
 	{
-		return m_ptFrom.y==m_ptTo.y;
+		return m_ptFrom.y == m_ptTo.y;
 	}
 	bool IsValid() const //!有効な範囲ならtrue
 	{
@@ -100,13 +100,13 @@ public:
 	//設定
 	void Clear(int n)
 	{
-		m_ptFrom.Set(IntType(n),IntType(n));
-		m_ptTo.Set(IntType(n),IntType(n));
+		m_ptFrom.Set(IntType(n), IntType(n));
+		m_ptTo.Set(IntType(n), IntType(n));
 	}
 	void Set(const PointType& pt)
 	{
-		m_ptFrom=pt;
-		m_ptTo  =pt;
+		m_ptFrom = pt;
+		m_ptTo = pt;
 	}
 	void SetFrom(const PointType& pt)
 	{
@@ -131,7 +131,7 @@ public:
 	{
 		m_ptFrom.y = nY;
 	}
-	
+
 	void SetToX(IntType nX)
 	{
 		m_ptTo.x = nX;
@@ -148,8 +148,8 @@ public:
 	}
 
 	//特殊設定
-	void SetLine(IntType nY)					{ m_ptFrom.y = nY;     m_ptTo.y = nY;   }
-	void SetXs(IntType nXFrom, IntType nXTo)	{ m_ptFrom.x = nXFrom; m_ptTo.x = nXTo; }
+	void SetLine(IntType nY) { m_ptFrom.y = nY;     m_ptTo.y = nY; }
+	void SetXs(IntType nXFrom, IntType nXTo) { m_ptFrom.x = nXFrom; m_ptTo.x = nXTo; }
 private:
 	PointType m_ptFrom;
 	PointType m_ptTo;

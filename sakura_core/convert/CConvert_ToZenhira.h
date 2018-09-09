@@ -28,7 +28,7 @@
 
 
 //!できる限り全角ひらがなにする
-class CConvert_ToZenhira : public CConvert{
+class CConvert_ToZenhira : public CConvert {
 public:
 	bool DoConvert(CNativeW* pcData);
 };
