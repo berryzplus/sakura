@@ -6,40 +6,37 @@ set(project_name sakura_lang_en_US)
 # define a project name
 project (${project_name} LANGUAGES CXX)
 
-include_directories(./)
-
 # define variables by file GLOB
-file(GLOB_RECURSE SOURCE_FILES   ./*.cpp)
-file(GLOB_RECURSE HEADER_FILES   ./*.h)
-file(GLOB_RECURSE RESOURCE_FILES ./*.rc)
-
-#foreach( srcTemp ${SOURCE_FILES})
-#	message("SOURCE_FILES = " ${srcTemp})
-#endforeach( srcTemp ${SOURCE_FILES})
+file(GLOB_RECURSE SOURCE_FILES *.cpp *.h *.rc)
 
 # define sources files of an executable
-# 'MODULE' libraries  are not linked directly.
-# see https://cmake.org/cmake/help/v3.0/command/add_library.html
-add_library(${project_name} MODULE ${SOURCE_FILES} ${HEADER_FILES} ${RESOURCE_FILES})
+add_library(${project_name} SHARED ${SOURCE_FILES})
 
-add_dependencies(${project_name} HeaderMake)
-add_dependencies(${project_name} OutHeaderMake)
-add_dependencies(${project_name} OutGitHash)
+# add include directories for sakura_core
+target_include_directories(${project_name}
+  PRIVATE ${CMAKE_SOURCE_DIR}/sakura_core
+  PRIVATE ${CMAKE_BINARY_DIR}/sakura_core
+)
 
-# add definition
-add_definitions(-D_UNICODE -DUNICODE)
-add_definitions(-DWIN32 -D_WINDOWS -DWINVER=0x0500 -D_WIN32_WINNT=0x0500 -D_WIN32_IE=0x0501)
-
-if(MSVC)
-	# avoid error LNK2001 for "__DllMainCRTStartup@12"
-	set_target_properties(${project_name} PROPERTIES LINK_FLAGS "/NOENTRY")
-endif(MSVC)
+target_compile_options(${project_name} PUBLIC /nologo)
 
 # fix the error 'Missing variable is: CMAKE_RC_CREATE_SHARED_LIBRARY'
 # https://cmake.org/pipermail/cmake/2012-January/048647.html
 set_target_properties(${project_name} PROPERTIES LINKER_LANGUAGE "CXX" )
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	# https://cmake.org/cmake/help/v3.0/prop_tgt/PREFIX.html?highlight=prefix
-	set_target_properties(${project_name} PROPERTIES PREFIX "" )
-endif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if(MSVC)
+	# avoid error LNK2001 for "__DllMainCRTStartup@12"
+	set_target_properties(${project_name}
+      PROPERTIES
+        LINK_FLAGS	"/NOENTRY"
+    )
+elseif(MINGW)
+    # avoid prefixing of DLL name, set PREFIX to blank.
+	# https://cmake.org/cmake/help/v3.12/prop_tgt/PREFIX.html?highlight=prefix
+	set_target_properties(${project_name}
+	  PROPERTIES
+	    PREFIX		""
+    )
+endif()
+
+add_dependencies(${project_name} githash.h Funccode_define.h)
