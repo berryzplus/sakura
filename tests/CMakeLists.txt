@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.12)
 include(${CMAKE_SOURCE_DIR}/runtime.cmake)
 
 project (sakura-unittest)
