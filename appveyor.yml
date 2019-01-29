@@ -25,12 +25,7 @@ build_script:
 - cmd: >-
     call checkEncoding.bat
 
-    call build-all.bat %PLATFORM% %CONFIGURATION%
-
-    echo call build-by-cmake.bat %PLATFORM% %CONFIGURATION%
-         call build-by-cmake.bat %PLATFORM% %CONFIGURATION%
-
-    call tests\build-and-test.bat %PLATFORM% %CONFIGURATION%
+    call build-by-cmake_with_ninja.bat %PLATFORM% %CONFIGURATION%
 
 artifacts:
 - path: 'sakura-*$(platform)-$(configuration)*.zip'

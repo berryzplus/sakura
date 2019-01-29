@@ -97,6 +97,15 @@ if (MSVC)
 
 endif (MSVC)
 
+if (MinGW)
+  # add generic compile options for MSVC
+  add_compile_options(
+    -finput-charset=utf-8
+    -fexec-charset=cp932
+  )
+
+endif (MinGW)
+
 add_subdirectory(HeaderMake)
 add_subdirectory(sakura_core)
 add_subdirectory(sakura_lang_en_US)

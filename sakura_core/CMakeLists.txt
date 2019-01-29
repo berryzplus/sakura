@@ -24,7 +24,7 @@ add_executable(${project_name} WIN32 $<TARGET_OBJECTS:${project_core}>)
 # set include directories
 target_include_directories(${project_core}
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
-  PUBLIC ./sakura_core
+  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 # add preprocessor symbol definitions
