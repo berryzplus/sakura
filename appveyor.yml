@@ -18,9 +18,6 @@ install:
 
     msiexec /i externals\cppcheck\cppcheck-1.84-x64-Setup.msi /quiet /qn /norestart /log cppcheck-install.log
 
-    C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-x86_64-gtest"
-    C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm doxygen"
-
 build_script:
 - cmd: >-
     call checkEncoding.bat
