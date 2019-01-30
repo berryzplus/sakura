@@ -36,11 +36,15 @@ set CMAKE_OPTIONS=-DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_MAKE_PROGRAM="C:\
 
 if "%platform%" == "MinGW" (
 	call :setEnvOfMinGW
+) else if "%platform%" == "x64" (
+	call :setEnvOfMSVC64
+) else (
+	call :setEnvOfMSVC
 )
 
 echo ---- creating project -----
 echo cmake -G Ninja -B%BUILDDIR% -H%PROJECT_TOP%
-cmake -G "Ninja" -B%BUILDDIR% %CMAKE_OPTIONS% -H%PROJECT_TOP% || set ERROR_RESULT=1
+cmake -B%BUILDDIR% %CMAKE_OPTIONS% -H%PROJECT_TOP% || set ERROR_RESULT=1
 if errorlevel 1 (
 	@echo ERROR %ERRORLEVEL%
 	endlocal
@@ -72,13 +76,20 @@ exit /b
 @rem  sub-routines
 @rem ----------------------------------------------
 
+:setEnvOfMSVC
+	set CMAKE_OPTIONS=-G "Visual Studio 15 2017" %CMAKE_OPTIONS%
+exit /b 0
+
+:setEnvOfMSVC64
+	set CMAKE_OPTIONS=-G "Visual Studio 15 2017 win64" %CMAKE_OPTIONS%
+exit /b 0
+
 :setEnvOfMinGW
-	set MSYSTEM=MINGW64
 	set MSYS2_ROOT=C:/msys64
 	set MINGW_ROOT=%MSYS2_ROOT%/mingw64
 	set PATH=%MINGW_ROOT%\bin;%MSYS2_ROOT%\usr\local\bin;%MSYS2_ROOT%\usr\bin;%MSYS2_ROOT%\bin;%PATH:C:\Program Files\Git\usr\bin;=%
 	set CMAKE_C_COMPILER=%MINGW_ROOT%/bin/gcc.exe
 	set CMAKE_CXX_COMPILER=%MINGW_ROOT%/bin/g++.exe
 	set CMAKE_PREFIX_PATH=%MINGW_ROOT%
-	set CMAKE_OPTIONS=%CMAKE_OPTIONS% -DCMAKE_CXX_COMPILER="%CMAKE_CXX_COMPILER%" -DCMAKE_PREFIX_PATH="%CMAKE_PREFIX_PATH%"
+	set CMAKE_OPTIONS=-G "MinGW Makefiles" %CMAKE_OPTIONS% -DCMAKE_CXX_COMPILER="%CMAKE_CXX_COMPILER%" -DCMAKE_PREFIX_PATH="%CMAKE_PREFIX_PATH%"
 exit /b 0
