@@ -32,7 +32,7 @@ if not exist "%BUILDDIR%" (
 )
 
 setlocal
-set CMAKE_OPTIONS=-DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_MAKE_PROGRAM="C:\PROGRAM FILES (X86)\MICROSOFT VISUAL STUDIO\2017\COMMUNITY\COMMON7\IDE\COMMONEXTENSIONS\MICROSOFT\CMAKE\Ninja\ninja.exe"
+set CMAKE_OPTIONS=-DCMAKE_BUILD_TYPE="%configuration%"
 
 if "%platform%" == "MinGW" (
 	call :setEnvOfMinGW
