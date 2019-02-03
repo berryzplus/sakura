@@ -2,18 +2,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura", "sakura\sakura.vcxproj", "{AF03508C-515E-4A0E-87BE-67ED1E254BD0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_core", "sakura_core\sakura_core.vcxproj", "{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HeaderMake", "HeaderMake\HeaderMake.vcxproj", "{0F2918B0-23E3-42E8-A1A8-8739F726A23E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura", "sakura\sakura.vcxproj", "{AF03508C-515E-4A0E-87BE-67ED1E254BD0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MakefileMake", "MakefileMake\MakefileMake.vcxproj", "{40735439-B12B-40AC-92F7-F1183D8B6862}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_lang_en_US", "sakura_lang_en_US\sakura_lang_en_US.vcxproj", "{7A6D0F29-E560-4985-835B-5F92A08EB242}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AF03508C-515E-4A0E-87BE-67ED1E254BD0} = {AF03508C-515E-4A0E-87BE-67ED1E254BD0}
-	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_core", "sakura_core\sakura_core.vcxproj", "{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test1", "tests\unittests\tests1.vcxproj", "{701E3407-EC27-49F7-ADC7-520CF2B4B438}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +62,14 @@ Global
 		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Release|Win32.Build.0 = Release|Win32
 		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Release|x64.ActiveCfg = Release|x64
 		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Release|x64.Build.0 = Release|x64
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Debug|Win32.ActiveCfg = Debug|Win32
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Debug|Win32.Build.0 = Debug|Win32
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Debug|x64.ActiveCfg = Debug|x64
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Debug|x64.Build.0 = Debug|x64
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Release|Win32.ActiveCfg = Release|Win32
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Release|Win32.Build.0 = Release|Win32
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Release|x64.ActiveCfg = Release|x64
+		{701E3407-EC27-49F7-ADC7-520CF2B4B438}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

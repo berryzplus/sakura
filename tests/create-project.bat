@@ -7,6 +7,10 @@ if "%platform%" == "MinGW" (
 	set BUILD_EDITOR_BAT=build-gnu.bat
 ) else (
 	set BUILD_EDITOR_BAT=build-sln.bat
+
+	@rem if tests*.exe has already built, exit immediately
+	dir %~dp0build\%platform%\unittests\%platform%\%configuration%\tests*.exe > NUL 2>&1
+	if not errorlevel 1 exit /b 0
 )
 pushd "%~dp0.."
 @echo ---- start %BUILD_EDITOR_BAT% ----
@@ -16,6 +20,14 @@ popd
 if "%ERROR_RESULT%" == "1" (
 	@echo ERROR
 	exit /b 1
+)
+
+@rem check platform and exit when MSVC.
+if "%platform%" == "MinGW" (
+	@rem continue processing.
+) else (
+	@rem build-sln.bat will make test projects.
+	exit /b 0
 )
 
 pushd "%~dp0"
