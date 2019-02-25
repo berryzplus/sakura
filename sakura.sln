@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_lang_en_US", "sakura
 		{AF03508C-515E-4A0E-87BE-67ED1E254BD0} = {AF03508C-515E-4A0E-87BE-67ED1E254BD0}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_core", "sakura_core\sakura_core\sakura_core.vcxproj", "{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -53,6 +55,14 @@ Global
 		{7A6D0F29-E560-4985-835B-5F92A08EB242}.Release|Win32.Build.0 = Release|Win32
 		{7A6D0F29-E560-4985-835B-5F92A08EB242}.Release|x64.ActiveCfg = Release|x64
 		{7A6D0F29-E560-4985-835B-5F92A08EB242}.Release|x64.Build.0 = Release|x64
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Debug|Win32.Build.0 = Debug|Win32
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Debug|x64.ActiveCfg = Debug|x64
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Debug|x64.Build.0 = Debug|x64
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Release|Win32.ActiveCfg = Release|Win32
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Release|Win32.Build.0 = Release|Win32
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Release|x64.ActiveCfg = Release|x64
+		{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
