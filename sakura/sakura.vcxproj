@@ -996,6 +996,10 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <Target Name="PreBuildBat" BeforeTargets="ClCompile">
+    <Message Text="=======================" />
+    <Message Text="preBuild" />
+    <Message Text="=======================" />
+
     <Exec Command="preBuild.bat $(SolutionDir)Win32\$(Configuration)" />
   </Target>
 </Project>
