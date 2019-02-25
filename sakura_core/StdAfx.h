@@ -11,6 +11,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "targetver.h"
+
 // この位置にヘッダーを挿入してください
 // #define WIN32_LEAN_AND_MEAN		// Windows ヘッダーから殆ど使用されないスタッフを除外します
 #ifndef STRICT
