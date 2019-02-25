@@ -1003,9 +1003,14 @@
     <PropertyGroup>
       <ExeDir>$(SolutionDir)Win32\$(Configuration)</ExeDir>
       <SrcDir>..\sakura_core</SrcDir>
+      <HeaderMake>$(ExeDir)\HeaderMake.exe</HeaderMake>
+      <FuncCodeX>$(SrcDir)\Funccode_x.hsrc</FuncCodeX>
+      <FuncCodeDefine>$(SrcDir)\Funccode_define.h</FuncCodeDefine>
+      <FuncCodeEnum>$(SrcDir)\Funccode_enum.h</FuncCodeEnum>
     </PropertyGroup>
+    <Exec Command="$(HeaderMake) -in=$(FuncCodeX) -out=$(FuncCodeDefine) -mode=define" />
+    <Exec Command="$(HeaderMake) -in=$(FuncCodeX) -out=$(FuncCodeEnum) -mode=enum -enum=EFunctionCode" />
 
-    <Exec Command="funccode.bat $(ExeDir) $(SrcDir)" />
     <Exec Command="gen-makefile.bat $(ExeDir) $(SrcDir)" />
     <Exec Command="githash.bat $(SrcDir)" />
   </Target>
