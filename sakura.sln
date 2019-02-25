@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_lang_en_US", "sakura
 		{AF03508C-515E-4A0E-87BE-67ED1E254BD0} = {AF03508C-515E-4A0E-87BE-67ED1E254BD0}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_core", "sakura_core\sakura_core\sakura_core.vcxproj", "{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sakura_core", "sakura_core\sakura_core.vcxproj", "{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
