@@ -2263,32 +2263,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\resource\auto_scroll_center.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resource\auto_scroll_horizontal.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resource\auto_scroll_vertical.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resource\icon_debug.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resource\icon_grep.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resource\icon_std.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resource\mytool.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\resource\printer.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="..\sakura_core\util\ReadMe_util.txt">
       <Filter>Cpp Source Files\util</Filter>
     </Text>
