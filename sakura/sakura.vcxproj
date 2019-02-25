@@ -120,9 +120,6 @@
     <PostBuildEvent>
       <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -161,9 +158,6 @@
     <PostBuildEvent>
       <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -201,9 +195,6 @@
     <PostBuildEvent>
       <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -240,9 +231,6 @@
     <PostBuildEvent>
       <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -1007,4 +995,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <Target Name="PreBuildBat" BeforeTargets="ClCompile">
+    <Exec Command="preBuild.bat $(SolutionDir)Win32\$(Configuration)" />
+  </Target>
 </Project>
