@@ -1000,6 +1000,13 @@
     <Message Text="preBuild" />
     <Message Text="=======================" />
 
-    <Exec Command="preBuild.bat $(SolutionDir)Win32\$(Configuration)" />
+    <PropertyGroup>
+      <ExeDir>$(SolutionDir)Win32\$(Configuration)</ExeDir>
+      <SrcDir>..\sakura_core</SrcDir>
+    </PropertyGroup>
+
+    <Exec Command="funccode.bat $(ExeDir) $(SrcDir)" />
+    <Exec Command="gen-makefile.bat $(ExeDir) $(SrcDir)" />
+    <Exec Command="githash.bat $(SrcDir)" />
   </Target>
 </Project>
