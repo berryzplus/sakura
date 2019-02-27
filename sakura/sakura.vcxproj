@@ -584,7 +584,6 @@
     <None Include="..\resource\cursor_tab_join.cur" />
     <None Include="..\resource\cursor_tab_separate.cur" />
     <None Include="..\resource\MainMenu.ini" />
-    <None Include="..\sakura_core\Funccode_x.hsrc" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\sakura_core\sakura_rc.rc">
@@ -981,6 +980,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\sakura_core\util\ReadMe_util.txt" />
+    <FuncCodeRes Include="..\sakura_core\Funccode_x.hsrc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HeaderMake\HeaderMake.vcxproj">
@@ -995,39 +995,35 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <Target Name="FuncCodeEnum" BeforeTargets="ClCompile">
-    <PropertyGroup>
-      <ExeDir>$(SolutionDir)Win32\$(Configuration)</ExeDir>
-      <SrcDir>..\sakura_core</SrcDir>
-      <HeaderMake>$(ExeDir)\HeaderMake.exe</HeaderMake>
-      <FuncCodeX>$(SrcDir)\Funccode_x.hsrc</FuncCodeX>
-      <FuncCodeEnum>$(SrcDir)\Funccode_enum.h</FuncCodeEnum>
-    </PropertyGroup>
-    <Exec Command="$(HeaderMake) -in=$(FuncCodeX) -out=$(FuncCodeEnum) -mode=enum -enum=EFunctionCode" />
+  <ItemDefinitionGroup>
+    <FuncCode>
+    </FuncCode>
+  </ItemDefinitionGroup>
+  <PropertyGroup Label="FuncCode">
+    <HeaderMake>$(SolutionDir)Win32\$(Configuration)\HeaderMake.exe</HeaderMake>
+    <FuncCodeEnum>..\sakura_core\Funccode_enum.h</FuncCodeEnum>
+    <FuncCodeDefine>..\sakura_core\Funccode_define.h</FuncCodeDefine>
+    <MakefileMake>$(SolutionDir)Win32\$(Configuration)\MakefileMake.exe</MakefileMake>
+    <MakefileMade>..\sakura_core\Makefile</MakefileMade>
+  </PropertyGroup>
+  <Target Name="FuncCodeEnum" BeforeTargets="ClCompile"
+      Inputs="@(FuncCodeRes)"
+      Outputs="$(FuncCodeEnum)">
+    <Exec Command="$(HeaderMake) -in=@(FuncCodeRes) -out=$(FuncCodeEnum) -mode=enum -enum=EFunctionCode" />
   </Target>
-  <Target Name="FuncCodeDefine" BeforeTargets="ResourceCompile">
-    <PropertyGroup>
-      <ExeDir>$(SolutionDir)Win32\$(Configuration)</ExeDir>
-      <SrcDir>..\sakura_core</SrcDir>
-      <HeaderMake>$(ExeDir)\HeaderMake.exe</HeaderMake>
-      <FuncCodeX>$(SrcDir)\Funccode_x.hsrc</FuncCodeX>
-      <FuncCodeDefine>$(SrcDir)\Funccode_define.h</FuncCodeDefine>
-    </PropertyGroup>
-    <Exec Command="$(HeaderMake) -in=$(FuncCodeX) -out=$(FuncCodeDefine) -mode=define" />
+  <Target Name="FuncCodeDefine" BeforeTargets="ResourceCompile"
+      Inputs="@(FuncCodeRes)"
+      Outputs="$(FuncCodeDefine)">
+    <Exec Command="$(HeaderMake) -in=@(FuncCodeRes) -out=$(FuncCodeDefine) -mode=define" />
   </Target>
-  <Target Name="MakefileMade" BeforeTargets="ClCompile">
-    <PropertyGroup>
-      <ExeDir>$(SolutionDir)Win32\$(Configuration)</ExeDir>
-      <SrcDir>..\sakura_core</SrcDir>
-      <MakefileMake>$(ExeDir)\MakefileMake.exe</MakefileMake>
-      <MakefileMade>$(SrcDir)\Makefile</MakefileMade>
-    </PropertyGroup>
-    <Exec Command="$(MakefileMake) -file=$(MakefileMade) -dir=$(SrcDir)" />
+  <Target Name="MakefileMade" AfterTargets="Link"
+      Inputs="@(ClCompile)"
+      Outputs="$(MakefileMade)">
+    <Exec Command="$(MakefileMake) -file=$(MakefileMade) -dir=..\sakura" />
   </Target>
-  <Target Name="GitHash" BeforeTargets="ClCompile">
-    <PropertyGroup>
-      <SrcDir>..\sakura_core</SrcDir>
-    </PropertyGroup>
-    <Exec Command="githash.bat $(SrcDir)" />
+  <Target Name="GitHash" BeforeTargets="ClCompile"
+      Inputs="$(SolutionDir).git\HEAD"
+      Outputs="..\sakura_core\githash.h">
+    <Exec Command="githash.bat ..\sakura_core" />
   </Target>
 </Project>
