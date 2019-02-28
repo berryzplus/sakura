@@ -1014,6 +1014,9 @@
       Outputs="..\sakura_core\githash.h">
     <Exec Command="githash.bat ..\sakura_core" />
   </Target>
+  <PropertyGroup Label="UnzipCmd">
+    <UnzipCmd>$(SolutionDir)tools\zip\unzip.bat</UnzipCmd>
+  </PropertyGroup>
   <PropertyGroup Label="BRegOnig">
     <BRegOnigDll>bregonig.dll</BRegOnigDll>
     <BRegOnigZip>installer\externals\bregonig\bron412.zip</BRegOnigZip>
@@ -1025,10 +1028,13 @@
       Outputs="$(OutDir)$(BRegOnigDll)">
     <Message Text="$(BRegOnigZip) -&gt; $(Platform)\$(Configuration)\$(BRegOnigDll)" />
     <Unzip
-      Condition="!Exists('$(BRegOnigTemp)$(BRegOnigDll)')"
       SourceFiles="$(SolutionDir)$(BRegOnigZip)"
       DestinationFolder="$(BRegOnigTemp)"
       OverwriteReadOnlyFiles="true"
+      />
+    <Exec Command="$(UnzipCmd) $(SolutionDir)$(BRegOnigZip) $(BRegOnigTemp) &gt; NUL"
+      Condition="!Exists('$(BRegOnigTemp)$(BRegOnigDll)')"
+      EchoOff="true"
       />
     <Copy
       SourceFiles="$(BRegOnigTemp)$(BRegOnigDll)"
@@ -1042,20 +1048,11 @@
     <CTagsZip Condition="'$(Platform)'=='x64'"  >installer\externals\universal-ctags\ctags-2018-09-16_e522743d-x64.zip</CTagsZip>
     <CTagsZip Condition="'$(Platform)'=='Win32'">installer\externals\universal-ctags\ctags-2018-09-16_e522743d-x86.zip</CTagsZip>
     <CTagsTemp>$(SolutionDir)installer\temp\ctags\</CTagsTemp>
-    <UnzipCmd>$(SolutionDir)tools\zip\unzip.bat</UnzipCmd>
   </PropertyGroup>
   <Target Name="CTags" AfterTargets="Link"
       Inputs="$(SolutionDir)$(CTagsZip)"
       Outputs="$(OutDir)$(CTagsExe)">
     <Message Text="$(CTagsZip) -&gt; $(Platform)\$(Configuration)\$(CTagsExe)" />
-    <!--<![CDATA[
-    //ctagsのzipはMsBuildのUnzipタスクでは解凍できなかった。
-    <Unzip
-      Condition="!Exists('$(CTagsTemp)$(CTagsExe)')"
-      SourceFiles="$(SolutionDir)$(CTagsZip)"
-      DestinationFolder="$(CTagsTemp)"
-      OverwriteReadOnlyFiles="true"
-      />]]>-->
     <Exec Command="$(UnzipCmd) $(SolutionDir)$(CTagsZip) $(CTagsTemp) &gt; NUL"
       Condition="!Exists('$(CTagsTemp)$(CTagsExe)')"
       EchoOff="true"
