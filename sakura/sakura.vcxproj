@@ -1014,7 +1014,57 @@
       Outputs="..\sakura_core\githash.h">
     <Exec Command="githash.bat ..\sakura_core" />
   </Target>
-  <Target Name="PostBuildBat" AfterTargets="Link">
-    <Exec Command="postBuild.bat $(Platform) $(Configuration)" />
+  <PropertyGroup Label="BRegOnig">
+    <BRegOnigDll>bregonig.dll</BRegOnigDll>
+    <BRegOnigZip>installer\externals\bregonig\bron412.zip</BRegOnigZip>
+    <BRegOnigTemp Condition="'$(Platform)'=='x64'">$(SolutionDir)installer\temp\bron\x64\</BRegOnigTemp>
+    <BRegOnigTemp Condition="'$(Platform)'=='Win32'">$(SolutionDir)installer\temp\bron\</BRegOnigTemp>
+  </PropertyGroup>
+  <Target Name="BRegOnig" AfterTargets="Link"
+      Inputs="$(SolutionDir)$(BRegOnigZip)"
+      Outputs="$(OutDir)$(BRegOnigDll)">
+    <Message Text="$(BRegOnigZip) -&gt; $(Platform)\$(Configuration)\$(BRegOnigDll)" />
+    <Unzip
+      Condition="!Exists('$(BRegOnigTemp)$(BRegOnigDll)')"
+      SourceFiles="$(SolutionDir)$(BRegOnigZip)"
+      DestinationFolder="$(BRegOnigTemp)"
+      OverwriteReadOnlyFiles="true"
+      />
+    <Copy
+      SourceFiles="$(BRegOnigTemp)$(BRegOnigDll)"
+      DestinationFolder="$(OutDir)"
+      SkipUnchangedFiles="true"
+      UseHardlinksIfPossible="true"
+      />
+  </Target>
+  <PropertyGroup Label="CTags">
+    <CTagsExe>ctags.exe</CTagsExe>
+    <CTagsZip Condition="'$(Platform)'=='x64'"  >installer\externals\universal-ctags\ctags-2018-09-16_e522743d-x64.zip</CTagsZip>
+    <CTagsZip Condition="'$(Platform)'=='Win32'">installer\externals\universal-ctags\ctags-2018-09-16_e522743d-x86.zip</CTagsZip>
+    <CTagsTemp>$(SolutionDir)installer\temp\ctags\</CTagsTemp>
+    <UnzipCmd>$(SolutionDir)tools\zip\unzip.bat</UnzipCmd>
+  </PropertyGroup>
+  <Target Name="CTags" AfterTargets="Link"
+      Inputs="$(SolutionDir)$(CTagsZip)"
+      Outputs="$(OutDir)$(CTagsExe)">
+    <Message Text="$(CTagsZip) -&gt; $(Platform)\$(Configuration)\$(CTagsExe)" />
+    <!--<![CDATA[
+    //ctagsのzipはMsBuildのUnzipタスクでは解凍できなかった。
+    <Unzip
+      Condition="!Exists('$(CTagsTemp)$(CTagsExe)')"
+      SourceFiles="$(SolutionDir)$(CTagsZip)"
+      DestinationFolder="$(CTagsTemp)"
+      OverwriteReadOnlyFiles="true"
+      />]]>-->
+    <Exec Command="$(UnzipCmd) $(SolutionDir)$(CTagsZip) $(CTagsTemp) &gt; NUL"
+      Condition="!Exists('$(CTagsTemp)$(CTagsExe)')"
+      EchoOff="true"
+      />
+    <Copy
+      SourceFiles="$(CTagsTemp)$(CTagsExe)"
+      DestinationFolder="$(OutDir)"
+      SkipUnchangedFiles="true"
+      UseHardlinksIfPossible="true"
+      />
   </Target>
 </Project>
