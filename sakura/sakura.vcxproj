@@ -118,12 +118,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -160,12 +154,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -201,12 +189,6 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -241,12 +223,6 @@
       <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -600,7 +576,6 @@
     <None Include="..\resource\cursor_tab_join.cur" />
     <None Include="..\resource\cursor_tab_separate.cur" />
     <None Include="..\resource\MainMenu.ini" />
-    <None Include="..\sakura_core\Funccode_x.hsrc" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\sakura_core\sakura_rc.rc">
@@ -997,6 +972,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\sakura_core\util\ReadMe_util.txt" />
+    <FuncCodeRes Include="..\sakura_core\Funccode_x.hsrc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HeaderMake\HeaderMake.vcxproj">
@@ -1011,4 +987,85 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ItemDefinitionGroup>
+    <FuncCode>
+    </FuncCode>
+  </ItemDefinitionGroup>
+  <PropertyGroup Label="FuncCode">
+    <HeaderMake>$(SolutionDir)Win32\$(Configuration)\HeaderMake.exe</HeaderMake>
+    <FuncCodeEnum>..\sakura_core\Funccode_enum.h</FuncCodeEnum>
+    <FuncCodeDefine>..\sakura_core\Funccode_define.h</FuncCodeDefine>
+    <MakefileMake>$(SolutionDir)Win32\$(Configuration)\MakefileMake.exe</MakefileMake>
+    <MakefileMade>..\sakura_core\Makefile</MakefileMade>
+  </PropertyGroup>
+  <Target Name="FuncCodeEnum" BeforeTargets="ClCompile"
+      Inputs="@(FuncCodeRes)"
+      Outputs="$(FuncCodeEnum)">
+    <Exec Command="$(HeaderMake) -in=@(FuncCodeRes) -out=$(FuncCodeEnum) -mode=enum -enum=EFunctionCode" />
+  </Target>
+  <Target Name="FuncCodeDefine" BeforeTargets="ResourceCompile"
+      Inputs="@(FuncCodeRes)"
+      Outputs="$(FuncCodeDefine)">
+    <Exec Command="$(HeaderMake) -in=@(FuncCodeRes) -out=$(FuncCodeDefine) -mode=define" />
+  </Target>
+  <Target Name="MakefileMade" AfterTargets="Link"
+      Inputs="@(ClCompile)"
+      Outputs="$(MakefileMade)">
+    <Exec Command="$(MakefileMake) -file=$(MakefileMade) -dir=..\sakura" />
+  </Target>
+  <Target Name="GitHash" BeforeTargets="ClCompile"
+      Inputs="$(SolutionDir).git\HEAD"
+      Outputs="..\sakura_core\githash.h">
+    <Exec Command="githash.bat ..\sakura_core" />
+  </Target>
+  <PropertyGroup Label="UnzipCmd">
+    <UnzipCmd>$(SolutionDir)tools\zip\unzip.bat</UnzipCmd>
+  </PropertyGroup>
+  <PropertyGroup Label="BRegOnig">
+    <BRegOnigDll>bregonig.dll</BRegOnigDll>
+    <BRegOnigZip>installer\externals\bregonig\bron412.zip</BRegOnigZip>
+    <BRegOnigTemp Condition="'$(Platform)'=='x64'">$(SolutionDir)installer\temp\bron\x64\</BRegOnigTemp>
+    <BRegOnigTemp Condition="'$(Platform)'=='Win32'">$(SolutionDir)installer\temp\bron\</BRegOnigTemp>
+  </PropertyGroup>
+  <Target Name="BRegOnig" AfterTargets="Link"
+      Inputs="$(SolutionDir)$(BRegOnigZip)"
+      Outputs="$(OutDir)$(BRegOnigDll)">
+    <Message Text="$(BRegOnigZip) -&gt; $(Platform)\$(Configuration)\$(BRegOnigDll)" />
+    <Unzip
+      SourceFiles="$(SolutionDir)$(BRegOnigZip)"
+      DestinationFolder="$(BRegOnigTemp)"
+      OverwriteReadOnlyFiles="true"
+      />
+    <Exec Command="$(UnzipCmd) $(SolutionDir)$(BRegOnigZip) $(BRegOnigTemp) &gt; NUL"
+      Condition="!Exists('$(BRegOnigTemp)$(BRegOnigDll)')"
+      EchoOff="true"
+      />
+    <Copy
+      SourceFiles="$(BRegOnigTemp)$(BRegOnigDll)"
+      DestinationFolder="$(OutDir)"
+      SkipUnchangedFiles="true"
+      UseHardlinksIfPossible="true"
+      />
+  </Target>
+  <PropertyGroup Label="CTags">
+    <CTagsExe>ctags.exe</CTagsExe>
+    <CTagsZip Condition="'$(Platform)'=='x64'"  >installer\externals\universal-ctags\ctags-2018-09-16_e522743d-x64.zip</CTagsZip>
+    <CTagsZip Condition="'$(Platform)'=='Win32'">installer\externals\universal-ctags\ctags-2018-09-16_e522743d-x86.zip</CTagsZip>
+    <CTagsTemp>$(SolutionDir)installer\temp\ctags\</CTagsTemp>
+  </PropertyGroup>
+  <Target Name="CTags" AfterTargets="Link"
+      Inputs="$(SolutionDir)$(CTagsZip)"
+      Outputs="$(OutDir)$(CTagsExe)">
+    <Message Text="$(CTagsZip) -&gt; $(Platform)\$(Configuration)\$(CTagsExe)" />
+    <Exec Command="$(UnzipCmd) $(SolutionDir)$(CTagsZip) $(CTagsTemp) &gt; NUL"
+      Condition="!Exists('$(CTagsTemp)$(CTagsExe)')"
+      EchoOff="true"
+      />
+    <Copy
+      SourceFiles="$(CTagsTemp)$(CTagsExe)"
+      DestinationFolder="$(OutDir)"
+      SkipUnchangedFiles="true"
+      UseHardlinksIfPossible="true"
+      />
+  </Target>
 </Project>
