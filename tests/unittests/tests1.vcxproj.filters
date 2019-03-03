@@ -18,12 +18,6 @@
     <ClCompile Include="test-int2dec.cpp">
       <Filter>Test Files</Filter>
     </ClCompile>
-    <ClCompile Include="code-IsMailAddress_20160427.cpp">
-      <Filter>Deprecated Codes</Filter>
-    </ClCompile>
-    <ClCompile Include="test-is_mailaddress.cpp">
-      <Filter>Test Files</Filter>
-    </ClCompile>
     <ClCompile Include="test-cnative.cpp">
       <Filter>Test Files</Filter>
     </ClCompile>
