@@ -25,3 +25,5 @@
 
 #include "StdAfx.h"
 #include "types/CTypeSupport.h"
+
+int CTypeSupport{ 0 };

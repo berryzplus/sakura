@@ -3,6 +3,8 @@
 #include "debug/Debug3.h"
 #include "util/module.h"
 
+int Debug3{ 0 };
+
 #ifdef USE_DEBUGMON
 
 static HINSTANCE hDll=NULL;

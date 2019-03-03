@@ -30,3 +30,4 @@
 #endif
 #endif
 
+int CStrictInteger{ 0 };
