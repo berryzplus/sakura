@@ -115,7 +115,7 @@ void CDlgTypeAscertain::SetData( void )
 
 	// エディタ内の設定
 	for (nIdx = 0; nIdx < GetDllShareData().m_nTypesCount; ++nIdx) {
-		const STypeConfigMini* type;
+		const STypeConfigMini* type{ nullptr };
 		CDocTypeManager().GetTypeConfigMini(CTypeConfig(nIdx), &type);
 		if (type->m_szTypeExts[0] != _T('\0') ) {		/* タイプ属性：拡張子リスト */
 			auto_sprintf( szText, _T("%ts (%ts)"),

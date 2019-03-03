@@ -49,7 +49,7 @@ EConvertResult CReadManager::ReadFile_To_CDocLineMgr(
 	LPCTSTR pszPath = sLoadInfo.cFilePath.c_str();
 
 	// 文字コード種別
-	const STypeConfigMini* type;
+	const STypeConfigMini* type{ nullptr };
 	CDocTypeManager().GetTypeConfigMini( sLoadInfo.nType, &type );
 	ECodeType	eCharCode = sLoadInfo.eCharCode;
 	if (CODE_AUTODETECT == eCharCode) {

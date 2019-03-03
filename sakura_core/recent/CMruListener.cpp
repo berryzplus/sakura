@@ -79,7 +79,7 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 	if( CODE_AUTODETECT == pLoadInfo->eCharCode ){
 		if( fexist(pLoadInfo->cFilePath) ){
 			// デフォルト文字コード認識のために一時的に読み込み対象ファイルのファイルタイプを適用する
-			const STypeConfigMini* type;
+			const STypeConfigMini* type{ nullptr };
 			CDocTypeManager().GetTypeConfigMini(pLoadInfo->nType, &type);
 			CCodeMediator cmediator( type->m_encoding );
 			pLoadInfo->eCharCode = cmediator.CheckKanjiCodeOfFile( pLoadInfo->cFilePath );

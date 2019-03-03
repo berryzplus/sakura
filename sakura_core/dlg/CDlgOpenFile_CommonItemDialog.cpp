@@ -704,7 +704,7 @@ bool CDlgOpenFile_CommonItemDialog::DoModalOpenDlg(
 	CDocTypeManager docTypeMgr;
 	TCHAR szWork[_countof(STypeConfigMini::m_szTypeExts) * 3];
 	for( int i = 0; i < nTypesCount; i++ ){
-		const STypeConfigMini* type;
+		const STypeConfigMini* type{ nullptr };
 		docTypeMgr.GetTypeConfigMini(CTypeConfig(i), &type);
 		specs[2 + i].pszName = type->m_szTypeName;
 		if (CDocTypeManager::ConvertTypesExtToDlgExt(type->m_szTypeExts, NULL, szWork)) {

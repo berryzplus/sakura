@@ -43,7 +43,8 @@ public:
 
 	bool GetTypeConfig(CTypeConfig cDocumentType, STypeConfig& type);
 	bool SetTypeConfig(CTypeConfig cDocumentType, const STypeConfig& type);
-	bool GetTypeConfigMini(CTypeConfig cDocumentType, const STypeConfigMini** type);
+	typedef const STypeConfigMini* ConstTypeConfigPtr;
+	bool GetTypeConfigMini(CTypeConfig cDocumentType, ConstTypeConfigPtr* type);
 	bool AddTypeConfig(CTypeConfig cDocumentType);
 	bool DelTypeConfig(CTypeConfig cDocumentType);
 

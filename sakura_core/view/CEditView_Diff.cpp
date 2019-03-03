@@ -522,7 +522,7 @@ BOOL CEditView::MakeDiffTmpFile2( TCHAR* tmpName, const TCHAR* orgName, ECodeTyp
 	free( pszTmpName );
 
 	bool bBom = false;
-	const STypeConfigMini* typeMini;
+	const STypeConfigMini* typeMini{ nullptr };
 	CDocTypeManager().GetTypeConfigMini( CDocTypeManager().GetDocumentTypeOfPath( orgName ), &typeMini );
 	CFileLoad	cfl( typeMini->m_encoding );
 	CTextOutputStream out(tmpName, saveCode, true, false);

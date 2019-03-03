@@ -223,7 +223,7 @@ void CViewCommander::Command_COMPARE( void )
 
 static ECodeType GetFileCharCode( LPCTSTR pszFile )
 {
-	const STypeConfigMini* typeMini;
+	const STypeConfigMini* typeMini{ nullptr };
 	CDocTypeManager().GetTypeConfigMini( CDocTypeManager().GetDocumentTypeOfPath( pszFile ), &typeMini );
 	return CCodeMediator(typeMini->m_encoding).CheckKanjiCodeOfFile( pszFile );
 }

@@ -323,7 +323,7 @@ void CDlgTypeList::SetData( int selIdx )
 	}
 	List_ResetContent( hwndList );	/* リストを空にする */
 	for( nIdx = 0; nIdx < GetDllShareData().m_nTypesCount; ++nIdx ){
-		const STypeConfigMini* type;
+		const STypeConfigMini* type{ nullptr };
 		CDocTypeManager().GetTypeConfigMini(CTypeConfig(nIdx), &type);
 		if( type->m_szTypeExts[0] != _T('\0') ){		/* タイプ属性：拡張子リスト */
 			auto_sprintf( szText, _T("%ts ( %ts )"),
@@ -413,7 +413,7 @@ bool CDlgTypeList::Import()
 	CDocTypeManager().GetTypeConfig(CTypeConfig(0), type);
 
 	CImpExpType	cImpExpType( nIdx, type, hwndList );
-	const STypeConfigMini* typeMini;
+	const STypeConfigMini* typeMini{ nullptr };
 	CDocTypeManager().GetTypeConfigMini(CTypeConfig(nIdx), &typeMini);
 	int id = typeMini->m_id;
 
@@ -521,7 +521,7 @@ bool CDlgTypeList::InitializeType( void )
 			if( iDocType == i ){
 				continue;
 			}
-			const STypeConfigMini* typeMini2;
+			const STypeConfigMini* typeMini2{ nullptr };
 			CDocTypeManager().GetTypeConfigMini(CTypeConfig(i), &typeMini2);
 			if( auto_strcmp(typeMini2->m_szTypeName, type->m_szTypeName) == 0 ){
 				i = 0;
@@ -590,7 +590,7 @@ bool CDlgTypeList::CopyType()
 			auto_strcat( type.m_szTypeName, szNum );
 			bUpdate = false;
 		}
-		const STypeConfigMini* typeMini;
+		const STypeConfigMini* typeMini{ nullptr };
 		CDocTypeManager().GetTypeConfigMini(CTypeConfig(i), &typeMini);
 		if( auto_strcmp(typeMini->m_szTypeName, type.m_szTypeName) == 0 ){
 			i = -1;
