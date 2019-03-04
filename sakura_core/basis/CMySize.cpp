@@ -2,4 +2,4 @@
 #include "StdAfx.h"
 #include "CMySize.h"
 
-int CMySize{ 0 };
+int _CMySize{ 0 };

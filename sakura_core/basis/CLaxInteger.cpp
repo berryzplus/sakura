@@ -2,4 +2,4 @@
 #include "StdAfx.h"
 #include "CLaxInteger.h"
 
-int CLaxInteger{ 0 };
+int _CLaxInteger{ 0 };

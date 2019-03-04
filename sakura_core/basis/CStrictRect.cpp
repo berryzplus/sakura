@@ -2,4 +2,4 @@
 #include "StdAfx.h"
 #include "CStrictRect.h"
 
-int CStrictRect{ 0 };
+int _CStrictRect{ 0 };

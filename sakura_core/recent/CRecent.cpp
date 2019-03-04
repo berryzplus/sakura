@@ -35,4 +35,4 @@
 
 #include "StdAfx.h"
 
-int CRecent{ 0 };
+int _CRecent{ 0 };

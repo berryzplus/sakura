@@ -2,4 +2,4 @@
 #include "StdAfx.h"
 #include "CMyWnd.h"
 
-int CMyWnd{ 0 };
+int _CMyWnd{ 0 };

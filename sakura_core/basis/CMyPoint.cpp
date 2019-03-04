@@ -2,4 +2,4 @@
 #include "StdAfx.h"
 #include "CMyPoint.h"
 
-int CMyPoint{ 0 };
+int _CMyPoint{ 0 };
