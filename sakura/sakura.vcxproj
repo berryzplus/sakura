@@ -285,14 +285,15 @@
   <PropertyGroup Label="BRegOnig">
     <BRegOnigDll>bregonig.dll</BRegOnigDll>
     <BRegOnigZip>installer\externals\bregonig\bron412.zip</BRegOnigZip>
-    <BRegOnigTemp Condition="'$(Platform)'=='x64'">$(SolutionDir)installer\temp\bron\x64\</BRegOnigTemp>
-    <BRegOnigTemp Condition="'$(Platform)'=='Win32'">$(SolutionDir)installer\temp\bron\</BRegOnigTemp>
+    <BRegOnigTemp>$(SolutionDir)installer\temp\bron\</BRegOnigTemp>
+    <BRegOnigTempSubDir Condition="'$(Platform)'=='x64'">$(BRegOnigTemp)x64\</BRegOnigTempSubDir>
+    <BRegOnigTempSubDir Condition="'$(Platform)'=='Win32'">$(BRegOnigTemp)</BRegOnigTempSubDir>
   </PropertyGroup>
   <Target Name="BRegOnig" AfterTargets="Link" Inputs="$(SolutionDir)$(BRegOnigZip)" Outputs="$(OutDir)$(BRegOnigDll)">
     <Message Text="$(BRegOnigZip) -&gt; $(Platform)\$(Configuration)\$(BRegOnigDll)" />
     <Unzip SourceFiles="$(SolutionDir)$(BRegOnigZip)" DestinationFolder="$(BRegOnigTemp)" OverwriteReadOnlyFiles="true" />
-    <Exec Command="$(UnzipCmd) $(SolutionDir)$(BRegOnigZip) $(BRegOnigTemp) &gt; NUL" Condition="!Exists('$(BRegOnigTemp)$(BRegOnigDll)')" EchoOff="true" />
-    <Copy SourceFiles="$(BRegOnigTemp)$(BRegOnigDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
+    <Exec Command="$(UnzipCmd) $(SolutionDir)$(BRegOnigZip) $(BRegOnigTemp) &gt; NUL" Condition="!Exists('$(BRegOnigTempSubDir)$(BRegOnigDll)')" EchoOff="true" />
+    <Copy SourceFiles="$(BRegOnigTempSubDir)$(BRegOnigDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
   </Target>
   <PropertyGroup Label="CTags">
     <CTagsExe>ctags.exe</CTagsExe>
