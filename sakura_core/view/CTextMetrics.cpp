@@ -160,6 +160,7 @@ const int* CTextMetrics::GenerateDxArray(
 {
 	vResultArray->resize(nLength);
 	if(!pText || nLength<=0)return NULL;
+	if ( nTabSpace == 0 )return NULL; //FIXME: 暫定エラー対策
 
 	int* p=&(*vResultArray)[0];
 	int	 nLayoutCnt = nIndent;
