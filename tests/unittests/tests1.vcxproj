@@ -147,11 +147,6 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\sakura_core\sakura_core.vcxproj">
       <Project>{C09712DE-1A0B-41BA-BC09-EE1FB9595CF4}</Project>
     </ProjectReference>
