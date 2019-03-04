@@ -141,9 +141,9 @@ Source: "sakura\sakura.exe";           DestDir: "{app}";                  Compon
 Source: "sakura\sakura_lang_en_US.dll";DestDir: "{app}";                  Components: main; Flags: ignoreversion;
 Source: "sakura\license\LICENSE";      DestDir: "{app}\license";          Components: main
 Source: "sakura\bregonig.dll";         DestDir: "{app}";                  Components: main
-Source: "sakura\license\bregonig\*";   DestDir: "{app}\license\bregonig"; Components: main
+Source: "sakura\license\bregonig\*";   DestDir: "{app}\license\bregonig"; Components: main; Flags: recursesubdirs
 Source: "sakura\ctags.exe";            DestDir: "{app}";                  Components: main
-Source: "sakura\license\ctags\*";      DestDir: "{app}\license\ctags";    Components: main
+Source: "sakura\license\ctags\*";      DestDir: "{app}\license\ctags";    Components: main; Flags: recursesubdirs
 Source: "sakura\sakura.exe.manifest.x";DestDir: "{app}";                  Components: main; DestName: "sakura.exe.manifest"; Check: isMultiUserDisabled; Flags: onlyifdoesntexist;
 Source: "sakura\sakura.exe.manifest.v";DestDir: "{app}";                  Components: main; DestName: "sakura.exe.manifest"; Check: isMultiUserEnabled; Flags: onlyifdoesntexist;
 Source: "sakura\sakura.chm";           DestDir: "{app}";                  Components: help
@@ -151,7 +151,7 @@ Source: "sakura\macro.chm";            DestDir: "{app}";                  Compon
 Source: "sakura\plugin.chm";           DestDir: "{app}";                  Components: help
 Source: "sakura\sakura.exe.ini";       DestDir: "{app}";                  Components: main; Check: isMultiUserEnabled; Flags: onlyifdoesntexist;
 
-Source: "sakura\keyword\*";             DestDir: "{app}\keyword";         Components: keyword; Flags: recursesubdirs
+Source: "sakura\keyword\*";            DestDir: "{app}\keyword";          Components: keyword; Flags: recursesubdirs
 
 [Registry]
 ; registry for all user (Admin only)
