@@ -187,6 +187,18 @@ LRESULT CALLBACK CEditWndProc(
 	return ::DefWindowProc( hwnd, uMsg, wParam, lParam );
 }
 
+/*!
+ * @brief CEditWndは、エディタプロセス内に1つだけ存在する。
+ *   テンプレート実装では生成＆破棄のタイミングが微妙になるので特殊化する。
+ */
+CEditWnd* TSingleton<CEditWnd>::getInstance()
+{
+	// エディタアプリのインスタンスを取得
+	auto pEditApp = CEditApp::getInstance();
+	if (!pEditApp) return nullptr;
+	return pEditApp->GetEditWindow();
+}
+
 //	@date 2002.2.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 CEditWnd::CEditWnd()
 : m_hWnd( NULL )

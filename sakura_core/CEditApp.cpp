@@ -64,7 +64,7 @@ void CEditApp::Create(HINSTANCE hInst, int nGroupId)
 	m_pcSMacroMgr = new CSMacroMgr();
 
 	//ウィンドウの作成
-	m_pcEditWnd = CEditWnd::getInstance();
+	m_pcEditWnd = new CEditWnd();
 
 	m_pcEditDoc->Create( m_pcEditWnd );
 	m_pcEditWnd->Create( m_pcEditDoc, &m_cIcons, nGroupId );
@@ -91,6 +91,7 @@ CEditApp::~CEditApp()
 	delete m_pcSaveAgent;
 	delete m_pcLoadAgent;
 	delete m_pcEditDoc;
+	delete m_pcEditWnd;
 }
 
 /*! 共通設定 プロパティシート */

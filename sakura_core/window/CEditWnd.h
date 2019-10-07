@@ -88,6 +88,24 @@ struct STabGroupInfo{
 	bool IsValid() const{ return hwndTop!=NULL; }
 };
 
+/*!
+ * @brief TSingletonの特殊化(CEditWnd向け)
+ */
+template <>
+class TSingleton<class CEditWnd> {
+	using _Myt = TSingleton<CEditWnd>;
+	TSingleton(const _Myt&) = delete;
+	TSingleton(_Myt&&) = delete;
+	TSingleton& operator=(const _Myt&) = delete;
+	TSingleton& operator=(_Myt&&) = delete;
+
+protected:
+	TSingleton() = default;
+
+public:
+	static CEditWnd* getInstance();
+};
+
 //! 編集ウィンドウ（外枠）管理クラス
 // 2002.02.17 YAZAKI CShareDataのインスタンスは、CProcessにひとつあるのみ。
 // 2007.10.30 kobake IsFuncEnable,IsFuncCheckedをFunccode.hに移動
@@ -96,11 +114,10 @@ class CEditWnd
 : public TSingleton<CEditWnd>
 , public CDocListenerEx
 {
-	friend class TSingleton<CEditWnd>;
+public:
 	CEditWnd();
 	~CEditWnd();
 
-public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                           作成                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
