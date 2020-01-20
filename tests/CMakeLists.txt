@@ -1,46 +1,67 @@
-cmake_minimum_required(VERSION 3.6)
-include(${CMAKE_SOURCE_DIR}/runtime.cmake)
+cmake_minimum_required(VERSION 3.12)
 
-project (sakura-unittest)
+project (sakura-unittest LANGUAGES CXX)
 
-option(BUILD_GTEST "Build GoogleTest." ON)
-option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." OFF)
+# find GoogleTest
+find_package(GTest)
 
-enable_language(CXX)
-set(CMAKE_CXX_STANDARD 17)    # C++17...
-set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
+if (NOT GTest_FOUND)
 
-# switch DLL or static libary by specifying by command line
-set (LIB_TYPE STATIC)
-if (BUILD_SHARED_LIBS)
-  # User wants to build Dynamic Libraries, so change the LIB_TYPE variable to CMake keyword 'SHARED'
-  set (LIB_TYPE SHARED)
-endif (BUILD_SHARED_LIBS)
+  # fetch the GoogleTest source.
+  if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/googletest/CMakeLists.txt)
+    find_package(Git REQUIRED)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" submodule update --init
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/googletest
+  	)
+  endif()
+  
+  # make directory for the GoogleTest to build
+  if (NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/googletestd)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletestd)
+  endif()
+  # make directory for the GoogleTest to build
+  if (NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/googletest)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest)
+  endif()
+  
+  # make GoogleTest: configure, build and install.
+  function(install_gtest gtest_install_dir gtest_config gtest_binary_dir)
+    execute_process(
+      COMMAND "${CMAKE_COMMAND}" 
+  	  -G "${CMAKE_GENERATOR}"
+        -DCMAKE_BUILD_TYPE=${gtest_config}
+        "-DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}"
+        "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
+        "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
+        -DCMAKE_INSTALL_PREFIX=${gtest_install_dir}
+        -DBUILD_GMOCK=OFF
+        -Dgtest_build_tests=OFF
+        -Dgtest_build_samples=OFF
+        ${CMAKE_CURRENT_SOURCE_DIR}/googletest
+      WORKING_DIRECTORY ${gtest_binary_dir}
+      )
+    execute_process(
+      COMMAND "${CMAKE_COMMAND}"
+  	  --build .
+  	  --config ${gtest_config}
+      WORKING_DIRECTORY ${gtest_binary_dir}
+      )
+    execute_process(
+      COMMAND "${CMAKE_COMMAND}"
+  	  --build .
+  	  --config ${gtest_config}
+  	  --target install
+      WORKING_DIRECTORY ${gtest_binary_dir}
+      )
+  endfunction(install_gtest)
+  
+  install_gtest(${CMAKE_INSTALL_PREFIX}/googletest Debug   ${CMAKE_CURRENT_BINARY_DIR}/googletestd)
+  install_gtest(${CMAKE_INSTALL_PREFIX}/googletest Release ${CMAKE_CURRENT_BINARY_DIR}/googletest)
+  
+  set(GTEST_ROOT ${CMAKE_INSTALL_PREFIX}/googletest)
+  find_package(GTest REQUIRED)
+
+endif (NOT GTest_FOUND)
 
 # set Target Directories
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-if(BUILD_GTEST)
-	add_subdirectory(googletest)
-endif()
 add_subdirectory(unittests)
-
-# turn on solution folder
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# create solution folder
-if(BUILD_GTEST)
-	set_target_properties(gtest       PROPERTIES FOLDER GoogleTest)
-	set_target_properties(gtest_main  PROPERTIES FOLDER GoogleTest)
-endif()
-set_target_properties(tests1      PROPERTIES FOLDER Tests)
-
-# specify startup project
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT tests1)
-
-# enable testing
-enable_testing()
-
-# add test
-add_test(NAME unitTest1 COMMAND tests1)
