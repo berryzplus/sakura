@@ -82,6 +82,15 @@ jobs:
     vmImage: 'VS2017-Win2016'
     displayName: MinGW
 
+# サクラエディタのビルドを行う JOB(MinGW)
+# * サクラエディタ本体
+# * 単体テスト
+- template: ci/azure-pipelines/template.job.build-by-cmake.yml
+  parameters:
+    name: MinGW_CMake
+    vmImage: 'windows-2019'
+    displayName: CMake(MinGW-GCC)
+
 # SonarQube で解析を行う JOB
 #- template: ci/azure-pipelines/template.job.SonarQube.yml
 #  parameters:
