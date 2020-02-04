@@ -17,7 +17,7 @@ steps:
 # - script: C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-x86_64-gtest"
 #   displayName: install MinGW-w64-gtest
 
-- task: Cache@2
+- task: CacheBeta@0
   inputs:
     key: 'msys2 | "$(Agent.OS)"'
     restoreKeys: msys2
