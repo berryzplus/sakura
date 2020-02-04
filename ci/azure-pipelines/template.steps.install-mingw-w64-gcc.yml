@@ -16,9 +16,3 @@ steps:
 
 # - script: C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-x86_64-gtest"
 #   displayName: install MinGW-w64-gtest
-
-- task: CacheBeta@0
-  inputs:
-    key: $(Build.SourcesDirectory)/azure-pipelines.yml
-    path: C:\msys64
-  displayName: cache msys2 
