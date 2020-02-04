@@ -43,9 +43,8 @@ jobs:
       cmakeArgs: -GNinja -DCMAKE_BUILD_TYPE=$(Configuration) "-DCMAKE_MAKE_PROGRAM=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe" "-DCMAKE_INSTALL_PREFIX:PATH=$(Build.SourcesDirectory)/install" -DCMAKE_C_COMPILER=C:/msys64/mingw64/bin/gcc.exe -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/g++.exe "$(Build.SourcesDirectory)"
 
   # Build GNU C++
-  - task: CMake@1
-    inputs:
-      cmakeArgs: --build . --config $(Configuration)
+  - script: cmake --build . --config $(Configuration) > NUL
+    displayName: Build by CMake
 
   # Unit tests
   - script: ctest
