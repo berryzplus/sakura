@@ -4,6 +4,9 @@
 #   parameters
 #       なし
 #############################################################################################################
+variables:
+  MSYS2_ROOT_DIR: C:\msys64
+
 steps:
   - script: cinst msys2 --params "/InstallDir=C:/msys64" --no-progress
     displayName: install msys2
@@ -16,3 +19,10 @@ steps:
 
 # - script: C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-x86_64-gtest"
 #   displayName: install MinGW-w64-gtest
+
+- task: Cache@2
+  inputs:
+    key: 'msys2 | "$(Agent.OS)"'
+    restoreKeys: msys2
+    path: $(MSYS2_ROOT_DIR)
+  displayName: cache msys2 
