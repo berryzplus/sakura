@@ -19,7 +19,6 @@ steps:
 
 - task: CacheBeta@0
   inputs:
-    key: 'msys2 | "$(Agent.OS)"'
-    restoreKeys: msys2
+    key: $(Build.SourcesDirectory)/azure-pipelines.yml
     path: C:\msys64
   displayName: cache msys2 
