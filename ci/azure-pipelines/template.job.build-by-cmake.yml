@@ -29,13 +29,13 @@ jobs:
   - script: set
     displayName: Show environmental variables for debug
 
-  - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
-
   - task: CacheBeta@0
     inputs:
       key: $(Build.SourcesDirectory)/azure-pipelines.yml
       path: C:\msys64
     displayName: cache msys2 
+
+  - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
 
   # Configure the CMake cross-platform build system
   - task: CMake@1
