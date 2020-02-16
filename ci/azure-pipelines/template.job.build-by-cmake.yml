@@ -36,7 +36,7 @@ jobs:
       path: C:\msys64
     displayName: cache msys2 
 
-  - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
+# - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
 
   # Configure the CMake cross-platform build system
   - task: CMake@1

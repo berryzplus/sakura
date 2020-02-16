@@ -36,7 +36,7 @@ jobs:
       path: C:\msys64
     displayName: cache msys2 
 
-  - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
+# - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
 
   # Build GNU C++
   - script: build-gnu.bat       $(BuildPlatform) $(Configuration)
