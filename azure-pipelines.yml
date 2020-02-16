@@ -126,3 +126,10 @@ jobs:
 #    name: script_check
 #    vmImage: 'VS2017-Win2016'
 #    displayName: script_check
+
+# msys2環境のセットアップを行う JOB
+- template: ci/azure-pipelines/template.job.install-msys2.yml
+  parameters:
+    name: install_msys2
+    vmImage: 'windows-2019'
+    displayName: install_msys2

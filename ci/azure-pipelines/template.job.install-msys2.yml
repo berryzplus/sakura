@@ -1,0 +1,21 @@
+# see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops&viewFallbackFrom=vsts#passing-parameters
+parameters:
+  name: ''
+  vmImage: ''
+  displayName: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  displayName: ${{ parameters.displayName }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+
+  steps:
+  - task: CacheBeta@0
+    inputs:
+      key: $(Build.SourcesDirectory)/azure-pipelines.yml
+      path: C:\msys64
+    displayName: cache msys2 
+
+  - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
+

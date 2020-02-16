@@ -7,6 +7,7 @@ parameters:
 jobs:
 - job: ${{ parameters.name }}
   displayName: ${{ parameters.displayName }}
+  dependsOn: install_msys2
   pool:
     vmImage: ${{ parameters.vmImage }}
 
@@ -28,6 +29,12 @@ jobs:
   # show environmental variables for debug.
   - script: set
     displayName: Show environmental variables for debug
+
+  - task: CacheBeta@0
+    inputs:
+      key: $(Build.SourcesDirectory)/azure-pipelines.yml
+      path: C:\msys64
+    displayName: cache msys2 
 
   - template: /ci/azure-pipelines/template.steps.install-mingw-w64-gcc.yml
 

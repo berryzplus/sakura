@@ -7,6 +7,7 @@ parameters:
 jobs:
 - job: ${{ parameters.name }}
   displayName: ${{ parameters.displayName }}
+  dependsOn: install_msys2
   pool:
     vmImage: ${{ parameters.vmImage }}
 
