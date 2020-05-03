@@ -434,7 +434,6 @@ BOOL IsURL(
 
 	const wchar_t * const begin = pszLine + offset;
 	const wchar_t * const end   = pszLine + nLineLen;
-	int	i;
 
 	// 検査範囲の先頭文字(ASCII文字でなければNULになる)
 	const auto headChar = wc_to_c( *begin );
@@ -445,25 +444,29 @@ BOOL IsURL(
 	// 検査範囲の先頭文字に対応するURL種類のテーブルインデックスを取得する
 	const auto urlTypeIndex = url_char[headChar];
 
-	// URL種類のテーブルインデックスを取得できた場合
-	if( 0 < urlTypeIndex && urlTypeIndex <= _countof( url_table ) ){
-		// URL種類のテーブルインデックスから順番に走査する
-		for( const auto* urlp = &url_table[urlTypeIndex-1]; urlp->name[0] == headChar; urlp++ ){	/* URLテーブルを探索 */
-			if( (urlp->length <= end - begin) && (wmemcmp(urlp->name, begin, urlp->length) == 0) ){	/* URLヘッダは一致した */
-				if( urlp->is_mail ){	/* メール専用の解析へ */
-					if( IsMailAddress(begin, urlp->length, end - begin - urlp->length, pnMatchLen) ){
-						*pnMatchLen = *pnMatchLen + urlp->length;
-						return TRUE;
-					}
-					return FALSE;
-				}
-				for(i = urlp->length; i < end - begin; i++){	/* 通常の解析へ */
-					if( wc_to_c(begin[i])==0 || (!(url_char[wc_to_c(begin[i])])) ) break;	/* 終端に達した */
-				}
-				if( i == urlp->length ) return FALSE;	/* URLヘッダだけ */
-				*pnMatchLen = i;
+	// URLテーブルを走査する
+	const auto tend = std::cend( url_table );
+	const auto tbegin = urlTypeIndex <= 0 ? std::cend( url_table ) : &url_table[urlTypeIndex - 1];
+	const auto it = std::find_if( tbegin, tend,
+		[begin]( const auto& table ){ return 0 == ::wcsncmp( table.name, begin, table.length ); } );
+
+	// URLヘッダが一致した場合
+	if( it != tend ){
+		if( it->is_mail ){
+			/* メール専用の解析へ */
+			if( IsMailAddress(begin, it->length, end - begin - it->length, pnMatchLen) ){
+				*pnMatchLen = *pnMatchLen + it->length;
 				return TRUE;
 			}
+			return FALSE;
+		}else{
+			/* 通常の解析へ */
+			const auto uend = std::find_if( &begin[it->length], end,
+				[]( const auto& x ) { return NUC == url_char[wc_to_c( x )]; } );
+			const auto matchedLength = uend - begin;
+			if( matchedLength == it->length ) return FALSE;	/* URLヘッダだけ */
+			*pnMatchLen = matchedLength;
+			return TRUE;
 		}
 	}
 	return IsMailAddress(pszLine, offset, nLineLen, pnMatchLen);
