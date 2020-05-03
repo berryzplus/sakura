@@ -407,7 +407,6 @@ BOOL IsURL(
 
 	const wchar_t * const begin = pszLine + offset;
 	const wchar_t * const end   = pszLine + nLineLen;
-	const struct _url_table_t	*urlp;
 	int	i;
 
 	// 検査範囲の先頭文字(ASCII文字でなければNULになる)
@@ -415,7 +414,7 @@ BOOL IsURL(
 
 	if( headChar == 0 ) return FALSE;
 	if( 0 < url_char[headChar] ){
-		for(urlp = &url_table[url_char[headChar]-1]; urlp->name[0] == headChar; urlp++){	/* URLテーブルを探索 */
+		for( const auto* urlp = &url_table[url_char[headChar]-1]; urlp->name[0] == headChar; urlp++ ){	/* URLテーブルを探索 */
 			if( (urlp->length <= end - begin) && (wmemcmp(urlp->name, begin, urlp->length) == 0) ){	/* URLヘッダは一致した */
 				if( urlp->is_mail ){	/* メール専用の解析へ */
 					if( IsMailAddress(begin, urlp->length, end - begin - urlp->length, pnMatchLen) ){
