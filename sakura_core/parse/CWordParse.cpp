@@ -438,9 +438,6 @@ BOOL IsURL(
 	// 検査範囲の先頭文字(ASCII文字でなければNULになる)
 	const auto headChar = wc_to_c( *begin );
 
-	// 検査範囲の先頭文字がASCII文字でなければ、URLではないと判定する
-	if( headChar == 0 ) return FALSE;
-
 	// 検査範囲の先頭文字に対応するURL種類のテーブルインデックスを取得する
 	const auto urlTypeIndex = url_char[headChar];
 
