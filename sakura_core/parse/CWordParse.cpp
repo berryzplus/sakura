@@ -329,10 +329,10 @@ uchar_t wc_to_c(wchar_t wc)
 
 //@@@ 2002.01.24 Start by MIK
 /*!
-	文字列がURLかどうかを検査する。
-	
-	@retval TRUE URLである
-	@retval FALSE URLでない
+	指定された文字列の指定位置が URL の先頭であるか検査する。
+
+	@retval TRUE  指定された文字列の指定位置はURLの先頭である
+	@retval FALSE 指定された文字列はURLでない、または、URLの先頭でない
 	
 	@note 関数内に定義したテーブルは必ず static const 宣言にすること(性能に影響します)。
 		url_char の値は url_table の配列番号+1 になっています。
@@ -342,10 +342,10 @@ uchar_t wc_to_c(wchar_t wc)
 	2007.10.23 kobake UNICODE対応。//$ wchar_t専用のテーブル(または判定ルーチン)を用意したほうが効率は上がるはずです。
 */
 BOOL IsURL(
-	const wchar_t*	pszLine,	//!< [in]  文字列
-	int				offset,	//!< [in]  検査を開始する位置。
-	int				nLineLen,	//!< [in]  文字列の長さ
-	int*			pnMatchLen	//!< [out] URLの長さ。offset からの距離。
+	const wchar_t*	pszLine,	//!< [in]  文字列バッファの先頭アドレス
+	const int		offset,		//!< [in]  検査を開始する位置。
+	const int		nLineLen,	//!< [in]  文字列バッファの長さ
+	int*			pnMatchLen	//!< [out] URLの長さ。offset からのwchar_tの個数。
 )
 {
 	struct _url_table_t {
