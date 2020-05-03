@@ -425,6 +425,11 @@ BOOL IsURL(
 		/* あと128バイト犠牲にすればif文を2箇所削除できる */
 	};
 
+	// out引数の初期化
+	if( pnMatchLen != NULL ){
+		*pnMatchLen = 0;
+	}
+
 	// offset が 0より大きく、offset の 直前の文字が URLに使えない文字 でない場合
 	if( 0 < offset && url_char[pszLine[offset - 1]] != NUC ){
 		// URLの先頭とはなりえないのでFALSEを返して抜ける
@@ -451,7 +456,9 @@ BOOL IsURL(
 		if( it->is_mail ){
 			/* メール専用の解析へ */
 			if( IsMailAddress(begin, it->length, end - begin - it->length, pnMatchLen) ){
-				*pnMatchLen = *pnMatchLen + it->length;
+				if( pnMatchLen != NULL ){
+					*pnMatchLen = *pnMatchLen + it->length;
+				}
 				return TRUE;
 			}
 			return FALSE;
@@ -461,14 +468,25 @@ BOOL IsURL(
 				[]( const auto& x ) { return NUC == url_char[wc_to_c( x )]; } );
 			const auto matchedLength = uend - begin;
 			if( matchedLength == it->length ) return FALSE;	/* URLヘッダだけ */
-			*pnMatchLen = matchedLength;
+			if( pnMatchLen != NULL ){
+				*pnMatchLen = matchedLength;
+			}
 			return TRUE;
 		}
 	}
-	return IsMailAddress(pszLine, offset, nLineLen, pnMatchLen);
+
+	const auto isMailAddress = IsMailAddress( pszLine, offset, nLineLen, pnMatchLen );
+	if( isMailAddress && pnMatchLen != NULL && offset + *pnMatchLen < nLineLen ){
+		const auto& chNext = pszLine[offset + *pnMatchLen];
+		if( chNext == pszLine[offset] && 0 < ::wcsspn( &chNext, L"\'\"") ){
+			return FALSE;
+		}
+	}
+	return isMailAddress;
 }
 
-/* 現在位置がメールアドレスならば、NULL以外と、その長さを返す
+/*!
+	指定された文字列の指定位置が メールアドレス の先頭であるか検査する。
 	@date 2016.04.27 記号類を許可
 */
 BOOL IsMailAddress( const wchar_t* pszBuf, int offset, int nBufLen, int* pnAddressLength )
@@ -479,13 +497,6 @@ BOOL IsMailAddress( const wchar_t* pszBuf, int offset, int nBufLen, int* pnAddre
 			return 0x21 <= ch && ch <= 0x7E && NULL == wcschr(L"\"(),:;<>@[\\]", ch);
 		}
 	} IsValidChar;
-
-/*
-	直前の文字を利用した境界判定
-*/
-	if (0 < offset && IsValidChar(pszBuf[offset-1])) {
-		return FALSE;
-	}
 
 	pszBuf  += offset;
 	nBufLen -= offset;
