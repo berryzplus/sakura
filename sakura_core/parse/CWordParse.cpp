@@ -328,6 +328,30 @@ uchar_t wc_to_c(wchar_t wc)
 }
 
 //@@@ 2002.01.24 Start by MIK
+namespace internal {
+	/*!
+	 * URLテーブルの要素型
+	 * length値を自動算出させるテンプレート定義にしたいがため外に出した。
+	 */
+	struct _url_table_t
+	{
+		wchar_t	name[12];
+		int		length;
+		bool	is_mail;
+
+		static constexpr const wchar_t mailtoProtocol[] = L"mailto:";
+
+		template <size_t nBufSize>
+		_url_table_t( const wchar_t( &szName )[nBufSize] )
+			: name{ 0 }
+			, length{ nBufSize - 1 }
+			, is_mail{ 0 == ::wcscmp( mailtoProtocol, szName ) }
+		{
+			::wcsncpy_s( name, szName, _TRUNCATE );
+		}
+	};
+};
+
 /*!
 	指定された文字列の指定位置が URL の先頭であるか検査する。
 
@@ -348,27 +372,25 @@ BOOL IsURL(
 	int*			pnMatchLen	//!< [out] URLの長さ。offset からのwchar_tの個数。
 )
 {
-	struct _url_table_t {
-		wchar_t	name[12];
-		int		length;
-		bool	is_mail;
-	};
-	static const struct _url_table_t	url_table[] = {
-		/* アルファベット順 */
-		{ L"file://",		7,	false }, /* 1 */
-		{ L"ftp://",		6,	false }, /* 2 */
-		{ L"gopher://",		9,	false }, /* 3 */
-		{ L"http://",		7,	false }, /* 4 */
-		{ L"https://",		8,	false }, /* 5 */
-		{ L"mailto:",		7,	true  }, /* 6 */
-		{ L"news:",			5,	false }, /* 7 */
-		{ L"nntp://",		7,	false }, /* 8 */
-		{ L"prospero://",	11,	false }, /* 9 */
-		{ L"telnet://",		9,	false }, /* 10 */
-		{ L"tp://",			5,	false }, /* 11 */
-		{ L"ttp://",		6,	false }, /* 12 */
-		{ L"wais://",		7,	false }, /* 13 */
-		{ L"{",				0,	false }  /* 14 */
+	/*!
+	 * URLテーブル
+	 * 登録はアルファベット順。
+	 */
+	static const struct internal::_url_table_t	url_table[] =
+	{
+		/*  1 */ { L"file://" },
+		/*  2 */ { L"ftp://" },
+		/*  3 */ { L"gopher://" },
+		/*  4 */ { L"http://" },
+		/*  5 */ { L"https://" },
+		/*  6 */ { internal::_url_table_t::mailtoProtocol },
+		/*  7 */ { L"news:" },
+		/*  8 */ { L"nntp://" },
+		/*  9 */ { L"prospero://" },
+		/* 10 */ { L"telnet://" },
+		/* 11 */ { L"tp://" },
+		/* 12 */ { L"ttp://" },
+		/* 13 */ { L"wais://" },
 	};
 
 	/*!
