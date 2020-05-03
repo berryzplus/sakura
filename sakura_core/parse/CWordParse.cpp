@@ -398,6 +398,13 @@ BOOL IsURL(
 		 */
 	};
 
+	//// なんかの条件
+	//const bool someCondition = _IsPosKeywordHead( cStr, nPos );
+	////　↓
+	//// return (nPos == 0 || !IS_KEYWORD_CHAR( cStr.At( nPos - 1 ) ));
+	////　↓
+	//// nPos が 行頭、または、nPos の 直前の文字が キーワードに使える文字 でも ユーザー定義キーワード文字 でもない
+
 	const wchar_t * const begin = pszLine + offset;
 	const wchar_t * const end   = pszLine + nLineLen;
 	const struct _url_table_t	*urlp;
