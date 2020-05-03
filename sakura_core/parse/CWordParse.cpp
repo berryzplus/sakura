@@ -425,12 +425,11 @@ BOOL IsURL(
 		/* あと128バイト犠牲にすればif文を2箇所削除できる */
 	};
 
-	//// なんかの条件
-	//const bool someCondition = _IsPosKeywordHead( cStr, nPos );
-	////　↓
-	//// return (nPos == 0 || !IS_KEYWORD_CHAR( cStr.At( nPos - 1 ) ));
-	////　↓
-	//// nPos が 行頭、または、nPos の 直前の文字が キーワードに使える文字 でも ユーザー定義キーワード文字 でもない
+	// offset が 0より大きく、offset の 直前の文字が URLに使えない文字 でない場合
+	if( 0 < offset && url_char[pszLine[offset - 1]] != NUC ){
+		// URLの先頭とはなりえないのでFALSEを返して抜ける
+		return FALSE;
+	}
 
 	const wchar_t * const begin = pszLine + offset;
 	const wchar_t * const end   = pszLine + nLineLen;
