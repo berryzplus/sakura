@@ -365,37 +365,42 @@ BOOL IsURL(
 		{ L"nntp://",		7,	false }, /* 8 */
 		{ L"prospero://",	11,	false }, /* 9 */
 		{ L"telnet://",		9,	false }, /* 10 */
-		{ L"tp://",			5,	false }, /* 11 */	//2004.02.02
-		{ L"ttp://",		6,	false }, /* 12 */	//2004.02.02
+		{ L"tp://",			5,	false }, /* 11 */
+		{ L"ttp://",		6,	false }, /* 12 */
 		{ L"wais://",		7,	false }, /* 13 */
-		{ L"{",				0,	false }  /* 14 */  /* '{' is 'z'+1 : terminate */
+		{ L"{",				0,	false }  /* 14 */
 	};
 
-/* テーブルの保守性を高めるための定義 */
-	const char urF = 1;
-	const char urG = 3;
-	const char urH = 4;
-	const char urM = 6;
-	const char urN = 7;
-	const char urP = 9;
-	const char urT = 10;
-	const char urW = 13;	//2004.02.02
+	/*!
+	 * URL種別インデックス
+	 * テーブルの保守性を高めるための定義
+	 * 0より大きい値は -1 するとURLテーブルのインデックスになる
+	 */
+	enum EUrlTypeIndex
+	{
+		CHR = -1,	//!< URL CHaRacter
+		NUC = 0,	//!< Not Url Character
+		urF = 1,	//!< head of protocols "file://" and "ftp://"
+		urG = 3,	//!< head of protocol "gopher://"
+		urH = 4,	//!< head of protocols "http://" and "https://"
+		urM = 6,	//!< head of protocol "mailto:"
+		urN = 7,	//!< head of protocols "news:" and "nntp://"
+		urP = 9,	//!< head of protocol "prospero://"
+		urT = 10,	//!< head of protocol "telnet://" and 2ch's abbreviation "ttp://"
+		urW = 13,	//!< head of protocol "wais://"
+	};
 
-	static const char	url_char[] = {
-	  /* +0  +1  +2  +3  +4  +5  +6  +7  +8  +9  +A  +B  +C  +D  +E  +F */
-		  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,	/* +00: */
-		  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,	/* +10: */
-		  0, -1,  0, -1, -1, -1, -1,  0,  0,  0,  0, -1, -1, -1, -1, -1,	/* +20: " !"#$%&'()*+,-./" */
-		 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0, -1,  0, -1,	/* +30: "0123456789:;<=>?" */
-		 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,	/* +40: "@ABCDEFGHIJKLMNO" */
-		 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0, -1,  0,  0, -1,	/* +50: "PQRSTUVWXYZ[\]^_" */
-		  0, -1, -1, -1, -1, -1,urF,urG,urH, -1, -1, -1, -1,urM,urN, -1,	/* +60: "`abcdefghijklmno" */
-		urP, -1, -1, -1,urT, -1, -1,urW, -1, -1, -1,  0,  0,  0, -1,  0,	/* +70: "pqrstuvwxyz{|}~ " */
+	static constexpr EUrlTypeIndex url_char[] = {
+		/* +0  +1  +2  +3  +4  +5  +6  +7  +8  +9  +A  +B  +C  +D  +E  +F */
+		NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,	/* +00: */
+		NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,NUC,	/* +10: */
+		NUC,CHR,NUC,CHR,CHR,CHR,CHR,NUC,NUC,NUC,NUC,CHR,CHR,CHR,CHR,CHR,	/* +20: " !"#$%&'()*+,-./" */
+		CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,NUC,CHR,NUC,CHR,	/* +30: "0123456789:;<=>?" */
+		CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,	/* +40: "@ABCDEFGHIJKLMNO" */
+		CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,CHR,NUC,CHR,NUC,NUC,CHR,	/* +50: "PQRSTUVWXYZ[\]^_" */
+		NUC,CHR,CHR,CHR,CHR,CHR,urF,urG,urH,CHR,CHR,CHR,CHR,urM,urN,CHR,	/* +60: "`abcdefghijklmno" */
+		urP,CHR,CHR,CHR,urT,CHR,CHR,urW,CHR,CHR,CHR,NUC,NUC,NUC,CHR,NUC,	/* +70: "pqrstuvwxyz{|}~ " */
 		/* あと128バイト犠牲にすればif文を2箇所削除できる */
-		/* 0    : not url char
-		 * -1   : url char
-		 * other: url head char --> url_table array number + 1
-		 */
 	};
 
 	//// なんかの条件
@@ -419,7 +424,7 @@ BOOL IsURL(
 	const auto urlTypeIndex = url_char[headChar];
 
 	// URL種類のテーブルインデックスを取得できた場合
-	if( 0 < urlTypeIndex ){
+	if( 0 < urlTypeIndex && urlTypeIndex <= _countof( url_table ) ){
 		// URL種類のテーブルインデックスから順番に走査する
 		for( const auto* urlp = &url_table[urlTypeIndex-1]; urlp->name[0] == headChar; urlp++ ){	/* URLテーブルを探索 */
 			if( (urlp->length <= end - begin) && (wmemcmp(urlp->name, begin, urlp->length) == 0) ){	/* URLヘッダは一致した */
