@@ -2452,6 +2452,18 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 			}
 			return false;
 		}
+	case F_GETVIEWTOPLINE:
+		{
+			int nLine = (Int)View->GetTextArea().GetViewTopLine();
+			Wrap( &Result )->Receive( nLine );
+			return true;
+		}
+	case F_GETVIEWLEFTCOLUMN:
+		{
+			int nColumn = (Int)View->GetTextArea().GetViewLeftCol();
+			Wrap( &Result )->Receive( nColumn );
+			return true;
+		}
 	default:
 		return false;
 	}
