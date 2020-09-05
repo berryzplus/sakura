@@ -578,6 +578,8 @@ F_ISTEXTSELECTINGLOCK	= 40055,	// 選択状態のロックを取得
 F_GETVIEWLINES		= 40056,	// ビューの行数取得
 F_GETVIEWCOLUMNS	= 40057,	// ビューの列数取得
 F_CREATEMENU		= 40058,	// メニュー作成
+F_GETVIEWTOPLINE		= 40059,	// ビューの上端行番号取得
+F_GETVIEWLEFTCOLUMN		= 40060,	// ビューの左端桁位置取得
 
 
 //	= 2005,.01.10 genta ISearch用補助コード
