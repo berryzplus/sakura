@@ -34,8 +34,17 @@ jobs:
     eq(variables['Build.Reason'], 'Schedule')
 
   steps:
+  - checkout:   self       # self represents the repo where the initial Pipelines YAML file was found
+    clean:      all        # what to clean each time; if not mentioned, does not clean
+
   - script: choco install "msbuild-sonarqube-runner" -y
     displayName: install msbuild-sonarqube-runner
+
+  - script: choco install OpenCppCoverage -y
+    displayName: install OpenCppCoverage
+
+  - script: copy /Y tools\XmlExporter\XmlExporter.dll "C:\Program Files\OpenCppCoverage\Plugins\Exporter\xml.dll"
+    displayName: Build solution with SonarQube
 
   - task: JavaToolInstaller@0
     inputs:
