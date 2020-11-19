@@ -5,21 +5,9 @@ set SOURCE_DIR=%~dp0compiletests
 :: find generic tools
 if not defined CMD_VSWHERE call %~dp0..\tools\find-tools.bat
 
-set /a NUM_VSVERSION_NEXT=NUM_VSVERSION + 1
-
-if not exist "%CMD_CMAKE%" (
+if not exist "%CMD_NINJA%" (
   echo "no cmake found."
   exit /b 1
-)
-
-if not exist "%CMD_NINJA%" (
-  set GENERATOR="%CMAKE_G_PARAM%"
-  set GENERATOR_OPTS=-A %PLATFORM% "-DCMAKE_CONFIGURATION_TYPES=Debug;Release"
-  set "MAKE_PROGRAM=%CMD_MSBUILD%"
-) else (
-  set GENERATOR=Ninja
-  set GENERATOR_OPTS=-DCMAKE_BUILD_TYPE=%CONFIGURATION%
-  set "MAKE_PROGRAM=%CMD_NINJA%"
 )
 
 mkdir %BUILD_DIR% > NUL 2>&1
@@ -36,12 +24,12 @@ call :find_cl_compiler
 set CL_COMPILER=%CMD_CL:\=/%
 
 :: run cmake configuration.
-"%CMD_CMAKE%" -G %GENERATOR%                        ^
-  "-DCMAKE_MAKE_PROGRAM=%MAKE_PROGRAM%"             ^
-  "-DCMAKE_C_COMPILER=%CL_COMPILER%"                ^
-  "-DCMAKE_CXX_COMPILER=%CL_COMPILER%"              ^
-  %GENERATOR_OPTS%                                  ^
-  %SOURCE_DIR%                                      ^
+"%CMD_CMAKE%" -G Ninja ^
+  -DCMAKE_BUILD_TYPE=%CONFIGURATION% ^
+  "-DCMAKE_MAKE_PROGRAM=%CMD_NINJA%" ^
+  "-DCMAKE_C_COMPILER=%CL_COMPILER%" ^
+  "-DCMAKE_CXX_COMPILER=%CL_COMPILER%" ^
+  %SOURCE_DIR% ^
   || endlocal && exit /b 1
 goto :EOF
 

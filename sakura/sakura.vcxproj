@@ -62,149 +62,43 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>15.0.27130.2020</_ProjectFileVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <PropertyGroup Label="UserMacros">
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup Label="sakura.common">
     <ClCompile>
-      <Optimization>MinSpace</Optimization>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\sakura_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=_WIN32_WINNT_WIN7;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=_WIN32_WINNT_WIN7;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\sakura_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/FAsu /Fa$(IntDir) /source-charset:utf-8 /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;mpr.lib;imagehlp.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
-      <LargeAddressAware>true</LargeAddressAware>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0411</Culture>
-    </ResourceCompile>
-    <Manifest>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <Optimization>MinSpace</Optimization>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\sakura_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=_WIN32_WINNT_WIN7;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalOptions>/FAsu /Fa$(IntDir) /source-charset:utf-8 /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;mpr.lib;imagehlp.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateMapFile>true</GenerateMapFile>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-    </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0411</Culture>
-    </ResourceCompile>
-    <Manifest>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\sakura_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=_WIN32_WINNT_WIN7;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalOptions>/FAsu /Fa$(IntDir) /source-charset:utf-8 /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
       <AdditionalDependencies>comctl32.lib;Imm32.lib;mpr.lib;imagehlp.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <TargetMachine>MachineX86</TargetMachine>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
+    </PostBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
@@ -213,45 +107,60 @@
       <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Platform)'=='Win32'">
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\sakura_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=_WIN32_WINNT_WIN7;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalOptions>/FAsu /Fa$(IntDir) /source-charset:utf-8 /execution-charset:shift_jis %(AdditionalOptions)</AdditionalOptions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;Imm32.lib;mpr.lib;imagehlp.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
-    <PostBuildEvent>
-      <Command>call postBuild.bat $(Platform) $(Configuration)</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>call preBuild.bat $(SolutionDir)Win32\$(Configuration)</Command>
-    </PreBuildEvent>
     <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0411</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Manifest>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
-    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateMapFile>true</GenerateMapFile>
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\sakura_core\apiwrap\CommonControl.h" />
@@ -1007,6 +916,7 @@
   </ImportGroup>
   <Import Project="..\sakura\githash.targets" />
   <Import Project="..\sakura\funccode.targets" />
+  <Import Project="$(SolutionDir)tests\compiletests.targets" />
   <Target Name="AppendCleanTargets" BeforeTargets="CoreClean">
     <!-- Add files to @Clean just before running CoreClean. -->
     <ItemGroup>

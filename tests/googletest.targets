@@ -1,11 +1,10 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="GoogleTest">
     <GoogleTestSourceDir>$(MSBuildThisFileDirectory)googletest</GoogleTestSourceDir>
-    <GoogleTestBuildDir>$(MSBuildThisFileDirectory)build\$(Platform)\$(Configuration)\gtest_build\</GoogleTestBuildDir>
+    <GoogleTestBuildDir>$(SolutionDir)build\$(Platform)\$(Configuration)\gtest_build\</GoogleTestBuildDir>
     <GoogleTestInstallDir>$([MsBuild]::NormalizePath('$(GoogleTestBuildDir)..\googletest\'))</GoogleTestInstallDir>
     <IncludePath>$(GoogleTestInstallDir)include;$(IncludePath)</IncludePath>
-    <GoogleTestLibInstallDir Condition="'$(Platform)' == 'Win32'">$(GoogleTestInstallDir)lib</GoogleTestLibInstallDir>
-    <GoogleTestLibInstallDir Condition="'$(Platform)' == 'x64'">$(GoogleTestInstallDir)lib64</GoogleTestLibInstallDir>
+    <GoogleTestLibInstallDir>$(GoogleTestInstallDir)lib</GoogleTestLibInstallDir>
     <LibraryPath>$(GoogleTestLibInstallDir);$(LibraryPath)</LibraryPath>
     <NameSuffix Condition="'$(Configuration)' == 'Debug'">d</NameSuffix>
     <NameSuffix Condition="'$(Configuration)' == 'Release'"></NameSuffix>

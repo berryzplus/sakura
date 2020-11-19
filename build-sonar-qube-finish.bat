@@ -12,12 +12,12 @@ if "%SONAR_QUBE_TOKEN%" == "" (
 "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" ^
   --export_type xml:tests1-coverage-%platform%-%configuration%.xml ^
   --cover_children ^
-  --modules %~dp0tests\build\%platform%\%configuration%\unittests\tests1.exe ^
+  --modules %~dp0%platform%\%configuration%\tests1.exe ^
   --sources %~dp0 ^
   --excluded_sources %~dp0tests ^
   --working_dir %~dp0%platform%\%configuration% ^
   -- ^
-  %~dp0tests\build\%platform%\%configuration%\unittests\tests1.exe ^
+  %~dp0%platform%\%configuration%\tests1.exe ^
     --gtest_output=xml:tests1-googletest-%platform%-%configuration%.xml
 
 @rem run tests1.exe with coverage.

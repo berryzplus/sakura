@@ -56,25 +56,25 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\$(TargetName)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
