@@ -496,9 +496,8 @@ void CTextDrawer::DispLineNumber(
 
 			/* 行番号区切り 0=なし 1=縦線 2=任意 */
 			if( 2 == pTypes->m_nLineTermType ){
-				//	Sep. 22, 2002 genta
-				szLineNum[ nLineCols ] = pTypes->m_cLineTermChar;
-				szLineNum[ ++nLineCols ] = '\0';
+				::swprintf_s(szLineNum, L"%c", pTypes->m_cLineTermChar );
+				nLineCols += 2;
 			}
 		}
 
