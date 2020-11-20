@@ -61,18 +61,15 @@ public:
 	//拡張子を取得する
 	LPCWSTR GetExt( bool bWithoutDot = false ) const
 	{
-		const WCHAR* head = c_str();
-		const WCHAR* p = wcschr(head,L'\0') - 1;
-		while(p>=head){
-			if(*p==L'.')break;
-			if(*p==L'\\')break;
-			if(*p==L'/')break;
-			p--;
+		std::wstring_view path( c_str() );
+		auto pos = path.find_last_of(L".\\/");
+		if( pos == std::wstring_view::npos ){
+			return &path[path.length()];
 		}
-		if(p>=head && *p==L'.'){
-			return bWithoutDot ? p+1 : p;	//bWithoutDot==trueならドットなしを返す
+		if( bWithoutDot && path[pos] == L'.' && pos < path.length() ){
+			return &path[pos + 1];	//bWithoutDot==trueならドットなしを返す
 		}else{
-			return wcschr(head,L'\0');
+			return &path[pos];
 		}
 	}
 };
