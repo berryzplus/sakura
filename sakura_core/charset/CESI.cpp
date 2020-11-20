@@ -105,8 +105,10 @@ int CESI::GetIndexById( const ECodeType eCodeType ) const
 		nret = 0;
 	}else if( CODE_UNICODEBE == eCodeType ){
 		nret = 1;
-	}else{
+	}else if( eCodeType >= 0 && eCodeType < _countof(gm_aMbcPriority) ){
 		nret = gm_aMbcPriority[eCodeType]; // 優先順位表の優先度数をそのまま m_aMbcInfo の添え字として使う。
+	}else{
+		nret = gm_aMbcPriority[CODE_UTF8];
 	}
 	return nret;
 }
