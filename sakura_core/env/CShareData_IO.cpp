@@ -1879,7 +1879,7 @@ void CShareData_IO::ShareData_IO_KeyWords( CDataProfile& cProfile )
 				pMem += kwlen;
 				*pMem++ = L'\t';
 			}
-			*pMem = L'\0';
+			if( pMem < pszMem + nMemLen + 1 ){ *pMem = L'\0'; }
 			auto_sprintf( szKeyName, LTEXT("szKW[%02d]"), i );
 			cProfile.IOProfileData( pszSecName, szKeyName, StringBufferW(pszMem,nMemLen) );
 			delete [] pszMem;
