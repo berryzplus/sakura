@@ -432,11 +432,8 @@ bool CBackupAgent::FormatBackUpPath(
 				else {
 					ptr = szExt + wcslen( szExt );
 				}
-				*ptr   = L'.';
-				*++ptr = bup_setting.GetBackupExtChar();
-				*++ptr = L'0';
-				*++ptr = L'0';
-				*++ptr = L'\0';
+				// ptrがszExtの先頭を指す場合、以下の式は合法。
+				::swprintf_s( ptr, 5, L".%c00", bup_setting.GetBackupExtChar() );
 			}
 			if( -1 == auto_snprintf_s( pBase, nBaseCount, L"%s%s", szFname, szExt ) ){
 				return false;
