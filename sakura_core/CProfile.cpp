@@ -42,15 +42,14 @@
 
 void EnsureDirectoryExist( const std::wstring& strProfileName )
 {
-	const size_t cchLastYen = strProfileName.find_last_of( L'\\' );
-	if( cchLastYen != std::wstring::npos && cchLastYen < strProfileName.length() && cchLastYen + 1 < _MAX_PATH ){
+	const size_t cchLastYen = strProfileName.find_last_of( L"\\" );
+	if( cchLastYen != std::wstring::npos && cchLastYen + 1 < strProfileName.length() ){
 		// フォルダのパスを取得する
-		WCHAR szProfileFolder[_MAX_PATH]{ 0 };
-		::wcsncpy_s( szProfileFolder, strProfileName.data(), cchLastYen + 1 );
+		const auto strProfileFolder = strProfileName.substr( 0, cchLastYen + 1 );
 
 		// フォルダが存在しなければ作成する
-		if( !IsDirectory( szProfileFolder ) ){
-			MakeSureDirectoryPathExistsW( szProfileFolder );
+		if( !IsDirectory( strProfileFolder.c_str() ) ){
+			MakeSureDirectoryPathExistsW( strProfileFolder.c_str() );
 		}
 	}
 }
