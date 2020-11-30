@@ -509,9 +509,9 @@ void CFileNameManager::GetIniFileNameDirect( LPWSTR pszPrivateIniFile, LPWSTR ps
 	_wsplitpath( szPath, szDrive, szDir, szFname, szExt );
 
 	if( pszProfName[0] == '\0' ){
-		auto_snprintf_s( pszIniFile, _MAX_PATH - 1, L"%s%s%s%s", szDrive, szDir, szFname, L".ini" );
+		auto_sprintf_s( pszIniFile, _MAX_PATH, L"%s%s%s%s", szDrive, szDir, szFname, L".ini" );
 	}else{
-		auto_snprintf_s( pszIniFile, _MAX_PATH - 1, L"%s%s%s\\%s%s", szDrive, szDir, pszProfName, szFname, L".ini" );
+		auto_sprintf_s( pszIniFile, _MAX_PATH, L"%s%s%s\\%s%s", szDrive, szDir, pszProfName, szFname, L".ini" );
 	}
 
 	// マルチユーザ用のiniファイルパス
@@ -519,7 +519,7 @@ void CFileNameManager::GetIniFileNameDirect( LPWSTR pszPrivateIniFile, LPWSTR ps
 	//		に従ってマルチユーザ用のiniファイルパスを決める
 	pszPrivateIniFile[0] = L'\0';
 	{
-		auto_snprintf_s( szPath, _MAX_PATH - 1, L"%s%s%s%s", szDrive, szDir, szFname, L".exe.ini" );
+		auto_sprintf_s( szPath, L"%s%s%s%s", szDrive, szDir, szFname, L".exe.ini" );
 		int nEnable = ::GetPrivateProfileInt(L"Settings", L"MultiUser", 0, szPath );
 		if( nEnable ){
 			int nFolder = ::GetPrivateProfileInt(L"Settings", L"UserRootFolder", 0, szPath );
@@ -542,9 +542,9 @@ void CFileNameManager::GetIniFileNameDirect( LPWSTR pszPrivateIniFile, LPWSTR ps
 				::lstrcpy( szDir, L"sakura" );
 			if( GetSpecialFolderPath( nFolder, szPath ) ){
 				if( pszProfName[0] == '\0' ){
-					auto_snprintf_s( pszPrivateIniFile, _MAX_PATH - 1, L"%s\\%s\\%s%s", szPath, szDir, szFname, L".ini" );
+					auto_sprintf_s( pszPrivateIniFile, _MAX_PATH, L"%s\\%s\\%s%s", szPath, szDir, szFname, L".ini" );
 				}else{
-					auto_snprintf_s( pszPrivateIniFile, _MAX_PATH - 1, L"%s\\%s\\%s\\%s%s", szPath, szDir, pszProfName, szFname, L".ini" );
+					auto_sprintf_s( pszPrivateIniFile, _MAX_PATH, L"%s\\%s\\%s\\%s%s", szPath, szDir, pszProfName, szFname, L".ini" );
 				}
 			}
 		}
