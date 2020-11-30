@@ -313,10 +313,10 @@ bool CEditView::ExecCmd( const WCHAR* pszCmd, int nFlgOpt, const WCHAR* pszCurDi
 			WCHAR szOutTemp[1024*2+100];
 			oa.OutputW( L"\r\n" );
 			oa.OutputW( L"#============================================================\r\n" );
-			int len = auto_snprintf_s( szOutTemp, _countof(szOutTemp),
+			int len = auto_sprintf_s( szOutTemp,
 				L"#DateTime : %s %s\r\n", szTextDate, szTextTime );
 			oa.OutputW( szOutTemp, len );
-			len = auto_snprintf_s( szOutTemp, _countof(szOutTemp),
+			len = auto_sprintf_s( szOutTemp,
 				L"#CmdLine  : %s\r\n", pszCmd );
 			oa.OutputW( szOutTemp, len );
 			oa.OutputW( L"#============================================================\r\n" );

@@ -255,14 +255,14 @@ bool CPluginManager::InstZipPluginSub( CommonSetting& common, HWND hWndOwner, co
 
 	// Plugin フォルダ名の取得,定義ファイルの確認
 	if (bOk && !cZipFile.SetZip(sZipFile)) {
-		auto_snprintf_s( msg, _countof(msg), LS(STR_PLGMGR_INST_ZIP_ACCESS), sDispName.c_str() );
+		auto_sprintf_s( msg, LS(STR_PLGMGR_INST_ZIP_ACCESS), sDispName.c_str() );
 		bOk = false;
 		bSkip = bInSearch;
 	}
 
 	// Plgin フォルダ名の取得,定義ファイルの確認
 	if (bOk && !cZipFile.ChkPluginDef(PII_FILENAME, sFolderName)) {
-		auto_snprintf_s( msg, _countof(msg), LS(STR_PLGMGR_INST_ZIP_DEF), sDispName.c_str() );
+		auto_sprintf_s( msg, LS(STR_PLGMGR_INST_ZIP_DEF), sDispName.c_str() );
 		bOk = false;
 		bSkip = bInSearch;
 	}
@@ -317,13 +317,13 @@ bool CPluginManager::InstZipPluginSub( CommonSetting& common, HWND hWndOwner, co
 
 	// Zip解凍
 	if (bOk && !cZipFile.Unzip(m_sBaseDir)) {
-		auto_snprintf_s( msg, _countof(msg), LS(STR_PLGMGR_INST_ZIP_UNZIP), sDispName.c_str() );
+		auto_sprintf_s( msg, LS(STR_PLGMGR_INST_ZIP_UNZIP), sDispName.c_str() );
 		bOk = false;
 	}
 	if (bOk) {
 		int pluginNo = InstallPlugin( common, sFolderName.c_str(), hWndOwner, errMsg, true );
 		if( pluginNo < 0 ){
-			auto_snprintf_s( msg, _countof(msg), LS(STR_PLGMGR_INST_ZIP_ERR), sDispName.c_str(), errMsg.c_str() );
+			auto_sprintf_s( msg, LS(STR_PLGMGR_INST_ZIP_ERR), sDispName.c_str(), errMsg.c_str() );
 			bOk = false;
 		}
 	}

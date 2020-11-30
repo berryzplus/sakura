@@ -308,7 +308,7 @@ bool CControlTray::CreateTrayIcon( HWND hWnd )
 			profname = L" ";
 			profname += CCommandLine::getInstance()->GetProfileName();
 		}
-		auto_snprintf_s( pszTips, _countof(pszTips), L"%s %d.%d.%d.%d%ls",		//Jul. 06, 2001 jepro UR はもう付けなくなったのを忘れていた
+		auto_sprintf_s( pszTips, L"%s %d.%d.%d.%d%ls",		//Jul. 06, 2001 jepro UR はもう付けなくなったのを忘れていた
 			GSTR_APPNAME,
 			HIWORD( dwVersionMS ),
 			LOWORD( dwVersionMS ),
