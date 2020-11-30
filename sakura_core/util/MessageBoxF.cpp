@@ -96,8 +96,8 @@ int VMessageBoxF(
 {
 	hwndOwner=GetMessageBoxOwner(hwndOwner);
 	//整形
-	static WCHAR szBuf[16000];
-	tchar_vsnprintf_s(szBuf,_countof(szBuf),lpText,v);
+	static WCHAR szBuf[4096];
+	auto_vsprintf_s( szBuf, lpText, v );
 	//API呼び出し
 	return ::MessageBox( hwndOwner, szBuf, lpCaption, uType);
 }

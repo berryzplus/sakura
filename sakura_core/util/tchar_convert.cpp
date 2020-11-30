@@ -102,10 +102,11 @@ const ACHAR* to_achar(const WCHAR* pSrc, int nSrcLength)
 
 const WCHAR* easy_format(const WCHAR* format, ...)
 {
-	WCHAR* buf=g_bufBig.GetBuffer<WCHAR>(1024);
+	constexpr size_t nBufCount = 1024;
+	WCHAR* buf=g_bufBig.GetBuffer<WCHAR>(nBufCount);
 	va_list v;
 	va_start(v,format);
-	tchar_vsprintf(buf,format,v);
+	auto_vsprintf_s( buf, nBufCount, format, v );
 	va_end(v);
 	return buf;
 }
