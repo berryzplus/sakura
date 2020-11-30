@@ -491,7 +491,7 @@ void GetExedir(
 	else {
 		WCHAR	szDir[_MAX_PATH];
 		SplitPath_FolderAndFile( szPath, szDir, NULL );
-		auto_snprintf_s( pDir, _MAX_PATH, L"%s\\%s", szDir, szFile );
+		auto_sprintf_s( pDir, _MAX_PATH, L"%s\\%s", szDir, szFile );
 	}
 }
 
@@ -520,7 +520,7 @@ void GetInidir(
 	else {
 		WCHAR	szDir[_MAX_PATH];
 		SplitPath_FolderAndFile( szPath, szDir, NULL );
-		auto_snprintf_s( pDir, _MAX_PATH, L"%s\\%s", szDir, szFile );
+		auto_sprintf_s( pDir, _MAX_PATH, L"%s\\%s", szDir, szFile );
 	}
 }
 
