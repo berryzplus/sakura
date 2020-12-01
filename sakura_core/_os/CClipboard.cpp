@@ -223,10 +223,10 @@ bool CClipboard::SetHtmlText(const CNativeW& cmemBUf)
 	size_t size = cmemUtf8.GetStringLength() + 134;
 	cmemHeader.AppendString("Version:0.9\r\n");
 	cmemHeader.AppendString("StartHTML:00000097\r\n");
-	sprintf( szFormat, "EndHTML:%08Id\r\n", size + 36 );
+	::sprintf_s( szFormat, "EndHTML:%08Id\r\n", size + 36 );
 	cmemHeader.AppendString(szFormat);
 	cmemHeader.AppendString("StartFragment:00000134\r\n");
-	sprintf( szFormat, "EndFragment:%08Id\r\n", size );
+	::sprintf_s( szFormat, "EndFragment:%08Id\r\n", size );
 	cmemHeader.AppendString(szFormat);
 	cmemHeader.AppendString("<html><body>\r\n<!--StartFragment -->\r\n");
 	CNativeA cmemFooter;
