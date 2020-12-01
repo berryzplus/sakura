@@ -91,8 +91,12 @@ private:
 	void build_arity(int);
 };
 
-COutlineErlang::COutlineErlang() :
-	m_state( STATE_NORMAL ), m_lnum( 0 ), m_argcount( 0 )
+COutlineErlang::COutlineErlang()
+	: m_state( STATE_NORMAL )
+	, m_lnum( 0 )
+	, m_argcount( 0 )
+	, m_parenthesis{ '\0' }
+	, m_parenthesis_ptr(0)
 {
 }
 
