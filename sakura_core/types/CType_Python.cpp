@@ -124,9 +124,10 @@ void CType_Python::InitTypeConfigImp(STypeConfig* pType)
 	初期状態をSTATE_NORMALに設定する．
 */
 COutlinePython::COutlinePython()
-	: m_state( STATE_NORMAL ),
-	m_raw_string( false ),
-	m_long_string( false )
+	: m_state( STATE_NORMAL )
+	, m_quote_char( '\"' )
+	, m_raw_string( false )
+	, m_long_string( false )
 {
 }
 
