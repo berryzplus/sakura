@@ -395,7 +395,7 @@ bool CFileNameManager::GetMenuFullLabel(
 	int ret = 0;
 	if( NULL == pfi ){
 		GetAccessKeyLabelByIndex( szAccKey, bEspaceAmp, index, bAccKeyZeroOrigin );
-		ret = auto_snprintf_s( pszOutput, nBuffSize, LS(STR_MENU_UNKOWN), szAccKey );
+		ret = auto_snprintf( pszOutput, nBuffSize, LS(STR_MENU_UNKOWN), szAccKey );
 		return 0 < ret;
 	}else if( pfi->m_bIsGrep ){
 		
@@ -421,13 +421,13 @@ bool CFileNameManager::GetMenuFullLabel(
 		//	Jan. 19, 2002 genta
 		//	&の重複処理を追加したため継続判定を若干変更
 		//	20100729 ExpandParameterにあわせて、・・・を...に変更
-		ret = auto_snprintf_s( pszOutput, nBuffSize, LS(STR_MENU_GREP),
+		ret = auto_snprintf( pszOutput, nBuffSize, LS(STR_MENU_GREP),
 			szAccKey, pszKey,
 			( nGrepKeyLen > cmemDes.GetStringLength() ) ? L"...":L""
 		);
 	}else if( pfi->m_bIsDebug ){
 		GetAccessKeyLabelByIndex( szAccKey, bEspaceAmp, index, bAccKeyZeroOrigin );
-		ret = auto_snprintf_s( pszOutput, nBuffSize, LS(STR_MENU_OUTPUT), szAccKey );
+		ret = auto_snprintf( pszOutput, nBuffSize, LS(STR_MENU_OUTPUT), szAccKey );
 	}else{
 		return GetMenuFullLabel(pszOutput, nBuffSize, bEspaceAmp, pfi->m_szPath, nId, pfi->m_bIsModified, pfi->m_nCharCode, bFavorite,
 			 index, bAccKeyZeroOrigin, hDC);
@@ -475,7 +475,7 @@ bool CFileNameManager::GetMenuFullLabel(
 		pszCharset = szCodePageName;
 	}
 	
-	int ret = auto_snprintf_s( pszOutput, nBuffSize, L"%s%s%s %s%s",
+	int ret = auto_snprintf( pszOutput, nBuffSize, L"%s%s%s %s%s",
 		szAccKey, (bFavorite ? L"★ " : L""), pszName,
 		(bModified ? L"*":L" "), pszCharset
 	);

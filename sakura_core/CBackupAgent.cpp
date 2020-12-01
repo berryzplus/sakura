@@ -345,12 +345,12 @@ bool CBackupAgent::FormatBackUpPath(
 		/* バックアップファイル名のタイプ 1=(.bak) 2=*_日付.* */
 		switch( bup_setting.GetBackupType() ){
 		case 1:
-			if( -1 == auto_snprintf_s( pBase, nBaseCount, L"%s.bak", szFname ) ){
+			if( -1 == auto_snprintf( pBase, nBaseCount, L"%s.bak", szFname ) ){
 				return false;
 			}
 			break;
 		case 5: //	Jun.  5, 2005 genta 1の拡張子を残す版
-			if( -1 == auto_snprintf_s( pBase, nBaseCount, L"%s%s.bak", szFname, szExt ) ){
+			if( -1 == auto_snprintf( pBase, nBaseCount, L"%s%s.bak", szFname, szExt ) ){
 				return false;
 			}
 			break;
@@ -381,7 +381,7 @@ bool CBackupAgent::FormatBackUpPath(
 			}
 			/* YYYYMMDD時分秒 形式に変換 */
 			wcsftime( szTime, _countof( szTime ) - 1, szForm, &result );
-			if( -1 == auto_snprintf_s( pBase, nBaseCount, L"%s_%ls%s", szFname, szTime, szExt ) ){
+			if( -1 == auto_snprintf( pBase, nBaseCount, L"%s_%ls%s", szFname, szTime, szExt ) ){
 				return false;
 			}
 			break;
@@ -434,7 +434,7 @@ bool CBackupAgent::FormatBackUpPath(
 				// ptrがszExtの先頭を指す場合、以下の式は合法。
 				::swprintf_s( ptr, 5, L".%c00", bup_setting.GetBackupExtChar() );
 			}
-			if( -1 == auto_snprintf_s( pBase, nBaseCount, L"%s%s", szFname, szExt ) ){
+			if( -1 == auto_snprintf( pBase, nBaseCount, L"%s%s", szFname, szExt ) ){
 				return false;
 			}
 			break;
@@ -534,7 +534,7 @@ bool CBackupAgent::FormatBackUpPath(
 				wcscpy( temp, szNewPath );
 				cp = wcschr( temp, L'*' );
 				*cp = 0;
-				if( -1 == auto_snprintf_s( szNewPath, newPathCount, L"%s%s%s", temp, ep, cp+1 ) ){
+				if( -1 == auto_snprintf( szNewPath, newPathCount, L"%s%s%s", temp, ep, cp+1 ) ){
 					return false;
 				}
 			}

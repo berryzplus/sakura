@@ -247,7 +247,7 @@ inline int auto_sprintf_s(WCHAR(&buf)[nBufCount], const WCHAR* format, ...)
 	return n;
 }
 
-inline int auto_snprintf_s(WCHAR *buf, size_t nMaxCount, const WCHAR* format, ...)
+inline int auto_snprintf(WCHAR *buf, size_t nMaxCount, const WCHAR* format, ...)
 {
 	va_list v;
 	va_start(v, format);
