@@ -192,7 +192,6 @@ WCHAR* strtotcs( WCHAR* dest, const ACHAR* src, size_t count );
 WCHAR* strtotcs( WCHAR* dest, const WCHAR* src, size_t count );
 
 //印字系
-inline int auto_vsprintf(ACHAR* buf, const ACHAR* format, va_list& v){ return ::vsprintf(buf,format,v); }
 inline int auto_vsprintf(WCHAR* buf, const WCHAR* format, va_list& v){ return ::_vswprintf(buf,format,v); }
 inline int auto_vsnprintf(WCHAR* buf, size_t nMaxCount, const WCHAR* format, va_list& v) { return ::_vsnwprintf(buf, nMaxCount, format, v); }
 inline int auto_vsprintf_s(ACHAR* buf, size_t nBufCount, const ACHAR* format, va_list& v){ return ::_vsnprintf_s(buf, nBufCount, _TRUNCATE, format, v); }
@@ -208,15 +207,6 @@ template<typename CharType, size_t nBufCount>
 inline int auto_vsprintf(CharType(&buf)[nBufCount], const CharType* format, va_list& v)
 {
 	return auto_vsprintf_s(buf, nBufCount, format, v);
-}
-
-inline int auto_sprintf(ACHAR *buf, const ACHAR* format, ...)
-{
-	va_list v;
-	va_start(v, format);
-	int n = auto_vsprintf(buf, format, v);
-	va_end(v);
-	return n;
 }
 
 inline int auto_sprintf(WCHAR *buf, const WCHAR* format, ...)

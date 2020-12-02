@@ -75,8 +75,8 @@ public:
 	//! PPAメッセージを取得する
 	const char* GetLastMessage(void) const { return m_szMsg; }
 
-	//	Jun. 16, 2003 genta 引数追加
-	static char* GetDeclarations( const MacroFuncInfo& cMacroFuncInfo, char* szBuffer );
+	template<size_t nBufCount>
+	static char* GetDeclarations( const MacroFuncInfo& cMacroFuncInfo, char(&szBuffer)[nBufCount] );
 
 protected:
 	//	Jul. 5, 2001 genta インターフェース変更に伴う引数追加

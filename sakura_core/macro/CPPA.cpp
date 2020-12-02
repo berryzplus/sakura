@@ -215,7 +215,8 @@ bool CPPA::InitDllImp()
 
 	@date 2003.06.16 genta 無駄なnew/deleteを避けるためバッファを外から与えるように
 */
-char* CPPA::GetDeclarations( const MacroFuncInfo& cMacroFuncInfo, char* szBuffer )
+template<size_t nBufCount>
+char* CPPA::GetDeclarations( const MacroFuncInfo& cMacroFuncInfo, char(&szBuffer)[nBufCount] )
 {
 	char szType[20];			//	procedure/function用バッファ
 	char szReturn[20];			//	戻り値型用バッファ
@@ -271,7 +272,7 @@ char* CPPA::GetDeclarations( const MacroFuncInfo& cMacroFuncInfo, char* szBuffer
 			strcat( szArgument, "; " );
 			strcat( szArgument, szArguments[j] );
 		}
-		auto_sprintf( szBuffer, "%hs S_%ls(%hs)%hs; index %d;",
+		::sprintf_s( szBuffer, "%hs S_%ls(%hs)%hs; index %d;",
 			szType,
 			cMacroFuncInfo.m_pszFuncName,
 			szArgument,
@@ -280,7 +281,7 @@ char* CPPA::GetDeclarations( const MacroFuncInfo& cMacroFuncInfo, char* szBuffer
 		);
 	}
 	else {
-		auto_sprintf( szBuffer, "%hs S_%ls%hs; index %d;",
+		::sprintf_s( szBuffer, "%hs S_%ls%hs; index %d;",
 			szType,
 			cMacroFuncInfo.m_pszFuncName,
 			szReturn,
