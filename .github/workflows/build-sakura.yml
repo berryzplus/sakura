@@ -23,10 +23,26 @@ defaults:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  check:
+    name: CheckEncoding
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: CheckEncoding
+      run: |
+        pip install chardet --user
+        py checkEncoding.py
+
   build:
     # The type of runner that the job will run on
     name: MSBuild
+    needs: check
     runs-on: windows-latest
 
     strategy:
