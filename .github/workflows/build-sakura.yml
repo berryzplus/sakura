@@ -67,68 +67,44 @@ jobs:
       run: build-sln.bat ${{ matrix.platform }} ${{ matrix.config }}
       shell: cmd
 
+    - name: Run Tests
+      run: ${{ matrix.platform }}\${{ matrix.config }}\tests1.exe
+        --gtest_output=xml:tests1-googletest-${{ matrix.platform }}-${{ matrix.config }}.xml
+
+    - name: Upload Bin
+      if: ${{ matrix.config == 'Release' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: sakura-Bin-${{ matrix.platform }}
+        path: |
+          ${{ matrix.platform }}\${{ matrix.config }}\sakura.exe
+          ${{ matrix.platform }}\${{ matrix.config }}\sakura_lang_en_US.dll
+
+  buildChm:
+    name: BuildChm
+    needs: check
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
     - name: Install Locale Emulator
       run: choco install locale-emulator -y
 
     - name: Build HTML Help
+      shell: cmd
       run: build-chm.bat
-      shell: cmd
 
-    - name: Build installer with Inno Setup
-      run: build-installer.bat ${{ matrix.platform }} ${{ matrix.config }}
-      shell: cmd
+    - name: Copy Outputs
+      run: |
+        Copy-Item help\macro\macro.chm   help\
+        Copy-Item help\plugin\plugin.chm help\
+        Copy-Item help\sakura\sakura.chm help\
 
-    - name: zipArtifacts
-      run: zipArtifacts.bat ${{ matrix.platform }} ${{ matrix.config }}
-      if: ${{ matrix.config == 'Release' }}
-      shell: cmd
-
-    ## see https://github.com/actions/upload-artifact
-    - name: Upload Installer
+    - name: Upload HTML Help
       uses: actions/upload-artifact@v2
-      if: ${{ matrix.config == 'Release' }}
       with:
-        name: Installer ${{ matrix.platform }} ${{ matrix.config }}
-        path: 'sakura-*-Installer.zip'
-
-    - name: Upload Installer MD5
-      uses: actions/upload-artifact@v2
-      if: ${{ matrix.config == 'Release' }}
-      with:
-        name: Installer MD5 ${{ matrix.platform }} ${{ matrix.config }}
-        path: 'sakura-*-Installer.zip.md5'
-
-    - name: Upload Exe
-      uses: actions/upload-artifact@v2
-      if: ${{ matrix.config == 'Release' }}
-      with:
-        name: Exe ${{ matrix.platform }} ${{ matrix.config }}
-        path: 'sakura-*-Exe.zip'
-
-    - name: Upload Exe MD5
-      uses: actions/upload-artifact@v2
-      if: ${{ matrix.config == 'Release' }}
-      with:
-        name: Exe MD5 ${{ matrix.platform }} ${{ matrix.config }}
-        path: 'sakura-*-Exe.zip.md5'
-
-    - name: Upload Log
-      uses: actions/upload-artifact@v2
-      if: ${{ matrix.config == 'Release' }}
-      with:
-        name: Log ${{ matrix.platform }} ${{ matrix.config }}
-        path: 'sakura-*-Log.zip'
-
-    - name: Upload Asm
-      uses: actions/upload-artifact@v2
-      if: ${{ matrix.config == 'Release' }}
-      with:
-        name: Asm ${{ matrix.platform }} ${{ matrix.config }}
-        path: 'sakura-*-Asm.zip'
-
-    - name: Upload Dev
-      uses: actions/upload-artifact@v2
-      if: ${{ matrix.config == 'Release' }}
-      with:
-        name: Dev ${{ matrix.platform }} ${{ matrix.config }}
-        path: 'sakura-*-Dev.zip'
+        name: sakura-Chm
+        path: |
+          help\macro.chm
+          help\plugin.chm
+          help\sakura.chm
