@@ -108,3 +108,75 @@ jobs:
           help\macro.chm
           help\plugin.chm
           help\sakura.chm
+
+  package:
+    name: BuildInstaller
+    needs: [build, buildChm]
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform:
+          - Win32
+          - x64
+        config:
+          - Release
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Installer work directory
+      run: |
+        Move-Item -Path installer\sinst_src -Destination installer\sakura
+        New-Item -Path installer\bregonig -ItemType Directory
+        New-Item -Path installer\ctags    -ItemType Directory
+        New-Item -Path installer\sakura\license\bregonig -ItemType Directory
+        New-Item -Path installer\sakura\license\ctags    -ItemType Directory
+        7z x -oinstaller\bregonig installer\externals\bregonig\bron420.zip
+        Move-Item -Path installer\bregonig\*.txt -Destination installer\sakura\license\bregonig\
+        Move-Item -Path LICENSE -Destination installer\sakura\license\LICENSE
+
+    - name: Prepare install stuff for x86
+      if: ${{ matrix.platform == 'Win32' }}
+      run: |
+        Move-Item -Path installer\bregonig\*.dll -Destination installer\sakura\
+        7z x -oinstaller\ctags installer\externals\universal-ctags\ctags-2020-01-12_feffe43a-x86.zip
+        Move-Item -Path installer\ctags\license\* -Destination installer\sakura\license\ctags\
+        Move-Item -Path installer\ctags\ctags.exe -Destination installer\sakura\
+
+    - name: Prepare install stuff for x64
+      if: ${{ matrix.platform == 'x64' }}
+      run: |
+        Move-Item -Path installer\bregonig\x64\*.dll -Destination installer\sakura\
+        7z x -oinstaller\ctags installer\externals\universal-ctags\ctags-2020-01-12_feffe43a-x64.zip
+        Move-Item -Path installer\ctags\license\* -Destination installer\sakura\license\ctags\
+        Move-Item -Path installer\ctags\ctags.exe -Destination installer\sakura\
+
+    - name: Download Bin
+      uses: actions/download-artifact@v2
+      with:
+        name: sakura-Bin-${{ matrix.platform }}
+        path: installer\sakura\
+
+    - name: Download HTML Help
+      uses: actions/download-artifact@v2
+      with:
+        name: sakura-Chm
+        path: installer\sakura\
+
+    - name: 'Build Installer'
+      run: ISCC.exe installer\sakura-${{ matrix.platform }}.iss
+
+    - name: Upload Installer for Preview
+      if: ${{ matrix.platform == 'x64' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: sakura-installer-x64
+        path: installer\Output-x64\*.exe
+
+    - name: Upload Installer
+      if: ${{ matrix.platform == 'Win32' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: sakura-installer-x86
+        path: installer\Output-Win32\*.exe
