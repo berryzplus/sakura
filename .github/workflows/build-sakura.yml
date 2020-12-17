@@ -109,9 +109,41 @@ jobs:
           help\plugin.chm
           help\sakura.chm
 
+  mingw:
+    name: Build with MinGW
+    needs: check
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform:
+          - MinGW
+        config:
+          - Debug
+          - Release
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    ## see https://github.com/actions/checkout
+    - uses: actions/checkout@v2
+
+    - name: install MinGW-w64-gtest
+      run: C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-x86_64-gtest"
+
+    - name: Run Batch File
+      run: tests\build-and-test.bat ${{ matrix.platform }} ${{ matrix.config }}
+      shell: cmd
+
+    - name: Upload MinGW
+      if: ${{ matrix.config == 'Release' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: sakura-MinGW-Bin
+        path: sakura_core\sakura.exe
+
   package:
     name: BuildInstaller
-    needs: [build, buildChm]
+    needs: [build, buildChm, mingw]
     runs-on: windows-latest
 
     strategy:
