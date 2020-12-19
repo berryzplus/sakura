@@ -21,8 +21,8 @@ if "%configuration%" == "Release" (
 	exit /b 1
 )
 
-call %~dp0tools\find-tools.bat
-if not defined CMD_CPPCHECK (
+if not defined CMD_CPPCHECK call :find-cppcheck
+if not exist "%CMD_CPPCHECK%" (
 	echo cppcheck.exe was not found. so skip to run it.
 	exit /b 0
 )
@@ -58,15 +58,21 @@ set CPPCHECK_PARAMS=%CPPCHECK_PARAMS% -j %NUMBER_OF_PROCESSORS%
 set CPPCHECK_PARAMS=%CPPCHECK_PARAMS% %~dp0sakura_core
 
 set ERROR_RESULT=0
-if exist "%CMD_CPPCHECK%" (
-	@echo "%CMD_CPPCHECK%" %CPPCHECK_PARAMS%
-	"%CMD_CPPCHECK%" %CPPCHECK_PARAMS% > %CPPCHECK_LOG% || set ERROR_RESULT=1
-	@echo.
-	@echo The log files are %CPPCHECK_LOG% and %CPPCHECK_OUT%
-	@echo cppcheck success
-)
+@echo "%CMD_CPPCHECK%" %CPPCHECK_PARAMS%
+"%CMD_CPPCHECK%" %CPPCHECK_PARAMS% > %CPPCHECK_LOG% || set ERROR_RESULT=1
+@echo.
+@echo The log files are %CPPCHECK_LOG% and %CPPCHECK_OUT%
+@echo cppcheck success
 exit /b %ERROR_RESULT%
 
+:find-cppcheck
+set APPDIR=cppcheck
+set PATH2=%PATH%;%ProgramFiles%\%APPDIR%\;%ProgramFiles(x86)%\%APPDIR%\;%ProgramW6432%\%APPDIR%\;
+for /f "usebackq delims=" %%a in (`where $PATH2:cppcheck.exe`) do ( 
+    set "CMD_CPPCHECK=%%a"
+    exit /b
+)
+exit /b
 
 @rem ------------------------------------------------------------------------------
 @rem show help
