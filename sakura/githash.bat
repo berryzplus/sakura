@@ -117,12 +117,6 @@ exit /b 0
 		set GITHUB_PR_HEAD_COMMIT=%SYSTEM_PULLREQUEST_SOURCECOMMITID%
 	)
 
-	if not "%GITHUB_PR_HEAD_COMMIT%" == "" (
-		set GITHUB_PR_HEAD_SHORT_COMMIT=%GITHUB_PR_HEAD_COMMIT:~0,8%
-	) else (
-		set GITHUB_PR_HEAD_SHORT_COMMIT=
-	)
-
 	if "%BUILD_REPOSITORY_PROVIDER%"=="GitHub" (
 		set GITHUB_ON=1
 	)
@@ -205,7 +199,6 @@ exit /b 0
 		@echo GITHUB_COMMIT_URL           : %GITHUB_COMMIT_URL%
 		@echo GITHUB_PR_HEAD_URL          : %GITHUB_PR_HEAD_URL%
 		@echo GITHUB_PR_HEAD_COMMIT       : %GITHUB_PR_HEAD_COMMIT%
-		@echo GITHUB_PR_HEAD_SHORT_COMMIT : %GITHUB_PR_HEAD_SHORT_COMMIT%
 		@echo.
 		@echo APPVEYOR_URL          : %APPVEYOR_URL%
 		@echo APPVEYOR_PROJECT_SLUG : %APPVEYOR_PROJECT_SLUG%
@@ -297,12 +290,6 @@ exit /b 0
 		echo // GITHUB_PR_HEAD_COMMIT is not defined
 	) else (
 		echo #define GITHUB_PR_HEAD_COMMIT         "%GITHUB_PR_HEAD_COMMIT%"
-	)
-
-	if "%GITHUB_PR_HEAD_SHORT_COMMIT%" == "" (
-		echo // GITHUB_PR_HEAD_SHORT_COMMIT is not defined
-	) else (
-		echo #define GITHUB_PR_HEAD_SHORT_COMMIT   "%GITHUB_PR_HEAD_SHORT_COMMIT%"
 	)
 
 	if "%CI_BUILD_URL%" == "" (
