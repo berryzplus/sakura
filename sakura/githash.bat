@@ -275,11 +275,9 @@ exit /b 0
 
 	if "%GITHUB_PR_NUMBER%" == "" (
 		echo // GITHUB_PR_NUMBER       is not defined
-		echo // GITHUB_PR_NUMBER_INT   is not defined
 		echo // GITHUB_PR_NUMBER_LABEL is not defined
 	) else (
 		echo #define GITHUB_PR_NUMBER                 "%GITHUB_PR_NUMBER%"
-		echo #define GITHUB_PR_NUMBER_INT              %GITHUB_PR_NUMBER%
 		echo #define GITHUB_PR_NUMBER_LABEL        "PR %GITHUB_PR_NUMBER%"
 	)
 
