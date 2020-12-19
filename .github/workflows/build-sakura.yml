@@ -212,3 +212,126 @@ jobs:
       with:
         name: sakura-installer-x86
         path: installer\Output-Win32\*.exe
+
+  sonar:
+    name: 'Analyze with SonarCloud'
+    needs: check
+    runs-on: windows-latest
+    env:
+      # Platform type to build.
+      BUILD_PLATFORM: x64
+
+      # Configuration type to build.
+      BUILD_CONFIGURATION: Release
+
+      # The OpenCppCoverage Executable.
+      CMD_OCC: '"C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe"'
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: 'checkout'
+      uses: actions/checkout@v2
+
+    - name: 'Add msbuild to PATH'
+      uses: microsoft/setup-msbuild@v1
+
+    - name: 'Fetch Build-Wrapper'
+      working-directory: ${{ runner.temp }}
+      run: |
+        Invoke-WebRequest -OutFile build-wrapper-win-x86.zip https://sonarcloud.io/static/cpp/build-wrapper-win-x86.zip
+        7z x build-wrapper-win-x86.zip
+
+    - name: 'Build with Build-Wrapper'
+      run: ${{ runner.temp }}\build-wrapper-win-x86\build-wrapper-win-x86-64.exe --out-dir bw-output MsBuild.exe /p:Platform=${{ env.BUILD_PLATFORM }},Configuration=${{ env.BUILD_CONFIGURATION }} /t:ReBuild
+
+    - name: 'Install OpenCppCoverage with XmlExporter'
+      run: |
+        choco install OpenCppCoverage -y
+        RefreshEnv
+        Copy-Item tools\XmlExporter\XmlExporter.dll "C:\Program Files\OpenCppCoverage\Plugins\Exporter\xml.dll"
+
+    - name: Run Tests
+      shell: cmd
+      run: ${{ env.CMD_OCC }}
+        --export_type xml:tests1-coverage-${{ env.BUILD_PLATFORM }}-${{ env.BUILD_CONFIGURATION }}.xml
+        --modules ${{ github.workspace }}\${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\tests1.exe
+        --cover_children
+        --sources ${{ github.workspace }}
+        --excluded_sources ${{ github.workspace }}\build
+        --excluded_sources ${{ github.workspace }}\tests
+        --working_dir ${{ github.workspace }}\${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}
+        --
+        ${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\tests1.exe
+        --gtest_output=xml:tests1-googletest-${{ env.BUILD_PLATFORM }}-${{ env.BUILD_CONFIGURATION }}.xml
+
+    - name: Run Grep
+      shell: cmd
+      run: ${{ env.CMD_OCC }}
+        --export_type xml:grep-coverage-${{ env.BUILD_PLATFORM }}-${{ env.BUILD_CONFIGURATION }}.xml
+        --modules ${{ github.workspace }}\${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\tests1.exe
+        --cover_children
+        --sources ${{ github.workspace }}
+        --excluded_sources ${{ github.workspace }}\build
+        --excluded_sources ${{ github.workspace }}\tests
+        --working_dir ${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}
+        --
+        ${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\tests1.exe
+        -PROF=""
+        -GREPMODE
+        -GKEY="\);"
+        -GFILE="*.h;*.cpp;#.git;#.svn;#.vs;#googletest;#build;#Release"
+        -GFOLDER="${{ github.workspace }}"
+        -GCODE=99
+        -GOPT=1RSPU
+
+    - name: 'Set up JDK 11'
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v2
+      with:
+        path: ~\.sonar\cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+
+    - name: 'Fetch SonarScannerCLI'
+      working-directory: ${{ runner.temp }}
+      run: |
+        Invoke-WebRequest -OutFile sonar-scanner-cli-4.4.0.2170-windows.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-windows.zip
+        7z x sonar-scanner-cli-4.4.0.2170-windows.zip
+
+    - name: Cache SonarCloud scanner
+      uses: actions/cache@v2
+      with:
+        path: ${{ runner.temp }}\sonar-scanner-cli-4.4.0.2170-windows
+        key: ${{ runner.os }}-sonar-scanner
+        restore-keys: ${{ runner.os }}-sonar-scanner
+
+    - name: Cache SonarCloud scanner cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ runner.temp }}\sonar-scanner-cache
+        key: ${{ runner.os }}-sonar-scanner-cache
+        restore-keys: ${{ runner.os }}-sonar-scanner-cache
+
+    - name: 'Analyze with SonarScannerCLI'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+        SONAR_PROJECTKEY: ${{ secrets.SONAR_PROJECTKEY }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        CMD_SCANNER: '${{ runner.temp }}\sonar-scanner-4.4.0.2170-windows\bin\sonar-scanner.bat'
+      shell: cmd
+      run: ${{ env.CMD_SCANNER }}
+        -D"sonar.organization=${{ env.SONAR_ORGANIZATION }}"
+        -D"sonar.projectKey=${{ env.SONAR_PROJECTKEY }}"
+        -D"sonar.host.url=https://sonarcloud.io"
+        -D"sonar.sourceEncoding=UTF-8"
+        -D"sonar.sources=sakura_core,tests,tools"
+        -D"sonar.cfamily.build-wrapper-output=bw-output"
+        -D"sonar.cfamily.cache.enabled=true"
+        -D"sonar.cfamily.cache.path=${{ runner.temp }}\sonar-scanner-cache"
+        -D"sonar.cfamily.threads=2"
+        -D"sonar.coverageReportPaths=tests1-coverage-${{ env.BUILD_PLATFORM }}-${{ env.BUILD_CONFIGURATION }}.xml,grep-coverage-${{ env.BUILD_PLATFORM }}-${{ env.BUILD_CONFIGURATION }}.xml"
