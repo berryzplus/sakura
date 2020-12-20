@@ -1,32 +1,25 @@
 name: build sakura
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    branches:
-      - master
-      - feature/*
     paths-ignore:
-      - '**/*.md'
+      - '**.md'
       - .gitignore
       - .editorconfig
-      - appveyor.yml
-      - 'azure-pipelines*.yml'
-      - 'ci/azure-pipelines/template*.yml'
+      - 'ci/**'
+      - '*.yml'
 
   pull_request:
-    branches:
-      - master
-      - feature/*
-      - release/*
     paths-ignore:
-      - '**/*.md'
+      - '**.md'
       - .gitignore
       - .editorconfig
-      - appveyor.yml
-      - 'azure-pipelines*.yml'
-      - 'ci/azure-pipelines/template*.yml'
+      - 'ci/**'
+      - '*.yml'
+
+defaults:
+  run:
+    shell: powershell
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -38,12 +31,12 @@ jobs:
 
     strategy:
       matrix:
-        config:
-          - Debug
-          - Release
         platform:
           - Win32
           - x64
+        config:
+          - Debug
+          - Release
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -60,7 +53,6 @@ jobs:
 
     - name: Install Locale Emulator
       run: choco install locale-emulator -y
-      shell: cmd
 
     - name: Build HTML Help
       run: build-chm.bat
