@@ -749,18 +749,17 @@ static void DeleteRecentItem(
 }
 
 //! コンボボックスのエディットの単語削除処理を行う
-static int DeletePreviousWord(wchar_t* text, int length, int curPos)
+static int DeletePreviousWord(std::wstring& strText, int curPos)
 {
 	if (curPos == 0) {
 		// カーソル位置が既に先頭なので何もしない
 		return 0;
 	}
 	CLogicInt prevWordStartPos;
-	CWordParse::SearchPrevWordPosition(text, CLogicInt(length), CLogicInt(curPos), &prevWordStartPos,
+	CWordParse::SearchPrevWordPosition(strText.c_str(), CLogicInt((int)strText.length()), CLogicInt(curPos), &prevWordStartPos,
 		GetDllShareData().m_Common.m_sGeneral.m_bStopsBothEndsWhenSearchWord);
 	assert(prevWordStartPos < curPos);
-	// null文字ごと前方へ移動する
-	std::copy(text + curPos, text + length + 1, text + prevWordStartPos);
+	strText = strText.substr(prevWordStartPos);
 	return prevWordStartPos;
 }
 
@@ -795,8 +794,7 @@ LRESULT CALLBACK SubEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
 			if( !Wnd_GetText( hwndCombo, strText ) ){
 				return 0;
 			}
-
-			const int pos = DeletePreviousWord( strText.data(), strText.length(), selStart );
+			const int pos = DeletePreviousWord( strText, selStart );
 
 			Wnd_SetText( hwndCombo, strText.c_str() );
 			Combo_SetEditSel(hwndCombo, pos, pos);
