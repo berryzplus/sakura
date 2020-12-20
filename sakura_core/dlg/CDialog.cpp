@@ -791,13 +791,14 @@ LRESULT CALLBACK SubEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
 			}
 
 			// 単語削除する
-			const int length = ::GetWindowTextLength(hwndCombo);
-			auto text = std::make_unique<wchar_t[]>(length + 1);
-			::GetWindowText(hwndCombo, text.get(), length + 1);
+			std::wstring strText;
+			if( !Wnd_GetText( hwndCombo, strText ) ){
+				return 0;
+			}
 
-			const int pos = DeletePreviousWord(text.get(), length, selStart);
+			const int pos = DeletePreviousWord( strText.data(), strText.length(), selStart );
 
-			::SetWindowText(hwndCombo, text.get());
+			Wnd_SetText( hwndCombo, strText.c_str() );
 			Combo_SetEditSel(hwndCombo, pos, pos);
 			return 0;
 		}
