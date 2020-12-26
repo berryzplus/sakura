@@ -70,11 +70,11 @@ jobs:
       run: ${{ matrix.platform }}\${{ matrix.config }}\tests1.exe
         --gtest_output=xml:tests1-googletest-${{ matrix.platform }}-${{ matrix.config }}.xml
 
-    - name: Upload Bin
+    - name: Upload Exe
       if: ${{ matrix.config == 'Release' }}
       uses: actions/upload-artifact@v2
       with:
-        name: sakura-Bin-${{ matrix.platform }}
+        name: sakura-${{ matrix\.platform }}-Exe
         path: |
           ${{ matrix.platform }}\${{ matrix.config }}\sakura.exe
           ${{ matrix.platform }}\${{ matrix.config }}\sakura_lang_en_US.dll
@@ -102,7 +102,7 @@ jobs:
     - name: Upload HTML Help
       uses: actions/upload-artifact@v2
       with:
-        name: sakura-Chm
+        name: sakura-AnyCPU-Chm
         path: |
           help\macro.chm
           help\plugin.chm
@@ -137,7 +137,7 @@ jobs:
       if: ${{ matrix.config == 'Release' }}
       uses: actions/upload-artifact@v2
       with:
-        name: sakura-MinGW-Bin
+        name: sakura-MinGW-Exe
         path: sakura_core\sakura.exe
 
   package:
@@ -183,37 +183,37 @@ jobs:
         Move-Item -Path installer\ctags\license\* -Destination installer\sakura\license\ctags\
         Move-Item -Path installer\ctags\ctags.exe -Destination installer\sakura\
 
-    - name: Download Bin
+    - name: Download Exe
       uses: actions/download-artifact@v2
       with:
-        name: sakura-Bin-${{ matrix.platform }}
+        name: sakura-${{ matrix\.platform }}-Exe
         path: installer\sakura\
 
     - name: Download HTML Help
       uses: actions/download-artifact@v2
       with:
-        name: sakura-Chm
+        name: sakura-AnyCPU-Chm
         path: installer\sakura\
 
     - name: 'Build Installer'
       run: ISCC.exe installer\sakura-${{ matrix.platform }}.iss
 
-    - name: Upload Installer for Preview
-      if: ${{ matrix.platform == 'x64' }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: sakura-installer-x64
-        path: installer\Output-x64\*.exe
-
     - name: Upload Installer
       if: ${{ matrix.platform == 'Win32' }}
       uses: actions/upload-artifact@v2
       with:
-        name: sakura-installer-x86
+        name: sakura-${{ matrix\.platform }}-installer
         path: installer\Output-Win32\*.exe
 
+    - name: Upload Installer for Preview
+      if: ${{ matrix.platform == 'x64' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: sakura-${{ matrix\.platform }}-installer
+        path: installer\Output-x64\*.exe
+
   sonar:
-    name: 'Analyze with SonarCloud'
+    name: Analyze with SonarCloud
     needs: check
     runs-on: windows-latest
     env:
@@ -223,10 +223,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: 'checkout'
+    - name: checkout
       uses: actions/checkout@v2
 
-    - name: 'Add msbuild to PATH'
+    - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1
 
     - name: Prepare Build-Wrapper
@@ -240,7 +240,7 @@ jobs:
     - name: Build with Build-Wrapper
       run: ${{ runner.temp }}\build-wrapper-win-x86\build-wrapper-win-x86-64.exe --out-dir bw-output MsBuild.exe /p:Platform=$env:BUILD_PLATFORM,Configuration=$env:BUILD_CONFIGURATION /t:ReBuild
 
-    - name: 'Install OpenCppCoverage with XmlExporter'
+    - name: Install OpenCppCoverage with XmlExporter
       working-directory: ${{ runner.temp }}
       run: |
         choco install OpenCppCoverage -y
@@ -283,7 +283,7 @@ jobs:
         -GCODE=99
         -GOPT=1RSPU
 
-    - name: 'Set up JDK 11'
+    - name: Set up JDK 11
       uses: actions/setup-java@v1
       with:
         java-version: 11
@@ -295,7 +295,7 @@ jobs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
 
-    - name: 'Fetch SonarScannerCLI'
+    - name: Fetch SonarScannerCLI
       working-directory: ${{ runner.temp }}
       run: |
         Invoke-WebRequest -OutFile sonar-scanner-cli-4.4.0.2170-windows.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-windows.zip
@@ -315,7 +315,7 @@ jobs:
         key: ${{ runner.os }}-sonar-scanner-cache
         restore-keys: ${{ runner.os }}-sonar-scanner-cache
 
-    - name: 'Analyze with SonarScannerCLI'
+    - name: Analyze with SonarScannerCLI
       if: ${{ env.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -325,7 +325,7 @@ jobs:
         -D"sonar.projectKey=${{ env.SONAR_PROJECTKEY }}"
         -D"sonar.host.url=https://sonarcloud.io"
         -D"sonar.sourceEncoding=UTF-8"
-        -D"sonar.sources=sakura_core,tests,tools"
+        -D"sonar.sources=."
         -D"sonar.cfamily.build-wrapper-output=bw-output"
         -D"sonar.cfamily.cache.enabled=true"
         -D"sonar.cfamily.cache.path=${{ runner.temp }}\sonar-scanner-cache"

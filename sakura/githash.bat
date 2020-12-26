@@ -82,8 +82,8 @@ exit /b 0
 	exit /b 0
 
 :set_ci_build_url_for_appveyor
-	@rem APPVEYOR_BUILD_VERSION=Build1624
-	set CI_BUILD_VERSION=Build%APPVEYOR_BUILD_NUMBER%
+	@rem example Build 1624
+	set CI_BUILD_VERSION=Build %APPVEYOR_BUILD_NUMBER%
 
 	set CI_BUILD_URL=%APPVEYOR_URL%/project/%APPVEYOR_ACCOUNT_NAME%/%APPVEYOR_PROJECT_SLUG%/build/%APPVEYOR_BUILD_VERSION%
 
@@ -97,8 +97,8 @@ exit /b 0
 	exit /b 0
 
 :set_ci_build_url_for_azurepipelines
-	@rem example BUILD_BUILDNUMBER=AzpBuild20200205.4
-	set CI_BUILD_VERSION=AzpBuild%BUILD_BUILDNUMBER%
+	@rem example Azure Pipelines 20200205.4
+	set CI_BUILD_VERSION=Azure Pipelines %BUILD_BUILDNUMBER%
 
 	set CI_BUILD_URL=%SYSTEM_TEAMFOUNDATIONSERVERURI%%SYSTEM_TEAMPROJECT%/_build/results?buildId=%BUILD_BUILDID%
 
@@ -112,11 +112,14 @@ exit /b 0
 	exit /b 0
 
 :set_ci_build_url_for_githubactions
-	@rem GitHub Actions build URL
+	@rem example GitHub Actions build sakura #123
+	set CI_BUILD_VERSION=GitHub Actions %GITHUB_WORKFLOW% #%GITHUB_RUN_NUMBER%
+
 	set CI_BUILD_URL=%GITHUB_SERVER_URL%/%GITHUB_REPOSITORY%/runs/%GITHUB_RUN_ID%
 
-	@rem example build sakura #123
-	set CI_BUILD_VERSION=%GITHUB_WORKFLOW% #%GITHUB_RUN_NUMBER%
+	set CI_SOURCE_REPO=%GITHUB_REPOSITORY%
+
+	set PR_NUMBER=%PR_NUMBER%
 
 	set GITHUB_ON=1
 	exit /b 0
