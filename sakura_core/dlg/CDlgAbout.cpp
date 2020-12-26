@@ -110,8 +110,8 @@ const DWORD p_helpids[] = {	//12900
 #if defined(CI_BUILD_URL)
 #pragma message("CI_BUILD_URL: " CI_BUILD_URL)
 #endif
-#if defined(CI_BUILD_NUMBER_LABEL)
-#pragma message("CI_BUILD_NUMBER_LABEL: " CI_BUILD_NUMBER_LABEL)
+#if defined(CI_BUILD_VERSION)
+#pragma message("CI_BUILD_VERSION: " CI_BUILD_VERSION)
 #endif
 
 //	From Here Nov. 7, 2000 genta
@@ -179,8 +179,8 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 	cmemMsg.AppendString(L"   ");
 
 	// バージョン情報・コンフィグ情報 //
-#ifdef GIT_COMMIT_HASH
-#define VER_GITHASH "(GitHash " GIT_COMMIT_HASH ")"
+#ifdef GIT_LONG_HASH
+#define VER_GITHASH "(GitHash " GIT_LONG_HASH ")"
 #endif
 	DWORD dwVersionMS, dwVersionLS;
 	GetAppVersionInfo( NULL, VS_VERSION_INFO, &dwVersionMS, &dwVersionLS );
@@ -209,8 +209,8 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 #endif
 
 	// 3行目
-#ifdef GIT_REMOTE_ORIGIN_URL
-	cmemMsg.AppendString( L"(GitURL " _T(GIT_REMOTE_ORIGIN_URL) L")\r\n");
+#ifdef GIT_ORIGIN_URL
+	cmemMsg.AppendString( L"(GitURL " _T(GIT_ORIGIN_URL) L")\r\n");
 #endif
 
 	// 段落区切り
@@ -274,16 +274,16 @@ BOOL CDlgAbout::OnInitDialog( HWND hwndDlg, WPARAM wParam, LPARAM lParam )
 
 	// URLウィンドウをサブクラス化する
 	m_UrlUrWnd.SetSubclassWindow( GetItemHwnd( IDC_STATIC_URL_UR ) );
-#ifdef GIT_REMOTE_ORIGIN_URL
+#ifdef GIT_ORIGIN_URL
 	m_UrlGitWnd.SetSubclassWindow( GetItemHwnd( IDC_STATIC_URL_GIT ) );
 #endif
-#ifdef CI_BUILD_NUMBER_LABEL
+#ifdef CI_BUILD_VERSION
 	m_UrlBuildLinkWnd.SetSubclassWindow( GetItemHwnd( IDC_STATIC_URL_CI_BUILD ) );
 #endif
-#if defined( GITHUB_COMMIT_URL )
+#if defined( CI_SOURCE_URL )
 	m_UrlGitHubCommitWnd.SetSubclassWindow( GetItemHwnd( IDC_STATIC_URL_GITHUB_COMMIT ) );
 #endif
-#if defined( GITHUB_PR_HEAD_URL )
+#if defined( PR_SOURCE_URL )
 	m_UrlGitHubPRWnd.SetSubclassWindow( GetItemHwnd( IDC_STATIC_URL_GITHUB_PR ) );
 #endif
 
@@ -318,36 +318,28 @@ BOOL CDlgAbout::OnBnClicked( int wID )
 BOOL CDlgAbout::OnStnClicked( int wID )
 {
 	switch( wID ){
-	//	2006.07.27 genta 原作者連絡先のボタンを削除 (ヘルプから削除されているため)
-	case IDC_STATIC_URL_UR:
+#if defined(GIT_ORIGIN_URL)
 	case IDC_STATIC_URL_GIT:
-//	case IDC_STATIC_URL_ORG:	del 2008/7/4 Uchi
-		//	Web Browserの起動
-		{
-			WCHAR buf[512];
-			::GetWindowText( GetItemHwnd( wID ), buf, _countof(buf) );
-			::ShellExecute( GetHwnd(), NULL, buf, NULL, NULL, SW_SHOWNORMAL );
-			return TRUE;
-		}
-	case IDC_STATIC_URL_CI_BUILD:
-		{
+		::ShellExecute( GetHwnd(), NULL, _T(GIT_ORIGIN_URL), NULL, NULL, SW_SHOWNORMAL );
+		return TRUE;
+#endif
 #if defined(CI_BUILD_URL)
-			::ShellExecute(GetHwnd(), NULL, _T(CI_BUILD_URL), NULL, NULL, SW_SHOWNORMAL);
-#elif defined(GIT_REMOTE_ORIGIN_URL)
-			::ShellExecute(GetHwnd(), NULL, _T(GIT_REMOTE_ORIGIN_URL), NULL, NULL, SW_SHOWNORMAL);
+	case IDC_STATIC_URL_CI_BUILD:
+		::ShellExecute(GetHwnd(), NULL, _T(CI_BUILD_URL), NULL, NULL, SW_SHOWNORMAL);
+		return TRUE;
 #endif
-			return TRUE;
-		}
+#if defined(CI_SOURCE_URL)
 	case IDC_STATIC_URL_GITHUB_COMMIT:
-#if defined(GITHUB_COMMIT_URL)
-		::ShellExecute(GetHwnd(), NULL, _T(GITHUB_COMMIT_URL), NULL, NULL, SW_SHOWNORMAL);
-#endif
+		::ShellExecute(GetHwnd(), NULL, _T(CI_SOURCE_URL), NULL, NULL, SW_SHOWNORMAL);
 		return TRUE;
+#endif
+#if defined(PR_SOURCE_URL)
 	case IDC_STATIC_URL_GITHUB_PR:
-#if defined(GITHUB_PR_HEAD_URL)
-		::ShellExecute(GetHwnd(), NULL, _T(GITHUB_PR_HEAD_URL), NULL, NULL, SW_SHOWNORMAL);
-#endif
+		::ShellExecute(GetHwnd(), NULL, _T(PR_SOURCE_URL), NULL, NULL, SW_SHOWNORMAL);
 		return TRUE;
+#endif
+	default:
+		break;
 	}
 	/* 基底クラスメンバ */
 	return CDialog::OnStnClicked( wID );

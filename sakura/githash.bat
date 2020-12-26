@@ -11,7 +11,6 @@ set OUT_DIR=%OUT_DIR:/=\%
 @echo.
 @echo ---- Make githash.h ----
 call :set_git_variables
-call :set_repo_and_pr_variables
 call :set_ci_build_url
 call :update_output_githash
 exit /b 0
@@ -33,21 +32,21 @@ exit /b 0
 	)
 
 	@rem clear variable in advance
-	set GIT_SHORT_COMMIT_HASH=
-	set GIT_COMMIT_HASH=
-	set GIT_REMOTE_ORIGIN_URL=
+	set GIT_ABBR_HASH=
+	set GIT_LONG_HASH=
+	set GIT_ORIGIN_URL=
 	set GIT_TAG_NAME=
 
 	: Get git hash if git is enabled
 	if "%GIT_ENABLED%" == "1" (
 		for /f "usebackq" %%s in (`"%CMD_GIT%" show -s --format^=%%h`) do (
-			set GIT_SHORT_COMMIT_HASH=%%s
+			set GIT_ABBR_HASH=%%s
 		)
 		for /f "usebackq" %%s in (`"%CMD_GIT%" show -s --format^=%%H`) do (
-			set GIT_COMMIT_HASH=%%s
+			set GIT_LONG_HASH=%%s
 		)
 		for /f "usebackq" %%s in (`"%CMD_GIT%" config --get remote.origin.url`) do (
-			set GIT_REMOTE_ORIGIN_URL=%%s
+			set GIT_ORIGIN_URL=%%s
 		)
 		
 		@rem get tag of 'HEAD'
@@ -57,9 +56,9 @@ exit /b 0
 			set GIT_TAG_NAME=%%s
 		)
 	) else (
-		set GIT_SHORT_COMMIT_HASH=
-		set GIT_COMMIT_HASH=
-		set GIT_REMOTE_ORIGIN_URL=
+		set GIT_ABBR_HASH=
+		set GIT_LONG_HASH=
+		set GIT_ORIGIN_URL=
 		set GIT_TAG_NAME=
 	)
 
@@ -68,94 +67,58 @@ exit /b 0
 
 	exit /b 0
 
-:set_repo_and_pr_variables
-	if defined APPVEYOR_REPO_NAME (
-		set CI_REPO_NAME=%APPVEYOR_REPO_NAME%
-	) else if defined BUILD_REPOSITORY_NAME (
-		set CI_REPO_NAME=%BUILD_REPOSITORY_NAME%
-	)
+:set_ci_build_url
+	if "%APPVEYOR%"       == "True" call :set_ci_build_url_for_appveyor
+	if "%TF_BUILD%"       == "True" call :set_ci_build_url_for_azurepipelines
+	if "%GITHUB_ACTIONS%" == "true" call :set_ci_build_url_for_githubactions
 
-	if defined APPVEYOR_ACCOUNT_NAME (
-		set CI_ACCOUNT_NAME=%APPVEYOR_ACCOUNT_NAME%
-	) else if defined BUILD_DEFINITIONNAME (
-		set CI_ACCOUNT_NAME=%BUILD_DEFINITIONNAME%
-	)
-
-	@rem ----------------------------------------------------------------------------------------------------------
-	@rem Be aware the following rules.
-	@rem BUILD_BUILDID     (at azure pipeline) is the counterpart of APPVEYOR_BUILD_NUMBER  (at appveyor).
-	@rem BUILD_BUILDNUMBER (at azure pipeline) is the counterpart of APPVEYOR_BUILD_VERSION (at appveyor).
-	@rem ----------------------------------------------------------------------------------------------------------
-	@rem This is super confusing.
-	@rem BUILD_BUILDNUMBER (at azure pipeline) and APPVEYOR_BUILD_NUMBER (at appveyor) are different information.
-	@rem ----------------------------------------------------------------------------------------------------------
-	if defined APPVEYOR_BUILD_NUMBER (
-		@rem APPVEYOR_BUILD_NUMBER=1624
-		set CI_BUILD_NUMBER=%APPVEYOR_BUILD_NUMBER%
-	) else if defined BUILD_BUILDID (
-		@rem example BUILD_BUILDID=672
-		set CI_BUILD_NUMBER=%BUILD_BUILDID%
-	)
-
-	if defined APPVEYOR_BUILD_VERSION (
-		@rem APPVEYOR_BUILD_VERSION=1.0.1624
-		set CI_BUILD_VERSION=%APPVEYOR_BUILD_VERSION%
-	) else if defined BUILD_BUILDNUMBER (
-		@rem example BUILD_BUILDNUMBER=20200205.4
-		set CI_BUILD_VERSION=%BUILD_BUILDNUMBER%
-	)
-
-	if defined APPVEYOR_PULL_REQUEST_NUMBER (
-		set GITHUB_PR_NUMBER=%APPVEYOR_PULL_REQUEST_NUMBER%
-	) else if defined SYSTEM_PULLREQUEST_PULLREQUESTNUMBER (
-		set GITHUB_PR_NUMBER=%SYSTEM_PULLREQUEST_PULLREQUESTNUMBER%
-	)
-
-	if defined APPVEYOR_PULL_REQUEST_HEAD_COMMIT (
-		set GITHUB_PR_HEAD_COMMIT=%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%
-	) else if defined SYSTEM_PULLREQUEST_SOURCECOMMITID (
-		set GITHUB_PR_HEAD_COMMIT=%SYSTEM_PULLREQUEST_SOURCECOMMITID%
-	)
-
-	if "%BUILD_REPOSITORY_PROVIDER%"=="GitHub" (
-		set GITHUB_ON=1
-	)
-	if "%APPVEYOR_REPO_PROVIDER%"=="gitHub" (
-		set GITHUB_ON=1
-	)
-
-	set PREFIX_GITHUB=https://github.com
-	if "%GITHUB_ON%" == "1" (
-		set "GITHUB_COMMIT_URL=%PREFIX_GITHUB%/%CI_REPO_NAME%/commit/%GIT_COMMIT_HASH%"
-		@rem Not Pull Request
-		if "%GITHUB_PR_NUMBER%" == "" (
-			@rem No PR
-		) else (
-			@rem PR URL
-			set "GITHUB_PR_HEAD_URL=%PREFIX_GITHUB%/%CI_REPO_NAME%/pull/%GITHUB_PR_NUMBER%/commits/%GITHUB_PR_HEAD_COMMIT%"
+	set "REPOSITORY_ROOT=https://github.com/%CI_SOURCE_REPO%/"
+	if defined GITHUB_ON (
+		set "CI_SOURCE_URL=%REPOSITORY_ROOT%commit/%GIT_LONG_HASH%"
+		if defined PR_NUMBER (
+			set "PR_SOURCE_URL=%REPOSITORY_ROOT%pull/%PR_NUMBER%/commits/%GIT_LONG_HASH%"
 		)
 	)
 	exit /b 0
 
-:set_ci_build_url
-	call :set_ci_build_url_for_appveyor
-	call :set_ci_build_url_for_azurepipelines
-	exit /b 0
-
 :set_ci_build_url_for_appveyor
-	if not defined APPVEYOR               exit /b 0
-	if not defined APPVEYOR_URL           exit /b 0
-	if not defined APPVEYOR_ACCOUNT_NAME  exit /b 0
-	if not defined APPVEYOR_PROJECT_SLUG  exit /b 0
-	if not defined APPVEYOR_BUILD_VERSION exit /b 0
+	@rem APPVEYOR_BUILD_VERSION=Build1624
+	set CI_BUILD_VERSION=Build%APPVEYOR_BUILD_NUMBER%
+
 	set CI_BUILD_URL=%APPVEYOR_URL%/project/%APPVEYOR_ACCOUNT_NAME%/%APPVEYOR_PROJECT_SLUG%/build/%APPVEYOR_BUILD_VERSION%
+
+	set CI_SOURCE_REPO=%APPVEYOR_REPO_NAME%
+
+	set PR_NUMBER=%APPVEYOR_PULL_REQUEST_NUMBER%
+
+	if "%APPVEYOR_REPO_PROVIDER%"=="gitHub" (
+		set GITHUB_ON=1
+	)
 	exit /b 0
 
 :set_ci_build_url_for_azurepipelines
-	if not defined SYSTEM_TEAMFOUNDATIONSERVERURI exit /b 0
-	if not defined SYSTEM_TEAMPROJECT             exit /b 0
-	if not defined BUILD_BUILDID                  exit /b 0
+	@rem example BUILD_BUILDNUMBER=AzpBuild20200205.4
+	set CI_BUILD_VERSION=AzpBuild%BUILD_BUILDNUMBER%
+
 	set CI_BUILD_URL=%SYSTEM_TEAMFOUNDATIONSERVERURI%%SYSTEM_TEAMPROJECT%/_build/results?buildId=%BUILD_BUILDID%
+
+	set CI_SOURCE_REPO=%BUILD_REPOSITORY_NAME%
+
+	set PR_NUMBER=%SYSTEM_PULLREQUEST_PULLREQUESTNUMBER%
+
+	if "%BUILD_REPOSITORY_PROVIDER%"=="GitHub" (
+		set GITHUB_ON=1
+	)
+	exit /b 0
+
+:set_ci_build_url_for_githubactions
+	@rem GitHub Actions build URL
+	set CI_BUILD_URL=%GITHUB_SERVER_URL%/%GITHUB_REPOSITORY%/runs/%GITHUB_RUN_ID%
+
+	@rem example build sakura #123
+	set CI_BUILD_VERSION=%GITHUB_WORKFLOW% #%GITHUB_RUN_NUMBER%
+
+	set GITHUB_ON=1
 	exit /b 0
 
 :update_output_githash
@@ -185,23 +148,16 @@ exit /b 0
 		del "%GITHASH_H_TMP%"
 		@echo %GITHASH_H% was not updated.
 	) else (
-		@echo GIT_SHORT_COMMIT_HASH : %GIT_SHORT_COMMIT_HASH%
-		@echo GIT_COMMIT_HASH       : %GIT_COMMIT_HASH%
-		@echo GIT_REMOTE_ORIGIN_URL : %GIT_REMOTE_ORIGIN_URL%
-		@echo GIT_TAG_NAME          : %GIT_TAG_NAME%
+		@echo GIT_ORIGIN_URL   : %GIT_ORIGIN_URL%
+		@echo GIT_LONG_HASH    : %GIT_LONG_HASH%
+		@echo GIT_ABBR_HASH    : %GIT_ABBR_HASH%
+		@echo GIT_TAG_NAME     : %GIT_TAG_NAME%
 		@echo.
-		@echo CI_REPO_NAME          : %CI_REPO_NAME%
-		@echo CI_ACCOUNT_NAME             : %CI_ACCOUNT_NAME%
-		@echo CI_BUILD_VERSION            : %CI_BUILD_VERSION%
-		@echo CI_BUILD_NUMBER             : %CI_BUILD_NUMBER%
-		@echo CI_BUILD_URL                : %CI_BUILD_URL%
+		@echo CI_BUILD_VERSION : %CI_BUILD_VERSION%
+		@echo CI_BUILD_URL     : %CI_BUILD_URL%
+		@echo CI_SOURCE_URL    : %CI_SOURCE_URL%
 		@echo.
-		@echo GITHUB_COMMIT_URL           : %GITHUB_COMMIT_URL%
-		@echo GITHUB_PR_HEAD_URL          : %GITHUB_PR_HEAD_URL%
-		@echo GITHUB_PR_HEAD_COMMIT       : %GITHUB_PR_HEAD_COMMIT%
-		@echo.
-		@echo APPVEYOR_URL          : %APPVEYOR_URL%
-		@echo APPVEYOR_PROJECT_SLUG : %APPVEYOR_PROJECT_SLUG%
+		@echo PR_SOURCE_URL    : %PR_SOURCE_URL%
 
 		if exist "%GITHASH_H%" del "%GITHASH_H%"
 		move /y "%GITHASH_H_TMP%" "%GITHASH_H%"
@@ -213,105 +169,60 @@ exit /b 0
 :output_githash
 	echo /*! @file */
 	echo #pragma once
-	if "%GIT_SHORT_COMMIT_HASH%" == "" (
-		echo // GIT_SHORT_COMMIT_HASH is not defined
+
+	if defined GIT_ORIGIN_URL (
+		echo #define GIT_ORIGIN_URL   "%GIT_ORIGIN_URL%"
 	) else (
-		echo #define GIT_SHORT_COMMIT_HASH "%GIT_SHORT_COMMIT_HASH%"
+		echo // GIT_ORIGIN_URL   is not defined
 	)
-	if "%GIT_COMMIT_HASH%" == "" (
-		echo // GIT_COMMIT_HASH is not defined
+	if defined GIT_LONG_HASH (
+		echo #define GIT_LONG_HASH    "%GIT_LONG_HASH%"
 	) else (
-		echo #define GIT_COMMIT_HASH "%GIT_COMMIT_HASH%"
+		echo // GIT_LONG_HASH    is not defined
+	)
+	if defined GIT_ABBR_HASH (
+		echo #define GIT_ABBR_HASH    "%GIT_ABBR_HASH%"
+	) else (
+		echo // GIT_ABBR_HASH    is not defined
 	)
 
-	if "%GIT_REMOTE_ORIGIN_URL%" == "" (
-		echo // GIT_REMOTE_ORIGIN_URL is not defined
+	if defined GIT_TAG_NAME (
+		echo #define GIT_TAG_NAME     "%GIT_TAG_NAME%"
 	) else (
-		echo #define GIT_REMOTE_ORIGIN_URL "%GIT_REMOTE_ORIGIN_URL%"
-	)
-	if "%GIT_TAG_NAME%" == "" (
-		echo // GIT_TAG_NAME is not defined
-	) else (
-		echo #define GIT_TAG_NAME "%GIT_TAG_NAME%"
-	)
-
-	if "%CI_REPO_NAME%" == "" (
-		echo // CI_REPO_NAME is not defined
-	) else (
-		echo #define CI_REPO_NAME "%CI_REPO_NAME%"
+		echo // GIT_TAG_NAME     is not defined
 	)
 
 	@rem enable 'dev version' macro which will be disabled on release branches
 	echo #define DEV_VERSION
 
-	if "%CI_ACCOUNT_NAME%" == "" (
-		echo // CI_ACCOUNT_NAME is not defined
-	) else (
-		echo #define CI_ACCOUNT_NAME "%CI_ACCOUNT_NAME%"
-	)
-
-	if "%CI_BUILD_VERSION%" == "" (
-		echo // CI_BUILD_VERSION is not defined
-	) else (
+	if defined CI_BUILD_VERSION (
 		echo #define CI_BUILD_VERSION "%CI_BUILD_VERSION%"
-	)
-
-	if "%CI_BUILD_NUMBER%" == "" (
-		echo // CI_BUILD_NUMBER     is not defined
-		echo // CI_BUILD_NUMBER_INT is not defined
-		echo // CI_BUILD_NUMBER_LABEL is not defined
 	) else (
-		echo #define CI_BUILD_NUMBER             "%CI_BUILD_NUMBER%"
-		echo #define CI_BUILD_NUMBER_INT          %CI_BUILD_NUMBER%
-		echo #define CI_BUILD_NUMBER_LABEL "Build %CI_BUILD_NUMBER%"
+		echo // CI_BUILD_VERSION is not defined
 	)
 
-	if "%GITHUB_PR_NUMBER%" == "" (
-		echo // GITHUB_PR_NUMBER       is not defined
-		echo // GITHUB_PR_NUMBER_LABEL is not defined
+	if defined CI_BUILD_URL (
+		echo #define CI_BUILD_URL     "%CI_BUILD_URL%"
 	) else (
-		echo #define GITHUB_PR_NUMBER                 "%GITHUB_PR_NUMBER%"
-		echo #define GITHUB_PR_NUMBER_LABEL        "PR %GITHUB_PR_NUMBER%"
-	)
-
-	if "%GITHUB_COMMIT_URL%" == "" (
-		echo // GITHUB_COMMIT_URL is not defined
-	) else (
-		echo #define GITHUB_COMMIT_URL             "%GITHUB_COMMIT_URL%"
-	)
-
-	if "%GITHUB_PR_HEAD_URL%" == "" (
-		echo // GITHUB_PR_HEAD_URL is not defined
-	) else (
-		echo #define GITHUB_PR_HEAD_URL     "%GITHUB_PR_HEAD_URL%"
-	)
-
-	if "%GITHUB_PR_HEAD_COMMIT%" == "" (
-		echo // GITHUB_PR_HEAD_COMMIT is not defined
-	) else (
-		echo #define GITHUB_PR_HEAD_COMMIT         "%GITHUB_PR_HEAD_COMMIT%"
-	)
-
-	if "%CI_BUILD_URL%" == "" (
 		echo // CI_BUILD_URL is not defined
-	) else (
-		echo #define CI_BUILD_URL                  "%CI_BUILD_URL%"
 	)
 
-	echo // APPVEYOR specific variables
-
-	if "%APPVEYOR_URL%" == "" (
-		echo // APPVEYOR_URL is not defined
+	if defined CI_SOURCE_URL (
+		echo #define CI_SOURCE_URL    "%CI_SOURCE_URL%"
 	) else (
-		echo #define APPVEYOR_URL "%APPVEYOR_URL%"
+		echo // CI_SOURCE_URL    is not defined
 	)
 
-	if "%APPVEYOR_PROJECT_SLUG%" == "" (
-		echo // APPVEYOR_PROJECT_SLUG is not defined
+	if defined PR_NUMBER (
+		echo #define PR_NAME          "PR %PR_NUMBER%"
 	) else (
-		echo #define APPVEYOR_PROJECT_SLUG "%APPVEYOR_PROJECT_SLUG%"
+		echo // PR_NAME          is not defined
 	)
-	echo // APPVEYOR specific variables end
-	echo //
+
+	if defined PR_SOURCE_URL (
+		echo #define PR_SOURCE_URL    "%PR_SOURCE_URL%"
+	) else (
+		echo // PR_SOURCE_URL    is not defined
+	)
 
 	exit /b 0

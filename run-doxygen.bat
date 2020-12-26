@@ -7,7 +7,7 @@ if not exist "%CMD_DOXYGEN%" (
 
 if exist html rmdir /s /q html
 
-set PROJECT_NUMBER=%GIT_SHORT_COMMIT_HASH%
+set PROJECT_NUMBER=%GIT_ABBR_HASH%
 set HHC_LOCATION=%CMD_HHC%
 set DOXYGEN_LOG=doxygen-%platform%-%configuration%.log
 

@@ -16,8 +16,8 @@
 #define VER_A   2 // a of ver a.b.c.d
 #define VER_B   4 // b of ver a.b.c.d
 #define VER_C   2 // c of ver a.b.c.d
-#ifdef CI_BUILD_NUMBER_INT
-#define VER_D   CI_BUILD_NUMBER_INT // d of ver a.b.c.d
+#ifdef APPVEYOR_BUILD_NUMBER
+#define VER_D   APPVEYOR_BUILD_NUMBER // d of ver a.b.c.d
 #else
 #define VER_D   0 // d of ver a.b.c.d
 #endif
@@ -70,8 +70,8 @@
 #endif
 
 // バージョン情報埋め込み用 Git ハッシュ文字列 (存在しない場合には空文字列)
-#ifdef GIT_SHORT_COMMIT_HASH
-#define VER_GIT_SHORTHASH " (" GIT_SHORT_COMMIT_HASH ")"
+#ifdef GIT_ABBR_HASH
+#define VER_GIT_SHORTHASH " (" GIT_ABBR_HASH ")"
 #else
 #define VER_GIT_SHORTHASH ""
 #endif

@@ -13,19 +13,19 @@ call %~dp0..\sakura\githash.bat %~dp0..\sakura_core
 @rem ----------------------------------------------------------------
 @rem prepare environment variable
 @rem ----------------------------------------------------------------
-@echo checking CI_REPO_NAME %CI_REPO_NAME%
+@echo checking CI_SOURCE_REPO %CI_SOURCE_REPO%
 set BUILD_ACCOUNT=
-if "%CI_REPO_NAME%" == "sakura-editor/sakura" (
+if "%CI_SOURCE_REPO%" == "sakura-editor/sakura" (
 	set BUILD_ACCOUNT=
-) else if "%CI_REPO_NAME%" == "" (
+) else if "%CI_SOURCE_REPO%" == "" (
 	set BUILD_ACCOUNT=
 ) else (
 	set BUILD_ACCOUNT=%CI_ACCOUNT_NAME%
 )
 
-@echo checking CI_BUILD_NUMBER %CI_BUILD_NUMBER%
-if not "%CI_BUILD_NUMBER%" == "" (
-	set BUILD_NUMBER=build%CI_BUILD_NUMBER%
+@echo checking APPVEYOR_BUILD_NUMBER %APPVEYOR_BUILD_NUMBER%
+if not "%APPVEYOR_BUILD_NUMBER%" == "" (
+	set BUILD_NUMBER=build%APPVEYOR_BUILD_NUMBER%
 ) else (
 	set BUILD_NUMBER=buildLocal
 )
@@ -45,13 +45,13 @@ if not "%GIT_TAG_NAME%" == "" (
 	@echo TAG_NAME = !TEMP_NAME2!
 )
 
-@echo checking GITHUB_PR_NUMBER %GITHUB_PR_NUMBER%
-if not "%GITHUB_PR_NUMBER%" == "" (
-	set PR_NAME=PR%GITHUB_PR_NUMBER%
+@echo checking PR_NUMBER %PR_NUMBER%
+if not "%PR_NUMBER%" == "" (
+	set PR_NAME=PR%PR_NUMBER%
 )
 
 @echo hash name
-set SHORTHASH=%GIT_SHORT_COMMIT_HASH%
+set SHORTHASH=%GIT_ABBR_HASH%
 
 @rem ----------------------------------------------------------------
 @rem build BASENAME
