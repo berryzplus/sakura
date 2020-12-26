@@ -288,32 +288,20 @@ jobs:
       with:
         java-version: 11
 
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v2
-      with:
-        path: ~\.sonar\cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-
     - name: Fetch SonarScannerCLI
       working-directory: ${{ runner.temp }}
       run: |
         Invoke-WebRequest -OutFile sonar-scanner-cli-4.4.0.2170-windows.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-windows.zip
         7z x sonar-scanner-cli-4.4.0.2170-windows.zip
 
-    - name: Cache SonarCloud scanner
+    - name: Cache SonarCloud packages
       uses: actions/cache@v2
       with:
-        path: ${{ runner.temp }}\sonar-scanner-cli-4.4.0.2170-windows
-        key: ${{ runner.os }}-sonar-scanner
-        restore-keys: ${{ runner.os }}-sonar-scanner
-
-    - name: Cache SonarCloud scanner cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ runner.temp }}\sonar-scanner-cache
-        key: ${{ runner.os }}-sonar-scanner-cache
-        restore-keys: ${{ runner.os }}-sonar-scanner-cache
+        path: |
+          ~\.sonar\cache
+          ${{ runner.temp }}\sonar-scanner-cli-4.4.0.2170-windows
+          ${{ runner.temp }}\sonar-scanner-cache
+        key: ${{ runner.os }}-sonar-scanner-cache-${{ hashfiles('.github\workflows\build-sakura.yml') }}
 
     - name: Analyze with SonarScannerCLI
       if: ${{ env.SONAR_TOKEN }}
