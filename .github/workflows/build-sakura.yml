@@ -18,8 +18,6 @@ on:
       - '*.yml'
 
 env:
-  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  CMD_OCC: '"C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe"'
   PR_NUMBER: ${{ github.event.number }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -219,6 +217,7 @@ jobs:
     needs: check
     runs-on: windows-latest
     env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       BUILD_PLATFORM: x64
       BUILD_CONFIGURATION: Release
 
@@ -252,7 +251,7 @@ jobs:
 
     - name: Run Tests
       shell: cmd
-      run: ${{ env.CMD_OCC }}
+      run: OpenCppCoverage.exe
         --export_type xml:tests1-coverage-${{ env.BUILD_PLATFORM }}-${{ env.BUILD_CONFIGURATION }}.xml
         --modules ${{ github.workspace }}\${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\tests1.exe
         --sources ${{ github.workspace }}
@@ -266,7 +265,7 @@ jobs:
 
     - name: Run Grep
       shell: cmd
-      run: ${{ env.CMD_OCC }}
+      run: OpenCppCoverage.exe
         --export_type xml:grep-coverage-${{ env.BUILD_PLATFORM }}-${{ env.BUILD_CONFIGURATION }}.xml
         --modules ${{ github.workspace }}\${{ env.BUILD_PLATFORM }}\${{ env.BUILD_CONFIGURATION }}\tests1.exe
         --sources ${{ github.workspace }}
