@@ -74,7 +74,7 @@ jobs:
       if: ${{ matrix.config == 'Release' }}
       uses: actions/upload-artifact@v2
       with:
-        name: sakura-${{ matrix\.platform }}-Exe
+        name: sakura-${{ matrix.platform }}-Exe
         path: |
           ${{ matrix.platform }}\${{ matrix.config }}\sakura.exe
           ${{ matrix.platform }}\${{ matrix.config }}\sakura_lang_en_US.dll
@@ -186,7 +186,7 @@ jobs:
     - name: Download Exe
       uses: actions/download-artifact@v2
       with:
-        name: sakura-${{ matrix\.platform }}-Exe
+        name: sakura-${{ matrix.platform }}-Exe
         path: installer\sakura\
 
     - name: Download HTML Help
@@ -202,14 +202,14 @@ jobs:
       if: ${{ matrix.platform == 'Win32' }}
       uses: actions/upload-artifact@v2
       with:
-        name: sakura-${{ matrix\.platform }}-installer
+        name: sakura-${{ matrix.platform }}-installer
         path: installer\Output-Win32\*.exe
 
     - name: Upload Installer for Preview
       if: ${{ matrix.platform == 'x64' }}
       uses: actions/upload-artifact@v2
       with:
-        name: sakura-${{ matrix\.platform }}-installer
+        name: sakura-${{ matrix.platform }}-installer
         path: installer\Output-x64\*.exe
 
   sonar:
