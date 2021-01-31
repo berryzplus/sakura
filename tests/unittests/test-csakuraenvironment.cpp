@@ -55,9 +55,39 @@ TEST(CSakuraEnvironment, ExpandParameter_ExeFileName)
 /*!
  * @brief iniファイルパスの取得
  */
-TEST(CSakuraEnvironment, ExpandParameter_IniFileName)
+TEST(CSakuraEnvironment, ExpandParameter_IniFileNameNoProfile)
 {
+	// コマンドラインのグローバル変数をセットする
+	auto pCommandLine = CCommandLine::getInstance();
+	pCommandLine->ParseCommandLine(LR"(-PROF="")", false);
+
+	// プロセスのインスタンスを用意する
+	CControlProcess dummy(nullptr, LR"(-PROF="")");
+
 	SFilePath szIniFile;
 	CSakuraEnvironment::ExpandParameter(L"$I", szIniFile, _countof2(szIniFile));
 	ASSERT_STREQ(GetIniFileName().c_str(), szIniFile.c_str());
+
+	// コマンドラインのグローバル変数を元に戻す
+	pCommandLine->ParseCommandLine(L"", false);
+}
+
+/*!
+ * @brief iniファイルパスの取得
+ */
+TEST(CSakuraEnvironment, ExpandParameter_IniFileNameNamedProfile)
+{
+	// コマンドラインのグローバル変数をセットする
+	auto pCommandLine = CCommandLine::getInstance();
+	pCommandLine->ParseCommandLine(LR"(-PROF="profile1")", false);
+
+	// プロセスのインスタンスを用意する
+	CControlProcess dummy(nullptr, LR"(-PROF="profile1")");
+
+	SFilePath szIniFile;
+	CSakuraEnvironment::ExpandParameter(L"$I", szIniFile, _countof2(szIniFile));
+	ASSERT_STREQ(GetIniFileName().c_str(), szIniFile.c_str());
+
+	// コマンドラインのグローバル変数を元に戻す
+	pCommandLine->ParseCommandLine(L"", false);
 }
