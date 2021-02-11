@@ -22,6 +22,7 @@
 #include "CCommandLine.h"
 #include "CControlTray.h"
 #include "dlg/CDlgProfileMgr.h"
+#include "basis/CErrorInfo.h"
 #include "debug/CRunningTimer.h"
 #include "util/os.h"
 #include <io.h>
@@ -153,7 +154,6 @@ bool CProcessFactory::IsExistControlProcess()
 	return false;	// コントロールプロセスは存在していないか、まだ CreateMutex() してない
 }
 
-//	From Here Aug. 28, 2001 genta
 /*!
 	@brief コントロールプロセスを起動する
 	
@@ -168,71 +168,19 @@ bool CProcessFactory::StartControlProcess()
 {
 	MY_RUNNINGTIMER(cRunningTimer,"StartControlProcess" );
 
-	//	プロセスの起動
-	PROCESS_INFORMATION p;
-	STARTUPINFO s;
-
-	s.cb          = sizeof( s );
-	s.lpReserved  = NULL;
-	s.lpDesktop   = NULL;
-	s.lpTitle     = const_cast<WCHAR*>(L"sakura control process"); //2007.09.21 kobake デバッグしやすいように、名前を付ける
-	s.dwFlags     = STARTF_USESHOWWINDOW;
-	s.wShowWindow = SW_SHOWDEFAULT;
-	s.cbReserved2 = 0;
-	s.lpReserved2 = NULL;
-
-	WCHAR szCmdLineBuf[1024];	//	コマンドライン
-	WCHAR szEXE[MAX_PATH + 1];	//	アプリケーションパス名
-
-	::GetModuleFileName( NULL, szEXE, _countof( szEXE ));
-	if( CCommandLine::getInstance()->IsSetProfile() ){
-		::auto_sprintf( szCmdLineBuf, L"\"%s\" -NOWIN -PROF=\"%ls\"",
-			szEXE, CCommandLine::getInstance()->GetProfileName() );
-	}else{
-		::auto_sprintf( szCmdLineBuf, L"\"%s\" -NOWIN", szEXE ); // ""付加
+	try {
+		std::wstring profileName;
+		if (const auto* pCommandLine = CCommandLine::getInstance(); pCommandLine->IsSetProfile() && *pCommandLine->GetProfileName()) {
+			profileName = pCommandLine->GetProfileName();
+		}
+		CControlProcess::Start(profileName);
+		return true;
 	}
-
-	//常駐プロセス起動
-	DWORD dwCreationFlag = CREATE_DEFAULT_ERROR_MODE;
-#ifdef _DEBUG
-//	dwCreationFlag |= DEBUG_PROCESS; //2007.09.22 kobake デバッグ用フラグ
-#endif
-	BOOL bCreateResult = ::CreateProcess(
-		szEXE,				// 実行可能モジュールの名前
-		szCmdLineBuf,		// コマンドラインの文字列
-		NULL,				// セキュリティ記述子
-		NULL,				// セキュリティ記述子
-		FALSE,				// ハンドルの継承オプション
-		dwCreationFlag,		// 作成のフラグ
-		NULL,				// 新しい環境ブロック
-		NULL,				// カレントディレクトリの名前
-		&s,					// スタートアップ情報
-		&p					// プロセス情報
-	);
-	if( !bCreateResult ){
-		//	失敗
-		WCHAR* pMsg;
-		::FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER |
-						FORMAT_MESSAGE_IGNORE_INSERTS |
-						FORMAT_MESSAGE_FROM_SYSTEM,
-						NULL,
-						::GetLastError(),
-						MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						(LPWSTR)&pMsg,
-						0,
-						NULL
-		);
-		ErrorMessage( NULL, L"\'%s\'\nプロセスの起動に失敗しました。\n%s", szEXE, pMsg );
-		::LocalFree( (HLOCAL)pMsg );	//	エラーメッセージバッファを解放
+	catch (const _com_error& ce) {
+		TopErrorMessage(nullptr, (const wchar_t*)ce.Description());
 		return false;
 	}
-
-	::CloseHandle( p.hThread );
-	::CloseHandle( p.hProcess );
-	
-	return true;
 }
-//	To Here Aug. 28, 2001 genta
 
 /*!
 	@brief コントロールプロセスの初期化完了イベントを待つ。
@@ -242,27 +190,17 @@ bool CProcessFactory::StartControlProcess()
 */
 bool CProcessFactory::WaitForInitializedControlProcess()
 {
-	// 初期化完了イベントを待つ
-	//
-	// Note: コントロールプロセス側は多重起動防止用ミューテックスを ::CreateMutex() で
-	// 作成するよりも先に初期化完了イベントを ::CreateEvent() で作成する。
-	//
-	const auto pszProfileName = CCommandLine::getInstance()->GetProfileName();
-	std::wstring strInitEvent = GSTR_EVENT_SAKURA_CP_INITIALIZED;
-	strInitEvent += pszProfileName;
-	HANDLE hEvent;
-	hEvent = ::CreateEventW( NULL, TRUE, FALSE, strInitEvent.c_str() );
-	if( NULL == hEvent ){
-		TopErrorMessage( NULL, L"エディタまたはシステムがビジー状態です。\nしばらく待って開きなおしてください。" );
+	try {
+		std::wstring profileName;
+		if (const auto* pCommandLine = CCommandLine::getInstance(); pCommandLine->IsSetProfile() && *pCommandLine->GetProfileName()) {
+			profileName = pCommandLine->GetProfileName();
+		}
+		// 初期化完了イベントを待つ
+		CControlProcess::WaitForInitialized(profileName);
+		return true;
+	}
+	catch (const _com_error& ce) {
+		TopErrorMessage(nullptr, (const wchar_t*)ce.Description());
 		return false;
 	}
-	DWORD dwRet;
-	dwRet = ::WaitForSingleObject( hEvent, 10000 );	// 最大10秒間待つ
-	if( WAIT_TIMEOUT == dwRet ){	// コントロールプロセスの初期化が終了しない
-		::CloseHandle( hEvent );
-		TopErrorMessage( NULL, L"エディタまたはシステムがビジー状態です。\nしばらく待って開きなおしてください。" );
-		return false;
-	}
-	::CloseHandle( hEvent );
-	return true;
 }

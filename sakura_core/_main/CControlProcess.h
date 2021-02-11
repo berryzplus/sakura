@@ -17,6 +17,8 @@
 #pragma once
 
 #include <filesystem>
+#include <optional>
+#include <string_view>
 
 #include "global.h"
 #include "CProcess.h"
@@ -47,6 +49,9 @@ public:
 	~CControlProcess();
 
 	std::filesystem::path GetIniFileName() const override;
+	static void Start(std::optional<std::wstring> profileName);
+	static void WaitForInitialized(std::wstring_view profileName);
+	static void Terminate(std::wstring_view profileName);
 
 protected:
 	CControlProcess();

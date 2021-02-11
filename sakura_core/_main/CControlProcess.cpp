@@ -20,10 +20,37 @@
 #include "env/DLLSHAREDATA.h"
 #include "CCommandLine.h"
 #include "env/CShareData_IO.h"
+#include "basis/CErrorInfo.h"
 #include "debug/CRunningTimer.h"
 #include "sakura_rc.h"/// IDD_EXITTING 2002/2/10 aroka ヘッダ整理
 
 //-------------------------------------------------
+
+/*!
+ * @see https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessagew
+ */
+std::wstring FormatMessageW(DWORD dwErrorCode, DWORD dwLanguageId)
+{
+	WCHAR* pMsg;
+	DWORD dwLength = ::FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_IGNORE_INSERTS |
+		FORMAT_MESSAGE_FROM_SYSTEM,
+		nullptr,
+		dwErrorCode,
+		dwLanguageId,
+		(LPWSTR)&pMsg,
+		0,
+		nullptr
+	);
+
+	std::wstring strMessage;
+	if (dwLength > 0) {
+		strMessage = pMsg;
+	}
+	::LocalFree((HLOCAL)pMsg);
+
+	return strMessage;
+}
 
 /*!
 	@brief iniファイルパスを取得する
@@ -95,6 +122,144 @@ std::filesystem::path CControlProcess::GetPrivateIniFileName(const std::wstring&
 	}
 
 	return privateIniPath.append(filename.c_str());
+}
+
+/*!
+ * HANDLE型のスマートポインタを実現するためのdeleterクラス
+ */
+struct handle_closer
+{
+	void operator()(HANDLE handle) const
+	{
+		::CloseHandle(handle);
+	}
+};
+
+//! HANDLE型のスマートポインタ
+using handleHolder = std::unique_ptr<std::remove_pointer<HANDLE>::type, handle_closer>;
+
+/*!
+ * @brief コントロールプロセスを起動する
+ */
+void CControlProcess::Start(std::optional<std::wstring> profileName)
+{
+	// スタートアップ情報
+	STARTUPINFO si = { sizeof(STARTUPINFO), 0 };
+	si.lpTitle = (LPWSTR)L"sakura control process";
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = SW_SHOWDEFAULT;
+
+	auto exePath = GetExeFileName();
+	std::wstring strCommandLine(strprintf(L"\"%s\" -NOWIN", exePath.c_str()));
+	std::wstring strProfileName;
+	if (profileName.has_value()) {
+		strProfileName = profileName.value();
+		strCommandLine += strprintf(L" -PROF=\"%s\"", strProfileName.data());
+	}
+
+	LPWSTR pszCommandLine = strCommandLine.data();
+	DWORD dwCreationFlag = CREATE_DEFAULT_ERROR_MODE;
+	PROCESS_INFORMATION pi;
+
+	// コントロールプロセスを起動する
+	BOOL createSuccess = ::CreateProcess(
+		exePath.c_str(),	// 実行可能モジュールパス
+		pszCommandLine,		// コマンドラインバッファ
+		NULL,				// プロセスのセキュリティ記述子
+		NULL,				// スレッドのセキュリティ記述子
+		FALSE,				// ハンドルの継承オプション(継承させない)
+		dwCreationFlag,		// 作成のフラグ
+		NULL,				// 環境変数(変更しない)
+		NULL,				// カレントディレクトリ(変更しない)
+		&si,				// スタートアップ情報
+		&pi					// プロセス情報(作成されたプロセス情報を格納する構造体)
+	);
+	if( !createSuccess ){
+		const auto sysMsg = FormatMessageW(
+			::GetLastError(),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)
+		);
+		// L"'%s'\nプロセスの起動に失敗しました。\n%s"
+		::_com_raise_error(E_FAIL, MakeMsgError(strprintf(LS(STR_ERR_DLGPROCFACT3), exePath.c_str(), sysMsg.data())));
+	}
+
+	// 開いたハンドルは使わないので閉じておく
+	::CloseHandle( pi.hThread );
+	::CloseHandle( pi.hProcess );
+
+	// コントロールプロセスの初期化完了を待つ
+	WaitForInitialized(strProfileName);
+}
+
+/*!
+ * @brief コントロールプロセスの初期化完了を待つ
+ */
+void CControlProcess::WaitForInitialized(std::wstring_view profileName)
+{
+	// 初期化完了イベントを作成する
+	std::wstring strInitEvent(GSTR_EVENT_SAKURA_CP_INITIALIZED);
+	if (profileName.length() > 0) {
+		strInitEvent += profileName;
+	}
+	auto hEvent = ::CreateEvent(nullptr, TRUE, FALSE, strInitEvent.data());
+	if (!hEvent) {
+		// L"エディタまたはシステムがビジー状態です。\nしばらく待って開きなおしてください。"
+		::_com_raise_error(E_FAIL, MakeMsgError(LS(STR_ERR_DLGPROCFACT5)));
+	}
+
+	// イベントハンドラをスマートポインタに入れる
+	handleHolder eventHolder(hEvent);
+
+	// 初期化完了イベントを待つ
+	if (DWORD dwRet = ::WaitForSingleObject(hEvent, 10000); dwRet == WAIT_TIMEOUT) {
+		// L"エディタまたはシステムがビジー状態です。\nしばらく待って開きなおしてください。"
+		::_com_raise_error(E_FAIL, MakeMsgError(LS(STR_ERR_DLGPROCFACT5)));
+	}
+}
+
+/*!
+ * @brief コントロールプロセスに終了指示を出して終了を待つ
+ *
+ */
+void CControlProcess::Terminate(std::wstring_view profileName)
+{
+	// トレイウインドウを検索する
+	std::wstring strCEditAppName(GSTR_CEDITAPP);
+	if (profileName.length() > 0) {
+		strCEditAppName += profileName;
+	}
+	HWND hTrayWnd = ::FindWindow(strCEditAppName.data(), strCEditAppName.data());
+	if (!hTrayWnd) {
+		::_com_raise_error(E_FAIL, MakeMsgError(L"トレイウインドウが見つかりませんでした。"));
+	}
+
+	// トレイウインドウからプロセスIDを取得する
+	DWORD dwControlProcessId = 0;
+	::GetWindowThreadProcessId(hTrayWnd, &dwControlProcessId);
+	if (!dwControlProcessId) {
+		::_com_raise_error(E_FAIL, MakeMsgError(L"プロセスIDを取得できませんでした。"));
+	}
+
+	// トレイウインドウを閉じる
+	::SendMessage(hTrayWnd, WM_CLOSE, 0, 0);
+
+	// プロセス情報の問い合せを行うためのハンドルを開く
+	HANDLE hControlProcess = ::OpenProcess(PROCESS_QUERY_INFORMATION | SYNCHRONIZE, FALSE, dwControlProcessId);
+	if (!hControlProcess) {
+		::_com_raise_error(E_FAIL, MakeMsgError(L"プロセスハンドルを取得できませんでした。"));
+	}
+
+	// プロセスハンドルをスマートポインタに入れる
+	handleHolder processHolder(hControlProcess);
+
+	// プロセス終了を待つ
+	DWORD dwExitCode = 0;
+	if (::GetExitCodeProcess(hControlProcess, &dwExitCode) && dwExitCode == STILL_ACTIVE) {
+		DWORD waitProcessResult = ::WaitForSingleObject(hControlProcess, INFINITE);
+		if (waitProcessResult == WAIT_TIMEOUT) {
+			::_com_raise_error(E_FAIL, MakeMsgError(L"プロセスが時間内に終了しませんでした。"));
+		}
+	}
 }
 
 /*!
