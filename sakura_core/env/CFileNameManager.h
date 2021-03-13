@@ -30,7 +30,8 @@
 #define SAKURA_CFILENAMEMANAGER_2B89B426_470E_40D6_B62E_5321E383ECD6_H_
 #pragma once
 
-#include "util/design_template.h"
+#include <string_view>
+
 #include "config/maxdata.h"
 
 struct EditInfo;
@@ -47,7 +48,7 @@ public:
 	//ファイル名関連
 	LPWSTR GetTransformFileNameFast( LPCWSTR, LPWSTR, int nDestLen, HDC hDC, bool bFitMode = true, int cchMaxWidth = 0 );	// 2002.11.24 Moca Add
 	int TransformFileName_MakeCache( void );
-	static LPCWSTR GetFilePathFormat( LPCWSTR, LPWSTR, int, LPCWSTR, LPCWSTR );
+	static LPCWSTR GetFilePathFormat( std::wstring_view strSrc, LPWSTR pszDest, size_t nDestLen, std::wstring_view strFrom, std::wstring_view strTo );
 	static bool ExpandMetaToFolder( LPCWSTR, LPWSTR, int );
 
 	//メニュー類のファイル名作成
