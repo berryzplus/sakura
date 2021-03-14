@@ -60,14 +60,10 @@ void CType_Cobol::InitTypeConfigImp(STypeConfig* pType)
 /*! COBOL アウトライン解析 */
 void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 {
-	int				i;
-	wchar_t			szDivision[1024];
-	wchar_t			szLabel[1024];
-	BOOL			bDivision;
-	bool			bExtEol = GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol;
+	const bool	bExtEol = GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol;
 
-	szDivision[0] = L'\0';
-	szLabel[0] =  L'\0';
+	wchar_t szDivision[1024] = {};
+	wchar_t szLabel[1024] = {};
 
 	for( CLogicInt nLineCount; nLineCount <  m_pcDocRef->m_cDocLineMgr.GetLineCount(); ++nLineCount ){
 		// 行データ取得
@@ -76,66 +72,41 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 		if( pLine == nullptr ){
 			break;
 		}
-		/* コメント行か */
 		if( nLineLen < 7 || pLine[6] == L'*' ){
 			continue;	// データ長が足りないか、コメント行
 		}
-		/* ラベル行か */
 		if( nLineLen < 8 || pLine[7] == L' ' ){
 			continue;	// データ長が足りないか、ラベル行
 		}
-		{
-			size_t k = 0;
-			for( i = 7; i < nLineLen && k + 1 < _countof(szLabel); ){
-				if( pLine[i] == '.'
-				 || WCODE::IsLineDelimiter(pLine[i], bExtEol)
-				){
-					break;
-				}
-				szLabel[k] = pLine[i];
-				++k;
-				++i;
-				if( pLine[i - 1] == L' ' ){
-					for( ; i < nLineLen; ++i ){
-						if( pLine[i] != L' ' ){
-							break;
-						}
-					}
-				}
+
+		// 8文字目からドットまたは行区切りまでを抽出する
+		size_t i = 7;
+		size_t j = 0;
+		while( i < nLineLen && j + 1 < _countof(szLabel) ){
+			if( pLine[i] == '.' || WCODE::IsLineDelimiter(pLine[i], bExtEol) ){
+				break;
 			}
-			szLabel[k] = L'\0';
-
-			const std::wstring_view keyword(L"division");
-
-			bDivision = FALSE;
-			const auto nLen = ::wcslen( szLabel ) - keyword.length();
-			for( i = 0; i <= (int)nLen ; ++i ){
-				if( 0 == wmemicmp( &szLabel[i], keyword.data(), keyword.length() ) ){
-					szLabel[i + keyword.length()] = L'\0';
-					wcscpy( szDivision, szLabel );
-					bDivision = TRUE;
-					break;
-				}
-			}
-			if( bDivision ){
-				continue;
-			}
-			/*
-			  カーソル位置変換
-			  物理位置(行頭からのバイト数、折り返し無し行位置)
-			  →
-			  レイアウト位置(行頭からの表示桁位置、折り返しあり行位置)
-			*/
-
-			CLayoutPoint ptPos;
-			m_pcDocRef->m_cLayoutMgr.LogicToLayout(
-				CLogicPoint(0, nLineCount),
-				&ptPos
-			);
-
-			std::wstring strFuncName = strprintf( L"%s::%s", szDivision, szLabel );
-			pcFuncInfoArr->AppendData( nLineCount + CLogicInt(1), ptPos.GetY2() + CLayoutInt(1), strFuncName.c_str(), 0 );
+			szLabel[j] = pLine[i];
+			++j;
+			++i;
 		}
+		szLabel[j] = L'\0';		// NUL終端する
+
+		const std::wstring_view keyword(L"division");
+		if( auto *pEnd = szLabel + ::wcslen( szLabel );
+			pEnd != std::find_if( &szLabel[0], pEnd, [keyword, pEnd] ( const wchar_t& ch ) { return &ch + keyword.length() <= pEnd && 0 == wmemicmp( &ch, keyword.data(), keyword.length() ); } ) ){
+			::wcscpy_s( szDivision, szLabel );
+			continue;
+		}
+
+		CLayoutPoint ptPos;
+		m_pcDocRef->m_cLayoutMgr.LogicToLayout(
+			CLogicPoint(0, nLineCount),
+			&ptPos
+		);
+
+		std::wstring strFuncName = strprintf( L"%s::%s", szDivision, szLabel );
+		pcFuncInfoArr->AppendData( nLineCount + 1, ptPos.GetY2() + 1, strFuncName.c_str(), 0 );
 	}
 	return;
 }
