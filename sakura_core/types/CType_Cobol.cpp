@@ -60,7 +60,6 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 	const wchar_t*	pLine;
 	CLogicInt		nLineLen;
 	int				i;
-	int				k;
 	wchar_t			szDivision[1024];
 	wchar_t			szLabel[1024];
 	const wchar_t*	pszKeyWord;
@@ -83,7 +82,7 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 		}
 		/* ラベル行か */
 		if( 8 <= nLineLen && pLine[7] != L' ' ){
-			k = 0;
+			size_t k = 0;
 			for( i = 7; i < nLineLen; ){
 				if( pLine[i] == '.'
 				 || WCODE::IsLineDelimiter(pLine[i], bExtEol)
