@@ -83,7 +83,7 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 		/* ラベル行か */
 		if( 8 <= nLineLen && pLine[7] != L' ' ){
 			size_t k = 0;
-			for( i = 7; i < nLineLen; ){
+			for( i = 7; i < nLineLen && k + 1 < _countof(szLabel); ){
 				if( pLine[i] == '.'
 				 || WCODE::IsLineDelimiter(pLine[i], bExtEol)
 				){
