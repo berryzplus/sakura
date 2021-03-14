@@ -26,6 +26,9 @@
 
 #include "StdAfx.h"
 #include "types/CType.h"
+
+#include <string_view>
+
 #include "doc/CEditDoc.h"
 #include "doc/CDocOutline.h"
 #include "doc/logic/CDocLine.h"
@@ -62,8 +65,6 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 	int				i;
 	wchar_t			szDivision[1024];
 	wchar_t			szLabel[1024];
-	const wchar_t*	pszKeyWord;
-	int				nKeyWordLen;
 	BOOL			bDivision;
 	bool			bExtEol = GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol;
 
@@ -101,15 +102,14 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 				}
 			}
 			szLabel[k] = L'\0';
-//			MYTRACE( L"szLabel=[%ls]\n", szLabel );
 
-			pszKeyWord = L"division";
-			nKeyWordLen = wcslen( pszKeyWord );
+			const std::wstring_view keyword(L"division");
+
 			bDivision = FALSE;
-			int nLen = (int)wcslen( szLabel ) - nKeyWordLen;
-			for( i = 0; i <= nLen ; ++i ){
-				if( 0 == wmemicmp( &szLabel[i], pszKeyWord, nKeyWordLen ) ){
-					szLabel[i + nKeyWordLen] = L'\0';
+			const auto nLen = ::wcslen( szLabel ) - keyword.length();
+			for( i = 0; i <= (int)nLen ; ++i ){
+				if( 0 == wmemicmp( &szLabel[i], keyword.data(), keyword.length() ) ){
+					szLabel[i + keyword.length()] = L'\0';
 					wcscpy( szDivision, szLabel );
 					bDivision = TRUE;
 					break;
