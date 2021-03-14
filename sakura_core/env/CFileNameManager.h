@@ -36,14 +36,14 @@
 struct EditInfo;
 
 //!ファイル名管理
-class CFileNameManager : public TSingleton<CFileNameManager>{
-	friend class TSingleton<CFileNameManager>;
-	CFileNameManager()
+class CFileNameManager : public TSingleInstance<CFileNameManager> {
+public:
+	CFileNameManager() noexcept
 	{
 		m_nTransformFileNameCount = -1;
 	}
+	virtual ~CFileNameManager() noexcept = default;
 
-public:
 	//ファイル名関連
 	LPWSTR GetTransformFileNameFast( LPCWSTR, LPWSTR, int nDestLen, HDC hDC, bool bFitMode = true, int cchMaxWidth = 0 );	// 2002.11.24 Moca Add
 	int TransformFileName_MakeCache( void );
@@ -78,4 +78,5 @@ private:
 	WCHAR	m_szTransformFileNameFromExp[MAX_TRANSFORM_FILENAME][_MAX_PATH];
 	int		m_nTransformFileNameOrgId[MAX_TRANSFORM_FILENAME];
 };
+
 #endif /* SAKURA_CFILENAMEMANAGER_2B89B426_470E_40D6_B62E_5321E383ECD6_H_ */
