@@ -77,11 +77,14 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 			break;
 		}
 		/* コメント行か */
-		if( 7 <= nLineLen && pLine[6] == L'*' ){
-			continue;
+		if( nLineLen < 7 || pLine[6] == L'*' ){
+			continue;	// データ長が足りないか、コメント行
 		}
 		/* ラベル行か */
-		if( 8 <= nLineLen && pLine[7] != L' ' ){
+		if( nLineLen < 8 || pLine[7] == L' ' ){
+			continue;	// データ長が足りないか、ラベル行
+		}
+		{
 			size_t k = 0;
 			for( i = 7; i < nLineLen && k + 1 < _countof(szLabel); ){
 				if( pLine[i] == '.'
