@@ -60,8 +60,6 @@ void CType_Cobol::InitTypeConfigImp(STypeConfig* pType)
 /*! COBOL アウトライン解析 */
 void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 {
-	const wchar_t*	pLine;
-	CLogicInt		nLineLen;
 	int				i;
 	wchar_t			szDivision[1024];
 	wchar_t			szLabel[1024];
@@ -72,8 +70,10 @@ void CDocOutline::MakeTopicList_cobol( CFuncInfoArr* pcFuncInfoArr )
 	szLabel[0] =  L'\0';
 
 	for( CLogicInt nLineCount; nLineCount <  m_pcDocRef->m_cDocLineMgr.GetLineCount(); ++nLineCount ){
-		pLine = m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
-		if( NULL == pLine ){
+		// 行データ取得
+		CLogicInt nLineLen;
+		const auto *pLine = m_pcDocRef->m_cDocLineMgr.GetLine(nLineCount)->GetDocLineStrWithEOL(&nLineLen);
+		if( pLine == nullptr ){
 			break;
 		}
 		/* コメント行か */
