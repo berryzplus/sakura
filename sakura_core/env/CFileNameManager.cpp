@@ -28,9 +28,9 @@
 */
 
 #include "StdAfx.h"
+#include "CFileNameManager.h"
 
 #include "DLLSHAREDATA.h"
-#include "CFileNameManager.h"
 #include "charset/CCodePage.h"
 #include "util/module.h"
 #include "util/os.h"
@@ -59,10 +59,12 @@ LPWSTR CFileNameManager::GetTransformFileNameFast( LPCWSTR pszSrc, LPWSTR pszDes
 		TransformFileName_MakeCache();
 	}
 
+	const auto& sFileName = GetDllShareData().m_Common.m_sFileName;
+
 	int nPxWidth = -1;
-	if( m_pShareData->m_Common.m_sFileName.m_bTransformShortPath && cchMaxWidth != -1 ){
+	if( sFileName.m_bTransformShortPath && cchMaxWidth != -1 ){
 		if( cchMaxWidth == 0 ){
-			cchMaxWidth = m_pShareData->m_Common.m_sFileName.m_nTransformShortMaxWidth;
+			cchMaxWidth = sFileName.m_nTransformShortMaxWidth;
 		}
 		CTextWidthCalc calc(hDC);
 		nPxWidth = calc.GetTextWidth(L"x") * cchMaxWidth;
@@ -71,13 +73,13 @@ LPWSTR CFileNameManager::GetTransformFileNameFast( LPCWSTR pszSrc, LPWSTR pszDes
 	if( 0 < m_nTransformFileNameCount ){
 		GetFilePathFormat( pszSrc, pszDest, nDestLen,
 			m_szTransformFileNameFromExp[0],
-			m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[m_nTransformFileNameOrgId[0]]
+			sFileName.m_szTransformFileNameTo[m_nTransformFileNameOrgId[0]]
 		);
 		for( i = 1; i < m_nTransformFileNameCount; i++ ){
 			wcscpy( szBuf, pszDest );
 			GetFilePathFormat( szBuf, pszDest, nDestLen,
 				m_szTransformFileNameFromExp[i],
-				m_pShareData->m_Common.m_sFileName.m_szTransformFileNameTo[m_nTransformFileNameOrgId[i]] );
+				sFileName.m_szTransformFileNameTo[m_nTransformFileNameOrgId[i]] );
 		}
 		if( nPxWidth != -1 ){
 			wcscpy( szBuf, pszDest );
@@ -99,11 +101,12 @@ LPWSTR CFileNameManager::GetTransformFileNameFast( LPCWSTR pszSrc, LPWSTR pszDes
 	@date 2003.06.23 Moca 関数名変更
 */
 int CFileNameManager::TransformFileName_MakeCache( void ){
+	const auto& sFileName = GetDllShareData().m_Common.m_sFileName;
 	int i;
 	int nCount = 0;
-	for( i = 0; i < m_pShareData->m_Common.m_sFileName.m_nTransformFileNameArrNum; i++ ){
-		if( L'\0' != m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[i][0] ){
-			if( ExpandMetaToFolder( m_pShareData->m_Common.m_sFileName.m_szTransformFileNameFrom[i],
+	for( i = 0; i < sFileName.m_nTransformFileNameArrNum; i++ ){
+		if( L'\0' != sFileName.m_szTransformFileNameFrom[i][0] ){
+			if( ExpandMetaToFolder( sFileName.m_szTransformFileNameFrom[i],
 			 m_szTransformFileNameFromExp[nCount], _MAX_PATH ) ){
 				// m_szTransformFileNameToとm_szTransformFileNameFromExpの番号がずれることがあるので記録しておく
 				m_nTransformFileNameOrgId[nCount] = i;
